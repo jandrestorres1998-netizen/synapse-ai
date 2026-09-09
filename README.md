@@ -154,8 +154,8 @@ Merece la pena decirlo antes de que alguien lo descubra en producción:
 - **El registro de auditoría no es una cadena de bloques.** Detecta manipulación
   posterior por parte de quien no pueda recalcular la cadena. Con
   `SYNAPSE_AUDIT_HMAC_KEY` guardada fuera de la máquina, también autentica.
-- **`server/p2p/` y `server/security/ast-sandbox.js` son prototipos.** No están
-  conectados al servidor y sus dependencias no se instalan por defecto. Ver
+- **Se retiraron doce módulos que nada invocaba** (P2P, ZK, sandbox de agentes,
+  fijado TLS, OCR). Siguen en el historial de git. Ver
   [`docs/EXPERIMENTAL.md`](docs/EXPERIMENTAL.md).
 - **Los planes de licencia no se aplican.** `PLAN_TIERS` declara cuotas que
   ningún middleware consulta, y el paquete es MIT. Es una decisión abierta,

@@ -1,13 +1,12 @@
 {
   "version": "5.0.0",
-  "generatedAt": "2026-09-09T05:48:16.915Z",
+  "generatedAt": "2026-09-09T13:33:54.318Z",
   "algorithm": "SHA-256",
   "files": {
     "server/server.js": "dbef3fb6d8a429b500d064ac51d2a269790fc04e50c92e68e1050159a0b1fcd8",
     "server/dlp-engine.js": "2c6e55ec695311213e13cc1d5216a5ca48abf727932e56346b8fce0e798de406",
     "server/deobfuscator.js": "369ea7f262876b19d4a19538a29b37cbfaa3e0cd8d89eeba7af0e55b8fe4d2ae",
     "server/secure-vault.js": "585d5ba1a644699f5ba94902231072ac508a302daf5705f288ab72ea83f1ea1c",
-    "server/tls-shield.js": "9abf30089e2a178b392dd3a9c73babf136b0f1a61e643b78a6428cf774309650",
     "server/smart-router.js": "8bf863901f1be3f4dd7b9e4ecf410084a359ab12478eac0ad5d68f0345b1e236",
     "server/memory-hub.js": "2d903b412c4a61a6ba18a606b959e29b19e96d51f676fafa4b7f289d19ab781b",
     "server/license-manager.js": "0c4e3e3cfe1ed2f24a0a8425de225167e2078063660af35bd22d7143ee491a96",

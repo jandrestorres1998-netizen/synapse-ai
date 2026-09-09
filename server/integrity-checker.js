@@ -22,7 +22,6 @@ export class IntegrityChecker {
       'server/dlp-engine.js',
       'server/deobfuscator.js',
       'server/secure-vault.js',
-      'server/tls-shield.js',
       'server/smart-router.js',
       'server/memory-hub.js',
       'server/license-manager.js',
