@@ -6,8 +6,8 @@
     {
       "id": "gemini-flash",
       "provider": "google",
-      "providerModel": "gemini-2.0-flash",
-      "label": "Google Gemini 2.0 Flash",
+      "providerModel": "gemini-3.5-flash-lite",
+      "label": "Google Gemini 3.5 Flash Lite",
       "tier": "fast",
       "contextWindow": 1000000,
       "pricePer1M": { "input": 0.10, "output": 0.40 }

@@ -17,6 +17,7 @@ data/memories.json
 data/audit-ledger.jsonl
 data/*.corrupt-*
 data/*.tmp
+data/*.bak
 
 # Prototipo React con su propio historial git. Añadirlo aquí lo convertiría en
 # un submódulo que apunta a ninguna parte. Ver client/README.md: no está

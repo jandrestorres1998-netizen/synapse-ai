@@ -1,6 +1,6 @@
 {
   "version": "5.0.0",
-  "generatedAt": "2026-09-09T14:46:13.278Z",
+  "generatedAt": "2026-09-09T18:04:37.368Z",
   "algorithm": "SHA-256",
   "files": {
     "server/server.js": "5ef1f6888091c16fa85abb1565f6cb251c0cc49b3b8de6a1a161f535249246f7",
@@ -27,7 +27,7 @@
     "server/config/env.js": "5f43f4a261d2a22396d90751ec929e4cdebda8b311f1ecfcf59a38e3da61fb44",
     "server/config/container.js": "3b78e38c0c13bc0da74b2504a8d6c9b34c52b1626814e9f06b16967288dbfdb6",
     "server/config/logger.js": "9c7fabe7fc08e5f867b2dd80456c8cb8a4bd4e90cd62e6e82968a1a6305367be",
-    "server/config/models.json": "ba3c36d159c125a616693b54a50834dfc7dd6f5f61547edad897f8ab292f2f10",
+    "server/config/models.json": "d8f4e76d8c6118c1a33b6c91487c3843505783ab4a6bd4b62d41a9d540be9b0a",
     "server/middlewares/auth.js": "b004392d74deb8fd4f1028d9d4471b3b1cd299f21dda4fd9733810215b05012d",
     "server/middlewares/validators.js": "abb7b7c576f05dcdf7d1c0978df94dfcf59de3dcb47813afe46a8eb36d9e42dd",
     "server/middlewares/security-headers.js": "802a49509482aaa1196f5d429a64a56a6d4f0f0269437c3eb8261303eb87176b",
