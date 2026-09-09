@@ -3,6 +3,7 @@ import { createLogger } from '../config/logger.js';
 import { ProviderError } from '../providers/index.js';
 import { StreamRedactor } from './stream-redactor.js';
 import { InFlightRegistry } from './inflight.js';
+import { BudgetExceededError } from './budget.js';
 
 const log = createLogger('Pipeline');
 
@@ -30,7 +31,7 @@ export class BlockedRequestError extends Error {
  *      with 503 — it never falls back to synthetic text pretending to be a model.
  */
 export class GatewayPipeline {
-  constructor({ dlp, router, cache, memory, providers, injectionShield, auditLedger, telemetry, env }) {
+  constructor({ dlp, router, cache, memory, providers, injectionShield, auditLedger, telemetry, budget, env }) {
     this.dlp = dlp;
     this.router = router;
     this.cache = cache;
@@ -39,6 +40,7 @@ export class GatewayPipeline {
     this.injectionShield = injectionShield;
     this.auditLedger = auditLedger;
     this.telemetry = telemetry;
+    this.budget = budget;
     this.env = env;
     this.inflight = new InFlightRegistry();
   }
@@ -132,6 +134,24 @@ export class GatewayPipeline {
     const sanitizedPrompt = sanitizedMessages.filter(m => m.role === 'user').pop()?.content ?? '';
 
     return { tenantId, sessionId, sanitizedMessages, sanitizedPrompt, systemPrompt, memoryContext, detections };
+  }
+
+  /**
+   * Books the worst case against the budget, or refuses.
+   * @returns {string|null} reservation id, or null when no ledger is wired.
+   */
+  _reserveBudget(modelId, promptText, options, tenantId) {
+    if (!this.budget) return null;
+
+    const estimate = this.router.estimateMaxCost(modelId, promptText, options.maxTokens ?? 1024);
+    const decision = this.budget.reserve(tenantId, estimate);
+
+    if (!decision.allowed) {
+      log.warn('Petición rechazada por límite de gasto', { tenantId, scope: decision.scope, estimate });
+      throw new BudgetExceededError(decision);
+    }
+
+    return decision.reservationId;
   }
 
   /** Runs the upstream call, retrying once on a different provider if allowed. */
@@ -245,7 +265,11 @@ export class GatewayPipeline {
       };
     }
 
-    // 5. Real upstream inference.
+    // 5. Book the worst-case cost against the budget before spending anything.
+    //    A cache hit never reaches here, so cached answers are always free.
+    const reservation = this._reserveBudget(modelId, sanitizedPrompt, options, tenantId);
+
+    // 6. Real upstream inference.
     let upstream;
     try {
       upstream = await this._callUpstream(decision, {
@@ -263,6 +287,9 @@ export class GatewayPipeline {
         signal: options.signal
       });
     } catch (err) {
+      // The call never produced tokens, so it must not hold budget.
+      this.budget?.release(reservation);
+
       // 499 is our own marker for "the client went away", not an upstream fault.
       const outcome = err.status === 499 ? 'cancelled' : 'error';
       this.telemetry.record({ id: requestId, outcome, model: modelId, latencyMs: Date.now() - startedAt, tenantId });
@@ -298,6 +325,9 @@ export class GatewayPipeline {
     const latencyMs = Date.now() - startedAt;
     const cost = this.router.computeCost(effectiveModelId, upstream.usage);
     const comparison = this.router.compareToBaseline(effectiveModelId, upstream.usage);
+
+    // Replace the worst-case booking with what it actually cost.
+    this.budget?.settle(reservation, cost.usd);
 
     this.telemetry.record({
       id: requestId, outcome: 'upstream', model: effectiveModelId,
@@ -366,6 +396,9 @@ export class GatewayPipeline {
     const provider = this.providers.get(model.provider);
     const redactor = new StreamRedactor(this.dlp);
 
+    // Same two-step booking as the non-streaming path.
+    const reservation = this._reserveBudget(modelId, sanitizedPrompt, options, tenantId);
+
     yield { type: 'meta', requestId, source: 'upstream', model: model.id, provider: model.provider };
 
     let usage = { inputTokens: 0, outputTokens: 0, measured: false };
@@ -411,6 +444,8 @@ export class GatewayPipeline {
     const latencyMs = Date.now() - startedAt;
     const cost = this.router.computeCost(modelId, usage);
     const comparison = this.router.compareToBaseline(modelId, usage);
+
+    this.budget?.settle(reservation, cost.usd);
 
     if (redactor.wasMasked) {
       this.auditLedger.append({

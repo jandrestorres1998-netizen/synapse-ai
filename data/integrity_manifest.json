@@ -1,16 +1,16 @@
 {
   "version": "5.0.0",
-  "generatedAt": "2026-09-09T13:49:01.992Z",
+  "generatedAt": "2026-09-09T13:55:54.541Z",
   "algorithm": "SHA-256",
   "files": {
-    "server/server.js": "dbef3fb6d8a429b500d064ac51d2a269790fc04e50c92e68e1050159a0b1fcd8",
+    "server/server.js": "5ef1f6888091c16fa85abb1565f6cb251c0cc49b3b8de6a1a161f535249246f7",
     "server/dlp-engine.js": "5017d3815da800f8b20d81268a847b5397fb35db78e8d6779ec592a3b14be9e2",
     "server/deobfuscator.js": "369ea7f262876b19d4a19538a29b37cbfaa3e0cd8d89eeba7af0e55b8fe4d2ae",
     "server/secure-vault.js": "585d5ba1a644699f5ba94902231072ac508a302daf5705f288ab72ea83f1ea1c",
-    "server/smart-router.js": "8bf863901f1be3f4dd7b9e4ecf410084a359ab12478eac0ad5d68f0345b1e236",
+    "server/smart-router.js": "4b1d490019ca0c9a87ff0b7959313880fa9c9fe2fb01a74f3e2b8942febfe1be",
     "server/memory-hub.js": "2d903b412c4a61a6ba18a606b959e29b19e96d51f676fafa4b7f289d19ab781b",
     "server/license-manager.js": "0c4e3e3cfe1ed2f24a0a8425de225167e2078063660af35bd22d7143ee491a96",
-    "server/core/pipeline.js": "d7400afb3652f0b9646289b783f3e566bd6490fd0e5250fe5c918733d12359cc",
+    "server/core/pipeline.js": "41654df53f8a7721c3ad4610c3ba42aabcc6449d291d937f48c2d7016270f5ec",
     "server/core/response-cache.js": "d010c8ef9a9611dd83e289907d0e596ae13008b17c3b4f862396fb11c711dc0d",
     "server/core/stream-redactor.js": "bb53d2037d78fcb6138547fe73f2ae4615efdec1f0d18575479046c9e87fb632",
     "server/core/telemetry.js": "bfe6ec581b67a04f6d41342c194c768c3e56454545adc83fabe3fd5985852c9c",
@@ -24,8 +24,8 @@
     "server/security/prompt-injection-shield.js": "11bb9b0cf128c3296ffa727a4d6ee71bd1fb9bd614028edaf2cfddf0dfd07d82",
     "server/security/audit-chain.js": "702cadcf6960c1bed6457c506f5ba3313d9216f7f3dd7b7177ce02a9b47114aa",
     "server/store/json-store.js": "bbafdaa48de7c26bc74113a7d824a36a7e841f1b36087fe4ecf7f42dd7b39bd4",
-    "server/config/env.js": "44626ae24df0915eb8281c0107b88e38e2b6fca6519bc42deba1fda432d57ff8",
-    "server/config/container.js": "c002025ef540db6ee6f33f36332fd320b2d05d1e50e24edc70935783cb7646ea",
+    "server/config/env.js": "0580dff37197dadbdf60a3a0916a6572ce579e68e6ee30976c5b83d191171c38",
+    "server/config/container.js": "3b78e38c0c13bc0da74b2504a8d6c9b34c52b1626814e9f06b16967288dbfdb6",
     "server/config/logger.js": "9c7fabe7fc08e5f867b2dd80456c8cb8a4bd4e90cd62e6e82968a1a6305367be",
     "server/config/models.json": "ba3c36d159c125a616693b54a50834dfc7dd6f5f61547edad897f8ab292f2f10",
     "server/middlewares/auth.js": "b004392d74deb8fd4f1028d9d4471b3b1cd299f21dda4fd9733810215b05012d",
@@ -34,11 +34,11 @@
     "server/middlewares/request-logger.js": "e8255bcddf307398c4906be87376dd23c73e7dd14b5bcc8b63d438130298f5c2",
     "server/middlewares/rate-limiter.js": "af963538ccc197e10adb560c0d0dbf4f44952d1ba78c2a8cac9f09875c1d651b",
     "server/middlewares/error-handler.js": "220eb2fa1db44818a4cc9965bfe24c67cff294c96cc3e11a207b2bd3ce297fd2",
-    "server/controllers/gateway.controller.js": "52e8609ff547c5ff05b59ec2bca38abef3fb0d6a2e5ea4dea08bad803546765f",
+    "server/controllers/gateway.controller.js": "122127a581e5cb60d7e538b1422bc6f05f003c01bfd54906975c91b02066cdf2",
     "server/controllers/vault.controller.js": "6cf268efa9d7349f1cd36d2f266dfefcff64b2967037034941390de140a170fe",
     "server/controllers/memory.controller.js": "2cd43ee044221f65f4feecacf736a629d299b78071d49f1e793453182536f9dc",
-    "server/controllers/stats.controller.js": "0d32466bd230514c0abc912fbf31790eddda18f4e438430cded6c3545a5b3213",
+    "server/controllers/stats.controller.js": "4074d82019649368753e9f7cb68a6f8981ddc02e1067294c6d30b1012424a847",
     "server/controllers/license.controller.js": "4881eb7781a18490cc626ed9685abbe8a3cc301847c168bfde97758065a5336c",
-    "server/routes/api.routes.js": "cb0573d92cfe1eaeaddb0415fcb57b7c925091044e00655def012aed4a176f7e"
+    "server/routes/api.routes.js": "5bac7a5c97b0e3cab08cb20b5efa0b86c488376ac78c79c51c490a61ae053034"
   }
 }

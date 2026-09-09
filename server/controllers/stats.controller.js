@@ -1,4 +1,4 @@
-import { dlp, cache, memory, router, providers, auditLedger, telemetry, integrity, env } from '../config/container.js';
+import { dlp, cache, memory, router, providers, auditLedger, telemetry, integrity, budget, env } from '../config/container.js';
 import { createLogger } from '../config/logger.js';
 
 const log = createLogger('Stats');
@@ -21,8 +21,14 @@ export function getStats(req, res) {
     },
     activeMemories: memory.getAll().filter(m => m.isActive).length,
     providers: providers.status(),
-    hasRealProvider: providers.hasRealProvider()
+    hasRealProvider: providers.hasRealProvider(),
+    budget: budget.status(req.auth?.tenantId ?? 'default')
   });
+}
+
+/** GET /api/budget — spend against the configured caps for the caller's tenant. */
+export function getBudget(req, res) {
+  res.json(budget.status(req.auth?.tenantId ?? 'default'));
 }
 
 export function getSecurityLogs(req, res) {

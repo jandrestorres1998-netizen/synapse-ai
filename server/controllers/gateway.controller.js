@@ -1,11 +1,11 @@
 import { GatewayPipeline, BlockedRequestError } from '../core/pipeline.js';
-import { dlp, router, cache, memory, providers, injectionShield, auditLedger, telemetry, env } from '../config/container.js';
+import { dlp, router, cache, memory, providers, injectionShield, auditLedger, telemetry, budget, env } from '../config/container.js';
 import { createLogger } from '../config/logger.js';
 
 const log = createLogger('Gateway');
 
 export const pipeline = new GatewayPipeline({
-  dlp, router, cache, memory, providers, injectionShield, auditLedger, telemetry, env
+  dlp, router, cache, memory, providers, injectionShield, auditLedger, telemetry, budget, env
 });
 
 function requestOptions(req, source) {

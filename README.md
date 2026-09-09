@@ -18,6 +18,7 @@ cliente actual.
 | **Filtro de inyección** | Bloquea patrones conocidos de sobreescritura de instrucciones y exfiltración del prompt de sistema. | No es un clasificador semántico. Una reformulación creativa lo atraviesa. Reduce el ruido, no cierra la clase de ataque. |
 | **Enrutado por coste** | Clasifica la petición y la envía al nivel de modelo adecuado entre los proveedores que **realmente** tienes configurados, con degradación y failover. | No adivina qué modelo da mejor calidad para tu dominio. La clasificación es por patrones, no por evaluación. |
 | **Caché de respuestas** | Coincidencia exacta con aislamiento por inquilino, modelo y contexto de sistema. Opcionalmente, coincidencia por similitud. | La tasa de aciertos depende de que tu tráfico se repita. Con prompts mayoritariamente únicos, es cercana a cero. |
+| **Límites de gasto** | Topes diarios y mensuales, por inquilino y globales. Antes de cada llamada se reserva su coste máximo posible y se liquida con el real al terminar, así que una ráfaga simultánea no puede saltarse el tope. El estado persiste en disco. | No conoce el gasto que hagas fuera del gateway. Y frena contra el peor caso, así que una ráfaga se corta antes de lo que su coste real habría exigido. |
 | **Auditoría encadenada** | Cadena de hashes persistida en JSONL, con HMAC opcional. Exporta a JSONL y CSV para SIEM. | No es a prueba de un atacante que controle el proceso mientras se escribe. Para eso hay que enviar el registro fuera de la máquina auditada. |
 | **Vault de credenciales** | AES-256-GCM con clave maestra desde `SYNAPSE_VAULT_KEY`. | En modo `machine` (sin esa variable) la clave se deriva de datos públicos del equipo: es ofuscación, no cifrado frente a un atacante local. El sistema lo avisa en cada arranque. |
 
@@ -78,6 +79,8 @@ cambian el comportamiento de forma más significativa:
 | `SYNAPSE_CACHE_SEMANTIC` | Desactivada por defecto. Al activarla, una respuesta generada para un prompt distinto puede servirse a otro parecido. Es un intercambio de exactitud por coste, no una optimización gratuita. |
 | `SYNAPSE_ALLOW_MOCK_PROVIDER` | El proveedor `mock` devuelve texto sintético etiquetado como tal. El arranque **falla** si se activa con `NODE_ENV=production`. |
 | `SYNAPSE_TRUST_PROXY_HOPS` | Número de proxies de confianza. Con `0`, `X-Forwarded-For` se ignora por completo. |
+| `SYNAPSE_BUDGET_DAILY_USD` · `SYNAPSE_BUDGET_MONTHLY_USD` | Tope de gasto por inquilino. `0` desactiva el límite y el gateway solo contabiliza. |
+| `SYNAPSE_BUDGET_DAILY_USD_GLOBAL` · `SYNAPSE_BUDGET_MONTHLY_USD_GLOBAL` | Los mismos topes sumando a todos los inquilinos: tu exposición real. |
 
 ### Precios de los modelos
 
@@ -115,8 +118,8 @@ Con `NODE_ENV=production` el arranque se aborta si falta autenticación, si
 ## Pruebas
 
 ```bash
-npm test                   # 103 pruebas unitarias
-npm run test:integration   # 23 pruebas extremo a extremo contra un upstream simulado
+npm test                   # 117 pruebas unitarias
+npm run test:integration   # 26 pruebas extremo a extremo contra un upstream simulado
 npm run bench              # sobrecarga del gateway y aciertos de caché
 npm run fuzz               # busca secretos que sobreviven al pipeline
 ```

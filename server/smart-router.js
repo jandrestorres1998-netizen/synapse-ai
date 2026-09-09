@@ -142,6 +142,23 @@ export class SmartRouter {
     };
   }
 
+  /**
+   * Upper bound on what a call could cost, for booking against a budget before
+   * it runs. Output length is not knowable in advance, so the cap the caller
+   * asked for is assumed to be reached — the point of a spend control is to be
+   * wrong in the safe direction.
+   */
+  estimateMaxCost(modelId, promptText, maxTokens = 1024) {
+    const model = this.models.get(modelId);
+    if (!model) return 0;
+
+    const inputTokens = SmartRouter.estimateTokens(promptText);
+    const usd = (inputTokens / 1_000_000) * model.pricePer1M.input
+      + (maxTokens / 1_000_000) * model.pricePer1M.output;
+
+    return Number(usd.toFixed(6));
+  }
+
   /** Actual spend for a completed call, from provider-reported usage. */
   computeCost(modelId, usage) {
     const model = this.models.get(modelId);

@@ -13,6 +13,7 @@ import { DLPEngine } from '../dlp-engine.js';
 import { SmartRouter } from '../smart-router.js';
 import { ResponseCache } from '../core/response-cache.js';
 import { Telemetry } from '../core/telemetry.js';
+import { BudgetLedger } from '../core/budget.js';
 import { MemoryHub } from '../memory-hub.js';
 import { SecureVault } from '../secure-vault.js';
 import { ProviderRegistry } from '../providers/index.js';
@@ -57,3 +58,11 @@ export const integrity = new IntegrityChecker();
 export const licenseManager = new LicenseManager({ dataDir: ENV.DATA_DIR });
 
 export const telemetry = new Telemetry();
+
+export const budget = new BudgetLedger({
+  dataDir: ENV.DATA_DIR,
+  dailyUsdPerTenant: ENV.BUDGET.DAILY_USD_PER_TENANT,
+  monthlyUsdPerTenant: ENV.BUDGET.MONTHLY_USD_PER_TENANT,
+  dailyUsdGlobal: ENV.BUDGET.DAILY_USD_GLOBAL,
+  monthlyUsdGlobal: ENV.BUDGET.MONTHLY_USD_GLOBAL
+});

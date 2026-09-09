@@ -377,3 +377,42 @@ test('el primer fragmento SSE incluye role: assistant', async () => {
   assert.equal(first.delta?.role ?? first.choices[0].delta.role, 'assistant');
   assert.match(first.id, /^chatcmpl-/);
 });
+
+test('/api/budget informa del gasto del inquilino que llama', async () => {
+  const res = await call('/api/budget', { method: 'GET' });
+  assert.equal(res.status, 200);
+
+  const data = await res.json();
+  assert.ok(data.tenantId);
+  assert.ok(data.period.day.match(/^\d{4}-\d{2}-\d{2}$/));
+  assert.equal(typeof data.tenant.daily.spentUsd, 'number');
+  // Sin topes en esta instalación, se declara explícitamente que no se aplica.
+  assert.equal(data.tenant.daily.enforced, false);
+  assert.match(data.note, /no lo detiene/);
+});
+
+test('el gasto de una petición real queda contabilizado', async () => {
+  const antes = await (await call('/api/budget', { method: 'GET' })).json();
+
+  await call('/v1/chat/completions', {
+    body: { model: 'gpt-4o-mini', messages: [{ role: 'user', content: 'contabiliza esto ' + Date.now() }] }
+  });
+
+  const despues = await (await call('/api/budget', { method: 'GET' })).json();
+  assert.ok(
+    despues.tenant.daily.spentUsd > antes.tenant.daily.spentUsd,
+    'una llamada al proveedor debe sumar al gasto del día'
+  );
+});
+
+test('un acierto de caché no consume presupuesto', async () => {
+  const prompt = 'pregunta para medir el presupuesto ' + Date.now();
+  await call('/api/gateway/process', { body: { prompt } });
+
+  const antes = await (await call('/api/budget', { method: 'GET' })).json();
+  const res = await call('/api/gateway/process', { body: { prompt } });
+  assert.equal((await res.json()).source, 'cache');
+
+  const despues = await (await call('/api/budget', { method: 'GET' })).json();
+  assert.equal(despues.tenant.daily.spentUsd, antes.tenant.daily.spentUsd);
+});

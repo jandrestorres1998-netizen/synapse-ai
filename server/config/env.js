@@ -112,6 +112,16 @@ export const ENV = {
     STORE_PLAINTEXT_SAMPLES: bool('SYNAPSE_DLP_STORE_PLAINTEXT', false)
   },
 
+  // Spend caps. 0 disables a cap. The gateway sees the cost of every call; these
+  // are what let it refuse one. Without them a client in a retry loop drains the
+  // operator's provider budget with nothing in the way.
+  BUDGET: {
+    DAILY_USD_PER_TENANT: float('SYNAPSE_BUDGET_DAILY_USD', 0),
+    MONTHLY_USD_PER_TENANT: float('SYNAPSE_BUDGET_MONTHLY_USD', 0),
+    DAILY_USD_GLOBAL: float('SYNAPSE_BUDGET_DAILY_USD_GLOBAL', 0),
+    MONTHLY_USD_GLOBAL: float('SYNAPSE_BUDGET_MONTHLY_USD_GLOBAL', 0)
+  },
+
   RATE_LIMIT: {
     WINDOW_MS: int('SYNAPSE_RATE_WINDOW_MS', 60_000),
     MAX_REQUESTS: int('SYNAPSE_RATE_MAX', 60),
@@ -167,6 +177,18 @@ export function validateEnv(env = ENV) {
 
   if (env.CACHE.SEMANTIC_ENABLED && env.CACHE.SEMANTIC_THRESHOLD < 0.95) {
     warnings.push(`Umbral de caché semántica en ${env.CACHE.SEMANTIC_THRESHOLD}: por debajo de 0.95 se sirven respuestas de prompts distintos.`);
+  }
+
+  const budgets = Object.values(env.BUDGET);
+  if (budgets.some(v => v < 0)) {
+    errors.push('Los límites de presupuesto no pueden ser negativos.');
+  }
+  if (env.IS_PRODUCTION && budgets.every(v => v === 0)) {
+    warnings.push('Sin límites de gasto configurados: el gateway contabiliza el coste pero no detiene a un cliente que agote el presupuesto del proveedor.');
+  }
+  if (env.BUDGET.DAILY_USD_PER_TENANT > 0 && env.BUDGET.MONTHLY_USD_PER_TENANT > 0
+      && env.BUDGET.DAILY_USD_PER_TENANT > env.BUDGET.MONTHLY_USD_PER_TENANT) {
+    warnings.push('El límite diario por inquilino supera al mensual: el mensual será el que corte primero.');
   }
 
   if (!['redact', 'block'].includes(env.DLP.ON_DETECTION)) {

@@ -14,7 +14,7 @@ import { validateOpenAIInput } from './middlewares/validators.js';
 import { handleOpenAIChatCompletions } from './controllers/gateway.controller.js';
 import { handleStripeWebhook } from './controllers/license.controller.js';
 import { getHealth } from './controllers/stats.controller.js';
-import { providers, integrity } from './config/container.js';
+import { providers, integrity, budget } from './config/container.js';
 import { logProviderStartupState, startProviderProbes } from './providers/index.js';
 import apiRoutes from './routes/api.routes.js';
 import v1Routes from './routes/v1.routes.js';
@@ -108,6 +108,9 @@ const server = app.listen(ENV.PORT, ENV.HOST, () => {
 // Drain in-flight requests before exiting so a deploy does not cut a stream.
 function shutdown(signal) {
   log.info(`Señal ${signal} recibida; cerrando de forma ordenada.`);
+  // The spend ledger is written on a debounce, so the last window would be lost
+  // on exit — and a budget that forgets on restart is not a budget.
+  budget.flush();
   server.close(() => {
     log.info('Servidor cerrado.');
     process.exit(0);
@@ -117,6 +120,10 @@ function shutdown(signal) {
     process.exit(1);
   }, 10_000).unref();
 }
+
+// A crash between reserving and settling would otherwise hold budget forever.
+const reservationSweep = setInterval(() => budget.expireStaleReservations(), 60_000);
+reservationSweep.unref();
 
 process.on('SIGTERM', () => shutdown('SIGTERM'));
 process.on('SIGINT', () => shutdown('SIGINT'));
