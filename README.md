@@ -115,10 +115,34 @@ Con `NODE_ENV=production` el arranque se aborta si falta autenticación, si
 ## Pruebas
 
 ```bash
-npm test                   # 98 pruebas unitarias
+npm test                   # 103 pruebas unitarias
 npm run test:integration   # 23 pruebas extremo a extremo contra un upstream simulado
 npm run bench              # sobrecarga del gateway y aciertos de caché
+npm run fuzz               # busca secretos que sobreviven al pipeline
 ```
+
+### El fuzzer
+
+`npm run fuzz` toma dieciséis secretos conocidos, les aplica veintitrés
+mutaciones —partirlos por un salto de línea, meterlos en una URL, en un JSON, en
+un `.env`, codificarlos, repartirlos entre turnos— y comprueba si el valor sigue
+siendo recuperable en lo que se enviaría al proveedor. Ejecuta cada caso también
+a través del redactor de streaming con seis tamaños de fragmento distintos.
+
+Separa los hallazgos por intención, porque merecen veredictos distintos:
+
+- **Accidental** — cómo llega un secreto cuando nadie ataca. Una fuga aquí es un
+  defecto: es el caso para el que existe el producto.
+- **Evasión** — alguien escondiendo el secreto a propósito. Está declarado fuera
+  de alcance, pero se mide igualmente, para que "fuera de alcance" sea un número
+  y no un encogimiento de hombros.
+
+Es determinista: `--seed <n>` reproduce una tanda exacta. `npm run fuzz:strict`
+sale con código 1 si hay fugas accidentales o falsos positivos, para usarlo como
+puerta en integración continua.
+
+Resultado actual: **0 fugas accidentales, 0 falsos positivos, 112 fugas por
+evasión** — todas del mismo vector (un punto entre cada carácter).
 
 Las pruebas de integración levantan un servidor que imita el protocolo de
 OpenAI, así que ejercitan el cliente HTTP real, el parser SSE real y el pipeline
@@ -160,9 +184,10 @@ Merece la pena decirlo antes de que alguien lo descubra en producción:
 - **Los planes de licencia no se aplican.** `PLAN_TIERS` declara cuotas que
   ningún middleware consulta, y el paquete es MIT. Es una decisión abierta,
   no una funcionalidad; la API lo expone como `enforcement.enforced: false`.
-- **Sin métricas de precisión del DLP.** No hay corpus etiquetado, así que nadie
-  puede decir cuántos secretos se escapan. Para un comprador de seguridad esa es
-  la única cifra que importa, y todavía no existe.
+- **Sin métricas de precisión sobre datos reales.** El fuzzer mide contra
+  secretos sintéticos y mutaciones que alguien eligió. Es mucho mejor que nada,
+  pero no es un corpus etiquetado de documentos reales, que es lo único que
+  responde de verdad a "¿cuántos secretos se me escapan?".
 
 ---
 

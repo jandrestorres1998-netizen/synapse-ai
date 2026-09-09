@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 
 import { DLPEngine } from '../../server/dlp-engine.js';
 import { StreamRedactor } from '../../server/core/stream-redactor.js';
@@ -231,4 +232,60 @@ test('un cliente por debajo de su cuota sí puede ser desalojado de la tabla', a
 
   for (let i = 0; i < 50; i++) assert.equal(await llamar(limiter, '192.168.1.' + i), 200);
   resetRateLimiter();
+});
+
+// ── Credenciales partidas por un salto de línea ──────────────────────────────
+
+test('REGRESIÓN: una clave partida por un espacio se enmascara', () => {
+  // Es cómo llega una credencial copiada de un PDF o de una terminal estrecha.
+  // El fuzzer encontró 13 de 16 tipos de secreto sobreviviendo a un solo
+  // espacio insertado, porque el motor solo buscaba la forma contigua.
+  const dlp = new DLPEngine();
+  const result = dlp.process('La clave es sk-proj-abcdefghij klmnopqrstuvwxyz123456 gracias');
+
+  assert.equal(result.wasMasked, true);
+  assert.ok(!result.sanitizedText.includes('klmnopqrstuvwxyz123456'));
+  assert.ok(result.detections.some(d => d.splitAcrossWhitespace));
+});
+
+test('REGRESIÓN: una clave partida por un salto de línea se enmascara', () => {
+  const dlp = new DLPEngine();
+  const result = dlp.process('token ghp_abcdefghijklmno\npqrstuvwxyz0123456789 fin');
+
+  assert.equal(result.wasMasked, true);
+  assert.ok(!result.sanitizedText.includes('pqrstuvwxyz0123456789'));
+});
+
+test('REGRESIÓN: unir huecos no suelda palabras vecinas', () => {
+  // Compactar todos los espacios a la vez destruía los límites de palabra, así
+  // que "token ghp_… fin" dejaba de coincidir. Cada hueco se cierra por
+  // separado precisamente para evitarlo.
+  const dlp = new DLPEngine();
+
+  for (const inocuo of [
+    'el token expira manana sin problema',
+    'la clave del exito es la constancia',
+    'ese proceso ghp corre en segundo plano'
+  ]) {
+    assert.equal(dlp.process(inocuo).wasMasked, false, `falso positivo: ${inocuo}`);
+  }
+});
+
+test('el prompt alrededor de la credencial partida queda intacto', () => {
+  const dlp = new DLPEngine();
+  const result = dlp.process('Antes. La clave es sk-proj-abcdefghij klmnopqrstuvwxyz123456. Después.');
+
+  assert.ok(result.sanitizedText.startsWith('Antes. La clave es '));
+  assert.ok(result.sanitizedText.endsWith('. Después.'));
+});
+
+test('REGRESIÓN: la clase no define dos veces el mismo método', () => {
+  // Una reescritura dejó dos _scanIgnoringWhitespace en la clase; en JavaScript
+  // gana la última, así que la versión corregida quedó muerta y la rota siguió
+  // ejecutándose. Nada lo señaló: ni el arranque, ni las pruebas.
+  const fuente = fs.readFileSync(new URL('../../server/dlp-engine.js', import.meta.url), 'utf8');
+  const metodos = [...fuente.matchAll(/^  (?:static\s+)?(\w+)\s*\(/gm)].map(m => m[1]);
+  const duplicados = metodos.filter((m, i) => metodos.indexOf(m) !== i);
+
+  assert.deepEqual(duplicados, [], `métodos duplicados: ${duplicados.join(', ')}`);
 });

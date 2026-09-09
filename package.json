@@ -16,7 +16,9 @@
     "bench": "node tests/benchmarks/gateway_overhead.js",
     "keys:vendor": "node scripts/generate_vendor_keys.js",
     "license:issue": "node scripts/generate_license.js",
-    "integrity:manifest": "node scripts/generate_manifest.js"
+    "integrity:manifest": "node scripts/generate_manifest.js",
+    "fuzz": "node tests/fuzz/dlp-fuzzer.js",
+    "fuzz:strict": "node tests/fuzz/dlp-fuzzer.js --strict"
   },
   "keywords": [
     "llm-gateway",
