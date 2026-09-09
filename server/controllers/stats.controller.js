@@ -44,6 +44,37 @@ export function getSecurityLogs(req, res) {
   });
 }
 
+/**
+ * Catálogo de reglas que el motor DLP tiene compiladas.
+ *
+ * El panel lo pinta tal cual en lugar de llevar su propia lista escrita a mano:
+ * una pantalla de cumplimiento que enumera reglas distintas de las que se
+ * ejecutan es peor que no tener pantalla. `checksumValidated` distingue las
+ * reglas que comprueban un dígito de control de las que solo reconocen forma,
+ * que es exactamente donde están los falsos positivos; `validated` recoge
+ * además las que aplican alguna comprobación que no es un checksum.
+ */
+export function getSecurityRules(req, res) {
+  res.json({
+    rules: dlp.patterns.map(pattern => ({
+      id: pattern.id,
+      name: pattern.name,
+      category: pattern.category,
+      severity: pattern.severity,
+      replacement: pattern.replacement,
+      // Se declara en el patron, no se deduce de que exista `validate`: el de
+      // JWT es estructural y el del correo es una lista de exclusiones, y
+      // llamarlos «digito de control» en la pantalla de cumplimiento seria
+      // exactamente el tipo de afirmacion que este proyecto retiro del resto
+      // del producto.
+      checksumValidated: pattern.checksum === true,
+      validated: typeof pattern.validate === 'function'
+    })),
+    onDetection: env.DLP.ON_DETECTION,
+    note: 'Las reglas se compilan con el proceso. Para cambiar entre enmascarar y rechazar, usa SYNAPSE_DLP_ON_DETECTION.'
+  });
+}
+
 export function exportSecurityLogs(req, res) {
   const format = String(req.query.format || 'jsonl').toLowerCase();
 

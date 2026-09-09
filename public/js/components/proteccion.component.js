@@ -8,25 +8,84 @@ const SEVERITY_COLOR = {
 };
 
 /**
- * Protección: lo que se interceptó, y con qué garantías.
+ * Protección: lo que se interceptó, con qué reglas y con qué garantías.
  *
  * La tabla muestra el hash de correlación, nunca el texto. La versión anterior
  * de este panel tenía columnas «Texto Original» y «Texto Sanitizado»: la
  * pantalla de cumplimiento era ella misma una exhibición de los secretos que el
  * producto existe para contener.
+ *
+ * Las reglas se piden a la API en vez de llevar aquí una lista escrita a mano.
+ * Una pantalla de cumplimiento que enumera reglas distintas de las que se
+ * ejecutan es peor que no tener pantalla.
  */
 export class ProteccionComponent {
   static async render() {
+    this.renderRules();
+
     try {
       const data = await ApiService.getSecurityLogs();
       this.renderChain(data.ledger);
       this.renderSummary(data);
-      this.renderRows(data.logs ?? []);
+      this.renderDetections(data.logs ?? []);
       this.wireExport();
     } catch (err) {
       setHTML('chain-state', err.code === 401
-        ? notice({ tone: 'warning', iconName: 'alert', title: 'Falta la clave de API', text: 'Introdúcela en la cabecera para ver la auditoría.' })
+        ? notice({ tone: 'warning', iconName: 'alert', title: 'Falta la clave de API', text: 'Introdúcela en la barra lateral para ver la auditoría.' })
         : notice({ tone: 'critical', iconName: 'alert', title: 'No se pudo cargar la auditoría', text: esc(err.message) }));
+    }
+  }
+
+  static async renderRules() {
+    const list = $('rules-list');
+    if (!list) return;
+
+    try {
+      const data = await ApiService.getSecurityRules();
+      const rules = data.rules ?? [];
+
+      setText('rules-mode', data.onDetection === 'block' ? 'rechaza la petición' : 'enmascara y continúa');
+
+      // Se agrupan por categoría porque es como el operador razona sobre ellas:
+      // «¿cubrimos identificadores de gobierno?», no «¿está la regla mx_curp?».
+      const byCategory = new Map();
+      for (const rule of rules) {
+        const key = rule.category ?? 'Otras';
+        if (!byCategory.has(key)) byCategory.set(key, []);
+        byCategory.get(key).push(rule);
+      }
+
+      list.innerHTML = [...byCategory.entries()].map(([category, group]) => {
+        const withChecksum = group.filter(r => r.checksumValidated).length;
+
+        // Distinguir es el punto de la pantalla: un dígito de control descarta
+        // falsos positivos, y reconocer una forma no descarta nada.
+        const cobertura = withChecksum === group.length
+          ? 'Todas comprueban un dígito de control: un valor con la forma correcta pero inválido no dispara falso positivo.'
+          : withChecksum > 0
+            ? `${withChecksum} de ${group.length} comprueban un dígito de control. Las demás reconocen la forma, así que aquí es donde aparecen los falsos positivos.`
+            : 'Reconocen la forma, no un dígito de control. Un valor con formato propio puede no reconocerse, y uno parecido puede enmascararse sin serlo.';
+
+        return `
+          <div class="row">
+            <div class="row-main">
+              <span class="dot ok"></span>
+              <div class="row-text">
+                <span class="row-title">${esc(category)}</span>
+                <span class="row-note">${group.map(r => esc(r.name)).join(' · ')}</span>
+                <span class="row-note">${esc(cobertura)}</span>
+              </div>
+            </div>
+            <div class="row-actions"><span class="tag">${group.length}</span></div>
+          </div>`;
+      }).join('') + `
+        <div class="row" style="background: var(--surface-quiet);">
+          <span class="row-note">${esc(data.note ?? '')}</span>
+        </div>`;
+    } catch (err) {
+      list.innerHTML = err.code === 401
+        ? '<div class="table-empty">Introduce tu clave de API para ver las reglas activas.</div>'
+        : `<div class="table-empty">${esc(err.message)}</div>`;
     }
   }
 
@@ -74,7 +133,11 @@ export class ProteccionComponent {
     setHTML('p-breakdown', rows || '<span class="metric-note">Sin detecciones todavía.</span>');
   }
 
-  static renderRows(logs) {
+  /**
+   * Cada fila lleva el hash de correlación del payload, nunca el texto. Sirve
+   * para reconocer que el mismo valor reaparece, sin conservarlo.
+   */
+  static renderDetections(logs) {
     const container = $('protection-rows');
     if (!container) return;
 
@@ -84,31 +147,33 @@ export class ProteccionComponent {
       return;
     }
 
-    container.innerHTML = rows.slice(0, 40).map(({ log, item }) => `
-      <div class="table-row" style="grid-template-columns: 84px 1fr 180px 130px 1fr;">
-        <span class="num" style="color: var(--ink-muted);">${time(log.timestamp)}</span>
-        <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
-          <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${esc(log.source)}</span>
-          ${log.obfuscationDetected ? '<span class="tag critical">bloqueada</span>' : ''}
-        </span>
-        <span style="display: flex; align-items: center; gap: 7px;">
+    container.innerHTML = rows.slice(0, 30).map(({ log, item }) => `
+      <div class="row">
+        <div class="row-main">
           <span class="dot" style="background: ${SEVERITY_COLOR[item.severity] ?? 'var(--ink-faint)'};"></span>
-          ${esc(item.name)}
-        </span>
-        <span class="num" style="font-size: 12px; color: var(--ink-muted);">${esc(item.snippet)}</span>
-        <span class="num" style="font-size: 11.5px; color: var(--ink-faint);">${esc(log.payloadHash ?? '—')}</span>
+          <div class="row-text">
+            <span class="row-title mono" style="font-size: 13.5px;">${esc(item.name)}</span>
+            <span class="row-note">
+              ${esc(log.source)}
+              ${log.obfuscationDetected ? ' · <span class="tag critical">bloqueada</span>' : ''}
+            </span>
+            <span class="row-note mono" style="word-break: break-all;">${esc(log.payloadHash ?? '—')}</span>
+          </div>
+        </div>
+        <div class="row-actions">
+          <span class="num" style="font-size: 12px; color: var(--ink-faint);">${time(log.timestamp)}</span>
+        </div>
       </div>`).join('');
   }
 
   static wireExport() {
-    const link = $('btn-export');
-    if (!link || link.dataset.wired) return;
-    link.dataset.wired = '1';
+    const button = $('btn-export');
+    if (!button || button.dataset.wired) return;
+    button.dataset.wired = '1';
 
     // La descarga necesita la cabecera de autorización, así que se pide por
     // fetch y se entrega como blob en lugar de navegar al endpoint.
-    link.addEventListener('click', async event => {
-      event.preventDefault();
+    button.addEventListener('click', async () => {
       try {
         const blob = await ApiService.exportSecurityLogs('jsonl');
         const url = URL.createObjectURL(blob);

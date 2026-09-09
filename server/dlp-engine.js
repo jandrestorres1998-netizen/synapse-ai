@@ -164,6 +164,7 @@ export class DLPEngine {
         id: 'credit_card',
         name: 'Credit / Debit Card Number',
         regex: /\b(?:4[0-9]{15}|4[0-9]{12}|5[1-5][0-9]{14}|3[47][0-9]{13}|6[0-9]{15}|(?:[0-9]{4}[ -]){3}[0-9]{4})\b/g,
+        checksum: true,
         validate: match => validateLuhn(match),
         replacement: '[REDACTED_CARD_NUMBER]',
         severity: 'HIGH',
@@ -173,6 +174,20 @@ export class DLPEngine {
         id: 'iban_bank_account',
         name: 'International Bank Account (IBAN)',
         regex: /\b[A-Z]{2}[0-9]{2}(?:[ ]?[0-9A-Z]{4}){4,7}(?:[ ]?[0-9A-Z]{1,2})?\b/gi,
+        // El grupo final opcional acepta un espacio y hasta dos caracteres, asi
+        // que en «...0005 1332 y la tarjeta» se traga el «y». El checksum falla
+        // sobre esa cadena y el IBAN se escapaba entero, que es el peor final
+        // posible: la regla parecia cubrirlo. Se recorta por la derecha hasta
+        // que valide. En espanol esa construccion es de lo mas corriente.
+        trim: match => {
+          let candidate = match;
+          while (candidate.includes(' ')) {
+            if (validateIBAN(candidate)) return candidate;
+            candidate = candidate.slice(0, candidate.lastIndexOf(' '));
+          }
+          return candidate;
+        },
+        checksum: true,
         validate: match => validateIBAN(match),
         replacement: '[REDACTED_IBAN_ACCOUNT]',
         severity: 'HIGH',
@@ -184,6 +199,7 @@ export class DLPEngine {
         id: 'es_dni_nie',
         name: 'Spanish DNI / NIE',
         regex: /\b(?:[XYZ]\d{7}[A-Z]|\d{8}[A-Z])\b/gi,
+        checksum: true,
         validate: match => validateSpanishDNI(match),
         replacement: '[REDACTED_ES_DNI_NIE]',
         severity: 'HIGH',
@@ -195,6 +211,7 @@ export class DLPEngine {
         regex: /\b[ABCDEFGHJKLMNPQRSUVW]\d{7}[0-9A-J]\b/gi,
         // Without the check digit this shape also matches part numbers and
         // invoice references; the false positives get the whole rule disabled.
+        checksum: true,
         validate: match => validateSpanishCIF(match),
         replacement: '[REDACTED_ES_CIF]',
         severity: 'MEDIUM',
@@ -207,6 +224,7 @@ export class DLPEngine {
         // digit. The old character classes rejected valid RFCs while still
         // accepting invalid ones, which is the worst of both.
         regex: /\b[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}\b/gi,
+        checksum: true,
         validate: match => validateMexicanRFC(match),
         replacement: '[REDACTED_MX_RFC]',
         severity: 'HIGH',
@@ -216,6 +234,7 @@ export class DLPEngine {
         id: 'mx_curp',
         name: 'CURP mexicana',
         regex: /\b[A-Z][AEIOUX][A-Z]{2}\d{6}[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[A-Z0-9]\d\b/gi,
+        checksum: true,
         validate: match => validateMexicanCURP(match),
         replacement: '[REDACTED_MX_CURP]',
         severity: 'HIGH',
@@ -225,6 +244,7 @@ export class DLPEngine {
         id: 'br_cpf',
         name: 'CPF brasileño',
         regex: /\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/g,
+        checksum: true,
         validate: match => validateBrazilianCPF(match),
         replacement: '[REDACTED_BR_CPF]',
         severity: 'HIGH',
@@ -234,6 +254,7 @@ export class DLPEngine {
         id: 'br_cnpj',
         name: 'CNPJ brasileño',
         regex: /\b\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}\b/g,
+        checksum: true,
         validate: match => validateBrazilianCNPJ(match),
         replacement: '[REDACTED_BR_CNPJ]',
         severity: 'MEDIUM',
@@ -311,7 +332,10 @@ export class DLPEngine {
 
     for (const pattern of this.patterns) {
       // Deduplicate: a value repeated five times is one finding, five masks.
-      const matches = [...new Set(masked.match(pattern.regex) ?? [])];
+      // El recorte va antes de deduplicar: dos coincidencias distintas pueden
+      // reducirse al mismo valor.
+      const raw = masked.match(pattern.regex) ?? [];
+      const matches = [...new Set(pattern.trim ? raw.map(pattern.trim) : raw)];
 
       for (const match of matches) {
         // Reject candidates that fail their checksum — these are false positives.
@@ -376,14 +400,17 @@ export class DLPEngine {
         while ((match = rx.exec(joined)) !== null) {
           if (match[0].length === 0) { rx.lastIndex++; continue; }
 
+          // El recorte solo quita por la derecha, asi que el final del tramo se
+          // ajusta con la longitud ya recortada.
+          const value = pattern.trim ? pattern.trim(match[0]) : match[0];
           const matchStart = match.index;
-          const matchEnd = matchStart + match[0].length;
+          const matchEnd = matchStart + value.length;
 
           // Only a match that straddles the closed gap is new information.
           if (!(matchStart < gapStart && matchEnd > gapStart)) continue;
-          if (pattern.validate && !pattern.validate(match[0])) continue;
+          if (pattern.validate && !pattern.validate(value)) continue;
 
-          const replacement = typeof pattern.replacement === 'function' ? pattern.replacement(match[0]) : pattern.replacement;
+          const replacement = typeof pattern.replacement === 'function' ? pattern.replacement(value) : pattern.replacement;
           spans.push({ start: matchStart, end: matchEnd + gapLength, replacement });
 
           detections.push({
@@ -391,8 +418,8 @@ export class DLPEngine {
             name: pattern.name,
             severity: pattern.severity,
             category: pattern.category,
-            snippet: DLPEngine.maskSnippet(match[0], pattern.severity),
-            valueHash: this.fingerprint(match[0]),
+            snippet: DLPEngine.maskSnippet(value, pattern.severity),
+            valueHash: this.fingerprint(value),
             splitAcrossWhitespace: true
           });
         }

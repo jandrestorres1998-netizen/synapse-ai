@@ -1,0 +1,143 @@
+/* ===========================================================================
+   SynapseAI — tokens compartidos
+   ===========================================================================
+   Los usan el panel y el sitio público. Un solo sitio donde vive el color, la
+   tipografía y el movimiento, para que la landing no derive del panel.
+
+   El color solo aparece cuando significa algo: el gris es el estado normal,
+   cada sección tiene su acento y cada estado su tono. Bordes de 1px, sin
+   sombras ni resplandores: la separación la hace la línea, no el efecto.
+   =========================================================================== */
+
+:root {
+  /* ── Superficies ──────────────────────────────────────────────────────
+     El fondo no es gris neutro: lleva croma 0.014 en 280°. Es un blanco
+     levemente frío que impide que los acentos azules y violetas parezcan
+     pegados encima. */
+  --ground:        oklch(0.975 0.014 280);
+  --ground-sunken: oklch(0.968 0.018 280);
+  --surface:       oklch(1 0 0);
+  --surface-quiet: oklch(0.963 0.020 280);
+
+  /* ── Tinta ────────────────────────────────────────────────────────── */
+  --ink-strong: oklch(0.18 0.05 280);
+  --ink:        oklch(0.24 0.045 280);
+  --ink-muted:  oklch(0.51 0.028 280);
+  --ink-faint:  oklch(0.61 0.022 280);
+
+  /* ── Líneas ───────────────────────────────────────────────────────── */
+  --line:        oklch(0.905 0.022 280);
+  --line-quiet:  oklch(0.938 0.016 280);
+  --line-strong: oklch(0.860 0.028 280);
+
+  /* ── Acento por sección ───────────────────────────────────────────── */
+  --probar:     oklch(0.56 0.20 255);
+  --actividad:  oklch(0.58 0.15 200);
+  --proteccion: oklch(0.64 0.18 62);
+  --contexto:   oklch(0.58 0.22 305);
+  --ajustes:    oklch(0.52 0.20 275);
+
+  /* ── Estado ───────────────────────────────────────────────────────────
+     Nunca se reutiliza un acento de sección como estado: si el ámbar de
+     Protección significa además «aviso», deja de significar «Protección». */
+  --critical: oklch(0.57 0.22 22);
+  --warning:  oklch(0.70 0.18 62);
+  --ok:       oklch(0.64 0.17 150);
+  --spend:    oklch(0.52 0.20 275);
+
+  /* Los acentos puros no llegan a 4.5:1 sobre blanco en texto pequeño.
+     Estas variantes son las que se usan cuando el color va sobre texto. */
+  --ok-ink:       oklch(0.50 0.15 150);
+  --warning-ink:  oklch(0.52 0.15 62);
+  --critical-ink: oklch(0.50 0.20 22);
+
+  /* ── Fondos tenues de estado ──────────────────────────────────────── */
+  --critical-soft: oklch(0.945 0.060 22);
+  --warning-soft:  oklch(0.965 0.050 62);
+  --ok-soft:       oklch(0.965 0.045 150);
+  --neutral-soft:  oklch(0.945 0.030 280);
+
+  /* ── Forma ────────────────────────────────────────────────────────── */
+  --radius-sm: 8px;
+  --radius:    12px;
+  --radius-lg: 14px;
+
+  /* Una sola sombra en todo el sistema, y solo para lo que flota. Las
+     tarjetas se separan con línea. */
+  --shadow-float: 0 1px 2px oklch(0.24 0.045 280 / 0.05);
+
+  /* ── Tipografía ───────────────────────────────────────────────────── */
+  --font-display: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  --font-ui:      'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    'DM Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ── Movimiento ───────────────────────────────────────────────────────
+     Presupuesto de 200 ms. Solo la revelación por etapas del trazado dura
+     más, y eso es contenido, no transición. */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 120ms;
+  --dur:      180ms;
+  --dur-slow: 260ms;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--ground);
+  -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* Cifras alineadas en columna: en una tabla de costes es lo que hace legible
+   la comparación vertical. */
+.mono, .num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--probar);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Se conserva la confirmación de copiado, que es funcional; se desactiva todo
+   lo demás. Ver §7 del brief. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes etapa {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}

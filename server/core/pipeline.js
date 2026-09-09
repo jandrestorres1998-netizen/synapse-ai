@@ -261,6 +261,7 @@ export class GatewayPipeline {
         usage: cached.usage,
         cost: { usd: 0, isEstimate: false, note: 'Servido desde caché: no se consumieron tokens del proveedor.' },
         dlp: { ingressDetections: detections, egressDetections: [] },
+        context: { applied: Boolean(memoryContext), chars: memoryContext ? memoryContext.length : 0 },
         cachedAt: cached.cachedAt
       };
     }
@@ -360,6 +361,7 @@ export class GatewayPipeline {
       cost,
       comparison,
       dlp: { ingressDetections: detections, egressDetections: egress.detections, canaryLeaked: canaryCheck.isCanaryLeaked },
+      context: { applied: Boolean(memoryContext), chars: memoryContext ? memoryContext.length : 0 },
       finishReason: upstream.finishReason
     };
   }

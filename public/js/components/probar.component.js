@@ -1,5 +1,5 @@
 import { ApiService } from '../services/api.service.js';
-import { esc, $, icon, money, integer } from '../ui.js';
+import { esc, $, money, integer } from '../ui.js';
 
 const SAMPLES = {
   credencial: 'Revisa este despliegue. La clave de producción es sk-proj-8fK2mQ7nR4wX1cV9bN3jL6hT5yU0pA2s y no consigo autenticar el servicio.',
@@ -9,15 +9,23 @@ const SAMPLES = {
 };
 
 /**
- * Pantalla principal: componer una petición y ver su recorrido real.
+ * Probar: componer una petición y ver su recorrido real.
  *
- * Muestra las etapas que el pipeline ejecuta de verdad — filtro de inyección,
- * DLP, contexto, caché, enrutado, DLP de salida — en lugar de un diagrama
- * decorativo. Lo que aparece aquí sale de la respuesta, no de una animación.
+ * Las etapas van numeradas porque el orden es información: la redacción ocurre
+ * ANTES del enrutado, y ese es justamente el argumento del producto. Cada
+ * etiqueta sale de la respuesta; ninguna se rellena con un valor de ejemplo
+ * cuando el dato no viene.
  */
 export class ProbarComponent {
   static init() {
     $('btn-send')?.addEventListener('click', () => this.run());
+
+    $('btn-clear')?.addEventListener('click', () => {
+      const input = $('prompt-input');
+      if (input) { input.value = ''; input.focus(); }
+      $('trace').innerHTML = '<div class="placeholder">Envía la petición para ver las etapas y el texto que sale del perímetro.</div>';
+      $('trace-latency').textContent = '';
+    });
 
     document.querySelectorAll('[data-sample]').forEach(chip => {
       chip.addEventListener('click', () => {
@@ -57,16 +65,26 @@ export class ProbarComponent {
       $('trace').innerHTML = this.renderError(err);
     } finally {
       button.disabled = false;
-      button.innerHTML = 'Enviar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
+      button.textContent = 'Enviar por el gateway';
     }
   }
 
-  static step({ tone = '', color = 'var(--ok)', iconName, title, note, extra = '' }) {
+  /**
+   * @param {{n: string, title: string, badge?: string, tone?: string,
+   *          note?: string, extra?: string}} step
+   */
+  static step({ n, title, badge, tone = '', note, extra = '' }) {
     return `
-      <div class="step ${tone}">
-        <span style="color: ${color};">${icon[iconName]}</span>
+      <div class="step">
+        <div class="step-rail">
+          <span class="step-n">${esc(n)}</span>
+          <span class="step-line"></span>
+        </div>
         <div class="step-body">
-          <span class="step-title">${esc(title)}</span>
+          <div class="step-title-row">
+            <span class="step-title">${esc(title)}</span>
+            ${badge ? `<span class="step-badge ${tone}">${esc(badge)}</span>` : ''}
+          </div>
           ${note ? `<span class="step-note">${note}</span>` : ''}
           ${extra}
         </div>
@@ -79,41 +97,65 @@ export class ProbarComponent {
     const steps = [];
 
     steps.push(this.step({
-      iconName: 'check',
-      title: 'Sin intento de manipulación',
-      note: 'Los patrones de inyección se evaluaron sobre todos los turnos del usuario, no solo el último.'
+      n: '01',
+      title: 'Inyección de prompt',
+      badge: 'Limpio',
+      tone: 'ok',
+      note: 'Los patrones se evaluaron sobre todos los turnos del usuario, no solo el último.'
     }));
 
     if (ingress.length > 0) {
       const findings = ingress.map(d => `
-        <div class="finding ${d.severity === 'CRITICAL' ? 'critical' : ''}">
+        <div class="finding${d.severity === 'CRITICAL' ? ' critical' : ''}">
           <span>${esc(d.name)}</span>
           <span class="snippet">${esc(d.snippet)}</span>
         </div>`).join('');
 
       steps.push(this.step({
-        tone: 'flag',
-        color: 'var(--warning)',
-        iconName: 'shield',
-        title: `${ingress.length} elemento${ingress.length === 1 ? '' : 's'} enmascarado${ingress.length === 1 ? '' : 's'} antes de salir`,
-        note: 'El valor original no se guarda: en la auditoría queda solo un hash.',
-        extra: `<div style="display: flex; flex-direction: column; gap: 6px; margin-top: 7px;">${findings}</div>`
+        n: '02',
+        title: 'Redacción DLP',
+        badge: `${ingress.length} ${ingress.length === 1 ? 'hallazgo' : 'hallazgos'}`,
+        tone: 'warning',
+        note: 'Sustituidos antes de salir. El valor original no se guarda: en la auditoría queda solo un hash.',
+        extra: `<div class="findings">${findings}</div>`
       }));
     } else {
       steps.push(this.step({
-        iconName: 'shield',
-        title: 'Sin coincidencias del DLP',
+        n: '02',
+        title: 'Redacción DLP',
+        badge: 'Sin coincidencias',
         note: 'Ninguno de los patrones configurados reconoció nada en este texto.'
       }));
     }
 
+    const context = data.context;
+    steps.push(this.step({
+      n: '03',
+      title: 'Contexto',
+      badge: context?.applied ? `${integer(context.chars)} caracteres` : 'Sin directrices',
+      tone: 'contexto',
+      note: context?.applied
+        ? 'Las directrices activas viajan como mensaje de sistema y cuentan como tokens de entrada.'
+        : 'No hay directrices activas, así que no se añadió ningún mensaje de sistema.'
+    }));
+
     if (data.source === 'cache') {
       steps.push(this.step({
-        color: 'var(--actividad)',
-        iconName: 'bolt',
-        title: `Servido desde caché (${data.matchType === 'semantic' ? 'por similitud' : 'coincidencia exacta'})`,
-        note: `Guardada el ${new Date(data.cachedAt).toLocaleString('es-ES')}. No se consumieron tokens del proveedor.`
-          + (data.matchType === 'semantic' ? ' <strong>Ojo:</strong> la respuesta se generó para un prompt distinto pero parecido.' : '')
+        n: '04',
+        title: 'Caché',
+        badge: data.matchType === 'semantic' ? 'Por similitud' : 'Coincidencia exacta',
+        tone: 'ok',
+        note: `Guardada el ${esc(new Date(data.cachedAt).toLocaleString('es-ES'))}. No se consumieron tokens del proveedor.`
+          + (data.matchType === 'semantic'
+            ? ' <strong>Ojo:</strong> la respuesta se generó para un prompt distinto pero parecido.'
+            : '')
+      }));
+
+      steps.push(this.step({
+        n: '05',
+        title: 'Enrutado',
+        badge: 'No se llamó al proveedor',
+        note: 'La respuesta salió de la caché, aislada por inquilino, modelo y contexto.'
       }));
     } else {
       const routing = data.routing ?? {};
@@ -121,16 +163,17 @@ export class ProbarComponent {
       const cost = data.cost ?? {};
 
       steps.push(this.step({
-        color: 'var(--contexto)',
-        iconName: 'book',
-        title: 'Contexto corporativo añadido',
-        note: 'Las directrices activas viajan como mensaje de sistema en cada petición.'
+        n: '04',
+        title: 'Caché',
+        badge: 'Sin coincidencia',
+        note: 'Aislada por inquilino, modelo y contexto. Esta combinación no estaba guardada.'
       }));
 
       steps.push(this.step({
-        color: 'var(--probar)',
-        iconName: 'route',
-        title: `Enviado a ${esc(data.model?.label ?? data.model?.id ?? '—')}`,
+        n: '05',
+        title: `Enrutado a ${esc(data.model?.label ?? data.model?.id ?? '—')}`,
+        badge: `${integer(data.latencyMs)} ms`,
+        tone: 'probar',
         note: esc(routing.reasoning ?? ''),
         extra: `
           <div class="stat-row">
@@ -142,22 +185,21 @@ export class ProbarComponent {
 
       if (egress.length > 0) {
         steps.push(this.step({
-          tone: 'flag',
-          color: 'var(--warning)',
-          iconName: 'shield',
-          title: `${egress.length} elemento(s) enmascarado(s) en la respuesta del modelo`,
-          note: 'El modelo devolvió algo que coincidía con un patrón sensible.'
+          n: '06',
+          title: 'Redacción de la respuesta',
+          badge: `${egress.length} ${egress.length === 1 ? 'hallazgo' : 'hallazgos'}`,
+          tone: 'warning',
+          note: 'El modelo devolvió algo que coincidía con un patrón sensible y se enmascaró antes de mostrarlo.'
         }));
       }
     }
 
-    const answer = `
-      <div class="card" style="margin-top: 9px;">
-        <span class="eyebrow">Respuesta devuelta</span>
-        <div class="answer">${esc(data.response)}</div>
+    return `
+      <div class="trace">${steps.join('')}</div>
+      <div style="margin-top: 16px;">
+        <span class="eyebrow" style="display: block; margin-bottom: 8px;">Texto que sale del perímetro</span>
+        <p class="answer">${esc(data.response)}</p>
       </div>`;
-
-    return `<div class="trace">${steps.join('')}</div>${answer}`;
   }
 
   static renderError(err) {
@@ -166,15 +208,14 @@ export class ProbarComponent {
       return `
         <div class="trace">
           ${this.step({
-            tone: 'stop',
-            color: 'var(--critical)',
-            iconName: 'stop',
+            n: '01',
             title: 'Petición bloqueada. No se envió nada al proveedor.',
+            badge: 'Rechazada',
+            tone: 'critical',
             note: esc(err.message),
             extra: violations.length
-              ? `<div style="display: flex; flex-direction: column; gap: 6px; margin-top: 7px;">${
-                  violations.map(v => `<div class="finding critical"><span>${esc(v.name)}</span><span class="snippet">${esc(v.severity)}</span></div>`).join('')
-                }</div>`
+              ? `<div class="findings">${violations.map(v =>
+                  `<div class="finding critical"><span>${esc(v.name)}</span><span class="snippet">${esc(v.severity)}</span></div>`).join('')}</div>`
               : ''
           })}
         </div>`;
@@ -183,41 +224,37 @@ export class ProbarComponent {
     // Dos 401 muy distintos comparten código de estado: el del gateway
     // rechazando tu clave, y el del proveedor rechazando la credencial que el
     // gateway custodia. Confundirlos manda al operador a arreglar lo que no es.
-    const type = err.payload?.error?.type;
-
-    if (type === 'ProviderError') {
+    if (err.payload?.error?.type === 'ProviderError') {
       return `<div class="trace">${this.step({
-        tone: 'stop',
-        color: 'var(--critical)',
-        iconName: 'alert',
+        n: '!',
         title: 'El proveedor rechazó la credencial guardada',
+        badge: 'Proveedor',
+        tone: 'critical',
         note: `${esc(err.message)}<br><br>La clave está en el vault pero el proveedor no la acepta. Sustitúyela en <strong>Ajustes → Proveedores</strong>.`
       })}</div>`;
     }
 
     if (err.code === 401) {
-      return '<div class="placeholder">Introduce tu clave de API en la cabecera para poder enviar peticiones.</div>';
+      return '<div class="placeholder">Introduce tu clave de API en la barra lateral para poder enviar peticiones.</div>';
     }
 
-    if (err.code === 402) {
-      return `<div class="trace">${this.step({
-        tone: 'stop', color: 'var(--critical)', iconName: 'alert',
+    const known = {
+      402: {
         title: 'Límite de gasto alcanzado',
-        note: esc(err.message)
-      })}</div>`;
-    }
-
-    if (err.code === 503) {
-      return `<div class="trace">${this.step({
-        tone: 'stop', color: 'var(--critical)', iconName: 'alert',
+        note: () => esc(err.message)
+      },
+      503: {
         title: 'Ningún proveedor disponible',
-        note: 'Añade una credencial en Ajustes. El gateway devuelve un error en lugar de inventar una respuesta.'
-      })}</div>`;
-    }
+        note: () => 'Añade una credencial en Ajustes. El gateway devuelve un error en lugar de inventar una respuesta.'
+      }
+    }[err.code];
 
     return `<div class="trace">${this.step({
-      tone: 'stop', color: 'var(--critical)', iconName: 'alert',
-      title: 'Error del gateway', note: esc(err.message)
+      n: '!',
+      title: known?.title ?? 'Error del gateway',
+      badge: String(err.code ?? ''),
+      tone: 'critical',
+      note: known ? known.note() : esc(err.message)
     })}</div>`;
   }
 }

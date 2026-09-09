@@ -289,3 +289,38 @@ test('REGRESIÓN: la clase no define dos veces el mismo método', () => {
 
   assert.deepEqual(duplicados, [], `métodos duplicados: ${duplicados.join(', ')}`);
 });
+
+test('REGRESIÓN: un IBAN seguido de una palabra corta no se escapa', () => {
+  // El grupo final opcional del patrón acepta un espacio y hasta dos
+  // caracteres, así que en «cuenta ES91…1332 y la tarjeta» se tragaba el «y».
+  // El checksum fallaba sobre esa cadena y el IBAN salía entero hacia el
+  // proveedor: la regla parecía cubrirlo y no cubría nada. En español esa
+  // construcción es de lo más corriente, así que la fuga era diaria.
+  const dlp = new DLPEngine();
+
+  for (const texto of [
+    'cuenta ES9121000418450200051332 y la tarjeta',
+    'cuenta ES91 2100 0418 4502 0005 1332 y la tarjeta',
+    'transferencia a GB82WEST12345698765432 o al otro',
+    'IBAN: ES9121000418450200051332.'
+  ]) {
+    const result = dlp.process(texto, 'test', { audit: false });
+    assert.ok(
+      result.sanitizedText.includes('[REDACTED_IBAN_ACCOUNT]'),
+      `el IBAN se escapó en: ${texto} -> ${result.sanitizedText}`
+    );
+    assert.ok(!/ES9121000418450200051332|GB82WEST12345698765432/.test(result.sanitizedText),
+      `quedó el valor original en: ${result.sanitizedText}`);
+  }
+
+  // Y el recorte no puede llevarse por delante la palabra siguiente.
+  const conY = dlp.process('cuenta ES9121000418450200051332 y la tarjeta', 'test', { audit: false });
+  assert.ok(conY.sanitizedText.includes(' y la tarjeta'), conY.sanitizedText);
+});
+
+test('REGRESIÓN: una referencia con forma de IBAN pero sin checksum no se toca', () => {
+  const dlp = new DLPEngine();
+  const result = dlp.process('el pedido AB12 3456 7890 1234 5678 no es un IBAN', 'test', { audit: false });
+
+  assert.equal(result.wasMasked, false, result.sanitizedText);
+});

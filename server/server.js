@@ -45,14 +45,36 @@ app.use(requestLogger);
 
 // An allowlist, not a wildcard: this process holds provider credentials, so any
 // origin able to call it can spend the operator's budget and read their history.
-app.use(cors({
-  origin(origin, callback) {
-    if (!origin) return callback(null, true); // curl, server-to-server, SDKs
-    if (ENV.CORS_ORIGINS.includes(origin)) return callback(null, true);
-    callback(new Error(`Origen no permitido por CORS: ${origin}`));
-  },
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key', 'x-synapse-session']
+//
+// El mismo origen se acepta siempre, sin pasar por la lista. No es una
+// relajacion: una peticion del propio sitio no es trafico cruzado. Y omitirlo
+// rompia el panel entero, porque <script type="module"> se pide en modo CORS y
+// manda cabecera Origin incluso hacia su propio host: al desplegar en un puerto
+// o dominio que no estuviera en SYNAPSE_CORS_ORIGINS, el panel se quedaba sin
+// JavaScript con un 500 y sin ninguna pista de por que.
+app.use(cors((req, callback) => {
+  callback(null, {
+    origin(candidate, cb) {
+      if (!candidate) return cb(null, true); // curl, server-to-server, SDKs
+      if (sameHost(candidate, req.get('host'))) return cb(null, true);
+      if (ENV.CORS_ORIGINS.includes(candidate)) return cb(null, true);
+      cb(new Error(`Origen no permitido por CORS: ${candidate}`));
+    },
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key', 'x-synapse-session']
+  });
+
+  // Referenciado arriba; se declara aqui para que quede junto a su unico uso.
+  function sameHost(candidate, host) {
+    if (!host) return false;
+    try {
+      // Se compara el host con el puerto, no el esquema: detras de un proxy
+      // inverso el servidor ve http donde el navegador ve https.
+      return new URL(candidate).host === host;
+    } catch {
+      return false;
+    }
+  }
 }));
 
 // ── Public routes (no authentication) ────────────────────────────────────────
@@ -75,8 +97,12 @@ app.post('/v1/chat/completions', authenticate, rateLimiter, validateOpenAIInput,
 app.use('/v1', authenticate, v1Routes);
 app.use('/api', authenticate, apiRoutes);
 
-// The dashboard is served last so it cannot shadow an API route.
-app.use(express.static(path.join(__dirname, '../public'), { index: 'index.html' }));
+// El sitio público vive en la raíz y el panel en /app. Ambos se sirven al final
+// para que no puedan ensombrecer una ruta de la API.
+const publicDir = path.join(__dirname, '../public');
+
+app.get('/app', (req, res) => res.sendFile(path.join(publicDir, 'index.html')));
+app.use(express.static(publicDir, { index: 'landing.html' }));
 
 app.use(notFoundHandler);
 app.use(errorHandler);

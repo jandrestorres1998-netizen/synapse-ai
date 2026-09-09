@@ -71,6 +71,15 @@ export class ApiService {
     return this._request('/api/security/logs');
   }
 
+  /** Catálogo de reglas que el motor DLP tiene compiladas ahora mismo. */
+  static getSecurityRules() {
+    return this._request('/api/security/rules');
+  }
+
+  static getIntegrity() {
+    return this._request('/api/integrity');
+  }
+
   static getModels() {
     return this._request('/api/models');
   }

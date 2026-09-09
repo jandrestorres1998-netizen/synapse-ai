@@ -33,27 +33,27 @@ class App {
     this.wireTabs();
     this.wireApiKey();
 
-    // La barra superior se mantiene al día aunque estés en otra pestaña: el
-    // gasto y el estado de los proveedores importan desde cualquier pantalla.
-    this.refreshTopbar();
+    // La barra lateral se mantiene al día aunque estés en otro módulo: el gasto
+    // y el estado de los proveedores importan desde cualquier pantalla.
+    this.refreshSidebar();
     setInterval(() => {
       if (document.hidden) return;
-      this.refreshTopbar();
-      const active = document.querySelector('.nav-tab.active')?.dataset.tab;
+      this.refreshSidebar();
+      const active = document.querySelector('.side-item.active')?.dataset.tab;
       if (active === 'actividad') ActividadComponent.render();
     }, REFRESH_MS);
 
-    document.addEventListener('synapse:activity', () => this.refreshTopbar());
+    document.addEventListener('synapse:activity', () => this.refreshSidebar());
   }
 
   static wireTabs() {
-    document.querySelectorAll('.nav-tab').forEach(button => {
+    document.querySelectorAll('.side-item').forEach(button => {
       button.addEventListener('click', () => this.switchTab(button.dataset.tab));
     });
   }
 
   static switchTab(tab) {
-    document.querySelectorAll('.nav-tab').forEach(button =>
+    document.querySelectorAll('.side-item').forEach(button =>
       button.classList.toggle('active', button.dataset.tab === tab));
     document.querySelectorAll('.pane').forEach(pane =>
       pane.classList.toggle('active', pane.id === `pane-${tab}`));
@@ -72,19 +72,17 @@ class App {
       const val = input.value.trim();
       ApiService.setApiKey(val);
       this.renderKeyState('checking');
-      const ok = await this.refreshTopbar();
+      const ok = await this.refreshSidebar();
       if (ok) {
         this.renderKeyState('ok');
-        const active = document.querySelector('.nav-tab.active')?.dataset.tab;
+        const active = document.querySelector('.side-item.active')?.dataset.tab;
         RENDERERS[active]?.();
       } else {
         this.renderKeyState(val ? 'invalid' : 'empty');
       }
     };
 
-    if (btn) {
-      btn.addEventListener('click', () => apply());
-    }
+    btn?.addEventListener('click', () => apply());
     input.addEventListener('keydown', event => {
       if (event.key === 'Enter') {
         event.preventDefault();
@@ -98,11 +96,8 @@ class App {
       debounceTimer = setTimeout(() => apply(), 600);
     });
 
-    if (input.value) {
-      apply();
-    } else {
-      this.renderKeyState('empty');
-    }
+    if (input.value) apply();
+    else this.renderKeyState('empty');
   }
 
   static renderKeyState(state) {
@@ -111,27 +106,22 @@ class App {
     const btn = $('btn-validate-key');
     if (!badge) return;
 
-    badge.className = 'key-badge ' + state;
-    if (state === 'ok') {
-      badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Conectado';
-      if (wrapper) wrapper.classList.add('is-valid');
-      if (btn) btn.textContent = 'Actualizar';
-    } else if (state === 'invalid') {
-      badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Clave incorrecta';
-      if (wrapper) wrapper.classList.remove('is-valid');
-      if (btn) btn.textContent = 'Validar';
-    } else if (state === 'checking') {
-      badge.textContent = 'Comprobando…';
-      if (btn) btn.textContent = '…';
-    } else {
-      badge.textContent = 'Introduce tu clave';
-      if (wrapper) wrapper.classList.remove('is-valid');
-      if (btn) btn.textContent = 'Validar';
-    }
+    badge.className = `key-badge ${state}`;
+    wrapper?.classList.toggle('is-valid', state === 'ok');
+
+    const label = {
+      ok: 'Conectado',
+      invalid: 'Clave incorrecta',
+      checking: 'Comprobando…',
+      empty: 'Introduce tu clave'
+    }[state] ?? '';
+
+    badge.textContent = label;
+    if (btn) btn.textContent = state === 'ok' ? 'Actualizar' : state === 'checking' ? '…' : 'Validar';
   }
 
   /** @returns {Promise<boolean>} si la API respondió correctamente. */
-  static async refreshTopbar() {
+  static async refreshSidebar() {
     try {
       const stats = await ApiService.getStats();
 
@@ -141,7 +131,8 @@ class App {
       return true;
     } catch (err) {
       this.renderKeyState(err.code === 401 ? 'invalid' : 'empty');
-      $('provider-dot').className = 'dot critical';
+      const dot = $('provider-dot');
+      if (dot) dot.className = 'dot critical';
       setText('provider-label', err.code === 401 ? 'Sin autenticar' : 'Gateway no responde');
       return false;
     }
@@ -150,10 +141,11 @@ class App {
   static renderProviderState(stats) {
     const providers = stats.providers ?? {};
     const active = Object.entries(providers)
-      .filter(([name, s]) => s.configured && name !== 'mock')
+      .filter(([name, state]) => state.configured && name !== 'mock')
       .map(([name]) => name);
 
     const dot = $('provider-dot');
+    if (!dot) return;
 
     if (active.length === 0) {
       dot.className = 'dot critical';
@@ -167,19 +159,29 @@ class App {
 
   static renderSpend(budget, spend) {
     const daily = budget?.tenant?.daily;
-    const chip = $('spend-chip');
 
     setText('spend-value', money(spend?.actualUsd ?? 0, { compact: true }));
+
+    const bar = $('spend-bar');
+    const fill = bar?.querySelector('span');
 
     if (daily?.enforced && daily.limitUsd > 0) {
       setText('spend-limit', `/ ${money(daily.limitUsd, { compact: true })}`);
       const used = (daily.spentUsd + daily.reservedUsd) / daily.limitUsd;
-      chip.classList.toggle('near-limit', used >= 0.8);
+      const pct = Math.min(100, used * 100);
+      if (fill) fill.style.width = `${pct}%`;
+      if (bar) bar.className = `bar${pct >= 90 ? ' critical' : pct >= 80 ? ' warning' : ''}`;
+      setText('spend-note', pct >= 80
+        ? 'Cerca del tope. Las siguientes peticiones pueden rechazarse con 402.'
+        : 'Reserva previa activa: se aparta el coste máximo antes de llamar.');
     } else {
       setText('spend-limit', 'sin tope');
-      chip.classList.remove('near-limit');
+      if (fill) fill.style.width = '0%';
+      if (bar) bar.className = 'bar';
+      setText('spend-note', 'Sin tope configurado: se contabiliza, no se detiene.');
     }
   }
+
 }
 
 document.addEventListener('DOMContentLoaded', () => App.init());

@@ -65,10 +65,9 @@ export const icon = {
  * critical o vacío para neutro.
  */
 export function notice({ tone = '', title, text, iconName = 'info' }) {
-  const color = { ok: 'var(--ok)', warning: 'var(--warning)', critical: 'var(--critical)' }[tone] || 'var(--ink-muted)';
   return `
     <div class="notice ${tone}">
-      <span style="color: ${color};">${icon[iconName] ?? icon.info}</span>
+      <span class="notice-icon">${icon[iconName] ?? icon.info}</span>
       <div class="notice-body">
         <span class="notice-title">${esc(title)}</span>
         ${text ? `<span class="notice-text">${text}</span>` : ''}
