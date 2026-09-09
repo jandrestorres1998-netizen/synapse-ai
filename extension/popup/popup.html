@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="popup-header">
+      <div class="logo">⚡ SYNAPSE<span>AI</span></div>
+      <div class="status-dot"></div>
+    </div>
+
+    <div class="status-card">
+      <div class="status-title">Estado: <strong id="gateway-status">LOCAL</strong></div>
+      <div class="status-subtitle" id="gateway-detail">Detección local activa en ChatGPT, Claude y Gemini.</div>
+    </div>
+
+    <div class="setting-row">
+      <label class="setting-label" for="chk-reporting">
+        <input type="checkbox" id="chk-reporting">
+        Reportar incidencias al gateway
+      </label>
+      <p class="setting-hint">Envía solo el identificador de la regla y tu decisión. Nunca el texto del prompt.</p>
+    </div>
+
+    <div class="setting-row">
+      <label class="setting-label" for="input-gateway-url">URL del gateway</label>
+      <input type="url" id="input-gateway-url" class="setting-input" placeholder="http://localhost:3000">
+    </div>
+
+    <p class="disclaimer">
+      Detección por patrones y checksums: reconoce secretos estructurados pegados por error.
+      No interpreta información confidencial escrita en prosa, y una web puede cambiar su
+      interfaz y romper la intercepción. Es un cinturón de seguridad, no un perímetro de red.
+    </p>
+
+    <a href="http://localhost:3000" target="_blank" rel="noopener" class="btn-dashboard">Abrir panel completo ➔</a>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

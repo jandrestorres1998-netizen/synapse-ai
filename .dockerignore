@@ -1,0 +1,11 @@
+node_modules
+client/frontend/node_modules
+.git
+.env
+data
+dist
+docs
+tests
+client
+extension
+*.log

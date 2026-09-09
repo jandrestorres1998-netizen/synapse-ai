@@ -1,0 +1,75 @@
+{
+  "_comment": "Catálogo de modelos del router. Los precios son parámetros del OPERADOR, no hechos verificados por SynapseAI: revísalos contra la página de precios de cada proveedor antes de confiar en los informes de coste. pricePer1M está en USD. 'tier' controla el enrutamiento: fast | balanced | deep | local.",
+  "_pricesReviewedAt": null,
+  "_pricesReviewedBy": null,
+  "models": [
+    {
+      "id": "gemini-flash",
+      "provider": "google",
+      "providerModel": "gemini-2.0-flash",
+      "label": "Google Gemini 2.0 Flash",
+      "tier": "fast",
+      "contextWindow": 1000000,
+      "pricePer1M": { "input": 0.10, "output": 0.40 }
+    },
+    {
+      "id": "gpt-4o-mini",
+      "provider": "openai",
+      "providerModel": "gpt-4o-mini",
+      "label": "OpenAI GPT-4o mini",
+      "tier": "balanced",
+      "contextWindow": 128000,
+      "pricePer1M": { "input": 0.15, "output": 0.60 }
+    },
+    {
+      "id": "haiku",
+      "provider": "anthropic",
+      "providerModel": "claude-haiku-4-5-20251001",
+      "label": "Anthropic Claude Haiku 4.5",
+      "tier": "fast",
+      "contextWindow": 200000,
+      "pricePer1M": { "input": 1.00, "output": 5.00 }
+    },
+    {
+      "id": "sonnet",
+      "provider": "anthropic",
+      "providerModel": "claude-sonnet-5",
+      "label": "Anthropic Claude Sonnet 5",
+      "tier": "deep",
+      "contextWindow": 200000,
+      "pricePer1M": { "input": 3.00, "output": 15.00 }
+    },
+    {
+      "id": "gpt-4o",
+      "provider": "openai",
+      "providerModel": "gpt-4o",
+      "label": "OpenAI GPT-4o",
+      "tier": "deep",
+      "contextWindow": 128000,
+      "pricePer1M": { "input": 2.50, "output": 10.00 }
+    },
+    {
+      "id": "local",
+      "provider": "ollama",
+      "providerModel": "llama3.3",
+      "label": "Llama 3.3 (Ollama local)",
+      "tier": "local",
+      "contextWindow": 128000,
+      "pricePer1M": { "input": 0.0, "output": 0.0 }
+    },
+    {
+      "id": "mock",
+      "provider": "mock",
+      "providerModel": "mock-echo",
+      "label": "Proveedor mock (sin inferencia)",
+      "tier": "fast",
+      "contextWindow": 8192,
+      "pricePer1M": { "input": 0.0, "output": 0.0 }
+    }
+  ],
+  "routing": {
+    "defaultTier": "fast",
+    "comparisonBaselineModelId": "sonnet",
+    "complexityTokenThreshold": 3000
+  }
+}

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynapseAI | The Local-First AI Control Plane & Security Shield</title>
+  <meta name="description" content="Protege los datos sensibles de tu empresa, sincroniza el contexto y ahorra hasta un 65% en costos de tokens de IA con SynapseAI.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/components/buttons.css">
+</head>
+<body class="landing-body">
+  
+  <!-- Atmospheric Glow Background -->
+  <div class="app-background">
+    <div class="glow-sphere sphere-1"></div>
+    <div class="glow-sphere sphere-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Sticky Top Navigation -->
+  <header class="landing-nav">
+    <div class="brand-container">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px;">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="#c084fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name" style="font-size: 1.15rem; font-family: var(--font-heading); font-weight: 800;">SYNAPSE<span class="brand-accent">AI</span></span>
+      </div>
+    </div>
+
+    <ul class="landing-nav-links">
+      <li><a href="#beneficios">Beneficios</a></li>
+      <li><a href="#calculadora">Calculadora ROI</a></li>
+      <li><a href="#seguridad">Seguridad DLP</a></li>
+      <li><a href="#precios">Precios</a></li>
+    </ul>
+
+    <div>
+      <a href="/" class="btn btn-primary btn-sm">
+        Abrir Panel de Control ➔
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="landing-hero">
+    <div class="hero-pill">
+      <span>🛡️ ARQUITECTURA ZERO-TRUST LOCAL-FIRST (RAM-ONLY)</span>
+    </div>
+
+    <h1 class="hero-headline">
+      El Escudo de Privacidad y Gateway Universal para <span>la IA en tu Empresa</span>
+    </h1>
+
+    <p class="hero-subheadline">
+      Anonimiza secretos y datos personales en tiempo real antes de llegar a OpenAI o Claude, sincroniza la memoria corporativa de tu equipo y <strong>reduce tus costos de tokens hasta un 65%</strong>.
+    </p>
+
+    <div class="hero-cta-box">
+      <a href="#calculadora" class="btn btn-primary" style="padding: 14px 32px; font-size: 1rem;">
+        📊 Calcular Mi Ahorro Mensual
+      </a>
+      <a href="/" class="btn btn-secondary" style="padding: 14px 32px; font-size: 1rem;">
+        ⚡ Probar Gateway en Vivo (1-Click)
+      </a>
+    </div>
+  </section>
+
+  <!-- Trust Badges Bar -->
+  <div class="trust-badges-bar">
+    <div class="trust-badge-item"><span>✓</span> CERO RETENCIÓN EN NUBE (RAM-ONLY)</div>
+    <div class="trust-badge-item"><span>✓</span> COMPATIBLE CON OPENAI SDK / LANGCHAIN</div>
+    <div class="trust-badge-item"><span>✓</span> CIFRADO AES-256-GCM HARDWARE-BOUND</div>
+    <div class="trust-badge-item"><span>✓</span> PROTECCIÓN CONTRA FUGAS GDPR / SOC2</div>
+  </div>
+
+  <!-- Interactive ROI Calculator Section -->
+  <section class="roi-section" id="calculadora">
+    <div class="section-header">
+      <h2>Calculadora Interactiva de ROI & Ahorro de Tokens</h2>
+      <p>Descubre cuánto dinero y exposición de datos se ahorra tu organización al implementar la pasarela de SynapseAI.</p>
+    </div>
+
+    <div class="calculator-card">
+      <!-- Input Controls -->
+      <div class="roi-inputs-col">
+        <h3 style="font-family: var(--font-heading); margin-bottom: 20px; font-size: 1.2rem;">Configura tu Ecosistema Actual</h3>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <label for="slider-users">Usuarios / Desarrolladores con IA:</label>
+            <span class="slider-val-badge" id="val-users">25 usuarios</span>
+          </div>
+          <input type="range" id="slider-users" class="roi-slider" min="1" max="250" value="25">
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <label for="slider-queries">Consultas diarias promedio por usuario:</label>
+            <span class="slider-val-badge" id="val-queries">40 / día</span>
+          </div>
+          <input type="range" id="slider-queries" class="roi-slider" min="5" max="150" value="40">
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <label for="select-model-tier">Modelo de IA Principal Utilizado:</label>
+          </div>
+          <select id="select-model-tier" class="form-input" style="width: 100%;">
+            <option value="gpt4o">OpenAI GPT-4o ($10 / 1M tokens baseline)</option>
+            <option value="claude">Anthropic Claude 3.7 Sonnet ($15 / 1M tokens)</option>
+            <option value="multi" selected>Multi-Modelo / Flota de Agentes</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Real-time Output Panel -->
+      <div class="roi-results-panel">
+        <div class="roi-main-stat">
+          <div class="roi-label">Ahorro Financiero Mensual Estimado</div>
+          <div class="roi-big-number" id="out-savings-month">$1,459 USD</div>
+          <div style="font-size: 0.8rem; color: var(--accent-cyan);">↑ 65% de reducción directa en factura de APIs</div>
+        </div>
+
+        <div class="roi-sub-stats">
+          <div class="sub-stat-box">
+            <div class="sub-stat-title">Tokens Ahorrados / Mes</div>
+            <div class="sub-stat-value" id="out-tokens-saved">12.4M Tokens</div>
+          </div>
+          <div class="sub-stat-box">
+            <div class="sub-stat-title">Fugas PII Prevenidas</div>
+            <div class="sub-stat-value" id="out-dlp-threats">396 Amenazas</div>
+          </div>
+        </div>
+
+        <a href="#precios" class="btn btn-primary w-100">
+          Comenzar con Garantía de Ahorro ➔
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live DLP Demo Simulator Section -->
+  <section class="roi-section" id="seguridad">
+    <div class="section-header">
+      <h2>Simulador en Vivo del Escudo DLP Anti-Evasión</h2>
+      <p>Observa cómo SynapseAI detecta y sanitiza credenciales, tarjetas y documentos de identidad en microsegundos.</p>
+    </div>
+
+    <div class="content-card" style="max-width: 900px; margin: 0 auto;">
+      <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+        <button class="btn btn-sm btn-outline" onclick="loadLandingSample(0)">Ejemplo: IBAN + DNI + OpenAI Key</button>
+        <button class="btn btn-sm btn-outline" onclick="loadLandingSample(1)">Ejemplo: Tarjeta + RFC + Email</button>
+        <button class="btn btn-sm btn-outline" onclick="loadLandingSample(2)">Ejemplo: Password en Texto Plano</button>
+      </div>
+
+      <div class="dashboard-grid-2col">
+        <div>
+          <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px;">PROMPT ORIGINAL (ENTRADA DEL USUARIO):</label>
+          <textarea id="landing-dlp-input" class="code-textarea" rows="5" placeholder="Escribe cualquier dato sensible..."></textarea>
+        </div>
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted);">TEXTO SANITIZADO ENVIADO AL MODELO:</label>
+            <span id="landing-dlp-badge" style="font-size: 0.7rem; font-weight: 800; color: var(--accent-emerald);">ESCUDO ACTIVO</span>
+          </div>
+          <div id="landing-dlp-output" style="background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px; min-height: 120px; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5; color: #86efac;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 Pillars Section -->
+  <section class="roi-section" id="beneficios">
+    <div class="section-header">
+      <h2>Los 4 Pilares de Control de SynapseAI</h2>
+      <p>Una capa intermedia que transforma el caos de la IA corporativa en orden, ahorro y seguridad.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-box">
+        <span class="feature-icon">🛡️</span>
+        <h3>DLP Anti-Evasión</h3>
+        <p>Decodifica Base64, Hexadecimal y homóglifos para neutralizar intentos de fuga de secretos antes de salir a la nube.</p>
+      </div>
+      <div class="feature-box">
+        <span class="feature-icon">⚡</span>
+        <h3>Caché Semántica HMAC</h3>
+        <p>Resuelve consultas repetitivas en menos de 5ms a costo $0.00 con aislamiento criptográfico total por tenant.</p>
+      </div>
+      <div class="feature-box">
+        <span class="feature-icon">🧠</span>
+        <h3>Hub de Contexto Unificado</h3>
+        <p>Sincroniza directrices corporativas, tono de marca y restricciones legales en ChatGPT, Claude y Gemini.</p>
+      </div>
+      <div class="feature-box">
+        <span class="feature-icon">🔌</span>
+        <h3>1-Línea de Conexión</h3>
+        <p>100% compatible con el SDK oficial de OpenAI, LangChain, Cursor y cualquier framework existente.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="roi-section" id="precios">
+    <div class="section-header">
+      <h2>Planes Simples, Transparentes y Rentables</h2>
+      <p>Comienza gratis hoy mismo o escala con soporte prioritario y despliegue empresarial.</p>
+    </div>
+
+    <div class="pricing-tiers-grid">
+      <div class="pricing-card">
+        <div class="tier-name">Community / Free</div>
+        <div class="tier-price">$0 <span>/mes</span></div>
+        <ul class="tier-features">
+          <li>✓ 1 Usuario / Espacio</li>
+          <li>✓ Extensión Web para Navegadores</li>
+          <li>✓ Protección DLP Estándar</li>
+          <li>✓ 5,000 Peticiones/mes</li>
+        </ul>
+        <a href="/" class="btn btn-secondary mt-4 w-100">Descargar Gratis</a>
+      </div>
+
+      <div class="pricing-card highlighted">
+        <div class="tier-badge">MÁS POPULAR</div>
+        <div class="tier-name">Agencia & Startup</div>
+        <div class="tier-price">$79 <span>/mes</span></div>
+        <ul class="tier-features">
+          <li>✓ Hasta 10 Asientos de Equipo</li>
+          <li>✓ Caché Semántica de Alta Velocidad</li>
+          <li>✓ Auditoría DLP Completa & Exportación</li>
+          <li>✓ Smart Routing Multi-Proveedor</li>
+          <li>✓ 500,000 Peticiones/mes</li>
+        </ul>
+        <a href="/" class="btn btn-primary mt-4 w-100">Comenzar Prueba de 14 Días</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="tier-name">Enterprise / Scale</div>
+        <div class="tier-price">$499+ <span>/mes</span></div>
+        <ul class="tier-features">
+          <li>✓ Asientos Ilimitados</li>
+          <li>✓ Despliegue On-Premise / Air-Gapped</li>
+          <li>✓ Conexión con Modelos Locales (Ollama)</li>
+          <li>✓ Soporte 24/7 & SLA 99.99%</li>
+          <li>✓ Certificación SOC2 & GDPR Shield</li>
+        </ul>
+        <a href="mailto:sales@synapse.ai" class="btn btn-secondary mt-4 w-100">Contactar Ventas B2B</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <p>© 2026 SynapseAI Platform — The Local-First AI Control Layer & Security Shield.</p>
+    <p style="margin-top: 8px; font-size: 0.75rem; color: var(--text-muted);">
+      Diseñado para organizaciones que priorizan la privacidad de sus datos y la optimización de recursos.
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/landing.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# Normaliza a LF en el repositorio; cada plataforma usa lo suyo en disco.
+* text=auto eol=lf
+
+# Los scripts de Windows necesitan CRLF para ejecutarse correctamente.
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Binarios: nunca tocar.
+*.png binary
+*.zip binary
+*.pdf binary

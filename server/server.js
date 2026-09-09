@@ -1,0 +1,128 @@
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+import { ENV, validateEnv } from './config/env.js';
+import { createLogger } from './config/logger.js';
+import { securityHeaders } from './middlewares/security-headers.js';
+import { requestLogger } from './middlewares/request-logger.js';
+import { errorHandler, notFoundHandler } from './middlewares/error-handler.js';
+import { createAuthMiddleware } from './middlewares/auth.js';
+import { createRateLimiter, resolveClientIp } from './middlewares/rate-limiter.js';
+import { validateOpenAIInput } from './middlewares/validators.js';
+import { handleOpenAIChatCompletions } from './controllers/gateway.controller.js';
+import { handleStripeWebhook } from './controllers/license.controller.js';
+import { getHealth } from './controllers/stats.controller.js';
+import { providers, integrity } from './config/container.js';
+import { logProviderStartupState, startProviderProbes } from './providers/index.js';
+import apiRoutes from './routes/api.routes.js';
+import v1Routes from './routes/v1.routes.js';
+
+const log = createLogger('Server');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// ── Fail fast on an unsafe configuration ─────────────────────────────────────
+const validation = validateEnv(ENV);
+for (const warning of validation.warnings) log.warn(warning);
+if (!validation.isValid) {
+  for (const error of validation.errors) log.fatal(error);
+  process.exit(1);
+}
+
+const app = express();
+app.disable('x-powered-by');
+
+// Express only honours X-Forwarded-* when told how many proxies sit in front.
+app.set('trust proxy', ENV.TRUST_PROXY_HOPS);
+
+app.use(securityHeaders);
+app.use((req, res, next) => {
+  req.clientIp = resolveClientIp(req, ENV);
+  next();
+});
+app.use(requestLogger);
+
+// An allowlist, not a wildcard: this process holds provider credentials, so any
+// origin able to call it can spend the operator's budget and read their history.
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin) return callback(null, true); // curl, server-to-server, SDKs
+    if (ENV.CORS_ORIGINS.includes(origin)) return callback(null, true);
+    callback(new Error(`Origen no permitido por CORS: ${origin}`));
+  },
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key', 'x-synapse-session']
+}));
+
+// ── Public routes (no authentication) ────────────────────────────────────────
+app.get('/healthz', getHealth);
+
+// Stripe verifies a signature over the exact bytes, so the raw body is kept.
+app.post('/api/webhooks/stripe',
+  express.raw({ type: 'application/json', limit: '1mb' }),
+  (req, res, next) => { req.rawBody = req.body; next(); },
+  handleStripeWebhook
+);
+
+// ── Authenticated API ────────────────────────────────────────────────────────
+const authenticate = createAuthMiddleware(ENV);
+const rateLimiter = createRateLimiter(ENV);
+
+app.use(express.json({ limit: '2mb' }));
+
+app.post('/v1/chat/completions', authenticate, rateLimiter, validateOpenAIInput, handleOpenAIChatCompletions);
+app.use('/v1', authenticate, v1Routes);
+app.use('/api', authenticate, apiRoutes);
+
+// The dashboard is served last so it cannot shadow an API route.
+app.use(express.static(path.join(__dirname, '../public'), { index: 'index.html' }));
+
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+// ── Boot ─────────────────────────────────────────────────────────────────────
+// Probe first: a provider that needs no key can still be unreachable.
+startProviderProbes(providers);
+await new Promise(resolve => setTimeout(resolve, 300));
+logProviderStartupState(providers);
+
+const integrityResult = integrity.verifyIntegrity();
+if (!integrityResult.isValid) {
+  log.warn('Verificación de integridad de archivos con discrepancias', {
+    status: integrityResult.status,
+    files: integrityResult.tamperedFiles.map(f => f.file)
+  });
+}
+
+const server = app.listen(ENV.PORT, ENV.HOST, () => {
+  log.info('SynapseAI Gateway en línea', {
+    url: `http://${ENV.HOST}:${ENV.PORT}`,
+    env: ENV.NODE_ENV,
+    authEnabled: !ENV.AUTH.DISABLE_AUTH,
+    corsOrigins: ENV.CORS_ORIGINS,
+    realProviders: providers.hasRealProvider()
+  });
+});
+
+// Drain in-flight requests before exiting so a deploy does not cut a stream.
+function shutdown(signal) {
+  log.info(`Señal ${signal} recibida; cerrando de forma ordenada.`);
+  server.close(() => {
+    log.info('Servidor cerrado.');
+    process.exit(0);
+  });
+  setTimeout(() => {
+    log.warn('Cierre forzado tras el tiempo de gracia.');
+    process.exit(1);
+  }, 10_000).unref();
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('unhandledRejection', reason => {
+  log.error('Promesa rechazada sin manejar', { reason: reason?.message ?? String(reason) });
+});
+
+export default app;
+export { server };

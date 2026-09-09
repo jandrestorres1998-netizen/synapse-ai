@@ -1,0 +1,40 @@
+{
+  "name": "synapse-ai-gateway",
+  "version": "2.0.0",
+  "description": "Self-hosted LLM gateway with DLP redaction, prompt-injection filtering, cost-aware routing and response caching",
+  "main": "server/server.js",
+  "type": "module",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js",
+    "test": "node --test \"tests/unit/**/*.test.js\"",
+    "test:integration": "node --test \"tests/integration/**/*.test.js\"",
+    "test:all": "node --test \"tests/**/*.test.js\"",
+    "bench": "node tests/benchmarks/gateway_overhead.js",
+    "keys:vendor": "node scripts/generate_vendor_keys.js",
+    "license:issue": "node scripts/generate_license.js",
+    "integrity:manifest": "node scripts/generate_manifest.js"
+  },
+  "keywords": [
+    "llm-gateway",
+    "dlp",
+    "ai-security",
+    "prompt-injection",
+    "semantic-cache",
+    "model-routing"
+  ],
+  "author": "SynapseAI",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "optionalDependencies": {
+    "ajv": "^8.17.1",
+    "bash-parser": "^0.5.0",
+    "node-sql-parser": "^5.3.1"
+  }
+}
