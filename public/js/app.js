@@ -63,22 +63,71 @@ class App {
 
   static wireApiKey() {
     const input = $('api-key');
+    const btn = $('btn-validate-key');
     if (!input) return;
 
     input.value = ApiService.getApiKey();
 
     const apply = async () => {
-      ApiService.setApiKey(input.value.trim());
-      setText('key-state', 'comprobando…');
+      const val = input.value.trim();
+      ApiService.setApiKey(val);
+      this.renderKeyState('checking');
       const ok = await this.refreshTopbar();
       if (ok) {
+        this.renderKeyState('ok');
         const active = document.querySelector('.nav-tab.active')?.dataset.tab;
         RENDERERS[active]?.();
+      } else {
+        this.renderKeyState(val ? 'invalid' : 'empty');
       }
     };
 
-    input.addEventListener('change', apply);
-    input.addEventListener('keydown', event => { if (event.key === 'Enter') apply(); });
+    if (btn) {
+      btn.addEventListener('click', () => apply());
+    }
+    input.addEventListener('keydown', event => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        apply();
+      }
+    });
+
+    let debounceTimer;
+    input.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => apply(), 600);
+    });
+
+    if (input.value) {
+      apply();
+    } else {
+      this.renderKeyState('empty');
+    }
+  }
+
+  static renderKeyState(state) {
+    const badge = $('key-state');
+    const wrapper = document.querySelector('.key-input-wrapper');
+    const btn = $('btn-validate-key');
+    if (!badge) return;
+
+    badge.className = 'key-badge ' + state;
+    if (state === 'ok') {
+      badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Conectado';
+      if (wrapper) wrapper.classList.add('is-valid');
+      if (btn) btn.textContent = 'Actualizar';
+    } else if (state === 'invalid') {
+      badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Clave incorrecta';
+      if (wrapper) wrapper.classList.remove('is-valid');
+      if (btn) btn.textContent = 'Validar';
+    } else if (state === 'checking') {
+      badge.textContent = 'Comprobando…';
+      if (btn) btn.textContent = '…';
+    } else {
+      badge.textContent = 'Introduce tu clave';
+      if (wrapper) wrapper.classList.remove('is-valid');
+      if (btn) btn.textContent = 'Validar';
+    }
   }
 
   /** @returns {Promise<boolean>} si la API respondió correctamente. */
@@ -86,12 +135,12 @@ class App {
     try {
       const stats = await ApiService.getStats();
 
-      setText('key-state', ApiService.getApiKey() ? 'autenticado' : '');
+      this.renderKeyState('ok');
       this.renderProviderState(stats);
       this.renderSpend(stats.budget, stats.spend);
       return true;
     } catch (err) {
-      setText('key-state', err.code === 401 ? 'clave requerida' : 'sin conexión');
+      this.renderKeyState(err.code === 401 ? 'invalid' : 'empty');
       $('provider-dot').className = 'dot critical';
       setText('provider-label', err.code === 401 ? 'Sin autenticar' : 'Gateway no responde');
       return false;

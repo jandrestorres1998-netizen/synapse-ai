@@ -143,18 +143,97 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing:
 .spend-chip.near-limit { border-color: color-mix(in oklch, var(--warning) 50%, white); }
 .spend-chip.near-limit .value { color: var(--warning); }
 
-.key-field {
-  width: 150px;
-  padding: 6px 10px;
+.key-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.key-input-wrapper {
+  display: flex;
+  align-items: center;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: var(--surface);
+  padding: 2px 4px 2px 9px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.key-input-wrapper:focus-within {
+  border-color: var(--ajustes);
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--ajustes) 15%, transparent);
+}
+
+.key-input-wrapper.is-valid {
+  border-color: color-mix(in oklch, var(--ok) 50%, var(--line));
+}
+
+.key-icon {
+  color: var(--ink-faint);
+  flex-shrink: 0;
+  margin-right: 2px;
+}
+
+.key-field {
+  width: 145px;
+  padding: 5px 6px;
+  border: none;
+  background: transparent;
   font-family: var(--font-ui);
   font-size: 12.5px;
   color: var(--ink);
+  outline: none;
 }
-.key-field:focus { outline: 2px solid color-mix(in oklch, var(--ajustes) 40%, white); outline-offset: -1px; }
-.key-state { font-size: 11.5px; color: var(--ink-faint); white-space: nowrap; }
+
+.key-btn {
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius-sm) - 2px);
+  background: var(--ajustes);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s ease, opacity 0.12s ease;
+  white-space: nowrap;
+}
+
+.key-btn:hover {
+  background: oklch(0.46 0.21 275);
+}
+
+.key-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.key-badge.ok {
+  background: var(--ok-soft);
+  color: oklch(0.38 0.14 150);
+  border: 1px solid color-mix(in oklch, var(--ok) 35%, transparent);
+}
+
+.key-badge.invalid {
+  background: var(--critical-soft);
+  color: oklch(0.42 0.18 22);
+  border: 1px solid color-mix(in oklch, var(--critical) 35%, transparent);
+}
+
+.key-badge.checking {
+  background: var(--surface-quiet);
+  color: var(--ink-muted);
+}
+
+.key-badge.empty {
+  color: var(--ink-faint);
+}
 
 /* ── Estructura ─────────────────────────────────────────────────────────── */
 
