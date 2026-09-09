@@ -1,0 +1,33 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 900, "title": "Probar" },
+    { "file": "Actividad.dc.html", "x": 1560, "y": 0, "w": 1440, "h": 900, "title": "Actividad" },
+    { "file": "Proteccion.dc.html", "x": 0, "y": 1060, "w": 1440, "h": 900, "title": "Protección" },
+    { "file": "Ajustes.dc.html", "x": 1560, "y": 1060, "w": 1440, "h": 900, "title": "Ajustes" },
+    { "file": "Sistema.dc.html", "x": 0, "y": 2120, "w": 1080, "h": 820, "title": "Sistema visual" }
+  ],
+  "annotations": [
+    {
+      "id": "orden",
+      "x": 0,
+      "y": -190,
+      "w": 620,
+      "text": "Navegación reordenada por uso real del operador:\nProbar · Actividad · Protección · Contexto · Ajustes\n\nProbar va primero porque es lo que se hace al evaluar y a diario. La landing comercial sale del panel: es otra audiencia."
+    },
+    {
+      "id": "gasto",
+      "x": 1560,
+      "y": -190,
+      "w": 620,
+      "text": "El gasto vive en la barra superior, visible desde cualquier pantalla, con su tope al lado.\n\nSe muestra gasto real en grafito, nunca «ahorro» en verde: esa cifra fue una de las que la auditoría retractó."
+    },
+    {
+      "id": "sistema-nota",
+      "x": 1200,
+      "y": 2120,
+      "w": 560,
+      "text": "El color solo aparece cuando significa algo. Cinco funciones, un tono cada una, misma saturación: rojo crítico, ámbar atención, verde correcto, violeta contexto, grafito gasto.\n\nTodo lo demás es gris."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}

@@ -1,6 +1,6 @@
 {
   "version": "5.0.0",
-  "generatedAt": "2026-09-09T13:55:54.541Z",
+  "generatedAt": "2026-09-09T14:46:13.278Z",
   "algorithm": "SHA-256",
   "files": {
     "server/server.js": "5ef1f6888091c16fa85abb1565f6cb251c0cc49b3b8de6a1a161f535249246f7",
@@ -24,7 +24,7 @@
     "server/security/prompt-injection-shield.js": "11bb9b0cf128c3296ffa727a4d6ee71bd1fb9bd614028edaf2cfddf0dfd07d82",
     "server/security/audit-chain.js": "702cadcf6960c1bed6457c506f5ba3313d9216f7f3dd7b7177ce02a9b47114aa",
     "server/store/json-store.js": "bbafdaa48de7c26bc74113a7d824a36a7e841f1b36087fe4ecf7f42dd7b39bd4",
-    "server/config/env.js": "0580dff37197dadbdf60a3a0916a6572ce579e68e6ee30976c5b83d191171c38",
+    "server/config/env.js": "5f43f4a261d2a22396d90751ec929e4cdebda8b311f1ecfcf59a38e3da61fb44",
     "server/config/container.js": "3b78e38c0c13bc0da74b2504a8d6c9b34c52b1626814e9f06b16967288dbfdb6",
     "server/config/logger.js": "9c7fabe7fc08e5f867b2dd80456c8cb8a4bd4e90cd62e6e82968a1a6305367be",
     "server/config/models.json": "ba3c36d159c125a616693b54a50834dfc7dd6f5f61547edad897f8ab292f2f10",

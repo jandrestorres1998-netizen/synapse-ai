@@ -3,478 +3,259 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SynapseAI | The Universal AI Gateway, Context Hub & Security Shield</title>
-  <meta name="description" content="Plataforma modular de control, memoria unificada, enrutamiento inteligente y prevención de fuga de datos para el ecosistema de IA corporativo y profesional.">
-  
-  <!-- Fonts -->
+  <title>Synapse — panel de control</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  
-  <!-- Master Modular Stylesheet -->
-  <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-  <div class="app-background">
-    <div class="glow-sphere sphere-1"></div>
-    <div class="glow-sphere sphere-2"></div>
-    <div class="grid-overlay"></div>
-  </div>
 
-  <div class="app-container">
-    <!-- Top Navigation Bar -->
-    <header class="top-nav" id="topNav">
-      <div class="brand-container">
-        <div class="logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#logo-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 17L12 22L22 17" stroke="url(#logo-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 12L12 17L22 12" stroke="url(#logo-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <defs>
-              <linearGradient id="logo-grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#38bdf8"/>
-                <stop offset="0.5" stop-color="#818cf8"/>
-                <stop offset="1" stop-color="#c084fc"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <div class="brand-text">
-          <span class="brand-name">SYNAPSE<span class="brand-accent">AI</span></span>
-          <span class="brand-tag">CONTROL PLANE & GATEWAY</span>
-        </div>
+  <header class="topbar" id="topbar">
+    <div class="brand">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3 3 7.5 12 12l9-4.5L12 3Z"/><path d="m3 16.5 9 4.5 9-4.5"/><path d="m3 12 9 4.5 9-4.5"/>
+      </svg>
+      <span class="brand-name">Synapse</span>
+    </div>
+
+    <nav class="nav" aria-label="Secciones">
+      <button class="nav-tab active" data-tab="probar">Probar</button>
+      <button class="nav-tab" data-tab="actividad">Actividad</button>
+      <button class="nav-tab" data-tab="proteccion">Protección</button>
+      <button class="nav-tab" data-tab="contexto">Contexto</button>
+      <button class="nav-tab" data-tab="ajustes">Ajustes</button>
+    </nav>
+
+    <div class="topbar-right">
+      <div class="provider-state" id="provider-state">
+        <span class="dot" id="provider-dot"></span>
+        <span id="provider-label">Comprobando…</span>
       </div>
-
-      <nav class="nav-tabs" id="navTabs">
-        <button class="nav-tab active" data-tab="overview" id="tab-overview">
-          <span class="tab-icon">📊</span> Resumen en Vivo
-        </button>
-        <button class="nav-tab" data-tab="playground" id="tab-playground">
-          <span class="tab-icon">⚡</span> Gateway Playground
-        </button>
-        <button class="nav-tab" data-tab="security" id="tab-security">
-          <span class="tab-icon">🛡️</span> Escudo DLP & Logs
-        </button>
-        <button class="nav-tab" data-tab="memory" id="tab-memory">
-          <span class="tab-icon">🧠</span> Hub de Contexto
-        </button>
-        <button class="nav-tab" data-tab="integration" id="tab-integration">
-          <span class="tab-icon">🔌</span> Integración & API
-        </button>
-      </nav>
-
-      <div class="nav-actions" style="display: flex; align-items: center; gap: 10px;">
-        <a href="/landing.html" class="btn btn-sm btn-outline" style="text-decoration: none; border-color: rgba(56, 189, 248, 0.4);">
-          🌐 Ver Landing Comercial
-        </a>
-        <div class="live-status-pill">
-          <span class="status-dot"></span>
-          <span class="status-label">GATEWAY ONLINE (3000)</span>
-        </div>
+      <div class="spend-chip" id="spend-chip" title="Gasto del día contra el tope configurado">
+        <span class="label">Hoy</span>
+        <span class="value num" id="spend-value">—</span>
+        <span class="limit" id="spend-limit"></span>
       </div>
-    </header>
+      <input class="key-field" type="password" id="api-key" placeholder="Clave de API" autocomplete="off" aria-label="Clave de API">
+      <span class="key-state" id="key-state"></span>
+    </div>
+  </header>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
-      
-      <!-- ================= SECTION 1: OVERVIEW ================= -->
-      <section class="tab-pane active" id="pane-overview">
-        <div class="hero-banner">
-          <div class="hero-content">
-            <div class="badge-tag">REVOLUCIÓN DE CONTROL MULTI-IA</div>
-            <h1 class="hero-title">El Puente Inteligente Entre Tu Negocio y Cualquier IA</h1>
-            <p class="hero-desc">
-              Memoria contextual sincronizada, anonimización de datos sensibles (DLP) en tiempo real y hasta <strong>60% de reducción en costos</strong> de inferencia.
-            </p>
-          </div>
-          <div class="hero-cta-group">
-            <button class="btn btn-primary" onclick="switchTab('playground')">
-              Probar Gateway en Vivo ➔
-            </button>
-            <button class="btn btn-secondary" onclick="switchTab('integration')">
-              Ver Guía de Conexión (1-Click)
-            </button>
+  <main>
+
+    <!-- ── Probar ─────────────────────────────────────────────────────── -->
+    <section class="pane active" id="pane-probar">
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title" data-accent="probar">Probar el gateway</h1>
+            <p class="page-sub">Escribe lo que enviaría una de tus aplicaciones. Verás el recorrido completo paso a paso: qué se filtra, qué se enmascara y a qué modelo va, antes de que salga hacia el proveedor.</p>
           </div>
         </div>
 
-        <!-- KPI Metrics Grid -->
-        <div class="metrics-grid">
-          <div class="metric-card glow-cyan">
-            <div class="metric-header">
-              <span class="metric-title">Ahorro Financiero Acumulado</span>
-              <span class="metric-icon">💰</span>
+        <div class="split">
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="chip-row">
+              <button class="chip" data-sample="credencial">Con una credencial</button>
+              <button class="chip" data-sample="personales">Con datos personales</button>
+              <button class="chip" data-sample="inyeccion">Intento de manipulación</button>
+              <button class="chip" data-sample="normal">Consulta corriente</button>
             </div>
-            <div class="metric-value" id="kpi-money-saved">$0.00</div>
-            <div class="metric-footer text-success">
-              <span>↑ 64% de optimización en tokens</span>
-            </div>
-          </div>
 
-          <div class="metric-card glow-purple">
-            <div class="metric-header">
-              <span class="metric-title">Datos Confidenciales Protegidos</span>
-              <span class="metric-icon">🛡️</span>
-            </div>
-            <div class="metric-value" id="kpi-threats">0</div>
-            <div class="metric-footer text-info">
-              <span>Claves, tarjetas, emails anonimizados</span>
-            </div>
-          </div>
-
-          <div class="metric-card glow-emerald">
-            <div class="metric-header">
-              <span class="metric-title">Tasa de Acierto de Caché</span>
-              <span class="metric-icon">⚡</span>
-            </div>
-            <div class="metric-value" id="kpi-cache-rate">0%</div>
-            <div class="metric-footer text-success">
-              <span>Respuestas sub-5ms a $0.00</span>
-            </div>
-          </div>
-
-          <div class="metric-card glow-blue">
-            <div class="metric-header">
-              <span class="metric-title">Latencia Promedio</span>
-              <span class="metric-icon">⏱️</span>
-            </div>
-            <div class="metric-value" id="kpi-latency">85 ms</div>
-            <div class="metric-footer text-muted">
-              <span>Enrutamiento predictivo ultrarrápido</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Live Architecture Flow Card -->
-        <div class="dashboard-grid-2col">
-          <div class="content-card">
-            <div class="card-header">
-              <h2 class="card-title">Flujo de Inteligencia Activa</h2>
-              <span class="badge-status">TIEMPO REAL</span>
-            </div>
-            <div class="pipeline-visual">
-              <div class="pipe-step">
-                <div class="step-num">1</div>
-                <div class="step-info">
-                  <strong>Entrada / Prompt</strong>
-                  <p>Usuario, Agente o API</p>
-                </div>
-              </div>
-              <div class="pipe-arrow">➔</div>
-              <div class="pipe-step active">
-                <div class="step-num">2</div>
-                <div class="step-info">
-                  <strong>DLP & Masking</strong>
-                  <p>Filtrado de secretos PII</p>
-                </div>
-              </div>
-              <div class="pipe-arrow">➔</div>
-              <div class="pipe-step">
-                <div class="step-num">3</div>
-                <div class="step-info">
-                  <strong>Caché & Memoria</strong>
-                  <p>Inyección de contexto</p>
-                </div>
-              </div>
-              <div class="pipe-arrow">➔</div>
-              <div class="pipe-step">
-                <div class="step-num">4</div>
-                <div class="step-info">
-                  <strong>Smart Router</strong>
-                  <p>Gemini / Claude / GPT / Local</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="content-card">
-            <div class="card-header">
-              <h2 class="card-title">Actividad Reciente del Gateway</h2>
-              <button class="btn-refresh" onclick="refreshDashboard()" title="Actualizar">↻</button>
-            </div>
-            <div class="activity-stream" id="recent-activity-list">
-              <div class="empty-state">Iniciando monitor de telemetría...</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= SECTION 2: PLAYGROUND ================= -->
-      <section class="tab-pane" id="pane-playground">
-        <div class="playground-layout">
-          <!-- Input Column -->
-          <div class="playground-panel">
-            <div class="panel-header">
-              <h3>Entrada de Prueba (Simulador de Usuario / Empleado)</h3>
-              <div class="presets-dropdown">
-                <button class="btn btn-sm btn-outline" onclick="loadSamplePrompt('pii')">Cargar Caso con Datos Sensibles</button>
-                <button class="btn btn-sm btn-outline" onclick="loadSamplePrompt('complex')">Cargar Caso Complejo (Arquitectura)</button>
-                <button class="btn btn-sm btn-outline" onclick="loadSamplePrompt('cached')">Cargar Caso Frecuente (Caché)</button>
-              </div>
-            </div>
-            <textarea id="playground-prompt-input" class="code-textarea" rows="7" placeholder="Escribe o pega cualquier prompt aquí (ej. incluye tarjetas de prueba, emails o claves de API para ver la protección DLP en acción)..."></textarea>
-            
-            <div class="panel-footer">
-              <div class="options-row">
-                <label class="toggle-control">
-                  <input type="checkbox" id="chk-inject-memory" checked>
-                  <span class="toggle-slider"></span>
-                  <span class="toggle-text">Inyectar Contexto Corporativo</span>
+            <div class="card flush composer">
+              <textarea id="prompt-input" placeholder="Escribe o pega aquí el mensaje que quieres probar…" spellcheck="false"></textarea>
+              <div class="composer-foot">
+                <label class="switch">
+                  <input type="checkbox" id="inject-context" checked>
+                  <span class="track"></span>
+                  Inyectar contexto corporativo
                 </label>
+                <button class="btn btn-primary" id="btn-send">
+                  Enviar
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </button>
               </div>
-              <button class="btn btn-primary btn-glow" id="btn-run-gateway" onclick="runGatewaySim()">
-                <span>⚡ Enviar a través de SynapseAI</span>
-              </button>
             </div>
           </div>
 
-          <!-- Live Telemetry & Inspector Column -->
-          <div class="playground-panel" id="playground-inspector">
-            <div class="panel-header">
-              <h3>Inspección en Tiempo Real del Gateway</h3>
-              <span class="badge-status" id="inspector-badge">ESPERANDO PETICIÓN</span>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between;">
+              <h2 style="font-size: 18px;">Qué pasó con tu petición</h2>
+              <span class="num" id="trace-latency" style="font-size: 12px; color: var(--ink-muted);"></span>
             </div>
-            
-            <div class="inspector-body" id="inspector-content">
-              <div class="empty-inspector">
-                <p>Presiona <strong>"Enviar a través de SynapseAI"</strong> para visualizar cómo el motor analiza, anonimiza y enruta la consulta en milisegundos.</p>
-              </div>
+            <div id="trace">
+              <div class="placeholder">Envía un mensaje para ver el recorrido completo:<br>filtro de inyección, DLP, contexto, caché, enrutado y respuesta.</div>
             </div>
           </div>
         </div>
-      </section>
-
-      <!-- ================= SECTION 3: DLP & SECURITY ================= -->
-      <section class="tab-pane" id="pane-security">
-        <div class="security-dashboard">
-          <div class="section-intro">
-            <h2>🛡️ Escudo de Prevención de Fuga de Datos (DLP)</h2>
-            <p>Monitoreo en tiempo real de cada secreto, tarjeta de crédito o dato personal (PII) interceptado y anonimizado antes de llegar a modelos externos.</p>
-          </div>
-
-          <div class="security-rules-grid">
-            <div class="rule-badge critical"><span>●</span> Claves API (OpenAI, AWS, GitHub)</div>
-            <div class="rule-badge high"><span>●</span> Tarjetas de Crédito / Débito</div>
-            <div class="rule-badge medium"><span>●</span> Correos & Teléfonos de Clientes</div>
-            <div class="rule-badge critical"><span>●</span> Contraseñas en Texto Plano</div>
-            <div class="rule-badge high"><span>●</span> Números de Identificación / SSN / DNI / RFC</div>
-          </div>
-
-          <div class="content-card mt-4">
-            <div class="card-header">
-              <h3 class="card-title">Registro de Auditoría de Seguridad en Vivo</h3>
-              <button class="btn btn-sm btn-outline" onclick="loadSecurityLogs()">↻ Actualizar Logs</button>
-            </div>
-            <div class="table-container">
-              <table class="data-table" id="security-table">
-                <thead>
-                  <tr>
-                    <th>Timestamp</th>
-                    <th>Origen</th>
-                    <th>Categoría Detectada</th>
-                    <th>Severidad</th>
-                    <th>Hash de correlación</th>
-                    <th>Tamaño</th>
-                  </tr>
-                </thead>
-                <tbody id="security-logs-tbody">
-                  <tr>
-                    <td colspan="6" class="text-center py-4 text-muted">No se han registrado incidentes aún. Prueba en el Playground.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= SECTION 4: CONTEXT & MEMORY ================= -->
-      <section class="tab-pane" id="pane-memory">
-        <div class="memory-dashboard">
-          <div class="section-intro">
-            <h2>🧠 Hub de Memoria & Contexto Unificado</h2>
-            <p>Define las reglas, tono, estándares de código o conocimientos de tu empresa que se sincronizan automáticamente con cualquier herramienta o IA que use tu equipo.</p>
-          </div>
-
-          <div class="memory-grid">
-            <!-- Add Memory Card -->
-            <div class="content-card create-memory-card">
-              <h3>Agregar Nuevo Bloque de Contexto</h3>
-              <div class="form-group mt-3">
-                <label>Título del Contexto</label>
-                <input type="text" id="new-mem-title" class="form-input" placeholder="Ej. Directriz de Cumplimiento Legal">
-              </div>
-              <div class="form-group">
-                <label>Categoría</label>
-                <select id="new-mem-category" class="form-input">
-                  <option value="Empresa">Empresa & Marca</option>
-                  <option value="Ingeniería">Ingeniería & Código</option>
-                  <option value="Legal">Legal & Compliance</option>
-                  <option value="General">General / Preferencias</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Contenido / Regla que la IA debe respetar</label>
-                <textarea id="new-mem-content" class="form-input" rows="3" placeholder="Ej. Siempre estructurar respuestas con resúmenes ejecutivos y aplicar validaciones OWASP..."></textarea>
-              </div>
-              <button class="btn btn-primary w-100 mt-2" onclick="createNewMemory()">
-                + Guardar y Activar Contexto
-              </button>
-            </div>
-
-            <!-- Memory List -->
-            <div class="content-card">
-              <h3>Memorias Activas Sincronizadas</h3>
-              <div class="memory-items-list" id="memory-items-container">
-                <!-- Populated dynamically -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= SECTION 5: INTEGRATION & API ================= -->
-      <section class="tab-pane" id="pane-integration">
-        <div class="integration-dashboard">
-          <div class="section-intro">
-            <h2>🔌 Conexión Plug-and-Play en 1 Línea</h2>
-            <p>SynapseAI es 100% compatible con el SDK oficial de OpenAI, LangChain, Cursor, agentes autónomos y cualquier software existente.</p>
-          </div>
-
-          <div class="code-showcase-grid">
-            <div class="content-card">
-              <div class="card-header">
-                <h3>🐍 Conexión en Python (OpenAI SDK)</h3>
-                <span class="badge-lang">PYTHON</span>
-              </div>
-              <pre class="code-box"><code>from openai import OpenAI
-
-# Solo cambia el baseURL hacia SynapseAI Gateway
-client = OpenAI(
-    base_url="http://localhost:3000/v1",
-    api_key="synapse_enterprise_key"
-)
-
-response = client.chat.completions.create(
-    model="auto-synapse", # Enrutamiento dinámico automático
-    messages=[{"role": "user", "content": "Analiza este reporte..."}]
-)
-print(response.choices[0].message.content)</code></pre>
-            </div>
-
-            <div class="content-card">
-              <div class="card-header">
-                <h3>🌐 Conexión en Node.js / TypeScript</h3>
-                <span class="badge-lang">TYPESCRIPT</span>
-              </div>
-              <pre class="code-box"><code>import OpenAI from 'openai';
-
-const openai = new OpenAI({
-  baseURL: 'http://localhost:3000/v1',
-  apiKey: 'synapse_enterprise_key'
-});
-
-const res = await openai.chat.completions.create({
-  model: 'auto-synapse',
-  messages: [{ role: 'user', content: 'Genera el contrato...' }]
-});
-console.log(res.choices[0].message.content);</code></pre>
-            </div>
-          </div>
-
-          <!-- Licensing & Subscription Management Card -->
-          <div class="content-card mt-4">
-            <div class="card-header">
-              <h3>🔑 Activación de Licencia Comercial (Local-First Offline)</h3>
-              <span class="badge-status" id="license-badge-tier">PLAN: FREE (COMMUNITY)</span>
-            </div>
-            <div class="dashboard-grid-2col" style="margin-bottom: 0;">
-              <div>
-                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
-                  Ingresa tu clave de licencia criptográfica firmada para desbloquear límites ampliados, reglas DLP personalizadas y soporte prioritario.
-                </p>
-                <div class="form-group">
-                  <input type="text" id="input-license-key" class="form-input" placeholder="SYNAPSE-v1-eyJsaWNlbnNlSWQiOi..." style="font-family: var(--font-mono); font-size: 0.78rem;">
-                </div>
-                <div style="display: flex; gap: 8px;">
-                  <button class="btn btn-primary" onclick="activateLicenseKey()">
-                    ⚡ Activar Licencia
-                  </button>
-                  <button class="btn btn-secondary" onclick="deactivateLicenseKey()">
-                    Restablecer a Free
-                  </button>
-                </div>
-              </div>
-              <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); padding: 16px; border-radius: var(--radius-md);">
-                <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">Detalles de la Suscripción Activa</div>
-                <div id="license-details-box" style="font-size: 0.85rem; line-height: 1.6;">
-                  <p><strong>Plan Actual:</strong> <span id="lic-plan-name" style="color: var(--accent-cyan);">Community Free</span></p>
-                  <p><strong>Titular:</strong> <span id="lic-customer-email">N/A</span></p>
-                  <p><strong>Vigencia:</strong> <span id="lic-expires-at">Ilimitada (Community)</span></p>
-                  <p><strong>Peticiones Mensuales:</strong> <span id="lic-max-req">5,000 / mes</span></p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pricing & Monetization Plans Card -->
-          <div class="content-card mt-4">
-            <div class="card-header">
-              <h3>💼 Estructura de Precios y Monetización SaaS</h3>
-              <span class="badge-status">ESTRATEGIA 90 DÍAS</span>
-            </div>
-            <div class="pricing-tiers-grid">
-              <div class="pricing-card" id="tier-card-pro">
-                <div class="tier-name">Prosumer / Indie</div>
-                <div class="tier-price">$19 <span>/mes</span></div>
-                <ul class="tier-features">
-                  <li>✓ 1 Usuario / Espacio</li>
-                  <li>✓ Extensión Web & Memoria Universal</li>
-                  <li>✓ Reglas DLP Personalizadas</li>
-                  <li>✓ 50,000 Peticiones/mes</li>
-                </ul>
-              </div>
-              <div class="pricing-card highlighted" id="tier-card-agency">
-                <div class="tier-badge">MÁS POPULAR</div>
-                <div class="tier-name">Agencia & Startup</div>
-                <div class="tier-price">$79 <span>/mes</span></div>
-                <ul class="tier-features">
-                  <li>✓ Hasta 10 Asientos de Equipo</li>
-                  <li>✓ Caché Semántica de Alta Velocidad</li>
-                  <li>✓ Auditoría DLP Completa & Exportación</li>
-                  <li>✓ Smart Routing Multi-Proveedor</li>
-                  <li>✓ 500,000 Peticiones/mes</li>
-                </ul>
-              </div>
-              <div class="pricing-card" id="tier-card-enterprise">
-                <div class="tier-name">Enterprise / Scale</div>
-                <div class="tier-price">$499+ <span>/mes</span></div>
-                <ul class="tier-features">
-                  <li>✓ Asientos Ilimitados</li>
-                  <li>✓ Despliegue On-Premise / Air-Gapped</li>
-                  <li>✓ Conexión con Modelos Locales (Ollama)</li>
-                  <li>✓ Soporte 24/7 & SLA 99.99%</li>
-                  <li>✓ Certificación SOC2 & GDPR Shield</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="app-footer">
-      <div class="footer-left">
-        <span>© 2026 SynapseAI Platform — The Local-First AI Control Layer</span>
       </div>
-      <div class="footer-right">
-        <span class="status-indicator">● Protocolo v1.3.0 Modular Activo</span>
-      </div>
-    </footer>
-  </div>
+    </section>
 
-  <!-- Modular Application ES Script -->
+    <!-- ── Actividad ──────────────────────────────────────────────────── -->
+    <section class="pane" id="pane-actividad">
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title" data-accent="actividad">Actividad</h1>
+            <p class="page-sub">Desde que arrancó el proceso. El coste sale del uso que reporta cada proveedor; cuando no lo reporta, se marca como estimado.</p>
+          </div>
+          <button class="btn btn-quiet" id="btn-refresh">Actualizar</button>
+        </div>
+
+        <div id="activity-banner"></div>
+
+        <div class="metrics">
+          <div class="card metric">
+            <span class="metric-label">Gasto real</span>
+            <span class="metric-value num" id="m-spend">—</span>
+            <div class="bar" id="m-spend-bar"><span style="width: 0%"></span></div>
+            <span class="metric-note" id="m-spend-note"></span>
+          </div>
+          <div class="card metric">
+            <span class="metric-label">Peticiones</span>
+            <span class="metric-value num" id="m-requests">—</span>
+            <span class="metric-note" id="m-requests-note"></span>
+          </div>
+          <div class="card metric">
+            <span class="metric-label">Latencia p50</span>
+            <span class="metric-value num" id="m-latency">—</span>
+            <span class="metric-note" id="m-latency-note"></span>
+          </div>
+          <div class="card metric">
+            <span class="metric-label">Servido desde caché</span>
+            <span class="metric-value num" id="m-cache">—</span>
+            <span class="metric-note">Depende de que tu tráfico se repita.</span>
+          </div>
+        </div>
+
+        <div class="card flush">
+          <div class="table">
+            <div class="table-head" style="grid-template-columns: 84px 1fr 140px 120px 100px 88px;">
+              <span>Hora</span><span>Origen</span><span>Modelo</span><span>Tokens</span><span>Coste</span><span>Latencia</span>
+            </div>
+            <div id="activity-rows">
+              <div class="table-empty">Sin actividad todavía.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Protección ─────────────────────────────────────────────────── -->
+    <section class="pane" id="pane-proteccion">
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title" data-accent="proteccion">Protección</h1>
+            <p class="page-sub">Qué se interceptó antes de salir. El valor original nunca se guarda: en el registro queda un hash con el que correlacionar reincidencias.</p>
+          </div>
+          <a class="btn btn-secondary" id="btn-export" href="#" download>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+            Exportar para el SIEM
+          </a>
+        </div>
+
+        <div id="chain-state"></div>
+
+        <div class="split-aside">
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="card metric">
+              <span class="metric-label">Elementos interceptados</span>
+              <span class="metric-value num" id="p-total">—</span>
+              <div class="breakdown" id="p-breakdown"></div>
+            </div>
+            <div class="card metric">
+              <span class="metric-label">Peticiones rechazadas</span>
+              <span class="metric-value num" id="p-blocked">—</span>
+              <span class="metric-note">No llegaron al modelo.</span>
+            </div>
+            <div class="card quiet">
+              <p class="metric-note" style="margin: 0;">Estas cifras cuentan lo que los patrones reconocen. No miden lo que se escapa: eso exige un corpus etiquetado que todavía no existe.</p>
+            </div>
+          </div>
+
+          <div class="card flush">
+            <div class="table">
+              <div class="table-head" style="grid-template-columns: 84px 1fr 180px 130px 1fr;">
+                <span>Hora</span><span>Origen</span><span>Qué era</span><span>Fragmento</span><span>Hash de correlación</span>
+              </div>
+              <div id="protection-rows">
+                <div class="table-empty">Sin incidencias registradas.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Contexto ───────────────────────────────────────────────────── -->
+    <section class="pane" id="pane-contexto">
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title" data-accent="contexto">Contexto</h1>
+            <p class="page-sub">Directrices que se añaden como mensaje de sistema a cada petición. Cuentan como tokens de entrada en todas ellas, así que conviene que sean breves.</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="card">
+            <span class="card-title">Añadir una directriz</span>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <input class="field" id="mem-title" placeholder="Título — p. ej. «Tono de respuesta»">
+              <input class="field" id="mem-category" placeholder="Categoría — p. ej. «Empresa»">
+              <textarea class="field" id="mem-content" rows="4" placeholder="Contenido de la directriz…"></textarea>
+              <button class="btn btn-primary" id="btn-add-memory" style="align-self: flex-start;">Añadir</button>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between;">
+              <span class="card-title">Directrices activas</span>
+              <span class="metric-note num" id="context-size"></span>
+            </div>
+            <div class="list" id="memory-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Ajustes ────────────────────────────────────────────────────── -->
+    <section class="pane" id="pane-ajustes">
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title" data-accent="ajustes">Ajustes</h1>
+            <p class="page-sub">Las credenciales se guardan cifradas aquí, no en tus aplicaciones.</p>
+          </div>
+        </div>
+
+        <div id="vault-warning"></div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span class="card-title">Proveedores</span>
+          <div class="list" id="provider-list"></div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span class="card-title">Límites de gasto</span>
+          <div class="card" id="budget-card"></div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span class="card-title">Conectar una aplicación</span>
+          <div class="card">
+            <p class="metric-note" style="margin: 0;">Cambia el <code>baseURL</code> de tu cliente de OpenAI y usa tu clave de Synapse en lugar de la del proveedor. La credencial real se queda aquí.</p>
+            <pre class="mono" id="snippet" style="margin: 0; padding: 14px; background: var(--surface-quiet); border-radius: var(--radius-sm); font-size: 12.5px; line-height: 1.6; overflow-x: auto;"></pre>
+            <p class="metric-note" style="margin: 0;">Sin implementar todavía: <code>tool_calls</code> se reenvía tal cual, pero no hay soporte de embeddings ni de la API de responses.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

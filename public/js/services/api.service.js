@@ -95,6 +95,29 @@ export class ApiService {
     return this._request('/api/vault/status');
   }
 
+  static getBudget() {
+    return this._request('/api/budget');
+  }
+
+  /**
+   * La exportación necesita la cabecera de autorización, así que no puede ser
+   * un enlace normal: se pide por fetch y se devuelve como blob.
+   */
+  static async exportSecurityLogs(format = 'jsonl') {
+    const key = this.getApiKey();
+    const res = await fetch(`/api/security/export?format=${encodeURIComponent(format)}`, {
+      headers: key ? { Authorization: `Bearer ${key}` } : {}
+    });
+
+    if (!res.ok) {
+      const error = new Error(`No se pudo exportar (${res.status})`);
+      error.code = res.status;
+      throw error;
+    }
+
+    return res.blob();
+  }
+
   static setVaultKey(provider, apiKey) {
     return this._request('/api/vault/keys', { method: 'POST', body: { provider, apiKey } });
   }

@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif; }
+    a { color: oklch(0.52 0.20 275); text-decoration: none; }
+    a:hover { color: oklch(0.42 0.22 275); }
+    * { box-sizing: border-box; }
+  </style>
+</helmet>
+
+<div style="width: 1080px; height: 820px; background: oklch(0.975 0.014 280); color: oklch(0.24 0.045 280); padding: 36px 40px; display: flex; flex-direction: column; gap: 26px;">
+
+  <div style="display: flex; flex-direction: column; gap: 5px;">
+    <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 25px; font-weight: 700; letter-spacing: -0.02em;">Sistema visual</h1>
+    <p style="margin: 0; font-size: 13.5px; color: oklch(0.51 0.028 280); max-width: 64ch;">El color solo aparece cuando significa algo. Un panel donde todo brilla no deja ver lo que importa: aquí el gris es el estado normal y el color es la excepción.</p>
+  </div>
+
+  <!-- Color con función -->
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: oklch(0.57 0.024 280);">Color por función</span>
+    <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;">
+
+      <div style="display: flex; flex-direction: column; gap: 9px; padding: 15px; background: oklch(1 0 0); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+        <div style="height: 34px; border-radius: 8px; background: oklch(0.57 0.22 22);"></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 12.5px; font-weight: 500;">Crítico</span>
+          <span style="font-size: 11.5px; line-height: 1.45; color: oklch(0.53 0.026 280);">Credencial detectada, petición bloqueada</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 9px; padding: 15px; background: oklch(1 0 0); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+        <div style="height: 34px; border-radius: 8px; background: oklch(0.70 0.18 62);"></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 12.5px; font-weight: 500;">Atención</span>
+          <span style="font-size: 11.5px; line-height: 1.45; color: oklch(0.53 0.026 280);">Dato personal enmascarado, configuración reducida</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 9px; padding: 15px; background: oklch(1 0 0); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+        <div style="height: 34px; border-radius: 8px; background: oklch(0.64 0.17 150);"></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 12.5px; font-weight: 500;">Correcto</span>
+          <span style="font-size: 11.5px; line-height: 1.45; color: oklch(0.53 0.026 280);">Proveedor disponible, cadena íntegra</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 9px; padding: 15px; background: oklch(1 0 0); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+        <div style="height: 34px; border-radius: 8px; background: oklch(0.58 0.22 305);"></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 12.5px; font-weight: 500;">Contexto</span>
+          <span style="font-size: 11.5px; line-height: 1.45; color: oklch(0.53 0.026 280);">Directrices que tú inyectas en cada petición</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 9px; padding: 15px; background: oklch(1 0 0); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+        <div style="height: 34px; border-radius: 8px; background: oklch(0.52 0.20 275);"></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 12.5px; font-weight: 500;">Gasto</span>
+          <span style="font-size: 11.5px; line-height: 1.45; color: oklch(0.53 0.026 280);">Índigo, nunca verde: es dinero gastado, no ahorrado</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tipografía -->
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: oklch(0.57 0.024 280);">Tipografía</span>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;">
+      <div style="display: flex; flex-direction: column; gap: 7px; padding: 17px; background: oklch(1 0 0); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+        <span style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Montserrat</span>
+        <span style="font-size: 12px; color: oklch(0.53 0.026 280);">Títulos. Geométrica y rotunda en peso 700.</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 7px; padding: 17px; background: oklch(1 0 0); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+        <span style="font-size: 21px; font-weight: 500;">Poppins</span>
+        <span style="font-size: 12px; color: oklch(0.53 0.026 280);">Interfaz y texto. Geométrica, abierta y legible.</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 7px; padding: 17px; background: oklch(1 0 0); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+        <span style="font-family: 'DM Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; font-size: 20px;">1 284 · $0,74</span>
+        <span style="font-size: 12px; color: oklch(0.53 0.026 280);">DM Mono para cifras: alinean en columna.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Componentes -->
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: oklch(0.57 0.024 280);">Piezas</span>
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+      <div style="padding: 9px 17px; background: oklch(0.52 0.20 275); color: oklch(0.99 0 0); border-radius: 9px; font-size: 13px; font-weight: 500;">Acción principal</div>
+      <div style="padding: 9px 17px; background: oklch(1 0 0); border: 1px solid oklch(0.880 0.026 280); border-radius: 9px; font-size: 13px;">Secundaria</div>
+      <div style="padding: 6px 11px; border: 1px solid oklch(0.905 0.022 280); border-radius: 999px; font-size: 12.5px; background: oklch(1 0 0);">Filtro</div>
+      <div style="padding: 2px 8px; border-radius: 5px; background: oklch(0.945 0.055 62); color: oklch(0.48 0.13 62); font-size: 11px;">2 enmascarados</div>
+      <div style="padding: 2px 8px; border-radius: 5px; background: oklch(0.945 0.060 22); color: oklch(0.47 0.17 22); font-size: 11px;">bloqueada</div>
+      <div style="padding: 2px 8px; border-radius: 5px; background: oklch(0.945 0.030 280); color: oklch(0.47 0.030 280); font-size: 11px;">caché</div>
+      <div style="display: flex; align-items: center; gap: 7px; padding: 7px 12px; border: 1px solid oklch(0.905 0.022 280); border-radius: 8px; background: oklch(1 0 0); font-size: 12.5px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: oklch(0.64 0.17 150);"></span>Disponible</div>
+    </div>
+  </div>
+
+  <!-- Reglas -->
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;">
+    <div style="display: flex; flex-direction: column; gap: 5px; padding: 16px; background: oklch(0.963 0.020 280); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+      <span style="font-size: 12.5px; font-weight: 500;">Bordes de 1 px, radios de 8 a 14</span>
+      <span style="font-size: 12px; line-height: 1.5; color: oklch(0.51 0.028 280);">Sin sombras ni resplandores. La separación la hace la línea, no el efecto.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 5px; padding: 16px; background: oklch(0.963 0.020 280); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+      <span style="font-size: 12.5px; font-weight: 500;">Una cifra, una unidad, una nota</span>
+      <span style="font-size: 12px; line-height: 1.5; color: oklch(0.51 0.028 280);">Cada número dice de dónde sale. Si es estimado, lo pone.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 5px; padding: 16px; background: oklch(0.963 0.020 280); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+      <span style="font-size: 12.5px; font-weight: 500;">Nada de porcentajes de ahorro</span>
+      <span style="font-size: 12px; line-height: 1.5; color: oklch(0.51 0.028 280);">Se muestra el gasto real. La comparación, si aparece, se llama comparación.</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

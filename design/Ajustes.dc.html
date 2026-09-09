@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif; }
+    a { color: oklch(0.52 0.20 275); text-decoration: none; }
+    a:hover { color: oklch(0.42 0.22 275); }
+    * { box-sizing: border-box; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; background: oklch(0.975 0.014 280); color: oklch(0.24 0.045 280); display: flex; flex-direction: column;">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 28px; height: 60px; background: oklch(1 0 0); border-bottom: 1px solid oklch(0.905 0.022 280);">
+    <div style="display: flex; align-items: center; gap: 32px;">
+      <div style="display: flex; align-items: center; gap: 9px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="oklch(0.24 0.045 280)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 7.5 12 12l9-4.5L12 3Z"/><path d="m3 16.5 9 4.5 9-4.5"/><path d="m3 12 9 4.5 9-4.5"/></svg>
+        <span style="font-family: 'Montserrat', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: -0.02em;">Synapse</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 4px;">
+        <div style="padding: 7px 13px; border-radius: 8px; font-size: 13.5px; color: oklch(0.51 0.028 280);">Probar</div>
+        <div style="padding: 7px 13px; border-radius: 8px; font-size: 13.5px; color: oklch(0.51 0.028 280);">Actividad</div>
+        <div style="padding: 7px 13px; border-radius: 8px; font-size: 13.5px; color: oklch(0.51 0.028 280);">Protección</div>
+        <div style="padding: 7px 13px; border-radius: 8px; font-size: 13.5px; color: oklch(0.51 0.028 280);">Contexto</div>
+        <div style="padding: 7px 13px; border-radius: 8px; font-size: 13.5px; font-weight: 600; background: color-mix(in oklch, oklch(0.52 0.20 275) 14%, white); color: oklch(0.52 0.20 275);">Ajustes</div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <div style="display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: oklch(0.49 0.028 280);">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: oklch(0.64 0.17 150);"></span>
+        Gemini Flash · Sonnet
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 6px; padding: 6px 11px; border: 1px solid oklch(0.905 0.022 280); border-radius: 8px;">
+        <span style="font-size: 11.5px; color: oklch(0.54 0.026 280);">Hoy</span>
+        <span style="font-family: 'DM Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; font-size: 13px;">$0,74</span>
+        <span style="font-size: 11.5px; color: oklch(0.61 0.022 280);">/ 5,00</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; display: grid; grid-template-columns: 216px minmax(0, 1fr); gap: 0; min-height: 0;">
+
+    <!-- Índice lateral -->
+    <div style="padding: 30px 18px; display: flex; flex-direction: column; gap: 3px; border-right: 1px solid oklch(0.905 0.022 280);">
+      <div style="padding: 8px 12px; border-radius: 8px; font-size: 13.5px; font-weight: 500; background: oklch(0.945 0.030 280);">Proveedores</div>
+      <div style="padding: 8px 12px; border-radius: 8px; font-size: 13.5px; color: oklch(0.49 0.028 280);">Límites de gasto</div>
+      <div style="padding: 8px 12px; border-radius: 8px; font-size: 13.5px; color: oklch(0.49 0.028 280);">Política de datos</div>
+      <div style="padding: 8px 12px; border-radius: 8px; font-size: 13.5px; color: oklch(0.49 0.028 280);">Claves de acceso</div>
+      <div style="padding: 8px 12px; border-radius: 8px; font-size: 13.5px; color: oklch(0.49 0.028 280);">Conectar una app</div>
+    </div>
+
+    <!-- Contenido -->
+    <div style="padding: 30px 28px; display: flex; flex-direction: column; gap: 22px; overflow: hidden;">
+
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 25px; font-weight: 700; letter-spacing: -0.02em; color: oklch(0.52 0.20 275);">Proveedores</h1>
+        <p style="margin: 0; font-size: 13.5px; color: oklch(0.51 0.028 280);">Las credenciales se guardan cifradas aquí, no en tus aplicaciones.</p>
+      </div>
+
+      <!-- Aviso de configuración -->
+      <div style="display: flex; align-items: flex-start; gap: 12px; padding: 15px 18px; background: oklch(0.965 0.050 62); border: 1px solid oklch(0.84 0.13 62); border-radius: 12px;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="oklch(0.64 0.18 62)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 3px;">
+          <span style="font-size: 13.5px; font-weight: 500;">El cifrado en reposo está en modo reducido</span>
+          <span style="font-size: 12.5px; line-height: 1.5; color: oklch(0.47 0.12 62);">Sin <span style="font-family: 'DM Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; font-size: 11.5px;">SYNAPSE_VAULT_KEY</span>, la clave se deriva de datos públicos del equipo. Protege de una copia del archivo, no de alguien con acceso a esta máquina.</span>
+        </div>
+      </div>
+
+      <!-- Lista de proveedores -->
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; background: oklch(1 0 0); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: oklch(0.64 0.17 150);"></span>
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 13.5px; font-weight: 500;">Google</span>
+              <span style="font-size: 12.5px; color: oklch(0.53 0.026 280);">Gemini 2.0 Flash · nivel rápido</span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 22px;">
+            <span style="font-family: 'DM Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; font-size: 12px; color: oklch(0.57 0.024 280);">AIza··················4 j2K</span>
+            <span style="font-size: 12.5px; color: oklch(0.51 0.028 280);">Guardada en el vault</span>
+            <span style="font-size: 13px; color: oklch(0.52 0.20 275);">Cambiar</span>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; background: oklch(1 0 0); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: oklch(0.64 0.17 150);"></span>
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 13.5px; font-weight: 500;">Anthropic</span>
+              <span style="font-size: 12.5px; color: oklch(0.53 0.026 280);">Claude Sonnet · nivel profundo</span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 22px;">
+            <span style="font-family: 'DM Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; font-size: 12px; color: oklch(0.57 0.024 280);">sk-ant···············p Q71</span>
+            <span style="font-size: 12.5px; color: oklch(0.51 0.028 280);">Guardada en el vault</span>
+            <span style="font-size: 13px; color: oklch(0.52 0.20 275);">Cambiar</span>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; background: oklch(1 0 0); border: 1px dashed oklch(0.880 0.026 280); border-radius: 12px;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: oklch(0.860 0.028 280);"></span>
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 13.5px; font-weight: 500; color: oklch(0.47 0.030 280);">OpenAI</span>
+              <span style="font-size: 12.5px; color: oklch(0.57 0.024 280);">Sin credencial. El router no lo elegirá.</span>
+            </div>
+          </div>
+          <div style="padding: 7px 14px; border: 1px solid oklch(0.880 0.026 280); border-radius: 8px; font-size: 13px;">Añadir clave</div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; background: oklch(1 0 0); border: 1px dashed oklch(0.880 0.026 280); border-radius: 12px;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: oklch(0.860 0.028 280);"></span>
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 13.5px; font-weight: 500; color: oklch(0.47 0.030 280);">Ollama (local)</span>
+              <span style="font-size: 12.5px; color: oklch(0.57 0.024 280);">No responde en 127.0.0.1:11434</span>
+            </div>
+          </div>
+          <div style="padding: 7px 14px; border: 1px solid oklch(0.880 0.026 280); border-radius: 8px; font-size: 13px;">Reintentar</div>
+        </div>
+      </div>
+
+      <!-- Precios -->
+      <div style="display: flex; align-items: flex-start; gap: 12px; padding: 15px 18px; background: oklch(0.963 0.020 280); border: 1px solid oklch(0.910 0.022 280); border-radius: 12px;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="oklch(0.54 0.026 280)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1;">
+          <span style="font-size: 13.5px; font-weight: 500;">Los precios del catálogo no están verificados</span>
+          <span style="font-size: 12.5px; line-height: 1.5; color: oklch(0.49 0.028 280);">Los importes de coste salen de una tabla que tú controlas. Contrástala con la página de precios de cada proveedor y márcala como revisada.</span>
+        </div>
+        <div style="padding: 7px 14px; border: 1px solid oklch(0.880 0.026 280); border-radius: 8px; font-size: 13px; background: oklch(1 0 0); flex-shrink: 0;">Revisar tabla</div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

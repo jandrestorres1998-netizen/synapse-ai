@@ -1,106 +1,135 @@
 /**
- * Dashboard entry point.
+ * Punto de entrada del panel.
+ *
+ * La navegación va ordenada por lo que hace el operador de verdad: Probar
+ * primero, porque es lo que se hace al evaluar y a diario; los ajustes al
+ * final, porque se tocan una vez.
  */
 
 import { ApiService } from './services/api.service.js';
-import { OverviewComponent } from './components/overview.component.js';
-import { PlaygroundComponent } from './components/playground.component.js';
-import { SecurityComponent } from './components/security.component.js';
-import { MemoryComponent } from './components/memory.component.js';
-import { LicenseComponent } from './components/license.component.js';
+import { $, setText, money } from './ui.js';
+import { ProbarComponent } from './components/probar.component.js';
+import { ActividadComponent } from './components/actividad.component.js';
+import { ProteccionComponent } from './components/proteccion.component.js';
+import { ContextoComponent } from './components/contexto.component.js';
+import { AjustesComponent } from './components/ajustes.component.js';
 
-const REFRESH_MS = 5000;
+const RENDERERS = {
+  probar: null,
+  actividad: () => ActividadComponent.render(),
+  proteccion: () => ProteccionComponent.render(),
+  contexto: () => ContextoComponent.render(),
+  ajustes: () => AjustesComponent.render()
+};
+
+const REFRESH_MS = 6000;
 
 class App {
   static init() {
-    PlaygroundComponent.init();
-    SecurityComponent.init();
-    MemoryComponent.init();
-    LicenseComponent.init();
+    ProbarComponent.init();
+    ActividadComponent.init();
+    ContextoComponent.init();
 
-    this._mountApiKeyControl();
+    this.wireTabs();
+    this.wireApiKey();
 
-    window.switchTab = this.switchTab.bind(this);
-    window.refreshDashboard = () => OverviewComponent.render();
-
-    document.querySelectorAll('.nav-tab').forEach(btn => {
-      btn.addEventListener('click', () => this.switchTab(btn.dataset.tab));
-    });
-
-    OverviewComponent.render();
-    MemoryComponent.render();
-    LicenseComponent.render();
-
-    // Only poll the visible tab: refreshing every panel every 5s was four
-    // requests per tick against a rate-limited API.
+    // La barra superior se mantiene al día aunque estés en otra pestaña: el
+    // gasto y el estado de los proveedores importan desde cualquier pantalla.
+    this.refreshTopbar();
     setInterval(() => {
       if (document.hidden) return;
+      this.refreshTopbar();
       const active = document.querySelector('.nav-tab.active')?.dataset.tab;
-      if (active === 'overview' || !active) OverviewComponent.render();
-      if (active === 'security') SecurityComponent.render();
+      if (active === 'actividad') ActividadComponent.render();
     }, REFRESH_MS);
+
+    document.addEventListener('synapse:activity', () => this.refreshTopbar());
   }
 
-  /**
-   * The API now requires a bearer token. Rather than fail silently with 401s,
-   * the dashboard asks for it and keeps it for the session only.
-   */
-  static _mountApiKeyControl() {
-    const nav = document.getElementById('topNav');
-    if (!nav) return;
+  static wireTabs() {
+    document.querySelectorAll('.nav-tab').forEach(button => {
+      button.addEventListener('click', () => this.switchTab(button.dataset.tab));
+    });
+  }
 
-    const wrapper = document.createElement('div');
-    wrapper.style.cssText = 'display:flex;align-items:center;gap:6px;margin-left:auto;';
+  static switchTab(tab) {
+    document.querySelectorAll('.nav-tab').forEach(button =>
+      button.classList.toggle('active', button.dataset.tab === tab));
+    document.querySelectorAll('.pane').forEach(pane =>
+      pane.classList.toggle('active', pane.id === `pane-${tab}`));
 
-    const input = document.createElement('input');
-    input.type = 'password';
-    input.placeholder = 'Clave de API';
-    input.autocomplete = 'off';
+    RENDERERS[tab]?.();
+  }
+
+  static wireApiKey() {
+    const input = $('api-key');
+    if (!input) return;
+
     input.value = ApiService.getApiKey();
-    input.style.cssText = 'background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:6px 10px;color:inherit;font-size:0.75rem;width:180px;';
-
-    const status = document.createElement('span');
-    status.style.cssText = 'font-size:0.7rem;color:var(--text-muted);';
 
     const apply = async () => {
       ApiService.setApiKey(input.value.trim());
-      status.innerText = 'comprobando…';
-      try {
-        await ApiService.getStats();
-        status.innerText = '✓ autenticado';
-        status.style.color = 'var(--accent-emerald)';
-        OverviewComponent.render();
-      } catch (err) {
-        status.innerText = err.code === 401 ? '✖ clave inválida' : '✖ sin conexión';
-        status.style.color = 'var(--accent-rose)';
+      setText('key-state', 'comprobando…');
+      const ok = await this.refreshTopbar();
+      if (ok) {
+        const active = document.querySelector('.nav-tab.active')?.dataset.tab;
+        RENDERERS[active]?.();
       }
     };
 
     input.addEventListener('change', apply);
-    input.addEventListener('keydown', e => { if (e.key === 'Enter') apply(); });
-
-    wrapper.append(input, status);
-    nav.appendChild(wrapper);
-
-    // A local install may run with authentication disabled; probe once so the
-    // field is not shown as an error when no key is needed.
-    ApiService.getStats()
-      .then(() => { status.innerText = input.value ? '✓ autenticado' : 'sin autenticación'; })
-      .catch(() => { status.innerText = 'clave requerida'; });
+    input.addEventListener('keydown', event => { if (event.key === 'Enter') apply(); });
   }
 
-  static switchTab(tabId) {
-    document.querySelectorAll('.nav-tab').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.tab === tabId);
-    });
-    document.querySelectorAll('.tab-pane').forEach(pane => {
-      pane.classList.toggle('active', pane.id === `pane-${tabId}`);
-    });
+  /** @returns {Promise<boolean>} si la API respondió correctamente. */
+  static async refreshTopbar() {
+    try {
+      const stats = await ApiService.getStats();
 
-    if (tabId === 'overview') OverviewComponent.render();
-    if (tabId === 'security') SecurityComponent.render();
-    if (tabId === 'memory') MemoryComponent.render();
-    if (tabId === 'integration') LicenseComponent.render();
+      setText('key-state', ApiService.getApiKey() ? 'autenticado' : '');
+      this.renderProviderState(stats);
+      this.renderSpend(stats.budget, stats.spend);
+      return true;
+    } catch (err) {
+      setText('key-state', err.code === 401 ? 'clave requerida' : 'sin conexión');
+      $('provider-dot').className = 'dot critical';
+      setText('provider-label', err.code === 401 ? 'Sin autenticar' : 'Gateway no responde');
+      return false;
+    }
+  }
+
+  static renderProviderState(stats) {
+    const providers = stats.providers ?? {};
+    const active = Object.entries(providers)
+      .filter(([name, s]) => s.configured && name !== 'mock')
+      .map(([name]) => name);
+
+    const dot = $('provider-dot');
+
+    if (active.length === 0) {
+      dot.className = 'dot critical';
+      setText('provider-label', providers.mock?.configured ? 'Solo proveedor mock' : 'Sin proveedores');
+      return;
+    }
+
+    dot.className = 'dot ok';
+    setText('provider-label', active.join(' · '));
+  }
+
+  static renderSpend(budget, spend) {
+    const daily = budget?.tenant?.daily;
+    const chip = $('spend-chip');
+
+    setText('spend-value', money(spend?.actualUsd ?? 0, { compact: true }));
+
+    if (daily?.enforced && daily.limitUsd > 0) {
+      setText('spend-limit', `/ ${money(daily.limitUsd, { compact: true })}`);
+      const used = (daily.spentUsd + daily.reservedUsd) / daily.limitUsd;
+      chip.classList.toggle('near-limit', used >= 0.8);
+    } else {
+      setText('spend-limit', 'sin tope');
+      chip.classList.remove('near-limit');
+    }
   }
 }
 

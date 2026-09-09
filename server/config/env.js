@@ -13,8 +13,17 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.join(__dirname, '../..');
 
-/** Minimal .env parser — avoids a hard dependency at boot. */
+/**
+ * Minimal .env parser — avoids a hard dependency at boot.
+ *
+ * Skipped under NODE_ENV=test so a suite never picks up whatever the developer
+ * happens to have in their local .env. A budget limit set for development made
+ * an integration assertion fail on one machine and pass on another, which is
+ * the failure mode this guard exists to prevent.
+ */
 function loadDotEnv() {
+  if (process.env.NODE_ENV === 'test') return;
+
   const envPath = path.join(PROJECT_ROOT, '.env');
   if (!fs.existsSync(envPath)) return;
 
