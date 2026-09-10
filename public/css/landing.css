@@ -1696,78 +1696,268 @@ pre.code .hl { background: color-mix(in oklch, var(--probar) 12%, transparent); 
 
 
 /* ── La sección que es un vídeo ────────────────────────────────────────────
-   El vídeo va a ancho completo y su proporción marca el alto de la banda: no
-   se recorta y no deja franjas. El titular cae sobre la mitad superior, que se
-   dejó vacía al renderizarlo, así que no pisa el dibujo.
+   La banda oscura va a sangre, pero el vídeo NO: se queda dentro del mismo
+   ancho de página que el resto del sitio. Así su borde izquierdo cae en la
+   misma línea que los titulares de las demás secciones y no rompe la medida.
+
+   Su proporción marca el alto: no se recorta y no deja franjas. El titular cae
+   sobre la mitad superior del fotograma, que se dejó vacía al renderizarlo.
    =========================================================================== */
 
 .seccion-fondo { padding: 0; }
 
-.fondo-video { position: relative; width: 100%; background: var(--ink-surface); }
-.fondo-video video {
+.fondo-video {
+  background: var(--ink-surface);
+  padding: clamp(40px, 5vw, 72px) var(--gutter) clamp(40px, 5vw, 72px);
+}
+
+.fondo-lienzo {
+  position: relative;
+  max-width: calc(var(--page) - var(--gutter) * 2);
+  margin: 0 auto;
+}
+
+.fondo-lienzo video {
   display: block;
   width: 100%;
   height: auto;          /* la proporción manda: nada se recorta */
   aspect-ratio: 16 / 9;
   object-fit: contain;
+  border-radius: var(--radius-lg);
   background: var(--ink-surface);
 }
 
+/* El texto ocupa la mitad de arriba, que el vídeo deja libre a propósito. La
+   sangría izquierda es la misma que el dibujo lleva dentro (110 de 1920), para
+   que titular y cajas compartan línea. */
 .fondo-texto {
   position: absolute;
   inset: 0 0 auto 0;
-  /* Hasta el 48 %: justo la zona que el vídeo deja libre. */
   height: 48%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 5.73%;
   pointer-events: none;
 }
-.fondo-texto .wrap { pointer-events: auto; }
+.fondo-texto > * { pointer-events: auto; }
 
 .fondo-texto .paso-num {
   display: block;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   font-family: var(--font-mono);
-  font-size: clamp(13px, 1vw, 17px);
+  font-size: clamp(12px, 0.95vw, 15px);
   letter-spacing: 0.1em;
   color: var(--on-ink-faint);
 }
 .fondo-texto h2 {
+  margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(28px, 4.2vw, 76px);
+  font-size: clamp(28px, 3.6vw, 54px);
   line-height: 1.04;
   letter-spacing: -0.035em;
   color: var(--on-ink-strong);
   max-width: 17ch;
 }
 
-.fondo-texto .ver-entero { margin: clamp(20px, 2.4vw, 40px) 0 0; }
+.fondo-texto .ver-entero { margin: clamp(18px, 2vw, 30px) 0 0; }
 
-.garantias-banda { padding: 56px 28px 76px; }
+/* ── Las tres garantías, ya sobre fondo claro ──────────────────────────────
+   Vivían dentro del panel oscuro y arrastraban su color: el título salía casi
+   blanco y sobre esta banda clara no se veía. Solo quedaban la raya y el
+   párrafo, sueltos. Ahora usan la rampa de tinta sobre claro, como el resto. */
+.garantias {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0 40px;
+  padding-top: 56px;
+  padding-bottom: 76px;
+}
+.garantia { padding-top: 20px; border-top: 1px solid var(--line); }
+.garantia h3 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--ink-strong);
+}
+.garantia p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-muted);
+}
 
 /* Por debajo de este ancho el texto encima del vídeo sería ilegible: se apila.
    El vídeo sigue entero, solo deja de ser fondo. */
 @media (max-width: 900px) {
+  .fondo-video { padding-top: 40px; }
   .fondo-texto {
     position: static;
     height: auto;
-    padding: 56px 0 32px;
-    background: var(--ink-surface);
+    padding: 0 0 28px;
   }
   .fondo-texto h2 { font-size: clamp(28px, 7vw, 42px); max-width: 22ch; }
-  .garantias-banda { padding-top: 40px; }
+  .garantias { padding-top: 40px; gap: 28px 40px; }
 }
 
 /* Quien pide menos movimiento recibe el fotograma. El póster es una imagen real
    del propio vídeo, así que no se pierde nada de lo que cuenta. */
 @media (prefers-reduced-motion: reduce) {
-  .fondo-video video { display: none; }
-  .fondo-video::before {
+  .fondo-lienzo video { display: none; }
+  .fondo-lienzo::before {
     content: "";
     display: block;
     width: 100%;
     aspect-ratio: 16 / 9;
+    border-radius: var(--radius-lg);
     background: var(--ink-surface) url("/media/recorrido-poster.jpg") center / contain no-repeat;
   }
+}
+
+/* ── El mapa del hero: dónde se pone esto ──────────────────────────────────
+   La columna de la derecha tenía los cuatro hechos pegados abajo y un hueco
+   blanco encima. Lo que va ahí no repite el vídeo ni el trazador: enseña lo
+   único que ninguno de los dos cuenta, que esto vive dentro de vuestra red y
+   que es el único cable que sale hacia fuera.
+   =========================================================================== */
+
+.hero-col { display: grid; gap: 34px; align-content: space-between; }
+
+.hero-mapa { margin: 0; }
+.hero-mapa svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+.m-red {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+}
+.m-etiqueta-fondo { fill: var(--ground); }
+.m-etiqueta {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.09em;
+  fill: var(--ink-faint);
+}
+
+.m-caja { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
+.m-caja-txt {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  fill: var(--ink);
+  text-anchor: middle;
+}
+
+.m-via { fill: none; stroke: var(--line-strong); stroke-width: 1.5; }
+.m-fan { stroke-dasharray: 4 4; }
+
+.m-nodo { fill: var(--ink-surface); }
+.m-late { fill: var(--probar); opacity: 0; }
+.m-glifo { color: var(--on-ink-strong); }
+.m-nodo-txt {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  fill: var(--on-ink-strong);
+  text-anchor: middle;
+}
+.m-nodo-pie {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--on-ink-muted);
+  text-anchor: middle;
+}
+
+.m-chip { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
+.m-chip-txt {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  fill: var(--ink-muted);
+  text-anchor: middle;
+}
+
+.m-pie {
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  fill: var(--ink-faint);
+  text-anchor: middle;
+}
+
+/* El punto sale de vuestros programas, entra en el nodo, el nodo responde y
+   solo entonces sale el de fuera. Primero pasa, luego cruza: nunca los dos a
+   la vez, porque no es lo que ocurre. */
+.m-punto { fill: var(--probar); opacity: 0; }
+.m-entra { animation: mapa-entra 4.6s var(--ease-out, ease) infinite; }
+.m-sale  { animation: mapa-sale  4.6s var(--ease-out, ease) infinite; }
+.m-late  { animation: mapa-late  4.6s ease infinite; }
+
+@keyframes mapa-entra {
+  0%   { transform: translateX(0);    opacity: 0; }
+  6%   { opacity: 1; }
+  24%  { transform: translateX(53px); opacity: 1; }
+  30%  { transform: translateX(53px); opacity: 0; }
+  100% { transform: translateX(53px); opacity: 0; }
+}
+@keyframes mapa-late {
+  0%, 24% { opacity: 0; }
+  30%     { opacity: 0.5; }
+  44%     { opacity: 0; }
+  100%    { opacity: 0; }
+}
+@keyframes mapa-sale {
+  0%, 40% { transform: translateX(0);    opacity: 0; }
+  46%     { opacity: 1; }
+  66%     { transform: translateX(69px); opacity: 1; }
+  72%     { transform: translateX(69px); opacity: 0; }
+  100%    { transform: translateX(69px); opacity: 0; }
+}
+
+/* Quien pide menos movimiento se queda con el mapa quieto: sigue contando lo
+   mismo, porque lo que cuenta es la topología, no el punto que se mueve. */
+@media (prefers-reduced-motion: reduce) {
+  .m-entra, .m-sale, .m-late { animation: none; }
+  .m-punto { opacity: 1; }
+  .m-late { opacity: 0; }
+}
+
+@media (max-width: 900px) {
+  .hero-col { gap: 28px; align-content: start; }
+  .hero-mapa { max-width: 560px; }
+}
+
+/* Por debajo de este ancho el mapa se escala tanto que sus rotulos dejan de
+   leerse, y un dibujo que no se lee no es un dibujo. Se retira: lo que dice
+   -- que esto vive dentro de vuestra red -- ya esta escrito en el parrafo de
+   entrada y lo repite la seccion 01. */
+@media (max-width: 720px) {
+  .hero-mapa { display: none; }
+}
+
+/* ── El respaldo del hero ──────────────────────────────────────────────────
+   Debajo de la barra quedaba una franja de fondo plano antes de que empezara
+   el titular. No se llena con un adorno cualquiera: se llena con el mismo
+   motivo que el mapa de la derecha —una malla de nodos— muy bajada de
+   contraste, para que la zona respire sin competir con lo que hay que leer.
+   =========================================================================== */
+
+.hero { position: relative; isolation: isolate; }
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -80px -10% auto -10%;
+  height: 460px;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at center, var(--line-strong) 1.3px, transparent 1.4px),
+    linear-gradient(115deg, color-mix(in oklch, var(--probar) 13%, transparent), transparent 62%);
+  background-size: 26px 26px, 100% 100%;
+  /* La malla se apaga hacia abajo y hacia la izquierda: solo viste la franja
+     de arriba, que es la que estaba vacia. */
+  -webkit-mask-image: radial-gradient(120% 100% at 78% 0%, #000 0%, transparent 72%);
+          mask-image: radial-gradient(120% 100% at 78% 0%, #000 0%, transparent 72%);
 }

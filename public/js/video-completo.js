@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cerrar = document.getElementById('btn-cerrar-video');
   const dialogo = document.getElementById('dlg-video');
   const video = document.getElementById('video-completo');
-  const bucle = document.querySelector('.recorrido-video video');
+  const bucle = document.querySelector('.fondo-lienzo video');
 
   if (!abrir || !dialogo || !video) return;
 

@@ -42,9 +42,9 @@
 </header>
 
 <!-- SECCIÓN 00: Héroe + Trazador Demostrativo Real ─────────────────────── -->
-<section style="border-bottom:1px solid oklch(0.905 0.022 280);overflow:hidden">
-  <div style="max-width:1180px;margin:0 auto;padding:88px 28px 64px;display:grid;grid-template-columns:minmax(0,1fr);gap:44px">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:end">
+<section class="hero" style="border-bottom:1px solid oklch(0.905 0.022 280);overflow:hidden">
+  <div style="max-width:1180px;margin:0 auto;padding:64px 28px 64px;position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr);gap:44px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:stretch">
       <div style="max-width:720px">
         <p style="margin:0 0 20px;display:inline-flex;align-items:center;gap:9px;padding:5px 12px 5px 8px;border-radius:999px;border:1px solid oklch(0.905 0.022 280);background:#fff;font-size:12.5px;color:oklch(0.51 0.028 280)">
           <span style="padding:2px 7px;border-radius:999px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:11px;font-weight:600;letter-spacing:0.04em">MIT</span>
@@ -61,24 +61,75 @@
         </div>
       </div>
 
-      <!-- Hechos numéricos a la derecha del titular -->
+      <div class="hero-col">
+      <figure class="hero-mapa">
+        <svg viewBox="0 0 560 340" role="img" aria-labelledby="mapa-tit mapa-desc">
+          <title id="mapa-tit">Dónde se instala SynapseAI</title>
+          <desc id="mapa-desc">SynapseAI se instala dentro de vuestra propia red, entre vuestros programas y las IA de fuera. Es el único punto por el que sale texto hacia ChatGPT, Claude o Gemini.</desc>
+
+          <!-- El límite de vuestra red. Todo lo de dentro es vuestro. -->
+          <rect class="m-red" x="1.5" y="34" width="340" height="246" rx="16"/>
+          <rect class="m-etiqueta-fondo" x="14" y="25" width="98" height="18" rx="5"/>
+          <text class="m-etiqueta" x="22" y="38">VUESTRA RED</text>
+
+          <!-- Vuestros programas -->
+          <rect class="m-caja" x="26" y="118" width="126" height="78" rx="12"/>
+          <text class="m-caja-txt" x="89" y="152">Vuestros</text>
+          <text class="m-caja-txt" x="89" y="172">programas</text>
+
+          <path class="m-via" d="M152 157 H205"/>
+
+          <!-- El punto único de salida -->
+          <rect class="m-nodo" x="205" y="97" width="118" height="120" rx="14"/>
+          <rect class="m-late" x="205" y="97" width="118" height="120" rx="14"/>
+          <g transform="translate(254 124)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="m-glifo" aria-hidden="true">
+              <circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>
+            </svg>
+          </g>
+          <text class="m-nodo-txt" x="264" y="173">SynapseAI</text>
+          <text class="m-nodo-pie" x="264" y="193">el único paso</text>
+
+          <!-- El único cable que cruza hacia fuera -->
+          <path class="m-via" d="M323 157 H392"/>
+          <path class="m-via m-fan" d="M392 157 L416 96"/>
+          <path class="m-via m-fan" d="M392 157 H416"/>
+          <path class="m-via m-fan" d="M392 157 L416 218"/>
+
+          <rect class="m-chip" x="416" y="78" width="136" height="36" rx="10"/>
+          <text class="m-chip-txt" x="484" y="101">ChatGPT</text>
+          <rect class="m-chip" x="416" y="139" width="136" height="36" rx="10"/>
+          <text class="m-chip-txt" x="484" y="162">Claude</text>
+          <rect class="m-chip" x="416" y="200" width="136" height="36" rx="10"/>
+          <text class="m-chip-txt" x="484" y="223">Gemini</text>
+
+          <!-- Los dos puntos que recorren el camino -->
+          <circle class="m-punto m-entra" cx="152" cy="157" r="4.5"/>
+          <circle class="m-punto m-sale" cx="323" cy="157" r="4.5"/>
+
+          <text class="m-pie" x="238" y="316">Sale de vuestra red por un solo sitio, y ya sin datos de personas.</text>
+        </svg>
+      </figure>
+
+      <!-- Hechos numéricos, pegados al pie de la columna -->
       <div style="display:grid;gap:0;border-top:1px solid oklch(0.905 0.022 280)">
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
-          <span style="min-width:104px;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:23px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">1 línea</span>
+          <span style="min-width:118px;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">1 línea</span>
           <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Una línea en tus programas. Nada más que tocar.</span>
         </div>
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
-          <span style="min-width:104px;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:23px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">8 formatos</span>
+          <span style="min-width:118px;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">8 formatos</span>
           <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Documentos de España, México, Brasil y cuentas europeas.</span>
         </div>
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
-          <span style="min-width:104px;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:23px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">0 nubes</span>
+          <span style="min-width:118px;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">0 nubes</span>
           <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Corre en tu red. No nos llega ni una estadística.</span>
         </div>
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
-          <span style="min-width:104px;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:23px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">0 certif.</span>
+          <span style="min-width:118px;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">0 certif.</span>
           <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Ni SOC 2 ni ISO 27001. Lo decimos aquí, no en la letra pequeña.</span>
         </div>
+      </div>
       </div>
     </div>
 
@@ -119,23 +170,25 @@
 <!-- SECCIÓN 01: Todo pasa por el mismo sitio (FONDO OSCURO DE TINTA) ──────────── -->
 <section id="arquitectura" class="seccion-fondo">
     <div class="fondo-video">
-      <!-- El vídeo ES la sección. Va a ancho completo y su proporción marca el
-           alto de la banda, así que llena el espacio sin recortarse. La mitad
-           de arriba se dejó vacía al renderizarlo: es donde cae el titular. -->
-      <video
-        src="/media/recorrido.mp4"
-        poster="/media/recorrido-poster.jpg"
-        autoplay
-        loop
-        muted
-        playsinline
-        preload="metadata"
-        disablepictureinpicture
-        aria-label="Una petición cruza los seis pasos. Al llegar al tercero, el DNI, la cuenta y la tarjeta se sustituyen por [borrado] antes de salir hacia la IA."
-      ></video>
+      <!-- El vídeo es la sección, pero no rompe la medida: la banda oscura va a
+           sangre y el vídeo se queda dentro del mismo ancho de página que todo
+           lo demas, así que su borde izquierdo cae en la misma linea que el
+           titular de la seccion anterior. La mitad de arriba del fotograma se
+           dejó vacía al renderizarlo: es donde cae el titular. -->
+      <div class="fondo-lienzo">
+        <video
+          src="/media/recorrido.mp4"
+          poster="/media/recorrido-poster.jpg"
+          autoplay
+          loop
+          muted
+          playsinline
+          preload="metadata"
+          disablepictureinpicture
+          aria-label="Una petición cruza los seis pasos. Al llegar al tercero, el DNI, la cuenta y la tarjeta se sustituyen por [borrado] antes de salir hacia la IA."
+        ></video>
 
-      <div class="fondo-texto">
-        <div class="wrap">
+        <div class="fondo-texto">
           <span class="paso-num">01</span>
           <h2>Todo pasa por el mismo sitio</h2>
           <button type="button" class="ver-entero" id="btn-ver-entero">
@@ -147,25 +200,23 @@
       </div>
     </div>
 
-    <div class="wrap garantias-banda">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0 40px;margin-top:44px">
-      <div style="padding:20px 0 0;border-top:1px solid oklch(0.32 0.030 280)">
-        <p style="margin:0 0 6px;font-family:Montserrat,sans-serif;font-weight:600;font-size:16px;color:oklch(0.97 0.010 280)">Sin salto silencioso</p>
-        <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.75 0.020 280)">Si esto se cae, vuestros programas reciben un error y se enteran. Nunca una respuesta que nadie haya revisado.</p>
+    <div class="wrap garantias">
+      <div class="garantia">
+        <h3>Sin salto silencioso</h3>
+        <p>Si esto se cae, vuestros programas reciben un error y se enteran. Nunca una respuesta que nadie haya revisado.</p>
       </div>
-      <div style="padding:20px 0 0;border-top:1px solid oklch(0.32 0.030 280)">
-        <p style="margin:0 0 6px;font-family:Montserrat,sans-serif;font-weight:600;font-size:16px;color:oklch(0.97 0.010 280)">Funciona con lo que ya tenéis</p>
-        <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.75 0.020 280)">Habla el mismo idioma que la IA que ya usáis, así que vuestros programas siguen funcionando sin reescribir nada.</p>
+      <div class="garantia">
+        <h3>Funciona con lo que ya tenéis</h3>
+        <p>Habla el mismo idioma que la IA que ya usáis, así que vuestros programas siguen funcionando sin reescribir nada.</p>
       </div>
-      <div style="padding:20px 0 0;border-top:1px solid oklch(0.32 0.030 280)">
-        <p style="margin:0 0 6px;font-family:Montserrat,sans-serif;font-weight:600;font-size:16px;color:oklch(0.97 0.010 280)">Reversible en un minuto</p>
-        <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.75 0.020 280)">Se deshace el cambio y todo vuelve a estar como estaba. No retenemos ningún dato vuestro, porque nunca sale de vuestra red.</p>
+      <div class="garantia">
+        <h3>Reversible en un minuto</h3>
+        <p>Se deshace el cambio y todo vuelve a estar como estaba. No retenemos ningún dato vuestro, porque nunca sale de vuestra red.</p>
       </div>
-    </div>
     </div>
   </section>
 
-  <section id="capas" style="max-width:1180px;margin:0 auto;padding:80px 28px 56px">
+<section id="capas" style="max-width:1180px;margin:0 auto;padding:80px 28px 56px">
   <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:32px">
     <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">02</span>
     <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Hace tres cosas. Y le decimos hasta dónde llega cada una.</h2>
