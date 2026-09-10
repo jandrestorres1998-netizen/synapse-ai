@@ -4,13 +4,14 @@
    Los usan el panel y el sitio público. Un solo sitio donde vive el color, la
    tipografía y el movimiento, para que la landing no derive del panel.
 
-   El color solo aparece cuando significa algo: el gris es el estado normal,
-   cada sección tiene su acento y cada estado su tono. Bordes de 1px, sin
-   sombras ni resplandores: la separación la hace la línea, no el efecto.
+   Valores tomados del lienzo de rediseño v2, sin reinterpretar. La jerarquía
+   principal es una superficie OSCURA: la acción primaria, la barra lateral del
+   panel y las secciones que sostienen el argumento van en tinta. El fondo
+   claro es para leer; el oscuro es para «esto es lo importante» y «actúa aquí».
    =========================================================================== */
 
 :root {
-  /* ── Superficies ──────────────────────────────────────────────────────
+  /* ── Superficies claras ───────────────────────────────────────────────
      El fondo no es gris neutro: lleva croma 0.014 en 280°. Es un blanco
      levemente frío que impide que los acentos azules y violetas parezcan
      pegados encima. */
@@ -19,7 +20,22 @@
   --surface:       oklch(1 0 0);
   --surface-quiet: oklch(0.963 0.020 280);
 
-  /* ── Tinta ────────────────────────────────────────────────────────── */
+  /* ── Superficie oscura ────────────────────────────────────────────────
+     No es «modo oscuro»: es un material más del sistema claro. */
+  --ink-surface:       oklch(0.21 0.035 280);
+  --ink-surface-hover: oklch(0.28 0.040 280);
+  --ink-surface-raised:oklch(0.26 0.035 280);
+  --ink-surface-line:  oklch(0.32 0.030 280);
+
+  /* Rampa de texto sobre la superficie oscura. */
+  --on-ink-strong: oklch(0.97 0.010 280);
+  --on-ink:        oklch(0.94 0.012 280);
+  --on-ink-muted:  oklch(0.75 0.020 280);
+  --on-ink-faint:  oklch(0.68 0.020 280);
+  --on-ink-accent: oklch(0.80 0.14 255);
+  --on-ink-code:   oklch(0.90 0.030 255);
+
+  /* ── Tinta sobre claro ────────────────────────────────────────────── */
   --ink-strong: oklch(0.18 0.05 280);
   --ink:        oklch(0.24 0.045 280);
   --ink-muted:  oklch(0.51 0.028 280);
@@ -51,20 +67,30 @@
   --warning-ink:  oklch(0.52 0.15 62);
   --critical-ink: oklch(0.50 0.20 22);
 
+  /* Y estas, cuando el color va sobre la superficie oscura. */
+  --ok-on-ink:      oklch(0.72 0.14 150);
+  --warning-on-ink: oklch(0.86 0.13 62);
+
   /* ── Fondos tenues de estado ──────────────────────────────────────── */
   --critical-soft: oklch(0.945 0.060 22);
   --warning-soft:  oklch(0.965 0.050 62);
   --ok-soft:       oklch(0.965 0.045 150);
   --neutral-soft:  oklch(0.945 0.030 280);
 
-  /* ── Forma ────────────────────────────────────────────────────────── */
-  --radius-sm: 8px;
-  --radius:    12px;
-  --radius-lg: 14px;
+  /* ── Forma ──────────────────────────────────────────────────────────── */
+  --radius-xs: 6px;   /* código en línea, etiquetas */
+  --radius-sm: 9px;   /* botones, campos */
+  --radius:    13px;  /* tarjetas */
+  --radius-lg: 14px;  /* contenedores grandes */
+  --radius-pill: 999px;
 
   /* Una sola sombra en todo el sistema, y solo para lo que flota. Las
      tarjetas se separan con línea. */
   --shadow-float: 0 1px 2px oklch(0.24 0.045 280 / 0.05);
+
+  /* ── Retícula ───────────────────────────────────────────────────────── */
+  --page: 1180px;
+  --gutter: 28px;
 
   /* ── Tipografía ───────────────────────────────────────────────────── */
   --font-display: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
@@ -77,7 +103,7 @@
   --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast: 120ms;
-  --dur:      180ms;
+  --dur:      200ms;
   --dur-slow: 260ms;
 }
 
@@ -95,7 +121,7 @@ body {
 h1, h2, h3 {
   font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   margin: 0;
   text-wrap: balance;
 }
@@ -126,6 +152,17 @@ code {
   border-radius: 4px;
 }
 
+/* ── Superficie oscura: todo lo que caiga dentro hereda su rampa ────────── */
+
+.on-ink {
+  background: var(--ink-surface);
+  color: var(--on-ink);
+}
+.on-ink h1, .on-ink h2, .on-ink h3, .on-ink h4 { color: var(--on-ink-strong); }
+.on-ink .eyebrow { color: var(--on-ink-muted); }
+.on-ink a { color: var(--on-ink-accent); }
+.on-ink :focus-visible { outline-color: var(--on-ink-accent); }
+
 /* Se conserva la confirmación de copiado, que es funcional; se desactiva todo
    lo demás. Ver §7 del brief. */
 @media (prefers-reduced-motion: reduce) {
@@ -138,6 +175,11 @@ code {
 }
 
 @keyframes etapa {
-  from { opacity: 0; transform: translateY(4px); }
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes subir {
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: none; }
 }

@@ -104,6 +104,8 @@ class Landing {
     this.wireDemo();
     this.wireCodigo();
     this.wirePreguntas();
+    this.wireDeslizadores();
+    this.wireRevelado();
   }
 
   /**
@@ -251,7 +253,7 @@ class Landing {
           ${esc(p.q)}
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
         </button>
-        <div class="faq-a" id="faq-a-${i}" hidden><p>${esc(p.a)}</p></div>
+        <div class="faq-a-wrap"><div class="faq-a" id="faq-a-${i}"><div class="faq-a-inner"><p>${esc(p.a)}</p></div></div></div>
       </div>`).join('');
 
     caja.querySelectorAll('.faq-item').forEach(item => {
@@ -261,19 +263,97 @@ class Landing {
         caja.querySelectorAll('.faq-item').forEach(otro => {
           otro.dataset.abierta = '0';
           otro.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
-          otro.querySelector('.faq-a').hidden = true;
         });
 
         if (!abierta) {
           item.dataset.abierta = '1';
           item.querySelector('.faq-q').setAttribute('aria-expanded', 'true');
-          item.querySelector('.faq-a').hidden = false;
         }
       });
     });
 
     // La primera abierta: la secci\u00f3n tiene que leerse sin tocar nada.
     caja.querySelector('.faq-q')?.click();
+  }
+
+  /**
+   * Indicadores que se deslizan: uno bajo la navegacion y otro tras las
+   * pestanas de codigo. El elemento es siempre el mismo y viaja, en vez de
+   * aparecer y desaparecer en cada sitio; eso es lo que hace que el ojo siga
+   * el recorrido en lugar de perderlo en cada salto.
+   */
+  static wireDeslizadores() {
+    const nav = document.querySelector('.site-nav');
+    const glide = nav?.querySelector('.nav-glide');
+
+    if (nav && glide) {
+      const mover = destino => {
+        glide.style.width = destino.offsetWidth + 'px';
+        glide.style.transform = 'translateX(' + destino.offsetLeft + 'px)';
+        glide.style.opacity = '1';
+      };
+
+      nav.querySelectorAll('a').forEach(enlace => {
+        enlace.addEventListener('mouseenter', () => mover(enlace));
+        enlace.addEventListener('focus', () => mover(enlace));
+      });
+      nav.addEventListener('mouseleave', () => { glide.style.opacity = '0'; });
+    }
+
+    const tabs = document.querySelector('.code-tabs');
+    const tabGlide = tabs?.querySelector('.tab-glide');
+
+    if (tabs && tabGlide) {
+      this.moverTabGlide = () => {
+        const activa = tabs.querySelector('.btn-tab.active');
+        if (!activa) return;
+        tabGlide.style.width = activa.offsetWidth + 'px';
+        tabGlide.style.transform = 'translateX(' + (activa.offsetLeft - 8) + 'px)';
+      };
+      this.moverTabGlide();
+      window.addEventListener('resize', () => this.moverTabGlide());
+    }
+  }
+
+  /**
+   * Revelado al entrar en pantalla, una sola vez por elemento. La clase
+   * `js-reveal` se pone desde aqui: si el JS no corre, o el navegador no
+   * soporta IntersectionObserver, la pagina queda visible tal cual en vez de
+   * quedarse en blanco esperando un observador que no va a llegar.
+   */
+  static wireRevelado() {
+    if (!('IntersectionObserver' in window)) return;
+
+    const grupos = document.querySelectorAll('.reveal-group');
+    if (!grupos.length) return;
+
+    document.documentElement.classList.add('js-reveal');
+
+    const objetivos = [];
+    grupos.forEach(grupo => {
+      [...grupo.children].forEach(hijo => {
+        hijo.classList.add('reveal');
+        objetivos.push(hijo);
+      });
+    });
+
+    const observador = new IntersectionObserver(entradas => {
+      entradas.forEach(entrada => {
+        if (!entrada.isIntersecting) return;
+        entrada.target.classList.add('visible');
+        observador.unobserve(entrada.target);
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    objetivos.forEach(objetivo => {
+      // Lo que ya se ve al cargar entra visible: la primera pantalla no puede
+      // depender de un scroll que quiza no ocurra.
+      if (objetivo.getBoundingClientRect().top < window.innerHeight) {
+        objetivo.classList.add('visible');
+      } else {
+        observador.observe(objetivo);
+      }
+    });
   }
 
   static wireCodigo() {
@@ -287,6 +367,7 @@ class Landing {
       boton.addEventListener('click', () => {
         document.querySelectorAll('[data-lang]').forEach(b => b.classList.toggle('active', b === boton));
         pintar(boton.dataset.lang);
+        this.moverTabGlide?.();
       });
     });
 

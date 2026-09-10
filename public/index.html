@@ -26,11 +26,20 @@
     </div>
 
     <nav class="side-nav" aria-label="Módulos">
-      <button class="side-item active" data-tab="probar"><span class="chip"></span>Probar</button>
-      <button class="side-item" data-tab="actividad"><span class="chip"></span>Actividad</button>
-      <button class="side-item" data-tab="proteccion"><span class="chip"></span>Protección</button>
-      <button class="side-item" data-tab="contexto"><span class="chip"></span>Contexto</button>
-      <button class="side-item" data-tab="ajustes"><span class="chip"></span>Ajustes</button>
+      <div class="side-group">
+        <p class="side-group-label">Operación</p>
+        <button class="side-item active" data-tab="probar"><span class="chip"></span>Probar</button>
+        <button class="side-item" data-tab="actividad"><span class="chip"></span>Actividad</button>
+      </div>
+      <div class="side-group">
+        <p class="side-group-label">Gobierno</p>
+        <button class="side-item" data-tab="proteccion"><span class="chip"></span>Protección</button>
+      </div>
+      <div class="side-group">
+        <p class="side-group-label">Configuración</p>
+        <button class="side-item" data-tab="contexto"><span class="chip"></span>Contexto</button>
+        <button class="side-item" data-tab="ajustes"><span class="chip"></span>Ajustes</button>
+      </div>
     </nav>
 
     <div class="side-block" id="spend-chip">
