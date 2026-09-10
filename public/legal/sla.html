@@ -22,55 +22,44 @@
   <article class="doc">
     <div class="doc-head">
       <h1>Acuerdo de nivel de servicio (SLA)</h1>
-      <p class="resumen">Compromisos formales de tiempo de respuesta, procedimiento de escalado y resolución de incidencias técnicas para los planes comerciales de soporte y despliegue.</p>
+      <p class="resumen">En qué condiciones se atiende un fallo o una duda. Hoy no hay ningún plazo comprometido por contrato, y esta página existe para decirlo con todas las letras.</p>
       <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
     </div>
 
     <div class="doc-note">
-      <p><strong>La versión gratuita de SynapseAI tiene el mismo código que la de pago.</strong></p>
-      <p>No existen funciones bajo llave ni restricciones artificiales. Lo que se contrata con los planes de pago es <strong>tiempo garantizado de ingenieros</strong> para resolver dudas, auditar despliegues y adaptar reglas de borrado a vuestros formatos internos.</p>
+      <p><strong>Hoy no hay acuerdo de nivel de servicio.</strong></p>
+      <p>Ni tiempos de respuesta garantizados, ni horario de atención comprometido, ni canal
+      privado. Preferimos decirlo aquí antes que publicar una tabla de plazos que nadie
+      pueda sostener: un acuerdo de nivel de servicio es un compromiso por escrito, y
+      quien lo lea va a contar las horas.</p>
     </div>
 
-    <h2>1. Niveles de severidad y tiempos de respuesta</h2>
-    <p>Los tiempos de respuesta garantizados se miden desde la recepción de la notificación técnica hasta la primera respuesta sustantiva emitida por un programador del equipo:</p>
+    <h2>1. Qué hay ahora mismo</h2>
+    <p>
+      El programa es libre y se instala en vuestros servidores. Las dudas y los fallos se
+      atienden en el repositorio público, según la disponibilidad de la comunidad y de
+      quien lleva el proyecto. Sin plazo comprometido.
+    </p>
+    <p>
+      Que no haya plazo contratado no quiere decir que no haya respuesta: si encontráis un
+      fallo de seguridad, la vía es la del
+      <a href="/legal/vulnerabilidades">aviso de vulnerabilidades</a>, y ahí sí está escrito
+      cómo se trata.
+    </p>
 
-    <div style="overflow-x:auto;margin:24px 0">
-      <table style="width:100%;border-collapse:collapse;font-size:14px;line-height:1.5">
-        <thead>
-          <tr style="border-bottom:2px solid var(--line);text-align:left">
-            <th style="padding:10px 12px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Severidad</th>
-            <th style="padding:10px 12px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Definición</th>
-            <th style="padding:10px 12px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Plan Soporte (290 €)</th>
-            <th style="padding:10px 12px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Despliegue Guiado (890 €)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom:1px solid var(--line)">
-            <td style="padding:12px;font-weight:600;color:oklch(0.55 0.22 25)">Severidad 1 (Crítica)</td>
-            <td style="padding:12px;color:var(--ink-muted)">Caída total del servicio que interrumpe por completo la operativa de IA en vuestra empresa sin alternativa viable.</td>
-            <td style="padding:12px;color:var(--ink-strong);font-weight:500">&le; 4 horas laborables</td>
-            <td style="padding:12px;color:var(--ink-strong);font-weight:500">&le; 2 horas laborables</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--line)">
-            <td style="padding:12px;font-weight:600;color:oklch(0.60 0.18 62)">Severidad 2 (Alta)</td>
-            <td style="padding:12px;color:var(--ink-muted)">Fallo parcial de un filtro de borrado o error al conectar con un proveedor de reserva habiendo otro disponible.</td>
-            <td style="padding:12px;color:var(--ink-muted)">&le; 8 horas laborables</td>
-            <td style="padding:12px;color:var(--ink-strong);font-weight:500">&le; 4 horas laborables</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--line)">
-            <td style="padding:12px;font-weight:600;color:var(--ink-strong)">Severidad 3 (Consulta)</td>
-            <td style="padding:12px;color:var(--ink-muted)">Consultas de configuración, optimización de caché, dudas sobre el archivo .env o adaptación de reglas a nuevos formatos internos.</td>
-            <td style="padding:12px;color:var(--ink-muted)">&le; 24 horas laborables</td>
-            <td style="padding:12px;color:var(--ink-muted)">&le; 12 horas laborables</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h2>2. Ventana de servicio y canales de contacto</h2>
+    <h2>2. El día que exista, dirá esto</h2>
+    <p>
+      Esta es la estructura que tendrá el acuerdo cuando se ofrezca soporte contratado.
+      Los huecos en ámbar son justo lo que hay que decidir y escribir antes de publicarlo,
+      y mientras sigan en ámbar no hay nada contratado:
+    </p>
     <ul>
-      <li><strong>Horario operativo:</strong> De lunes a viernes, de 09:00 a 18:00 (hora peninsular española / CET), excluyendo festivos nacionales.</li>
-      <li><strong>Canales de atención:</strong> Correo prioritario directo con acuse de recibo y canal privado en plataforma acordada (Slack, Teams o Matrix para clientes Enterprise).</li>
+      <li><strong>Planes y precio:</strong> <span class="rellenar">[pendiente de definir]</span></li>
+      <li><strong>Qué cuenta como incidencia crítica, alta o consulta:</strong> <span class="rellenar">[pendiente de definir]</span></li>
+      <li><strong>Tiempo de primera respuesta en cada caso:</strong> <span class="rellenar">[pendiente de definir]</span></li>
+      <li><strong>Horario y días de atención:</strong> <span class="rellenar">[pendiente de definir]</span></li>
+      <li><strong>Por dónde se avisa:</strong> <span class="rellenar">[pendiente de definir]</span></li>
+      <li><strong>Qué pasa si no se cumple el plazo:</strong> <span class="rellenar">[pendiente de definir]</span></li>
     </ul>
 
     <h2>3. Exclusiones y límites de responsabilidad</h2>
@@ -83,7 +72,7 @@
     </ul>
 
     <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> Si utilizas la versión gratuita sin soporte comercial, atendemos dudas y avisos de fallos a través del repositorio público de GitHub según disponibilidad de la comunidad y del equipo de desarrollo, sin ventana de tiempo garantizada por contrato.
+      <strong>Hasta aquí llega:</strong> No existe todavía una versión con soporte contratado. Todo el mundo usa el mismo programa y se atiende por el mismo sitio, el repositorio público, sin plazo garantizado.
     </div>
 
   </article>
