@@ -1510,3 +1510,66 @@ pre.code .hl { background: color-mix(in oklch, var(--probar) 12%, transparent); 
     background: var(--ink-surface) url("/media/recorrido-poster.jpg") center / cover no-repeat;
   }
 }
+
+/* ── Enlace al vídeo entero y su diálogo ────────────────────────────────── */
+
+.ver-entero {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-left: 14px;
+  padding: 7px 14px;
+  border: 1px solid var(--ink-surface-line);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--on-ink-strong);
+  cursor: pointer;
+  vertical-align: middle;
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.ver-entero:hover { background: var(--ink-surface-hover); border-color: var(--on-ink-faint); }
+.ver-entero .dur { font-family: var(--font-mono); font-size: 12px; color: var(--on-ink-muted); }
+.ver-entero svg { transition: transform var(--dur) var(--ease-out); }
+.ver-entero:hover svg { transform: translateX(3px); }
+
+.dlg-video {
+  width: min(1280px, 92vw);
+  padding: 0;
+  border: 1px solid var(--ink-surface-line);
+  border-radius: var(--radius-lg);
+  background: var(--ink-surface);
+  color: var(--on-ink);
+  overflow: hidden;
+}
+.dlg-video::backdrop { background: oklch(0.15 0.03 280 / 0.72); backdrop-filter: blur(3px); }
+
+.dlg-barra {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--ink-surface-line);
+}
+.dlg-titulo { font-family: var(--font-display); font-weight: 600; font-size: 16px; letter-spacing: -0.02em; color: var(--on-ink-strong); }
+.dlg-nota { font-family: var(--font-mono); font-size: 12.5px; color: var(--on-ink-muted); }
+.dlg-cerrar {
+  margin-left: auto;
+  display: flex;
+  padding: 6px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--on-ink-muted);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.dlg-cerrar:hover { background: var(--ink-surface-hover); color: var(--on-ink-strong); }
+
+.dlg-video video { display: block; width: 100%; height: auto; background: var(--ink-surface); }
+
+@media (max-width: 620px) {
+  .ver-entero { margin-left: 0; margin-top: 12px; }
+}

@@ -143,6 +143,11 @@
         ></video>
         <figcaption>
           Una petición de verdad, de vuestros programas a la IA. En el paso 03 los datos se sustituyen, y ya no vuelven.
+          <button type="button" class="ver-entero" id="btn-ver-entero">
+            Verlo entero
+            <span class="dur">90 s</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
         </figcaption>
       </figure>
 
@@ -687,5 +692,26 @@ client = OpenAI(
 </div>
 
 <script type="module" src="js/landing.js"></script>
+
+<!-- El vídeo entero. El <video> nace sin src: 14 MB no se descargan a nadie
+     que no haya pedido verlo. -->
+<dialog id="dlg-video" class="dlg-video" aria-label="El recorrido completo de una petición, 90 segundos">
+  <div class="dlg-barra">
+    <span class="dlg-titulo">El recorrido, entero</span>
+    <span class="dlg-nota">90 segundos · sin voz</span>
+    <button type="button" class="dlg-cerrar" id="btn-cerrar-video" aria-label="Cerrar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+  <video
+    id="video-completo"
+    poster="/media/recorrido-completo-poster.jpg"
+    controls
+    playsinline
+    preload="none"
+  ></video>
+</dialog>
+
+<script type="module" src="/js/video-completo.js"></script>
 </body>
 </html>
