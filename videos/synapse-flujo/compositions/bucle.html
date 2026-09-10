@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=520" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=block"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* =====================================================================
+         Bucle de 14 s para la sección «Todo pasa por el mismo sitio».
+
+         Está construido para repetirse sin costura: en el primer y en el
+         último fotograma el token está fuera de cuadro y todo lo demás está
+         en su estado de reposo, así que el salto no se ve. Sin texto que se
+         construya: quien llegue a mitad entiende lo mismo que quien llegue al
+         principio, que es la única forma de que un bucle informe en vez de
+         confundir.
+
+         Fondo en tinta, el mismo de la sección donde va incrustado, para que
+         no haya juntura entre el vídeo y la página.
+         ===================================================================== */
+      :root {
+        --ink-surface: oklch(0.21 0.035 280);
+        --ink-raised: oklch(0.26 0.035 280);
+        --ink-line: oklch(0.32 0.030 280);
+        --on-ink: oklch(0.94 0.012 280);
+        --on-ink-strong: oklch(0.97 0.010 280);
+        --on-ink-muted: oklch(0.75 0.020 280);
+        --on-ink-faint: oklch(0.62 0.022 280);
+
+        --probar: oklch(0.70 0.16 255);
+        --warning: oklch(0.78 0.16 62);
+        --ok: oklch(0.72 0.14 150);
+        --contexto: oklch(0.72 0.16 305);
+
+        --display: "Montserrat", sans-serif;
+        --ui: "Poppins", sans-serif;
+        --mono: "DM Mono", monospace;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 520px; overflow: hidden; background: var(--ink-surface); }
+      body { font-family: var(--ui); color: var(--on-ink); }
+
+      .clip {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 520px;
+        background: var(--ink-surface);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 90px;
+      }
+
+      .rotulo {
+        font-family: var(--ui);
+        font-weight: 600;
+        font-size: 20px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--on-ink-faint);
+        margin-bottom: 22px;
+      }
+
+      /* La vía por la que cruza el token, con las seis puertas encima. */
+      .pista { position: relative; height: 250px; }
+      .via {
+        position: absolute;
+        top: 200px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--ink-line);
+      }
+
+      .puertas {
+        position: absolute;
+        top: 22px;
+        left: 268px;
+        right: 268px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .puerta {
+        width: 208px;
+        padding: 26px 20px;
+        border: 1px solid var(--ink-line);
+        border-radius: 16px;
+        background: var(--ink-raised);
+        text-align: center;
+      }
+      .puerta .n { font-family: var(--mono); font-size: 22px; color: var(--on-ink-faint); }
+      .puerta .que { display: block; margin-top: 12px; font-size: 24px; line-height: 1.35; color: var(--on-ink); }
+      .puerta .halo {
+        position: absolute;
+        inset: -3px;
+        border-radius: 19px;
+        border: 2px solid var(--probar);
+        opacity: 0;
+        pointer-events: none;
+      }
+      .puerta { position: relative; }
+
+      /* Extremos: de dónde viene y a dónde va. */
+      .extremo {
+        position: absolute;
+        top: 152px;
+        width: 232px;
+        padding: 24px 20px;
+        border: 1px solid var(--ink-line);
+        border-radius: 14px;
+        background: var(--ink-raised);
+        font-size: 25px;
+        color: var(--on-ink-muted);
+        text-align: center;
+      }
+      .extremo.izq { left: 0; }
+      .extremo.der { right: 0; }
+
+      .token {
+        position: absolute;
+        top: 170px;
+        left: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 18px 24px;
+        border-radius: 12px;
+        background: oklch(0.30 0.040 278);
+        border: 1px solid var(--ink-line);
+        font-family: var(--mono);
+        font-size: 25px;
+        color: var(--on-ink);
+        white-space: nowrap;
+      }
+      .dato {
+        padding: 3px 10px;
+        border-radius: 7px;
+        background: oklch(0.38 0.09 62);
+        color: oklch(0.94 0.08 80);
+      }
+      .dato.borrado { background: oklch(0.32 0.07 150); color: oklch(0.90 0.10 150); }
+
+      .titular {
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: 62px;
+        letter-spacing: -0.03em;
+        color: var(--on-ink-strong);
+        margin-bottom: 14px;
+      }
+      .apoyo { font-size: 30px; color: var(--on-ink-muted); max-width: 62ch; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="bucle"
+      data-start="0"
+      data-duration="14"
+      data-width="1920"
+      data-height="520"
+    >
+      <div class="clip" id="escena" data-start="0" data-duration="14" data-track-index="0">
+        <div class="pista">
+          <div class="via"></div>
+
+          <div class="extremo izq">Vuestros<br />programas</div>
+
+          <div class="puertas">
+            <div class="puerta" id="p1"><span class="halo"></span><span class="n">01</span><span class="que">Quién<br />pregunta</span></div>
+            <div class="puerta" id="p2"><span class="halo"></span><span class="n">02</span><span class="que">Intentos<br />de engaño</span></div>
+            <div class="puerta" id="p3"><span class="halo"></span><span class="n">03</span><span class="que">Datos de<br />personas</span></div>
+            <div class="puerta" id="p4"><span class="halo"></span><span class="n">04</span><span class="que">Vuestras<br />instrucciones</span></div>
+            <div class="puerta" id="p5"><span class="halo"></span><span class="n">05</span><span class="que">¿Ya se<br />preguntó?</span></div>
+            <div class="puerta" id="p6"><span class="halo"></span><span class="n">06</span><span class="que">Se anota<br />lo que salió</span></div>
+          </div>
+
+          <div class="extremo der">La IA</div>
+
+          <div class="token" id="token">
+            Factura del cliente
+            <span class="dato" id="d1">DNI 12345678Z</span>
+            <span class="dato" id="d2">ES91 ···· 1332</span>
+            <span class="dato" id="d3">4111 ···· 1111</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Fuera de cuadro por la izquierda al empezar y por la derecha al acabar:
+      // el fotograma 0 y el último son iguales, así que el salto no se nota.
+      const ENTRA = -880;
+      const SALE = 2120;
+
+      tl.set("#token", { x: ENTRA })
+        .set(["#d1", "#d2", "#d3"], { className: "dato" })
+        .set(".halo", { opacity: 0 });
+
+      // Un solo recorrido continuo. La velocidad es constante: el token no
+      // acelera ni frena, porque lo que se cuenta es que nada se salta un paso.
+      tl.to("#token", { x: SALE, duration: 12.6, ease: "none" }, 0.7);
+
+      // Cada puerta se enciende cuando el token la cruza y se apaga detrás.
+      const puertas = ["#p1", "#p2", "#p3", "#p4", "#p5", "#p6"];
+      puertas.forEach((p, i) => {
+        const cuando = 2.0 + i * 1.62;
+        tl.to(`${p} .halo`, { opacity: 1, duration: 0.22, ease: "power2.out" }, cuando)
+          .to(`${p} .halo`, { opacity: 0, duration: 0.5, ease: "power2.in" }, cuando + 0.62);
+      });
+
+      // En la puerta 03 los tres datos se sustituyen a la vista. Es el momento
+      // que justifica todo lo demás, así que ocurre despacio y en cascada.
+      const enTercera = 2.0 + 2 * 1.62;
+      [["#d1", "[borrado]"], ["#d2", "[borrado]"], ["#d3", "[borrado]"]].forEach(([sel, texto], i) => {
+        tl.to(sel, {
+          duration: 0.18,
+          ease: "power2.in",
+          onComplete: () => {
+            const el = document.querySelector(sel);
+            el.textContent = texto;
+            el.classList.add("borrado");
+          },
+          onReverseComplete: () => {
+            const el = document.querySelector(sel);
+            el.textContent = ["DNI 12345678Z", "ES91 ···· 1332", "4111 ···· 1111"][i];
+            el.classList.remove("borrado");
+          }
+        }, enTercera + 0.1 + i * 0.16);
+      });
+
+      window.__timelines["bucle"] = tl;
+    </script>
+  </body>
+</html>

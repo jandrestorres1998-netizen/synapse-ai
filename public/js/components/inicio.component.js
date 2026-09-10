@@ -108,6 +108,8 @@ export class InicioComponent {
 
     return `
       <div class="stack">
+        ${this.guiaPrimeraEjecucion(stats)}
+
         <div class="grid kpis">${kpis}</div>
 
         <div class="grid cols">
@@ -218,11 +220,104 @@ export class InicioComponent {
       </div>`).join('');
   }
 
+  guiaPrimeraEjecucion(stats) {
+    const key = localStorage.getItem('synapse_api_key') || sessionStorage.getItem('synapse_api_key');
+    const claveValida = Boolean(key && key.trim().length > 0);
+
+    const providers = stats.providers ?? {};
+    const tieneProveedor = Object.entries(providers).some(([n, p]) => p.configured && n !== 'mock');
+
+    const tienePeticiones = (stats.counters?.requestsTotal ?? 0) > 0;
+
+    const progreso = [claveValida, tieneProveedor, tienePeticiones].filter(Boolean).length;
+
+    return `
+      <div class="onboarding-card" id="onboarding-card">
+        <div class="onboarding-head">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="eyebrow" style="margin:0;color:var(--probar)">Alta guiada</span>
+            <span class="badge-step-count">${progreso} de 3 completados</span>
+          </div>
+          <h2 style="font-size:20px;margin:8px 0 4px;font-family:var(--font-display);color:var(--ink-strong)">
+            ${progreso === 3 ? 'Instalación completada y verificada' : 'Puesta en marcha de tu instancia en 3 pasos'}
+          </h2>
+          <p style="font-size:14px;color:var(--ink-muted);margin:0">
+            ${progreso === 3
+              ? 'Tu pasarela está plenamente operativa: clave validada, proveedores activos y peticiones registradas.'
+              : 'Sigue estos tres pasos para dejar tu pasarela funcionando con tus aplicaciones y modelos de IA.'}
+          </p>
+        </div>
+
+        <div class="onboarding-steps-grid">
+          <!-- Paso 1 -->
+          <div class="onboarding-step-item ${claveValida ? 'is-complete' : 'is-active'}">
+            <div class="step-num">${claveValida ? '✓' : '1'}</div>
+            <div class="step-content">
+              <h4>1. Clave de acceso</h4>
+              <p>Autentica tu sesión de operador para gobernar el gateway y generar claves de aplicación.</p>
+              <div class="step-action">
+                ${claveValida
+                  ? '<span class="step-status-tag ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Clave autenticada</span>'
+                  : '<button class="btn btn-sm btn-onboarding-action" data-action="focus-key">Validar clave</button>'}
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="onboarding-step-item ${tieneProveedor ? 'is-complete' : (claveValida ? 'is-active' : '')}">
+            <div class="step-num">${tieneProveedor ? '✓' : '2'}</div>
+            <div class="step-content">
+              <h4>2. Conectar proveedor</h4>
+              <p>Guarda de forma cifrada las claves de OpenAI, Anthropic, Google o tu modelo Ollama local.</p>
+              <div class="step-action">
+                ${tieneProveedor
+                  ? '<span class="step-status-tag ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Proveedores listos</span>'
+                  : '<button class="btn btn-sm btn-onboarding-action" data-action="goto-providers">Configurar en Ajustes</button>'}
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="onboarding-step-item ${tienePeticiones ? 'is-complete' : (claveValida && tieneProveedor ? 'is-active' : '')}">
+            <div class="step-num">${tienePeticiones ? '✓' : '3'}</div>
+            <div class="step-content">
+              <h4>3. Primera petición</h4>
+              <p>Envía un prompt de prueba para verificar en vivo la redacción DLP y el enrutado de coste.</p>
+              <div class="step-action">
+                ${tienePeticiones
+                  ? '<span class="step-status-tag ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Primera petición trazada</span>'
+                  : '<button class="btn btn-sm btn-onboarding-action" data-action="goto-probar">Probar en consola</button>'}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   wire() {
     this.container.querySelectorAll('.shortcut-btn').forEach(boton => {
       boton.addEventListener('click', () => {
         const destino = boton.dataset.targetTab;
         if (destino && window.switchDashboardTab) window.switchDashboardTab(destino);
+      });
+    });
+
+    this.container.querySelectorAll('.btn-onboarding-action').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const action = btn.dataset.action;
+        if (action === 'focus-key') {
+          const keyInput = document.getElementById('api-key');
+          if (keyInput) {
+            keyInput.focus();
+            keyInput.classList.add('pulse-pop');
+            setTimeout(() => keyInput.classList.remove('pulse-pop'), 800);
+          }
+        } else if (action === 'goto-providers') {
+          if (window.switchDashboardTab) window.switchDashboardTab('ajustes');
+        } else if (action === 'goto-probar') {
+          if (window.switchDashboardTab) window.switchDashboardTab('probar');
+        }
       });
     });
   }

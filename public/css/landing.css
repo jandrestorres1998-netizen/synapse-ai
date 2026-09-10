@@ -104,23 +104,40 @@ a:hover { text-decoration: underline; }
   transition:
     background var(--dur-fast) var(--ease-out),
     border-color var(--dur-fast) var(--ease-out),
-    transform var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    transform 70ms cubic-bezier(0.2, 0.8, 0.2, 1),
     box-shadow var(--dur) var(--ease-out);
 }
-.btn:hover { background: var(--ink-surface-hover); color: var(--on-ink-strong); text-decoration: none; transform: translateY(-1px); box-shadow: 0 4px 14px oklch(0.21 0.035 280 / 0.18); }
-.btn:active { transform: translateY(0); box-shadow: none; }
-.btn:disabled { opacity: 0.55; cursor: default; transform: none; box-shadow: none; }
+.btn:hover { background: var(--ink-surface-hover); color: var(--on-ink-strong); text-decoration: none; transform: translateY(-1.5px); box-shadow: 0 4px 14px oklch(0.21 0.035 280 / 0.18); }
+.btn:active { transform: scale(0.965) translateY(1px) !important; box-shadow: 0 1px 3px oklch(0.21 0.035 280 / 0.12); transition: transform 45ms cubic-bezier(0.2, 0.8, 0.2, 1) !important; }
+.btn:disabled { opacity: 0.55; cursor: default; transform: none; box-shadow: none; pointer-events: none; }
 .btn-lg { height: 44px; padding: 0 18px; font-size: 15px; }
 .btn-xl { height: 48px; padding: 0 22px; font-size: 15.5px; border-radius: 10px; }
 
 .btn-secondary { background: var(--surface); color: var(--ink); border-color: var(--line-strong); }
-.btn-secondary:hover { background: var(--surface); color: var(--ink); border-color: var(--ink-surface); box-shadow: 0 4px 14px oklch(0.21 0.035 280 / 0.08); }
+.btn-secondary:hover { background: var(--surface); color: var(--ink); border-color: var(--ink-surface); transform: translateY(-1.5px); box-shadow: 0 4px 14px oklch(0.21 0.035 280 / 0.08); }
+.btn-secondary:active { transform: scale(0.965) translateY(1px) !important; box-shadow: none; transition: transform 45ms cubic-bezier(0.2, 0.8, 0.2, 1) !important; }
 
 /* Sobre tinta se invierten: el primario pasa a claro. */
 .band .btn { background: var(--on-ink-strong); color: var(--ink-strong); }
-.band .btn:hover { background: oklch(0.88 0.014 280); color: var(--ink-strong); box-shadow: 0 4px 18px oklch(0 0 0 / 0.28); }
+.band .btn:hover { background: oklch(0.88 0.014 280); color: var(--ink-strong); transform: translateY(-1.5px); box-shadow: 0 4px 18px oklch(0 0 0 / 0.28); }
+.band .btn:active { transform: scale(0.965) translateY(1px) !important; box-shadow: none; transition: transform 45ms cubic-bezier(0.2, 0.8, 0.2, 1) !important; }
 .band .btn-secondary { background: transparent; color: var(--on-ink-strong); border-color: var(--ink-surface-line); }
-.band .btn-secondary:hover { background: var(--ink-surface-hover); color: var(--on-ink-strong); border-color: var(--ink-surface-line); }
+.band .btn-secondary:hover { background: var(--ink-surface-hover); color: var(--on-ink-strong); border-color: var(--ink-surface-line); transform: translateY(-1.5px); }
+.band .btn-secondary:active { transform: scale(0.965) translateY(1px) !important; transition: transform 45ms cubic-bezier(0.2, 0.8, 0.2, 1) !important; }
+
+/* Regla universal para cualquier botón o elemento interactivo */
+button:not(:disabled) {
+  cursor: pointer;
+}
+button:active:not(:disabled),
+.code-tab-btn:active,
+.faq-btn:active,
+.floating-toggle button:active,
+.floating-toggle a:active {
+  transform: scale(0.965) translateY(1px);
+  transition: transform 45ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
 
 .btn-tab {
   position: relative;
@@ -134,10 +151,39 @@ a:hover { text-decoration: underline; }
   font-size: 13px;
   color: var(--ink-muted);
   cursor: pointer;
-  transition: color var(--dur-fast) var(--ease-out);
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), transform 70ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .btn-tab:hover { color: var(--ink-strong); }
+.btn-tab:active { transform: scale(0.96) !important; }
 .btn-tab.active { color: var(--ink-strong); font-weight: 500; }
+
+.code-tab-btn {
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform 70ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.code-tab-btn:hover {
+  filter: brightness(1.1);
+}
+
+/* Transición suave al cambiar código de idioma */
+#code-snippet-pre {
+  transition: opacity 120ms var(--ease-out), transform 120ms var(--ease-out);
+}
+#code-snippet-pre.anim-swap {
+  animation: itemSwap 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Tarjetas interactivas con elevación sutil */
+.audit-card, .caso-col, .endpoint-card, .doc-topic-card {
+  transition:
+    transform var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+}
+.audit-card:hover, .caso-col:hover, .endpoint-card:hover, .doc-topic-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--line-strong);
+  box-shadow: 0 6px 20px oklch(0.24 0.045 280 / 0.06);
+}
 
 /* ── Secciones ──────────────────────────────────────────────────────────── */
 
@@ -582,8 +628,44 @@ pre.code .hl { background: color-mix(in oklch, var(--probar) 12%, transparent); 
 .faq-item[data-abierta="1"] .faq-a-wrap { grid-template-rows: 1fr; }
 .faq-a { overflow: hidden; visibility: hidden; transition: visibility 0s linear var(--dur-slow); }
 .faq-item[data-abierta="1"] .faq-a { visibility: visible; transition-delay: 0s; }
-.faq-a-inner { padding: 0 0 20px; max-width: 68ch; font-size: 15.5px; line-height: 1.6; color: var(--ink-muted); }
 .faq-a-inner p { margin: 0; }
+
+.faq-item {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  transition: border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.faq-item.is-open {
+  border-color: color-mix(in oklab, var(--probar) 45%, var(--line));
+  box-shadow: 0 4px 18px oklch(0.56 0.20 255 / 0.08);
+}
+.faq-item.is-open .faq-icon,
+.faq-item.is-open .faq-icon svg,
+.faq-item.is-open .faq-q svg {
+  transform: rotate(180deg);
+  color: var(--probar);
+}
+.faq-body {
+  margin: 0;
+  max-width: 70ch;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--ink-muted);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 20px 0;
+  transition: max-height var(--dur-slow) cubic-bezier(0.22, 1, 0.36, 1), opacity var(--dur) var(--ease-out), padding var(--dur-slow) cubic-bezier(0.22, 1, 0.36, 1);
+}
+.faq-item.is-open .faq-body {
+  max-height: 500px;
+  opacity: 1;
+  padding: 0 20px 20px;
+}
+.pulse-pop {
+  animation: pulseHighlight 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
 
 /* ── Cierre ─────────────────────────────────────────────────────────────── */
 
@@ -1187,6 +1269,10 @@ pre.code .hl { background: color-mix(in oklch, var(--probar) 12%, transparent); 
   box-shadow: 0 6px 20px oklch(0.24 0.045 280 / 0.06);
   text-decoration: none;
 }
+.docs-card:active {
+  transform: scale(0.98) translateY(1px) !important;
+  transition: transform 45ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
 .docs-card-header {
   display: flex;
   align-items: center;
@@ -1315,8 +1401,112 @@ pre.code .hl { background: color-mix(in oklch, var(--probar) 12%, transparent); 
   color: var(--ink-strong);
 }
 
+/* ===========================================================================
+   Componentes de Casos de Uso por Segmento (/casos/*)
+   =========================================================================== */
+
+.caso-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-quiet);
+  border: 1px solid var(--line);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-strong);
+  margin-bottom: 16px;
+}
+
+.caso-comparativa {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin: 28px 0 32px;
+}
+.caso-col {
+  padding: 22px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.caso-col.riesgo {
+  border-left: 3px solid var(--critical);
+  background: color-mix(in oklch, var(--critical-soft) 40%, white);
+}
+.caso-col.protegido {
+  border-left: 3px solid var(--ok);
+  background: color-mix(in oklch, var(--ok-soft) 40%, white);
+}
+.caso-col h4 {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.caso-col.riesgo h4 { color: var(--critical-ink); }
+.caso-col.protegido h4 { color: var(--ok-ink); }
+
+.caso-quote {
+  margin: 24px 0 28px;
+  padding: 20px 24px;
+  border-left: 3px solid var(--ink-surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--surface-quiet);
+}
+.caso-quote p {
+  margin: 0;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-strong);
+}
+.caso-quote cite {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
 @media (max-width: 940px) {
   .doc-shell { grid-template-columns: 1fr; gap: 0; padding-top: 36px; }
   #doc-index { position: static; flex-direction: row; flex-wrap: wrap; gap: 6px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
   #doc-index a { border-left: 0; padding: 5px 10px; background: var(--surface); border: 1px solid var(--line-quiet); border-radius: var(--radius-sm); }
+}
+
+/* ── El recorrido en movimiento ─────────────────────────────────────────────
+   El vídeo se sirve a ancho completo dentro de la banda de tinta y sin borde:
+   comparte fondo con la sección, así que no hay juntura entre los dos. */
+
+.recorrido-video { margin: 0; }
+.recorrido-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  background: var(--ink-surface);
+}
+.recorrido-video figcaption {
+  margin-top: 18px;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--on-ink-muted);
+  text-align: center;
+}
+
+/* Quien pide menos movimiento recibe el fotograma, no el bucle. El póster es
+   una imagen real del vídeo, así que no se pierde nada. */
+@media (prefers-reduced-motion: reduce) {
+  .recorrido-video video { display: none; }
+  .recorrido-video::before {
+    content: "";
+    display: block;
+    width: 100%;
+    aspect-ratio: 1920 / 520;
+    border-radius: var(--radius-lg);
+    background: var(--ink-surface) url("/media/recorrido-poster.jpg") center / cover no-repeat;
+  }
 }

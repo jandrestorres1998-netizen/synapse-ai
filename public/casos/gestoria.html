@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynapseAI para Gestorías y Asesorías Fiscales</title>
+  <meta name="description" content="Protección de DNI, CIF y cuentas bancarias IBAN en gestorías y asesorías que utilizan ChatGPT, Claude o Gemini a diario.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<div class="doc-shell">
+  <nav id="doc-index" aria-label="Índice de la página"></nav>
+
+  <article class="doc">
+    <div class="doc-head">
+      <div class="caso-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="8" x2="16" y1="10" y2="10"/><line x1="8" x2="12" y1="14" y2="14"/></svg>
+        Sector: Gestorías, Asesorías Fiscales y Laborales
+      </div>
+      <h1>Tu equipo usa IA. Que no se lleve los datos de tus clientes.</h1>
+      <p class="resumen">En una gestoría circulan cientos de DNI, nóminas, modelos tributarios y cuentas de domiciliación bancaria. SynapseAI borra los identificadores confidenciales antes de que salgan hacia ChatGPT o Claude.</p>
+      <span class="fecha">Solución específica para despachos y asesorías en España</span>
+    </div>
+
+    <h2>La realidad de tu asesoría</h2>
+    <p>Tus asesores y oficiales ya usan inteligencia artificial todas las semanas: para redactar alegaciones a requerimientos de la Agencia Tributaria, resumir convenios colectivos o responder consultas complejas sobre deducciones en el IRPF.</p>
+    <p>El problema no es que usen la IA —la herramienta ahorra horas de trabajo de redacción—. El problema es <strong>el hábito de copiar y pegar</strong>: para redactar un recurso de reposición o explicar una liquidación del modelo 303, es muy tentador pegar el texto del requerimiento entero, con el DNI del cliente, el CIF de la sociedad y el número de cuenta corriente.</p>
+
+    <div class="caso-quote">
+      <p>«Un cliente te entrega sus declaraciones y sus extractos bancarios porque confía en tu despacho. Si esa información acaba en servidores de terceros en Estados Unidos para entrenar modelos, la reputación de la gestoría queda en entredicho ante la primera fuga.»</p>
+      <cite>Práctica habitual del sector fiscal y contable</cite>
+    </div>
+
+    <h2>Cómo protege a tu gestoría</h2>
+    <div class="caso-comparativa">
+      <div class="caso-col riesgo">
+        <h4>Sin SynapseAI (Riesgo real)</h4>
+        <p>El asesor pega en ChatGPT:</p>
+        <pre class="code" style="font-size:12.5px;padding:12px;background:var(--surface);margin:10px 0" data-ejemplo="true"><code>Redacta un recurso contra la liquidación provisional de Martín Salas, con DNI 12345678Z, sobre el cargo en cuenta ES91 2100 0418 4502 0005 1332.</code></pre>
+        <p style="font-size:13px;color:var(--critical-ink)"><strong>Resultado:</strong> El DNI y la cuenta bancaria salen del despacho y quedan almacenados en la nube de la compañía de IA.</p>
+      </div>
+
+      <div class="caso-col protegido">
+        <h4>Con SynapseAI (Protegido)</h4>
+        <p>SynapseAI comprueba las letras y sustituye en vuelo:</p>
+        <pre class="code" style="font-size:12.5px;padding:12px;background:var(--surface);margin:10px 0" data-ejemplo="true"><code>Redacta un recurso contra la liquidación provisional de [CLIENTE], con DNI [REDACTED_ES_DNI_NIE], sobre el cargo en cuenta [REDACTED_IBAN].</code></pre>
+        <p style="font-size:13px;color:var(--ok-ink)"><strong>Resultado:</strong> La IA redacta el recurso con la misma calidad jurídica, pero ningún dato personal sale jamás de vuestro despacho.</p>
+      </div>
+    </div>
+
+    <h2>Formatos protegidos en tu día a día</h2>
+    <ul>
+      <li><strong>DNI y NIE de administradores y autónomos:</strong> Validación estricta con algoritmo de módulo 23. Si la letra no cuadra con los 8 dígitos, no es un DNI y no se confunde con una cifra de factura.</li>
+      <li><strong>CIF de empresas y sociedades:</strong> Comprobación de la letra inicial de tipo de sociedad y dígito verificador.</li>
+      <li><strong>Cuentas bancarias (IBAN):</strong> Comprobación matemática internacional MOD-97-10 para cuentas españolas de 24 caracteres y cuentas bancarias de la Unión Europea.</li>
+      <li><strong>Tarjetas de crédito de clientes:</strong> Verificación de 16 dígitos con el algoritmo de Luhn.</li>
+    </ul>
+
+    <h2>Doble capa: en el servidor y en el navegador</h2>
+    <p>Para que la protección sea completa, el programa actúa en dos frentes:</p>
+    <ol style="margin:0 0 16px;padding-left:22px;display:grid;gap:8px">
+      <li><strong>En la red de vuestro despacho:</strong> Si usáis programas de gestión o aplicaciones que llaman a la IA por detrás, se conectan a través de SynapseAI cambiando una única línea.</li>
+      <li><strong>En el navegador de cada empleado:</strong> Con la <a href="/extension">extensión de navegador</a>, si alguien intenta pegar un DNI o un IBAN directamente en la web de ChatGPT o Claude, la pantalla se frena antes de enviar y permite sustituirlo con un clic.</li>
+    </ol>
+
+    <h2>Instalación sin complicaciones técnicas</h2>
+    <p>No necesitáis comprar servidores caros ni contratar ingenieros en la nube. El programa se instala en un ordenador de la oficina en Windows o en vuestro servidor local en menos de 15 minutos:</p>
+
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin:20px 0">
+      <a class="btn" href="/docs/instalacion" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--ink-surface);color:var(--on-ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
+        Ver guía de instalación en Windows
+      </a>
+      <a class="btn" href="/descargas" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--line-strong);color:var(--ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>
+        Descargar extensión de navegador
+      </a>
+    </div>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El programa reconoce documentos con estructura matemática formal (DNI, CIF, IBAN). No detecta si en un borrador se cuentan desavenencias familiares o datos médicos sin identificadores. La prudencia y formación del equipo siguen siendo imprescindibles.
+    </div>
+
+  </article>
+</div>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynapseAI para Agencias de Software y Equipos Dev</title>
+  <meta name="description" content="Protección contra filtración de claves API, tokens y secretos de producción en equipos de software que usan ChatGPT y Claude.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<div class="doc-shell">
+  <nav id="doc-index" aria-label="Índice de la página"></nav>
+
+  <article class="doc">
+    <div class="doc-head">
+      <div class="caso-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Sector: Agencias de Desarrollo y Equipos de Software
+      </div>
+      <h1>Tus programadores usan IA. Que no se lleven las claves de producción.</h1>
+      <p class="resumen">Al depurar un error o generar una consulta SQL, es fácil pegar un fragmento de log con una clave API activa o una cadena de conexión a base de datos. SynapseAI borra los secretos antes de que salgan del equipo.</p>
+      <span class="fecha">Seguridad para equipos de 5 a 50 desarrolladores</span>
+    </div>
+
+    <h2>El descuido clásico: pegar el log de la terminal</h2>
+    <p>En cualquier agencia o empresa de software, la IA se ha convertido en una herramienta obligatoria para programar más rápido: generar tests unitarios, buscar fallos de sintaxis o transformar esquemas de datos.</p>
+    <p>El punto ciego ocurre durante la depuración rápida: un desarrollador copia las últimas 30 líneas de un error en consola o un archivo <code>.env.local</code> para que Claude o ChatGPT le digan por qué falla la consulta. Entre ese texto viajan claves de AWS, tokens de GitHub o credenciales de conexión con contraseñas reales.</p>
+
+    <div class="caso-quote">
+      <p>«El 80 % de las fugas de credenciales en equipos técnicos no provienen de un hackeo sofisticado: suceden porque alguien pegó un stacktrace con una variable de entorno en un chat de IA para resolver un ticket urgente a las siete de la tarde.»</p>
+      <cite>Práctica habitual en equipos de ingeniería</cite>
+    </div>
+
+    <h2>Cómo protege el código de tu agencia</h2>
+    <div class="caso-comparativa">
+      <div class="caso-col riesgo">
+        <h4>Pegado sin protección</h4>
+        <p>El programador pega para resolver un error:</p>
+        <pre class="code" style="font-size:12px;padding:12px;background:var(--surface);margin:10px 0" data-ejemplo="true"><code>Error: Connection refused
+at Client.connect (postgres://admin:Password_Ejemplo_99@db.cliente.internal:5432/app)
+AWS_SECRET_KEY=mock_aws_secret_key_ejemplo</code></pre>
+        <p style="font-size:13px;color:var(--critical-ink)"><strong>Riesgo crítico:</strong> La contraseña de la base de datos de producción y la clave de AWS quedan en el historial de la nube de la IA.</p>
+      </div>
+
+      <div class="caso-col protegido">
+        <h4>Filtrado automático con SynapseAI</h4>
+        <p>SynapseAI intercepta y enmascara los secretos:</p>
+        <pre class="code" style="font-size:12px;padding:12px;background:var(--surface);margin:10px 0" data-ejemplo="true"><code>Error: Connection refused
+at Client.connect (postgres://admin:[REDACTED_PASSWORD]@db.cliente.internal:5432/app)
+AWS_SECRET_KEY=[REDACTED_AWS_SECRET]</code></pre>
+        <p style="font-size:13px;color:var(--ok-ink)"><strong>Resultado seguro:</strong> La IA analiza la causa del fallo de conexión igualmente bien, pero las credenciales no abandonan vuestra red.</p>
+      </div>
+    </div>
+
+    <h2>Secretos técnicos detectados de forma nativa</h2>
+    <ul>
+      <li><strong>Claves de API de proveedores de IA:</strong> Patrones oficiales de OpenAI (<code>sk-...</code>), Anthropic y Google.</li>
+      <li><strong>Credenciales de infraestructura en la nube:</strong> Claves de acceso y secretos de Amazon Web Services (<code>AKIA...</code>).</li>
+      <li><strong>Tokens de repositorios y despliegues:</strong> Tokens personales de GitHub (<code>ghp_...</code>, <code>gho_...</code>) y GitLab.</li>
+      <li><strong>Tokens de sesión JSON Web Token (JWT):</strong> Detección de cadenas Base64URL con estructura de cabecera y firma.</li>
+      <li><strong>Cadenas de conexión y contraseñas:</strong> Detección de esquemas de bases de datos con credenciales explícitas.</li>
+    </ul>
+
+    <h2>Control de gasto para evitar sorpresas a final de mes</h2>
+    <p>Además de la fuga de credenciales, un peligro habitual en las agencias es que un script en bucle o una prueba descontrolada consuma miles de dólares en tokens en pocas horas. SynapseAI incluye <strong>topes de gasto diarios y mensuales en dólares</strong> con reserva previa de saldo antes de cada petición.</p>
+
+    <h2>Integración en tus proyectos en 30 segundos</h2>
+    <p>El servidor habla el protocolo oficial de OpenAI. Conectar cualquier herramienta de tu equipo (un script en Python, un backend en Node.js o una aplicación de cliente) es tan sencillo como cambiar una sola línea:</p>
+
+    <pre class="code"><code># Solo añade la URL local de SynapseAI en tus scripts:
+OPENAI_BASE_URL=http://localhost:3000/v1</code></pre>
+
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0">
+      <a class="btn" href="/docs/api" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--ink-surface);color:var(--on-ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Ver referencia de API
+      </a>
+      <a class="btn" href="/docs/instalacion" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--line-strong);color:var(--ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 4 4-4 4"/></svg>
+        Desplegar con Docker
+      </a>
+    </div>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> SynapseAI detecta formatos reconocibles de secretos (claves API, tokens y cadenas estructuradas). No analiza la lógica de negocio de vuestro software ni sustituye el uso de gestores de secretos dedicados (como HashiCorp Vault o 1Password) en vuestro entorno de despliegue continuo.
+    </div>
+
+  </article>
+</div>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+</body>
+</html>

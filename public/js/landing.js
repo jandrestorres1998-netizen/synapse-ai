@@ -82,19 +82,38 @@ class Landing {
     const container = $('demo-stages-container');
     if (!container) return;
 
-    container.innerHTML = `
-      <div style="display:grid;gap:12px;padding:8px 0">
-        <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.61 0.022 280)">Pulsa «Ver qué pasa» para desplegar las cinco etapas: inyección, DLP, contexto, caché y enrutado.</p>
-        <div style="display:grid;gap:8px;opacity:0.45">
-          ${ETAPAS.map(e => `
-            <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px dashed oklch(0.905 0.022 280);border-radius:9px;background:#fff">
-              <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:oklch(0.51 0.028 280)">${e.n}</span>
-              <span style="font-size:13.5px;color:oklch(0.51 0.028 280)">${esc(e.titulo)}</span>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
+    container.replaceChildren();
+
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:grid;gap:12px;padding:8px 0';
+
+    const p = document.createElement('p');
+    p.style.cssText = 'margin:0;font-size:14px;line-height:1.55;color:oklch(0.61 0.022 280)';
+    p.textContent = 'Pulsa «Ver qué pasa» para desplegar las cinco etapas: inyección, DLP, contexto, caché y enrutado.';
+    wrap.appendChild(p);
+
+    const list = document.createElement('div');
+    list.style.cssText = 'display:grid;gap:8px;opacity:0.45';
+
+    ETAPAS.forEach(e => {
+      const item = document.createElement('div');
+      item.style.cssText = 'display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px dashed oklch(0.905 0.022 280);border-radius:9px;background:#fff';
+
+      const num = document.createElement('span');
+      num.style.cssText = "font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:oklch(0.51 0.028 280)";
+      num.textContent = e.n;
+
+      const title = document.createElement('span');
+      title.style.cssText = 'font-size:13.5px;color:oklch(0.51 0.028 280)';
+      title.textContent = e.titulo;
+
+      item.appendChild(num);
+      item.appendChild(title);
+      list.appendChild(item);
+    });
+
+    wrap.appendChild(list);
+    container.appendChild(wrap);
 
     const outBox = $('demo-output-container');
     if (outBox) outBox.style.display = 'none';
@@ -114,7 +133,7 @@ class Landing {
 
     btnRun.addEventListener('click', async () => {
       this.clearTimers();
-      stagesContainer.innerHTML = '';
+      stagesContainer.replaceChildren();
       if (outBox) outBox.style.display = 'none';
 
       btnRun.disabled = true;
@@ -167,33 +186,83 @@ class Landing {
     const container = $('demo-stages-container');
     if (!container) return;
 
+    container.replaceChildren();
+
     const items = ETAPAS.slice(0, count);
-    container.innerHTML = items.map((etapa, idx) => `
-      <div style="display:grid;grid-template-columns:30px minmax(0,1fr);gap:14px;animation:etapa 200ms cubic-bezier(0.22,1,0.36,1) both">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-          <span style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:#fff;border:1px solid oklch(0.905 0.022 280);font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:${etapa.color};font-weight:600">${etapa.n}</span>
-          ${idx < items.length - 1 ? `<span style="flex:1;width:1px;background:oklch(0.905 0.022 280)"></span>` : ''}
-        </div>
-        <div style="padding-bottom:${idx < items.length - 1 ? '16px' : '6px'}">
-          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
-            <span style="font-weight:600;font-size:15px;color:oklch(0.18 0.05 280)">${esc(etapa.titulo)}</span>
-            <span style="padding:2px 9px;border-radius:999px;font-size:12px;font-weight:500;background:${etapa.fondo};border:1px solid ${etapa.borde};color:${etapa.color}">${esc(etapa.badge)}</span>
-          </div>
-          <p style="margin:5px 0 0;font-size:14px;line-height:1.5;color:oklch(0.51 0.028 280)">${esc(etapa.detalle)}</p>
-          ${etapa.hallazgos ? `
-            <div style="display:grid;gap:6px;margin-top:11px">
-              ${etapa.hallazgos.map(h => `
-                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:9px 12px;border:1px solid oklch(0.938 0.016 280);border-left:3px solid oklch(0.70 0.18 62);border-radius:9px;background:#fff">
-                  <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.24 0.045 280);font-weight:500">${esc(h.sigla)}</span>
-                  <span style="font-size:12px;color:oklch(0.61 0.022 280)">${esc(h.alg)}</span>
-                  <span style="margin-left:auto;font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.51 0.028 280)">${esc(h.valor)}</span>
-                </div>
-              `).join('')}
-            </div>
-          ` : ''}
-        </div>
-      </div>
-    `).join('');
+    items.forEach((etapa, idx) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:grid;grid-template-columns:30px minmax(0,1fr);gap:14px;animation:etapa 200ms cubic-bezier(0.22,1,0.36,1) both';
+
+      const leftCol = document.createElement('div');
+      leftCol.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:6px';
+
+      const nBadge = document.createElement('span');
+      nBadge.style.cssText = `display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:#fff;border:1px solid oklch(0.905 0.022 280);font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:${etapa.color};font-weight:600`;
+      nBadge.textContent = etapa.n;
+      leftCol.appendChild(nBadge);
+
+      if (idx < items.length - 1) {
+        const line = document.createElement('span');
+        line.style.cssText = 'flex:1;width:1px;background:oklch(0.905 0.022 280)';
+        leftCol.appendChild(line);
+      }
+
+      const rightCol = document.createElement('div');
+      rightCol.style.paddingBottom = idx < items.length - 1 ? '16px' : '6px';
+
+      const head = document.createElement('div');
+      head.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:10px';
+
+      const title = document.createElement('span');
+      title.style.cssText = 'font-weight:600;font-size:15px;color:oklch(0.18 0.05 280)';
+      title.textContent = etapa.titulo;
+
+      const badge = document.createElement('span');
+      badge.style.cssText = `padding:2px 9px;border-radius:999px;font-size:12px;font-weight:500;background:${etapa.fondo};border:1px solid ${etapa.borde};color:${etapa.color}`;
+      badge.textContent = etapa.badge;
+
+      head.appendChild(title);
+      head.appendChild(badge);
+      rightCol.appendChild(head);
+
+      const p = document.createElement('p');
+      p.style.cssText = 'margin:5px 0 0;font-size:14px;line-height:1.5;color:oklch(0.51 0.028 280)';
+      p.textContent = etapa.detalle;
+      rightCol.appendChild(p);
+
+      if (etapa.hallazgos) {
+        const findings = document.createElement('div');
+        findings.style.cssText = 'display:grid;gap:6px;margin-top:11px';
+
+        etapa.hallazgos.forEach(h => {
+          const card = document.createElement('div');
+          card.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:9px 12px;border:1px solid oklch(0.938 0.016 280);border-left:3px solid oklch(0.70 0.18 62);border-radius:9px;background:#fff';
+
+          const sigla = document.createElement('span');
+          sigla.style.cssText = "font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.24 0.045 280);font-weight:500";
+          sigla.textContent = h.sigla;
+
+          const alg = document.createElement('span');
+          alg.style.cssText = 'font-size:12px;color:oklch(0.61 0.022 280)';
+          alg.textContent = h.alg;
+
+          const val = document.createElement('span');
+          val.style.cssText = "margin-left:auto;font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.51 0.028 280)";
+          val.textContent = h.valor;
+
+          card.appendChild(sigla);
+          card.appendChild(alg);
+          card.appendChild(val);
+          findings.appendChild(card);
+        });
+
+        rightCol.appendChild(findings);
+      }
+
+      row.appendChild(leftCol);
+      row.appendChild(rightCol);
+      container.appendChild(row);
+    });
   }
 
   static wireCodigo() {
@@ -204,9 +273,15 @@ class Landing {
 
     const updateSnippet = (lang) => {
       this.currentLang = lang;
-      if (pre) pre.textContent = CODIGO[lang] || CODIGO.python;
+      if (pre) {
+        pre.classList.remove('anim-swap');
+        void pre.offsetWidth; // Reflow trigger
+        pre.textContent = CODIGO[lang] || CODIGO.python;
+        pre.classList.add('anim-swap');
+      }
       tabs.forEach(btn => {
         const active = btn.dataset.lang === lang;
+        btn.classList.toggle('active', active);
         btn.style.background = active ? 'oklch(0.28 0.040 280)' : 'transparent';
         btn.style.color = active ? 'oklch(0.97 0.010 280)' : 'oklch(0.72 0.020 280)';
       });
@@ -225,9 +300,11 @@ class Landing {
           await navigator.clipboard.writeText(textToCopy);
           if (copyText) copyText.textContent = 'Copiado';
           copyBtn.style.color = 'oklch(0.78 0.15 150)';
+          copyBtn.classList.add('pulse-pop');
           setTimeout(() => {
             if (copyText) copyText.textContent = 'Copiar';
             copyBtn.style.color = 'oklch(0.88 0.014 280)';
+            copyBtn.classList.remove('pulse-pop');
           }, 1400);
         } catch {
           if (copyText) copyText.textContent = 'Error';
@@ -242,25 +319,22 @@ class Landing {
     items.forEach((item, idx) => {
       const btn = item.querySelector('.faq-btn');
       const body = item.querySelector('.faq-body');
-      const icon = item.querySelector('.faq-icon');
 
-      if (idx === 0 && body) {
-        body.style.display = 'block';
-        if (icon) icon.style.transform = 'rotate(180deg)';
+      // First item open by default
+      if (idx === 0) {
+        item.classList.add('is-open');
+        if (body) body.style.display = '';
+      } else if (body) {
+        body.style.display = '';
       }
 
       btn?.addEventListener('click', () => {
-        const isOpen = body && body.style.display === 'block';
+        const isOpen = item.classList.contains('is-open');
         items.forEach(other => {
-          const b = other.querySelector('.faq-body');
-          const ic = other.querySelector('.faq-icon');
-          if (b) b.style.display = 'none';
-          if (ic) ic.style.transform = 'rotate(0deg)';
+          other.classList.remove('is-open');
         });
-
-        if (!isOpen && body) {
-          body.style.display = 'block';
-          if (icon) icon.style.transform = 'rotate(180deg)';
+        if (!isOpen) {
+          item.classList.add('is-open');
         }
       });
     });

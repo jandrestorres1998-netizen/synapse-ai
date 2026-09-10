@@ -20,6 +20,9 @@ const PIE = [
     ['/#limites', 'Lo que no hace'],
     ['/auditoria', 'Auditoría adversaria'],
     ['/extension', 'Extensión del navegador'],
+    ['/casos/gestoria', 'Para gestorías'],
+    ['/casos/despacho', 'Para despachos'],
+    ['/casos/agencia', 'Para agencias dev'],
     ['/#precios', 'Precios'],
     ['/app', 'Ver el panel']
   ]],
@@ -42,7 +45,7 @@ const PIE = [
     ['/.well-known/security.txt', 'security.txt'],
     ['/legal/uso-aceptable', 'Uso aceptable'],
     ['/legal/vulnerabilidades', 'Avisar de un fallo'],
-    ['/#contacto', 'Contacto']
+    ['/contacto', 'Contacto']
   ]]
 ];
 

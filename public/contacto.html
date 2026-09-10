@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto directo · SynapseAI</title>
+  <meta name="description" content="Contacta con el equipo de SynapseAI. Sin chatbots ni respuestas automáticas: hablamos directamente de despliegues, soporte y dudas técnicas.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+  <style>
+    .contact-layout {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 56px 28px 88px;
+    }
+    .contact-card {
+      padding: 36px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 4px 24px oklch(0.24 0.045 280 / 0.04);
+      margin-top: 28px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .form-label {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-strong);
+    }
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-sm);
+      background: var(--ground-sunken);
+      font-family: var(--font-ui);
+      font-size: 14.5px;
+      color: var(--ink);
+      outline: none;
+      box-sizing: border-box;
+      transition:
+        border-color var(--dur-fast) var(--ease-out),
+        background var(--dur-fast) var(--ease-out),
+        box-shadow var(--dur-fast) var(--ease-out);
+    }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--probar);
+      background: #fff;
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--probar) 15%, transparent);
+    }
+    .form-textarea {
+      min-height: 140px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    .form-hint {
+      font-size: 12.5px;
+      color: var(--ink-faint);
+    }
+    .contact-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      background: var(--ok-soft);
+      border: 1px solid color-mix(in oklab, var(--ok) 30%, transparent);
+      color: var(--ok-ink);
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<main class="contact-layout">
+  <div class="contact-badge">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+    Atención humana directa · Respuesta en 24h laborables
+  </div>
+
+  <h1 style="font-size:clamp(32px,4vw,44px);letter-spacing:-0.03em;color:var(--ink-strong);margin-bottom:12px">Habla con los fundadores</h1>
+  <p style="font-size:17px;line-height:1.6;color:var(--ink-muted);margin:0">
+    Sin chatbots de soporte, sin menús automatizados ni comerciales agresivos. Si quieres evaluar un despliegue en tus servidores, contratar soporte o resolver dudas técnicas, escríbenos aquí.
+  </p>
+
+  <div class="contact-card">
+    <form id="contact-form" onsubmit="return false;">
+      <div class="form-group">
+        <label class="form-label" for="nombre">Nombre y empresa</label>
+        <input class="form-input" type="text" id="nombre" name="nombre" placeholder="Ej: Carmen Gómez (Asesoría Fiscal Gómez)" required autocomplete="name">
+        <span class="form-hint">Para saber con quién hablamos y qué sector tienes.</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Correo electrónico profesional</label>
+        <input class="form-input" type="email" id="email" name="email" placeholder="carmen@asesoriagomez.es" required autocomplete="email">
+        <span class="form-hint">Te responderemos a esta dirección. Nunca enviamos correos publicitarios.</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="mensaje">¿En qué podemos ayudarte?</label>
+        <textarea class="form-textarea" id="mensaje" name="mensaje" placeholder="Cuéntanos brevemente: tamaño del equipo, modelos de IA que utilizáis o tenéis en mente, y si buscáis instalación guiada o soporte SLA." required></textarea>
+        <span class="form-hint">3 inputs limpios, sin preguntas innecesarias.</span>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:28px">
+        <button type="submit" class="btn btn-lg" disabled title="El formulario de contacto se activará al configurar el endpoint de correo en el servidor. Mientras tanto, puedes escribir directamente a contacto@synapse.example">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Enviar mensaje
+        </button>
+
+        <a href="mailto:contacto@synapse.example?subject=Consulta%20SynapseAI" class="btn btn-secondary btn-lg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Escribir por correo directo
+        </a>
+      </div>
+
+      <p style="margin:16px 0 0;font-size:12.5px;color:var(--ink-faint);line-height:1.5">
+        * El botón de envío web se conectará al configurar el endpoint de correo. El enlace de correo directo abre tu gestor habitual sin intermediarios.
+      </p>
+    </form>
+  </div>
+
+  <div class="hasta-aqui" style="margin-top:28px">
+    <strong>Hasta aquí llega:</strong> Este formulario remite un mensaje directo al equipo técnico y fundador. No es un servicio de emergencias 24/7 para incidencias críticas de servidores en fin de semana sin acuerdo de soporte SLA previo. Para reportar fallos de seguridad de forma cifrada, consulta <a href="/.well-known/security.txt">security.txt</a> o la política en <a href="/legal/vulnerabilidades">aviso de vulnerabilidades</a>.
+  </div>
+</main>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+</body>
+</html>

@@ -165,8 +165,17 @@ npm start</code></pre>
       cards.forEach(card => {
         const text = card.textContent.toLowerCase();
         const matchesQuery = !query || text.includes(query);
-        card.style.display = matchesQuery ? '' : 'none';
-        if (matchesQuery) matches++;
+        if (matchesQuery) {
+          if (card.style.display === 'none') {
+            card.classList.remove('anim-swap');
+            void card.offsetWidth;
+            card.classList.add('anim-swap');
+          }
+          card.style.display = '';
+          matches++;
+        } else {
+          card.style.display = 'none';
+        }
       });
 
       if (query) {

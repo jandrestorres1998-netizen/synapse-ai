@@ -29,3 +29,6 @@ dist/
 client/frontend/dist/
 coverage/
 *.log
+
+# Los renders se regeneran; el bucle publicado vive en public/media/.
+videos/*/renders/
