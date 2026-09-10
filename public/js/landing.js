@@ -66,12 +66,44 @@ const CODIGO = {
   }
 };
 
+// Las seis que de verdad se preguntan por telefono, en el orden en que salen.
+// La del RGPD se responde que no, porque un control no es un certificado y
+// venderlo como tal es exactamente lo que la auditoria retiro del resto del
+// producto.
+const PREGUNTAS = [
+  {
+    q: '\u00bfEsto ralentiza el trabajo del equipo?',
+    a: 'Se nota poco: la revisi\u00f3n a\u00f1ade unas cent\u00e9simas frente a los segundos que tarda la IA en responder. Con mucha gente a la vez sube, y en ese caso se pone en un servidor con m\u00e1s capacidad. Lo honesto es que lo midas en tu instalaci\u00f3n: el panel te da el n\u00famero.'
+  },
+  {
+    q: '\u00bfVosotros veis lo que escribimos?',
+    a: 'No. El programa corre en vuestra red y nosotros no tenemos acceso. No env\u00eda estad\u00edsticas ni informes a ning\u00fan sitio. Si contrat\u00e1is soporte y hace falta que miremos algo, nos lo ense\u00f1\u00e1is vosotros.'
+  },
+  {
+    q: '\u00bfQu\u00e9 pasa si se cae?',
+    a: 'Vuestros programas reciben un error y se enteran. Nunca reciben una respuesta que no haya sido revisada, porque eso ser\u00eda peor que no tener nada: dar\u00eda una sensaci\u00f3n de seguridad falsa.'
+  },
+  {
+    q: '\u00bfSirve si usamos ChatGPT desde el navegador, no desde un programa?',
+    a: 'Para eso est\u00e1 la extensi\u00f3n: avisa antes de pegar, en el propio ordenador. Ahora bien, hay que instalarla en cada equipo, y el panel os dice qui\u00e9n no la tiene. Si alguien usa la IA desde su m\u00f3vil personal, ah\u00ed no llegamos.'
+  },
+  {
+    q: '\u00bfEsto me deja cumpliendo el RGPD?',
+    a: 'No, y desconf\u00eda de quien te diga que s\u00ed. El RGPD no se cumple con un programa: se cumple con contratos, registros y decisiones. Lo que esto aporta son dos piezas concretas de ese rompecabezas: menos datos personales saliendo, y una prueba de qu\u00e9 sali\u00f3 y cu\u00e1ndo. El contrato de encargado del tratamiento va aparte, y os lo damos redactado si nos contrat\u00e1is el montaje.'
+  },
+  {
+    q: '\u00bfPuedo probarlo sin comprometerme?',
+    a: 'El programa es libre y gratuito: se instala, se prueba y, si no convence, se quita en un minuto. No hay periodo de prueba que caduque ni tarjeta que dejar, porque no hay nada que cobrar por el programa.'
+  }
+];
+
 class Landing {
   static init() {
     this.renderEtapas(EJEMPLO.etapas, EJEMPLO.salida, 'ejemplo');
     this.detectarInstancia();
     this.wireDemo();
     this.wireCodigo();
+    this.wirePreguntas();
   }
 
   /**
@@ -203,6 +235,45 @@ class Landing {
         <p>${esc(salida)}</p>
       </div>
       ${nota}`;
+  }
+
+  /**
+   * Acorde\u00f3n de preguntas. Se abre una cada vez: si se pueden abrir todas,
+   * la secci\u00f3n se convierte en un muro de texto y nadie lee ninguna.
+   */
+  static wirePreguntas() {
+    const caja = $('faq');
+    if (!caja) return;
+
+    caja.innerHTML = PREGUNTAS.map((p, i) => `
+      <div class="faq-item" data-abierta="0" data-i="${i}">
+        <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-${i}">
+          ${esc(p.q)}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-a" id="faq-a-${i}" hidden><p>${esc(p.a)}</p></div>
+      </div>`).join('');
+
+    caja.querySelectorAll('.faq-item').forEach(item => {
+      item.querySelector('.faq-q').addEventListener('click', () => {
+        const abierta = item.dataset.abierta === '1';
+
+        caja.querySelectorAll('.faq-item').forEach(otro => {
+          otro.dataset.abierta = '0';
+          otro.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+          otro.querySelector('.faq-a').hidden = true;
+        });
+
+        if (!abierta) {
+          item.dataset.abierta = '1';
+          item.querySelector('.faq-q').setAttribute('aria-expanded', 'true');
+          item.querySelector('.faq-a').hidden = false;
+        }
+      });
+    });
+
+    // La primera abierta: la secci\u00f3n tiene que leerse sin tocar nada.
+    caja.querySelector('.faq-q')?.click();
   }
 
   static wireCodigo() {

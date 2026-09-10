@@ -25,10 +25,11 @@
     </a>
 
     <nav class="site-nav" aria-label="Principal">
-      <a href="#como-funciona">Cómo funciona</a>
-      <a href="#documentos">Qué reconoce</a>
+      <a href="#recorrido">Cómo funciona</a>
+      <a href="#comparativa">Comparativa</a>
       <a href="#limites">Lo que no hace</a>
       <a href="#precios">Precios</a>
+      <a href="#preguntas">Preguntas</a>
     </nav>
 
     <div class="head-actions">
@@ -107,6 +108,63 @@
   </div>
 </section>
 
+<!-- Todo pasa por el mismo sitio -->
+<section class="band wide" id="recorrido">
+  <div class="wrap">
+    <h2 class="sec">Todo pasa por el mismo sitio</h2>
+    <p class="sec-lede">Nada llega a la IA sin cruzar estos seis pasos. Y lo que no pasa por aqu&iacute; no queda anotado: ese es el trato, y conviene entenderlo antes de firmar nada.</p>
+
+    <div class="flow">
+      <div class="flow-col">
+        <span class="eyebrow">De d&oacute;nde viene</span>
+        <div class="node" style="border-left-color: var(--probar);">Vuestros programas internos</div>
+        <div class="node" style="border-left-color: var(--contexto);">El navegador del equipo</div>
+        <div class="node" style="border-left-color: var(--ok);">Hojas de c&aacute;lculo y scripts</div>
+        <div class="node" style="border-left-color: var(--proteccion);">Tareas autom&aacute;ticas de la noche</div>
+      </div>
+
+      <div class="flow-col">
+        <span class="eyebrow">Por d&oacute;nde pasa</span>
+        <div class="slab">
+          <div class="slab-head">
+            <span class="eyebrow">SynapseAI, en vuestra red</span>
+            <span class="chip-state" style="margin-left: auto;"><span class="dot ok"></span>seis pasos</span>
+          </div>
+          <div class="layer"><span class="n">01</span><span class="que">Se comprueba qui&eacute;n pregunta<span class="nota">Cada programa tiene su propia llave.</span></span></div>
+          <div class="layer"><span class="n">02</span><span class="que">Se buscan intentos de enga&ntilde;ar a la IA<span class="nota">Los trucos conocidos se paran aqu&iacute;.</span></span></div>
+          <div class="layer"><span class="n">03</span><span class="que">Se borran los datos de personas<span class="nota">A la ida y tambi&eacute;n en la respuesta.</span></span></div>
+          <div class="layer"><span class="n">04</span><span class="que">Se a&ntilde;aden vuestras instrucciones<span class="nota">Despu&eacute;s del borrado, nunca antes.</span></span></div>
+          <div class="layer"><span class="n">05</span><span class="que">Se mira si ya se pregunt&oacute; lo mismo<span class="nota">Y se respeta el tope de gasto.</span></span></div>
+          <div class="layer"><span class="n">06</span><span class="que">Se anota lo que sali&oacute;<span class="nota">En un registro que no se puede retocar.</span></span></div>
+        </div>
+      </div>
+
+      <div class="flow-col">
+        <span class="eyebrow">A d&oacute;nde va</span>
+        <div class="node" style="border-left-color: var(--ok);">OpenAI <span class="estado">contratado</span></div>
+        <div class="node" style="border-left-color: var(--ok);">Anthropic <span class="estado">contratado</span></div>
+        <div class="node off">Google <span class="estado">sin contratar</span></div>
+        <div class="node" style="border-left-color: var(--ok);">Un modelo en vuestro servidor <span class="estado">sin coste</span></div>
+      </div>
+    </div>
+
+    <div class="guarantees">
+      <div class="guarantee">
+        <h4>Si esto se cae, no hay atajo</h4>
+        <p>Vuestros programas reciben un error y se enteran. Nunca una respuesta que nadie haya revisado.</p>
+      </div>
+      <div class="guarantee">
+        <h4>Funciona con lo que ya ten&eacute;is</h4>
+        <p>Habla el mismo idioma que la IA que ya us&aacute;is, as&iacute; que no hay que reescribir nada.</p>
+      </div>
+      <div class="guarantee">
+        <h4>Se quita en un minuto</h4>
+        <p>Se deshace el cambio y todo vuelve a estar como estaba. No retenemos ning&uacute;n dato vuestro, porque nunca sale de vuestra red.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Qué reconoce ─────────────────────────────────────────────────────────── -->
 <section id="documentos">
   <div class="wrap">
@@ -140,6 +198,65 @@
       <p>Guarda todas las claves de tus proveedores en un mismo sitio. Eso es cómodo, y también concentra el riesgo. Conviene saberlo.</p>
     </div>
     <p style="margin: 32px 0 0; font-size: 14px; color: var(--ink-muted);">No tenemos sello SOC 2 ni ISO 27001, y no publicamos porcentajes de ahorro que no hayamos medido en una instalación real. Si alguien te promete una cifra sin medirla en tu casa, no está midiendo nada.</p>
+  </div>
+</section>
+
+<!-- Comparativa -->
+<section class="wide" id="comparativa">
+  <div class="wrap">
+    <h2 class="sec">Frente a lo que se suele hacer</h2>
+    <p class="sec-lede">No comparamos con otros productos, porque cada uno cambia sus condiciones cuando quiere. Comparamos con las dos cosas que de verdad hace todo el mundo: nada, o un apa&ntilde;o interno.</p>
+
+    <div class="cmp-scroll">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Sin hacer nada</th>
+            <th>Un apa&ntilde;o propio</th>
+            <th class="nuestro">Con SynapseAI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="criterio">Las claves de la IA</td>
+            <td>Repartidas por los ordenadores del equipo</td>
+            <td>Centralizadas a medias</td>
+            <td class="nuestro">En un solo sitio cerrado, fuera de los programas</td>
+          </tr>
+          <tr>
+            <td class="criterio">Saber qu&eacute; sali&oacute;</td>
+            <td>No hay forma de saberlo</td>
+            <td>Un registro que cualquiera puede editar</td>
+            <td class="nuestro">Un registro que no se puede retocar sin que se note</td>
+          </tr>
+          <tr>
+            <td class="criterio">Datos de clientes</td>
+            <td>Salen tal cual</td>
+            <td>Se filtran algunos, por parecido</td>
+            <td class="nuestro">Se comprueban y se borran, a la ida y a la vuelta</td>
+          </tr>
+          <tr>
+            <td class="criterio">Uso desde el navegador</td>
+            <td>Invisible</td>
+            <td>Queda fuera de alcance</td>
+            <td class="nuestro">Aviso antes de pegar, y lista de qui&eacute;n no lo tiene puesto</td>
+          </tr>
+          <tr>
+            <td class="criterio">Qui&eacute;n lo mantiene</td>
+            <td>Nadie, hasta el disgusto</td>
+            <td>Vuestro equipo, indefinidamente</td>
+            <td class="nuestro">Vosotros, o nosotros con plazo por escrito</td>
+          </tr>
+          <tr>
+            <td class="criterio">D&oacute;nde est&aacute;n los datos</td>
+            <td>En cada proveedor de IA</td>
+            <td>En vuestra red</td>
+            <td class="nuestro">En vuestra red, y no sale ni una estad&iacute;stica</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -234,6 +351,14 @@
   </div>
 </section>
 
+<!-- Preguntas frecuentes -->
+<section class="wide" id="preguntas">
+  <div class="wrap">
+    <h2 class="sec">Lo que nos preguntan antes de firmar</h2>
+    <div class="faq" id="faq"></div>
+  </div>
+</section>
+
 <!-- Instalación ──────────────────────────────────────────────────────────── -->
 <section class="wide" id="instalacion">
   <div class="wrap">
@@ -272,6 +397,18 @@
       <pre class="code" id="code-block"></pre>
     </div>
     <p style="margin: 12px 0 0; font-size: 14px; color: var(--ink-muted);">Habla el mismo idioma que la API de OpenAI, así que los programas que ya tenéis funcionan sin tocar nada más. Si el gateway se cae, las aplicaciones reciben un error: nunca una respuesta que no haya sido revisada.</p>
+  </div>
+</section>
+
+<!-- Cierre -->
+<section class="band wide cta-band">
+  <div class="wrap">
+    <h2 class="sec">Pru&eacute;balo esta tarde con un caso vuestro</h2>
+    <p>Coge un correo real de un cliente, p&eacute;galo arriba y mira qu&eacute; habr&iacute;a salido de la empresa. Para eso no hace falta instalar nada.</p>
+    <div class="cta-actions">
+      <a class="btn btn-lg" href="#top">Probar con un caso vuestro</a>
+      <a class="btn btn-secondary btn-lg" href="#contacto">Hablar con alguien</a>
+    </div>
   </div>
 </section>
 
