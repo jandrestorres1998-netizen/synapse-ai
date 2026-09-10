@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acuerdo de nivel de servicio (SLA) — SynapseAI</title>
+  <meta name="description" content="Tiempos de respuesta, clasificación de incidencias y compromisos de soporte técnico garantizado para clientes de SynapseAI.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<div class="doc-shell">
+  <nav id="doc-index" aria-label="Índice de la página"></nav>
+
+  <article class="doc">
+    <div class="doc-head">
+      <h1>Acuerdo de nivel de servicio (SLA)</h1>
+      <p class="resumen">Compromisos formales de tiempo de respuesta, procedimiento de escalado y resolución de incidencias técnicas para los planes comerciales de soporte y despliegue.</p>
+      <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
+    </div>
+
+    <div class="doc-note">
+      <p><strong>La versión gratuita de SynapseAI tiene el mismo código que la de pago.</strong></p>
+      <p>No existen funciones bajo llave ni restricciones artificiales. Lo que se contrata con los planes de pago es <strong>tiempo garantizado de ingenieros</strong> para resolver dudas, auditar despliegues y adaptar reglas de borrado a vuestros formatos internos.</p>
+    </div>
+
+    <h2>1. Niveles de severidad y tiempos de respuesta</h2>
+    <p>Los tiempos de respuesta garantizados se miden desde la recepción de la notificación técnica hasta la primera respuesta sustantiva emitida por un programador del equipo:</p>
+
+    <div style="overflow-x:auto;margin:24px 0">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;line-height:1.5">
+        <thead>
+          <tr style="border-bottom:2px solid var(--line);text-align:left">
+            <th style="padding:10px 12px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Severidad</th>
+            <th style="padding:10px 12px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Definición</th>
+            <th style="padding:10px 12px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Plan Soporte (290 €)</th>
+            <th style="padding:10px 12px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Despliegue Guiado (890 €)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--line)">
+            <td style="padding:12px;font-weight:600;color:oklch(0.55 0.22 25)">Severidad 1 (Crítica)</td>
+            <td style="padding:12px;color:var(--ink-muted)">Caída total del servicio que interrumpe por completo la operativa de IA en vuestra empresa sin alternativa viable.</td>
+            <td style="padding:12px;color:var(--ink-strong);font-weight:500">&le; 4 horas laborables</td>
+            <td style="padding:12px;color:var(--ink-strong);font-weight:500">&le; 2 horas laborables</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--line)">
+            <td style="padding:12px;font-weight:600;color:oklch(0.60 0.18 62)">Severidad 2 (Alta)</td>
+            <td style="padding:12px;color:var(--ink-muted)">Fallo parcial de un filtro de borrado o error al conectar con un proveedor de reserva habiendo otro disponible.</td>
+            <td style="padding:12px;color:var(--ink-muted)">&le; 8 horas laborables</td>
+            <td style="padding:12px;color:var(--ink-strong);font-weight:500">&le; 4 horas laborables</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--line)">
+            <td style="padding:12px;font-weight:600;color:var(--ink-strong)">Severidad 3 (Consulta)</td>
+            <td style="padding:12px;color:var(--ink-muted)">Consultas de configuración, optimización de caché, dudas sobre el archivo .env o adaptación de reglas a nuevos formatos internos.</td>
+            <td style="padding:12px;color:var(--ink-muted)">&le; 24 horas laborables</td>
+            <td style="padding:12px;color:var(--ink-muted)">&le; 12 horas laborables</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>2. Ventana de servicio y canales de contacto</h2>
+    <ul>
+      <li><strong>Horario operativo:</strong> De lunes a viernes, de 09:00 a 18:00 (hora peninsular española / CET), excluyendo festivos nacionales.</li>
+      <li><strong>Canales de atención:</strong> Correo prioritario directo con acuse de recibo y canal privado en plataforma acordada (Slack, Teams o Matrix para clientes Enterprise).</li>
+    </ul>
+
+    <h2>3. Exclusiones y límites de responsabilidad</h2>
+    <p>Este compromiso de servicio cubre exclusivamente el correcto funcionamiento y soporte técnico del software SynapseAI. Quedan explícitamente excluidas del cómputo de tiempos y responsabilidades:</p>
+
+    <ul>
+      <li><strong>Caídas externas de proveedores de IA:</strong> Interrupciones de servicio, saturación de capacidad o degradaciones en las plataformas de OpenAI, Anthropic, Google o Microsoft.</li>
+      <li><strong>Fallos en la infraestructura del cliente:</strong> Cortes de conectividad a internet de la oficina, averías en los servidores locales del cliente o fallos en proxies ajenos a nuestra configuración.</li>
+      <li><strong>Manipulación indebida de archivos de datos:</strong> Alteraciones manuales o corrupción provocada externamente sobre <code>data/vault.enc</code> o <code>data/audit.jsonl</code>.</li>
+    </ul>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> Si utilizas la versión gratuita sin soporte comercial, atendemos dudas y avisos de fallos a través del repositorio público de GitHub según disponibilidad de la comunidad y del equipo de desarrollo, sin ventana de tiempo garantizada por contrato.
+    </div>
+
+  </article>
+</div>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+</body>
+</html>

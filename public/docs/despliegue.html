@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Despliegue en producción — SynapseAI</title>
+  <meta name="description" content="Guía de despliegue en producción para SynapseAI: proxy inverso con Nginx o Caddy, certificados TLS, copias de seguridad de auditoría y rotación de claves.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<div class="doc-shell">
+  <nav id="doc-index" aria-label="Índice de la página"></nav>
+
+  <article class="doc">
+    <div class="doc-head">
+      <h1>Despliegue en producción</h1>
+      <p class="resumen">Recomendaciones para instalar SynapseAI en servidores de empresa: protección con proxy inverso, certificados de seguridad, copias de respaldo del registro de auditoría y rotación ordenada de credenciales.</p>
+      <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
+    </div>
+
+    <h2>Arquitectura de producción</h2>
+    <p>Por diseño, el servidor interno de SynapseAI expone tráfico HTTP plano en el puerto 3000 (o el definido en <code>PORT</code>). En un entorno real de empresa, el programa <strong>nunca debe exponerse directamente a internet</strong> sin un intermediario que gestione los certificados de cifrado y filtre accesos no autorizados.</p>
+
+    <p>La topología recomendada sitúa un proxy inverso fiable (como Nginx o Caddy) en la frontera del servidor o de la red interna:</p>
+
+    <ul>
+      <li><strong>Cifrado punto a punto (TLS/HTTPS):</strong> Todo el tráfico entre vuestros programas y SynapseAI viaja cifrado mediante certificados SSL/TLS actualizados.</li>
+      <li><strong>Aislamiento de red:</strong> SynapseAI escucha únicamente en la interfaz local (<code>HOST=127.0.0.1</code>) o dentro de una red privada virtual de Docker.</li>
+      <li><strong>Terminación de certificados:</strong> El proxy inverso asume la carga criptográfica y renueva automáticamente los certificados.</li>
+    </ul>
+
+    <h2>Configuración con Nginx</h2>
+    <p>Si utilizáis un servidor Linux tradicional (Debian, Ubuntu, RHEL) con Nginx instalado, esta es la configuración de bloque de servidor recomendada:</p>
+
+    <pre class="code"><code>server {
+    listen 443 ssl http2;
+    server_name ai.vuestra-empresa.local;
+
+    ssl_certificate     /etc/ssl/certs/synapse.crt;
+    ssl_certificate_key /etc/ssl/private/synapse.key;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+
+    # Límite de cuerpo para mensajes grandes o documentos adjuntos
+    client_max_body_size 10M;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+
+        # Cabeceras estándar para propagar IP real y protocolo
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Soporte para respuestas en flujo continuo (streaming de LLM)
+        proxy_set_header Connection '';
+        proxy_buffering off;
+        proxy_cache off;
+        chunked_transfer_encoding on;
+
+        # Tiempos de espera generosos para respuestas largas
+        proxy_read_timeout 300s;
+        proxy_send_timeout 300s;
+    }
+}</code></pre>
+
+    <div class="para-tecnicos">
+      <strong>Para tu equipo técnico · Salto de proxies:</strong> Cuando colocáis Nginx delante de SynapseAI, debéis configurar <code>TRUST_PROXY_HOPS=1</code> en vuestro archivo <code>.env</code>. Con este ajuste, el limitador de tasa de SynapseAI utilizará la dirección IP real del cliente reportada en la cabecera <code>X-Forwarded-For</code> en lugar de bloquear la IP local del proxy.
+    </div>
+
+    <h2>Configuración con Caddy</h2>
+    <p>Caddy es la alternativa más sencilla para servidores modernos, ya que gestiona y renueva automáticamente certificados HTTPS válidos sin necesidad de configurar scripts externos:</p>
+
+    <pre class="code"><code>ai.vuestra-empresa.local {
+    reverse_proxy 127.0.0.1:3000 {
+        # Desactivar buffer para respuestas inmediatas de la IA
+        flush_interval -1
+    }
+}</code></pre>
+
+    <h2>Seguridad del almacén de claves (Vault)</h2>
+    <p>SynapseAI guarda las claves de proveedores de IA (OpenAI, Anthropic, Google) cifradas en disco dentro de su almacén interno. Para garantizar un cifrado de nivel bancario en reposo:</p>
+
+    <ul>
+      <li><strong>Definir siempre <code>SYNAPSE_VAULT_KEY</code>:</strong> Si esta variable no está presente, el programa arranca en modo advertencia (<code>machine</code>), derivando una clave provisional de los identificadores del equipo.</li>
+      <li><strong>Generar una clave con entropía alta:</strong> Utilizad al menos 32 bytes aleatorios en formato hexadecimal:</li>
+    </ul>
+
+    <pre class="code"><code># Generar clave segura de 32 bytes en terminal
+openssl rand -hex 32</code></pre>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> Si perdéis el valor de <code>SYNAPSE_VAULT_KEY</code>, las claves almacenadas no se podrán descifrar. SynapseAI no guarda copias de rescate de vuestra clave maestra en ningún servidor externo. Tendréis que volver a introducir las claves de los proveedores en el panel.
+    </div>
+
+    <h2>Copias de seguridad del registro de auditoría</h2>
+    <p>El registro de auditoría es la prueba documental de qué peticiones cruzaron el sistema y qué datos se borraron. Toda la información persistente vive en la carpeta <code>data/</code>:</p>
+
+    <ul>
+      <li><code>data/audit.jsonl</code>: Registro encadenado de peticiones firmado por SHA-256.</li>
+      <li><code>data/vault.enc</code>: Almacén de credenciales cifrado.</li>
+      <li><code>data/budget.json</code>: Contadores de consumo de tokens y presupuesto preventivo.</li>
+    </ul>
+
+    <p>Para realizar copias de seguridad consistentes sin detener el servicio:</p>
+
+    <pre class="code"><code># Copia diaria automatizada mediante cron o tarea programada
+tar -czf /backups/synapse-$(date +%Y%m%d).tar.gz -C /ruta/a/synapse data/</code></pre>
+
+    <p>Si utilizáis volúmenes en Docker, asegurad el volumen montado (por ejemplo <code>-v synapse_data:/data</code>) incluyendo dicha ruta en vuestro plan habitual de copias de seguridad de la infraestructura.</p>
+
+    <h2>Política de rotación de claves</h2>
+    <p>Para mantener una higiene de seguridad impecable sin provocar caídas en vuestros programas:</p>
+
+    <ol>
+      <li><strong>Claves de operador (SynapseAI):</strong> Generad una clave nueva con el ámbito requerido (<code>inference:</code> o <code>report:</code>) en la pestaña <em>Ajustes</em> del panel. Actualizad vuestras aplicaciones cliente con la nueva clave. Solo cuando hayáis verificado que el tráfico entra correctamente, proceded a revocar la clave antigua.</li>
+      <li><strong>Claves de proveedores de IA:</strong> Actualizad las claves en la consola de OpenAI o Anthropic e introducid la nueva clave en SynapseAI. El cambio se aplica en memoria de forma instantánea sin reiniciar el contenedor.</li>
+    </ol>
+
+    <h2>Comprobación de estado y monitorización</h2>
+    <p>El servicio ofrece una ruta pública y ultraligera para sondas de monitorización (Nagios, Zabbix, Uptime Kuma, AWS Route53 o Kubernetes health probes):</p>
+
+    <pre class="code"><code>curl -s -i http://127.0.0.1:3000/healthz</code></pre>
+
+    <p>Responde con código <code>200 OK</code> y un documento JSON que certifica que el proceso se encuentra activo y listo para procesar peticiones.</p>
+
+  </article>
+</div>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+</body>
+</html>

@@ -168,8 +168,29 @@ SynapseAI/extension/</code></pre>
       <pre><code>SYNAPSE_CORS_ORIGINS=http://localhost:3000,chrome-extension://&lt;id-de-tu-extension&gt;</code></pre>
     </div>
 
-    <h2>Descarga y disponibilidad</h2>
-    <p>Puedes descargar el archivo empaquetado de la extensión verificado con su huella digital, o consultar las opciones de distribución corporativa:</p>
+    <h2>Opciones de instalación</h2>
+    <p>Para facilitar la adopción según el tamaño de tu empresa o despacho:</p>
+
+    <div class="docs-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:20px 0">
+      <div class="docs-card" style="cursor:default">
+        <h4 style="margin:0 0 6px;font-size:15px;color:var(--ink-strong)">1. Asistente en un clic (Windows)</h4>
+        <p style="font-size:13.5px;color:var(--ink-muted);line-height:1.5;margin:0 0 10px">
+          El archivo <code>instalar_extension_windows.bat</code> copia la extensión a una carpeta permanente de tu equipo, copia la ruta al portapapeles y abre Chrome o Edge automáticamente para activarla.
+        </p>
+        <span class="badge-status badge-corregido" style="align-self:flex-start">Para usuarios individuales</span>
+      </div>
+
+      <div class="docs-card" style="cursor:default">
+        <h4 style="margin:0 0 6px;font-size:15px;color:var(--ink-strong)">2. Despliegue corporativo (GPO)</h4>
+        <p style="font-size:13.5px;color:var(--ink-muted);line-height:1.5;margin:0 0 10px">
+          Para oficinas con múltiples puestos: mediante el archivo <code>despliegue_empresa_gpo.reg</code> o políticas de dominio de Windows, la extensión se instala de forma desatendida en todos los navegadores de la plantilla.
+        </p>
+        <span class="badge-status badge-limite" style="align-self:flex-start">Para administradores de red</span>
+      </div>
+    </div>
+
+    <h2>Descarga del paquete</h2>
+    <p>Puedes descargar el archivo comprimido oficial con su huella digital SHA-256 calculada directamente del paquete:</p>
 
     <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 12px">
       <a class="btn" href="/descargas" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--ink-surface);color:var(--on-ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
@@ -178,7 +199,7 @@ SynapseAI/extension/</code></pre>
       </a>
       <button type="button" disabled title="La publicación abierta en la Chrome Web Store se encuentra en fase de validación de políticas y requisitos de distribución corporativa." style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:var(--radius-sm);background:var(--surface-quiet);border:1px solid var(--line);color:var(--ink-faint);font-size:14px;cursor:not-allowed">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>
-        Chrome Web Store (En trámite)
+        Chrome Web Store (En trámite de revisión)
       </button>
     </div>
 

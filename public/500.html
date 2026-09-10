@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error interno del servidor — SynapseAI</title>
+  <meta name="description" content="Ha ocurrido un error interno al procesar la solicitud en el servidor. El incidente ha quedado anotado en el registro de errores.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<div class="doc-shell">
+  <nav id="doc-index" aria-label="Índice de la página"></nav>
+
+  <article class="doc">
+    <div class="doc-head">
+      <h1>Error inesperado en el servidor</h1>
+      <p class="resumen">Ha ocurrido un fallo interno no controlado. El error se ha registrado con su marca de tiempo para que el administrador pueda revisarlo.</p>
+      <span class="fecha">Estado HTTP 500 · Incidencia interna</span>
+    </div>
+
+    <h2>Qué ha ocurrido</h2>
+    <p>El servidor no ha podido completar la petición que has solicitado. Por motivos de seguridad y para proteger la configuración de vuestra red, los detalles técnicos del fallo no se muestran en pantalla, pero han quedado anotados en el registro del sistema.</p>
+
+    <h2>Comprobaciones que puedes hacer</h2>
+    <ul>
+      <li><a href="/healthz">Comprobar el estado de salud del servidor (<code>/healthz</code>)</a> para verificar si el proceso central sigue en línea.</li>
+      <li><a href="/">Volver a la portada</a> para reiniciar la navegación.</li>
+      <li><a href="/app">Abrir el panel de control</a> si el programa sigue en marcha y quieres revisar los contadores de actividad.</li>
+      <li>Revisar los registros en el terminal del servidor con el comando <code>npm test</code> o inspeccionando la salida del proceso Node.js o Docker.</li>
+    </ul>
+
+    <p>Si la incidencia persiste, puedes contactar con nuestro equipo a través de la página de <a href="/contacto">contacto directo</a> o consultar el <a href="/legal/vulnerabilidades">protocolo de notificación de fallos</a>.</p>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> Este aviso se genera cuando un error inesperado ocurre dentro del servidor local. Si el problema se debe a que un proveedor externo de IA (OpenAI, Anthropic, Google) tiene una caída de servicio en sus centros de datos, SynapseAI no puede forzar su respuesta, pero mantendrá vuestras claves y registros a salvo.
+    </div>
+
+    <div style="margin-top:28px">
+      <a class="btn" href="/" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--ink-surface);color:var(--on-ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Regresar al inicio
+      </a>
+    </div>
+
+  </article>
+</div>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+
+</body>
+</html>

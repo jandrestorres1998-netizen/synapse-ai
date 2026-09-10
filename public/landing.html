@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css?v=20260910">
 </head>
 <body>
 
@@ -198,7 +198,8 @@
           </button>
         </div>
       </div>
-    </div>
+
+          </div>
 
     <div class="wrap garantias">
       <div class="garantia">
@@ -440,7 +441,7 @@ client = OpenAI(
     <!-- Caja de llamada a la auditoría adversaria -->
     <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:40px;padding:20px 22px;border:1px solid oklch(0.32 0.030 280);border-radius:14px">
       <p style="margin:0;max-width:62ch;font-size:14.5px;line-height:1.55;color:oklch(0.78 0.020 280)">No tenemos certificación SOC 2 ni ISO 27001. Publicamos los controles que existen y los que fallan en la auditoría adversaria, con el hash de cada informe.</p>
-      <a href="/app" style="margin-left:auto;display:flex;align-items:center;height:40px;padding:0 18px;border:1px solid oklch(0.45 0.030 280);border-radius:9px;font-size:14px;color:oklch(0.95 0.012 280);text-decoration:none">Leer la auditoría</a>
+      <a href="/auditoria" style="margin-left:auto;display:flex;align-items:center;height:40px;padding:0 18px;border:1px solid oklch(0.45 0.030 280);border-radius:9px;font-size:14px;color:oklch(0.95 0.012 280);text-decoration:none">Leer la auditoría</a>
     </div>
   </div>
 </section>
@@ -688,15 +689,15 @@ client = OpenAI(
     <div class="foot-cols">
       <div class="foot-col">
         <span class="eyebrow">El producto</span>
-        <a href="#arquitectura">Cómo funciona</a>
-        <a href="#comparativa">Comparativa</a>
-        <a href="#seguridad">Lo que no hace</a>
+        <a href="/producto">Las seis capas</a>
+        <a href="/seguridad">Modelo de seguridad</a>
+        <a href="/precios">Precios y licencias</a>
         <a href="/auditoria">Auditoría adversaria</a>
         <a href="/extension">Extensión del navegador</a>
+        <a href="/comparativa">Comparativa</a>
         <a href="/casos/gestoria">Para gestorías</a>
         <a href="/casos/despacho">Para despachos</a>
         <a href="/casos/agencia">Para agencias dev</a>
-        <a href="#precios">Precios</a>
         <a href="/app">Ver el panel</a>
       </div>
       <div class="foot-col">
@@ -704,9 +705,11 @@ client = OpenAI(
         <a href="/docs">Índice de guías</a>
         <a href="/docs/instalacion">Instalación</a>
         <a href="/docs/configuracion">Configuración (.env)</a>
+        <a href="/docs/despliegue">Despliegue</a>
         <a href="/docs/api">Referencia de API</a>
         <a href="/docs/dlp">Catálogo de borrado</a>
         <a href="/descargas">Descargas</a>
+        <a href="/changelog">Historial de versiones</a>
       </div>
       <div class="foot-col">
         <span class="eyebrow">Legal</span>
@@ -714,6 +717,9 @@ client = OpenAI(
         <a href="/legal/privacidad">Privacidad</a>
         <a href="/legal/terminos">Condiciones</a>
         <a href="/legal/cookies">Cookies</a>
+        <a href="/legal/dpa">Encargo RGPD (DPA)</a>
+        <a href="/legal/subencargados">Subencargados</a>
+        <a href="/legal/sla">Garantía SLA</a>
       </div>
       <div class="foot-col">
         <span class="eyebrow">Proyecto</span>

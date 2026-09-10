@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acuerdo de encargo de tratamiento (DPA) — SynapseAI</title>
+  <meta name="description" content="Acuerdo de encargo del tratamiento de datos personales conforme al artículo 28 del RGPD para clientes del servicio de despliegue y soporte de SynapseAI.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<div class="doc-shell">
+  <nav id="doc-index" aria-label="Índice de la página"></nav>
+
+  <article class="doc">
+    <div class="doc-head">
+      <h1>Acuerdo de encargo de tratamiento (DPA)</h1>
+      <p class="resumen">Términos contractuales que regulan el acceso puntual a datos personales por parte de nuestro equipo técnico cuando contratas servicios de despliegue, configuración o soporte gestionado.</p>
+      <span class="fecha">Conforme al artículo 28 del Reglamento General de Protección de Datos (RGPD) · Septiembre de 2026</span>
+    </div>
+
+    <div class="doc-note">
+      <p><strong>Antes de firmar este acuerdo con un cliente deben completarse los campos en ámbar.</strong></p>
+      <p>Este documento es un modelo formal y honesto que cumple estrictamente con el art. 28 del RGPD y la LOPDGDD. Se suscribe antes de realizar cualquier intervención técnica sobre los servidores del cliente.</p>
+    </div>
+
+    <h2>1. Objeto y ámbito del encargo</h2>
+    <p>El presente acuerdo regula las condiciones bajo las cuales <span class="rellenar">[Razón social del Proveedor]</span> (en adelante, el <strong>Encargado del Tratamiento</strong>) prestará servicios de soporte técnico, instalación, mantenimiento preventivo o auditoría de configuración de SynapseAI al cliente <span class="rellenar">[Razón social del Cliente]</span> (en adelante, el <strong>Responsable del Tratamiento</strong>).</p>
+
+    <p>Habitualmente, SynapseAI opera de forma completamente desatendida dentro de la propia red del Responsable, sin que el Encargado tenga acceso a los datos de negocio. Este contrato entra en vigor únicamente en los supuestos en que el Responsable solicite asistencia técnica que implique acceso temporal o supervisado a sus entornos.</p>
+
+    <h2>2. Naturaleza y finalidad del tratamiento</h2>
+    <p>El tratamiento consistirá exclusivamente en aquellas operaciones técnicas indispensables para prestar el soporte solicitado (verificación de filtros DLP, pruebas de conexión con modelos de IA, optimización de caché o inspección del registro de auditoría local).</p>
+
+    <p><strong>Colectivos y categorías de datos:</strong></p>
+    <ul>
+      <li><strong>Colectivos afectados:</strong> Clientes, empleados, proveedores o administrados del Responsable del Tratamiento cuyos datos puedan estar presentes en textos enviados a modelos de IA.</li>
+      <li><strong>Tipología de datos:</strong> Identificadores oficiales (DNI, NIE, CIF, RFC, CURP, CPF), cuentas bancarias (IBAN), numeración de tarjetas de pago, nombres y fragmentos textuales sujetos a revisión de borrado.</li>
+    </ul>
+
+    <h2>3. Obligaciones del Encargado del Tratamiento</h2>
+    <p>Conforme a lo dispuesto en el artículo 28.3 del RGPD, el Encargado se compromete expresamente a:</p>
+
+    <ol>
+      <li><strong>Tratar los datos solo bajo instrucciones documentadas:</strong> No utilizará los datos personales para fines propios, ni para entrenar modelos de inteligencia artificial, ni para elaboración de perfiles comerciales.</li>
+      <li><strong>Deber de secreto y confidencialidad:</strong> Todo el personal técnico autorizado que intervenga en el servicio está sujeto a un deber contractual y estatutario de estricta confidencialidad.</li>
+      <li><strong>Medidas de seguridad técnicas (art. 32 RGPD):</strong> Aplicar cifrado AES-256-GCM en claves almacenadas, autenticación de doble factor para conexiones de soporte remoto y canales SSH/TLS de extremo a extremo.</li>
+      <li><strong>Asistencia al Responsable:</strong> Colaborar diligentemente para que el Responsable pueda responder a las solicitudes de ejercicio de derechos de los interesados (acceso, rectificación, supresión, limitación).</li>
+      <li><strong>Destrucción y devolución al finalizar:</strong> Una vez completada la intervención de soporte o resuelto el contrato, se destruirá cualquier registro temporal o volcado de prueba en un plazo máximo de 15 días laborables.</li>
+    </ol>
+
+    <h2>4. Subencargados del tratamiento</h2>
+    <p>El Responsable autoriza de forma genérica la contratación de los subencargados necesarios para la infraestructura de comunicación de soporte. La lista pública, auditada y permanentemente actualizada de subencargados puede consultarse en <a href="/legal/subencargados">/legal/subencargados</a>.</p>
+
+    <p>Cualquier modificación o incorporación de nuevos subencargados será comunicada al Responsable con al menos 30 días de antelación, pudiendo este oponerse formalmente por causas justificadas de seguridad o cumplimiento.</p>
+
+    <h2>5. Notificación de brechas de seguridad</h2>
+    <p>En caso de confirmarse un incidente de seguridad que afecte a los datos personales tratados en el marco del servicio de soporte, el Encargado notificará al Responsable <strong>en un plazo máximo de 48 horas</strong> desde que tenga constancia fehaciente, aportando la naturaleza del incidente, los colectivos afectados y las medidas correctoras inmediatas.</p>
+
+    <h2>6. Transferencias internacionales de datos</h2>
+    <p>Los servicios de soporte y desarrollo de SynapseAI se prestan desde la Unión Europea. En caso de que el Responsable decida conectar su instalación a proveedores de IA radicados en terceros países (como OpenAI o Anthropic en EE. UU.), dicha transferencia internacional es decidida y gobernada directamente por el Responsable mediante sus propios contratos de licencia con dichos proveedores.</p>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> SynapseAI actúa como filtro de protección previo en vuestra red. Si el software se despliega en vuestros servidores sin servicio de soporte gestionado contratado, no existe tratamiento por parte de nuestro equipo y este contrato no resulta aplicable.
+    </div>
+
+  </article>
+</div>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+</body>
+</html>

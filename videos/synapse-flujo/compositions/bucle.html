@@ -78,7 +78,7 @@
       /* Un pulso de color corre por la vía tomando el color del paso en curso. */
       .pulso {
         position: absolute;
-        top: 299px;
+        top: 57px;
         left: 0;
         width: 260px;
         height: 4px;
@@ -112,7 +112,9 @@
         left: 0;
         right: 0;
         height: 4px;
-        transform: scaleX(0);
+        /* El estado inicial lo pone GSAP en el reposo de la linea de tiempo:
+           si tambien estuviera aqui, el primer tween pisaria la transformacion
+           entera. Un solo dueño. */
         transform-origin: left center;
       }
       .puerta .n { font-family: var(--mono); font-size: 21px; letter-spacing: 0.06em; display: inline-block; }
@@ -122,10 +124,17 @@
       /* ── Extremos: van por delante del corredor ─────────────────────────── */
       .extremo {
         position: absolute;
+        /* Alto fijo y centrado en la via (300): las dos cajas miden lo mismo
+           aunque una lleve dos lineas y la otra una, y ambas son mas altas que
+           la peticion, asi que la tapan entera al entrar. */
         top: 244px;
+        height: 112px;
         z-index: 2;
         width: 254px;
-        padding: 24px 20px;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: 1px solid var(--ink-line);
         border-radius: 16px;
         background: var(--ink-raised);
@@ -153,16 +162,35 @@
         height: 130px;
         overflow: hidden;
         z-index: 1;
+        /* La boca del tunel. Las cajas miden 254: la mascara ya esta a cero
+           cuando la peticion llega a su borde, asi que no se ve tapar nada,
+           se ve entrar. Y al reves al salir de la de origen. */
+        -webkit-mask-image: linear-gradient(
+          90deg,
+          transparent 254px,
+          #000 340px,
+          #000 calc(100% - 340px),
+          transparent calc(100% - 254px)
+        );
+        mask-image: linear-gradient(
+          90deg,
+          transparent 254px,
+          #000 340px,
+          #000 calc(100% - 340px),
+          transparent calc(100% - 254px)
+        );
       }
 
       .token {
         position: absolute;
-        top: 22px;
+        /* Centrada en la via (300) igual que las cajas: 242 + 20 + 76/2 = 300. */
+        top: 20px;
+        height: 76px;
         left: 0;
         display: flex;
         align-items: center;
         gap: 14px;
-        padding: 18px 26px;
+        padding: 0 26px;
         border-radius: 14px;
         background: oklch(0.31 0.042 278);
         border: 1px solid var(--ink-line);
@@ -190,7 +218,6 @@
       <div class="clip" id="escena" data-start="0" data-duration="14" data-track-index="0">
         <div class="pista">
           <div class="via"></div>
-          <div class="pulso" id="pulso"></div>
 
           <div class="puertas">
             <div class="puerta" id="p1">
@@ -241,6 +268,7 @@
           </div>
 
           <div class="corredor">
+            <div class="pulso" id="pulso"></div>
             <div class="token" id="token">
               <span class="barrido" id="barrido"></span>
               Factura del cliente

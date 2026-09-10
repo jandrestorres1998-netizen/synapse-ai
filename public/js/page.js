@@ -16,29 +16,35 @@ const NAV = [
 
 const PIE = [
   ['El producto', [
-    ['/#como-funciona', 'Qué hace'],
-    ['/#limites', 'Lo que no hace'],
+    ['/producto', 'Las seis capas'],
+    ['/seguridad', 'Modelo de seguridad'],
+    ['/precios', 'Precios y licencias'],
     ['/auditoria', 'Auditoría adversaria'],
     ['/extension', 'Extensión del navegador'],
+    ['/comparativa', 'Comparativa'],
     ['/casos/gestoria', 'Para gestorías'],
     ['/casos/despacho', 'Para despachos'],
     ['/casos/agencia', 'Para agencias dev'],
-    ['/#precios', 'Precios'],
     ['/app', 'Ver el panel']
   ]],
   ['Documentación', [
     ['/docs', 'Índice de guías'],
     ['/docs/instalacion', 'Instalación'],
     ['/docs/configuracion', 'Configuración (.env)'],
+    ['/docs/despliegue', 'Despliegue'],
     ['/docs/api', 'Referencia de API'],
     ['/docs/dlp', 'Catálogo de borrado'],
-    ['/descargas', 'Descargas']
+    ['/descargas', 'Descargas'],
+    ['/changelog', 'Historial de versiones']
   ]],
   ['Legal', [
     ['/legal/aviso-legal', 'Aviso legal'],
     ['/legal/privacidad', 'Privacidad'],
     ['/legal/terminos', 'Condiciones'],
-    ['/legal/cookies', 'Cookies']
+    ['/legal/cookies', 'Cookies'],
+    ['/legal/dpa', 'Encargo RGPD (DPA)'],
+    ['/legal/subencargados', 'Subencargados'],
+    ['/legal/sla', 'Garantía SLA']
   ]],
   ['Proyecto', [
     ['/legal/licencia', 'Licencia MIT'],

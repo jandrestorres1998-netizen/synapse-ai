@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historial de versiones (Changelog) — SynapseAI</title>
+  <meta name="description" content="Registro cronológico de cambios, mejoras, parches de seguridad y versiones publicadas de SynapseAI.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<div class="doc-shell">
+  <nav id="doc-index" aria-label="Índice de la página"></nav>
+
+  <article class="doc">
+    <div class="doc-head">
+      <h1>Historial de versiones</h1>
+      <p class="resumen">Registro público y verificable de todos los lanzamientos, mejoras de protección, parches de seguridad y correcciones del programa.</p>
+      <span class="fecha">Seguimiento según Versionado Semántico (SemVer 2.0.0)</span>
+    </div>
+
+    <h2>Versión 2.0.0 · Rediseño, auditoría adversaria y casos de uso</h2>
+    <p><strong>Fecha de publicación:</strong> 10 de septiembre de 2026</p>
+
+    <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 10px;border-radius:6px;background:color-mix(in oklab, var(--probar) 12%, white);font-family:'DM Mono',monospace;font-size:12px;color:var(--probar);margin-bottom:16px">
+      <span>Etiqueta: v2.0.0</span> · <span>Última versión estable</span>
+    </div>
+
+    <h3>Novedades destacadas</h3>
+    <ul>
+      <li><strong>Auditoría adversaria pública (<a href="/auditoria">/auditoria</a>):</strong> Publicación íntegra de los cinco informes de los revisores independientes (Mercado, Seguridad, Ingeniería, Legal y Financiero) con los fallos detectados y el dictamen arbitral.</li>
+      <li><strong>Extensión del navegador (<a href="/extension">/extension</a>):</strong> Detección en local de identificadores personales en ChatGPT, Claude y Gemini bajo Manifest V3, con aislamiento absoluto y sin conexiones externas.</li>
+      <li><strong>Suite de documentación interactiva (<a href="/docs">/docs</a>):</strong> Buscador local instantáneo sin dependencias y guías completas de <a href="/docs/instalacion">instalación</a>, <a href="/docs/configuracion">configuración</a>, <a href="/docs/api">referencia API</a>, <a href="/docs/dlp">catálogo DLP</a> y <a href="/docs/despliegue">despliegue en producción</a>.</li>
+      <li><strong>Casos de uso por oficio (<a href="/casos/gestoria">Gestorías</a>, <a href="/casos/despacho">Despachos</a>, <a href="/casos/agencia">Agencias</a>):</strong> Adaptación del vocabulario y dolor real para cada gremio profesional.</li>
+      <li><strong>Alta guiada en el panel:</strong> Nuevo asistente de 3 pasos (Clave de acceso &rarr; Proveedor de IA &rarr; Primera petición de prueba) para operadores recién instalados.</li>
+      <li><strong>Formulario directo de contacto (<a href="/contacto">/contacto</a>):</strong> Canal limpio de 3 campos, sin chatbots automatizados y con aviso de límites.</li>
+    </ul>
+
+    <h3>Correcciones y honestidad técnica</h3>
+    <ul>
+      <li><strong>Retirada total de métricas no demostradas:</strong> Se eliminaron todas las afirmaciones comerciales sobre «60 % de ahorro» o «sub-5 ms», sustituyéndolas por datos de ejecución y contadores reales.</li>
+      <li><strong>Alineación estricta de los seis pasos:</strong> Rediseño de la sección de arquitectura con retícula fija para eliminar desalineaciones y cortes de texto.</li>
+      <li><strong>Micro-animaciones táctiles:</strong> Respuesta física <code>:active</code> en todos los botones y transiciones suaves en acordeones y selectores de código.</li>
+      <li><strong>Traducción a lenguaje llano:</strong> Eliminación de jerga técnica innecesaria (<em>gateway</em>, <em>proxy</em>, <em>inquilino</em>, <em>DLP</em>) en las áreas de decisión comercial.</li>
+    </ul>
+
+    <h2>Lo que ya venía hecho</h2>
+    <p>
+      Este proyecto no tiene lanzamientos publicos anteriores. El repositorio
+      arranca en septiembre de 2026 y no hay ninguna version etiquetada antes
+      de la 2.0.0, asi que no vamos a inventarle fechas a lo que ya estaba
+      construido. Lo de abajo es el nucleo que existia antes de este rediseño:
+    </p>
+
+    <ul>
+      <li><strong>Punto de paso compatible con OpenAI:</strong> las rutas <code>/v1/chat/completions</code> y <code>/v1/models</code>, para conectar cambiando solo la <code>baseURL</code>.</li>
+      <li><strong>Comprobacion de identificadores de España e Iberoamerica:</strong> DNI/NIE (MOD-23), CIF, IBAN (MOD-97-10) y tarjetas (Luhn), ademas de RFC, CURP, CPF y CNPJ.</li>
+      <li><strong>Almacen cifrado en reposo:</strong> las claves de los proveedores se guardan cifradas con la variable <code>SYNAPSE_VAULT_KEY</code>.</li>
+      <li><strong>Registro encadenado:</strong> cada peticion deja una linea en <code>data/audit.jsonl</code> enlazada con la anterior por su huella, de modo que retocar una delata a todas las siguientes.</li>
+      <li><strong>Reserva de presupuesto:</strong> se aparta el saldo antes de llamar al proveedor y se liquida con el consumo real al recibir la respuesta.</li>
+      <li><strong>Filtrado de intentos de engaño:</strong> deteccion de los trucos conocidos para saltarse las instrucciones.</li>
+      <li><strong>Modelos conectados:</strong> OpenAI (<code>gpt-4o</code>, <code>gpt-4o-mini</code>), Anthropic (<code>sonnet</code>, <code>haiku</code>), Google (<code>gemini-flash</code>) y modelos propios via Ollama.</li>
+    </ul>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> Aqui solo se anota lo que se puede comprobar en el repositorio. Cuando haya mas versiones etiquetadas, apareceran con su fecha real. Los paquetes y archivos binarios descargables con sus sumas de verificación criptográfica están disponibles en la página de <a href="/descargas">Descargas</a>.
+    </div>
+
+  </article>
+</div>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+</body>
+</html>

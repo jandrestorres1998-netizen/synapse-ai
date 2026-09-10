@@ -1,0 +1,31 @@
+Windows Registry Editor Version 5.00
+
+; ==============================================================================
+; SynapseAI - Plantilla de despliegue corporativo para Chrome y Edge (Windows)
+; ==============================================================================
+;
+; OJO: esta plantilla NO ESTA LISTA PARA EJECUTAR, y esta desactivada a proposito.
+;
+; Las dos lineas de politica van comentadas con ';' porque el identificador de la
+; extension todavia no existe: la extension no esta publicada en la tienda de
+; Chrome ni en la de Edge, y sin publicar no hay identificador que poner. Si se
+; ejecutara tal cual con un identificador falso, cada equipo de la oficina se
+; quedaria con una politica rota que no instala nada y que ademas hay que ir a
+; limpiar a mano.
+;
+; Para usarla, cuando la extension este publicada:
+;   1. Copia su identificador de la tienda (32 letras de la a a la p).
+;   2. Sustituye PON_AQUI_EL_ID_DE_LA_EXTENSION por ese identificador.
+;   3. Quita el ';' del principio de las cuatro lineas de abajo.
+;   4. Pruebalo en UN equipo antes de repartirlo por directiva de grupo.
+;
+; Mientras tanto, para instalarla en un equipo suelto sin tienda ni registro,
+; usa instalar_extension_windows.bat, que la carga descomprimida.
+
+; Google Chrome - instalacion forzada corporativa
+;[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist]
+;"1"="PON_AQUI_EL_ID_DE_LA_EXTENSION;https://clients2.google.com/service/update2/crx"
+
+; Microsoft Edge - instalacion forzada corporativa
+;[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallForcelist]
+;"1"="PON_AQUI_EL_ID_DE_LA_EXTENSION;https://edge.microsoft.com/extensionproxy/service/update2/crx"
