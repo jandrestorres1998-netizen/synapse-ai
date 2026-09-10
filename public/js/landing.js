@@ -12,22 +12,43 @@ import { esc, $, integer } from './ui.js';
  */
 
 const EJEMPLO = {
-  salida: 'Redacta un correo al cliente Martín Salas, DNI [REDACTED_ES_DNI_NIE], sobre el cargo pendiente en su cuenta [REDACTED_IBAN] y la tarjeta [REDACTED_CARD_NUMBER].',
+  salida: 'Redacta un correo al cliente Martín Salas, DNI [dato borrado], sobre el cargo pendiente en su cuenta [dato borrado] y la tarjeta [dato borrado].',
   etapas: [
-    { n: '01', titulo: 'Inyección de prompt', badge: 'Limpio', tono: 'ok', detalle: 'Sin patrones de anulación de instrucciones en los turnos del usuario.' },
+    { n: '01', titulo: 'Se comprueba quién pregunta', badge: 'Correcto', tono: 'ok', detalle: 'Cada programa de la empresa tiene su propia llave. Sin ella no pasa.' },
     {
-      n: '02', titulo: 'Redacción DLP', badge: '3 hallazgos', tono: 'warning',
-      detalle: 'Tres identificadores con dígito de control válido, sustituidos antes de la salida.',
+      n: '02', titulo: 'Se busca si alguien intenta engañar a la IA', badge: 'Limpio', tono: 'ok',
+      detalle: 'Los intentos conocidos de darle la vuelta a las instrucciones se paran aquí.'
+    },
+    {
+      n: '03', titulo: 'Se borran los datos de personas', badge: '3 encontrados', tono: 'warning',
+      detalle: 'Tres datos con su dígito de control correcto. Se sustituyen antes de salir; el valor original no se guarda en ningún sitio.',
       hallazgos: [
-        { sigla: 'ES_DNI_NIE', alg: 'MOD-23', valor: '1234····Z' },
-        { sigla: 'IBAN', alg: 'MOD-97', valor: 'ES91 2100 ···· 1332' },
-        { sigla: 'CARD', alg: 'Luhn', valor: '4111 ···· ···· 1111' }
+        { sigla: 'Un DNI', alg: 'con letra correcta', valor: '1234····Z' },
+        { sigla: 'Una cuenta bancaria', alg: 'IBAN', valor: 'ES91 2100 ···· 1332' },
+        { sigla: 'Una tarjeta', alg: 'de crédito o débito', valor: '4111 ···· ···· 1111' }
       ]
     },
-    { n: '03', titulo: 'Contexto', badge: 'Mensaje de sistema', detalle: 'Las directrices activas viajan en cada petición y cuentan como tokens de entrada.' },
-    { n: '04', titulo: 'Caché', badge: 'Sin coincidencia', detalle: 'Aislada por inquilino, modelo y contexto. Esta combinación no estaba guardada.' },
-    { n: '05', titulo: 'Enrutado', badge: 'Al nivel más barato', tono: 'probar', detalle: 'Entre los proveedores realmente configurados, con la razón del enrutado a la vista.' }
+    { n: '04', titulo: 'Se añaden vuestras instrucciones', badge: 'Después de borrar', detalle: 'El tono y las normas de la casa viajan con cada consulta. Se añaden después del borrado, no antes.' },
+    { n: '05', titulo: 'Se mira si ya se preguntó lo mismo', badge: 'Es nueva', detalle: 'Si la respuesta ya estaba guardada, no se paga otra vez. Esta no estaba.' },
+    { n: '06', titulo: 'Se envía y se anota', badge: 'Al más barato que sirve', tono: 'probar', detalle: 'Va al proveedor más económico de los que tengáis contratados, y el envío queda registrado.' }
   ]
+};
+
+// El panel usa el nombre técnico de la regla; aquí se vende, así que se dice en
+// castellano corriente. Lo que no esté en la tabla cae al nombre original.
+const NOMBRE_LLANO = {
+  es_dni_nie: 'Un DNI o NIE',
+  es_cif: 'El CIF de una empresa',
+  iban_bank_account: 'Una cuenta bancaria',
+  credit_card: 'Una tarjeta',
+  mx_rfc: 'Un RFC mexicano',
+  mx_curp: 'Una CURP mexicana',
+  br_cpf: 'Un CPF brasileño',
+  br_cnpj: 'Un CNPJ brasileño',
+  email_address: 'Un correo electrónico',
+  private_key_block: 'Una clave privada de un sistema',
+  connection_string: 'La contraseña de una base de datos',
+  password_field: 'Una contraseña escrita a pelo'
 };
 
 const CODIGO = {
@@ -68,12 +89,12 @@ class Landing {
 
       $('demo-dot').className = 'dot ok';
       $('demo-mode-label').textContent = reales.length
-        ? `Esta instancia · ${reales.join(' · ')}`
-        : 'Esta instancia · solo proveedor mock';
+        ? 'Se ejecuta de verdad en esta instalación'
+        : 'Instalación de prueba, sin proveedor real';
     } catch {
       this.enVivo = false;
       $('demo-dot').className = 'dot';
-      $('demo-mode-label').textContent = 'Recorrido de ejemplo';
+      $('demo-mode-label').textContent = 'Ejemplo';
     }
   }
 
@@ -112,34 +133,35 @@ class Landing {
     const ingress = data.dlp?.ingressDetections ?? [];
 
     return [
-      { n: '01', titulo: 'Inyección de prompt', badge: 'Limpio', tono: 'ok', detalle: 'Los patrones se evaluaron sobre todos los turnos del usuario.' },
+      { n: '01', titulo: 'Se comprueba quién pregunta', badge: 'Correcto', tono: 'ok', detalle: 'Cada programa de la empresa tiene su propia llave. Sin ella no pasa.' },
+      { n: '02', titulo: 'Se busca si alguien intenta engañar a la IA', badge: 'Limpio', tono: 'ok', detalle: 'Se revisan todos los mensajes de la conversación, no solo el último.' },
       ingress.length > 0
         ? {
-          n: '02',
-          titulo: 'Redacción DLP',
-          badge: `${ingress.length} ${ingress.length === 1 ? 'hallazgo' : 'hallazgos'}`,
+          n: '03',
+          titulo: 'Se borran los datos de personas',
+          badge: `${ingress.length} ${ingress.length === 1 ? 'encontrado' : 'encontrados'}`,
           tono: 'warning',
-          detalle: 'Sustituidos antes de la salida. El valor original no se guarda: en la auditoría queda solo un hash.',
-          hallazgos: ingress.map(d => ({ sigla: d.name, alg: d.category ?? '', valor: d.snippet ?? '' }))
+          detalle: 'Se sustituyen antes de salir. El valor original no se guarda en ningún sitio: en el registro solo queda una huella.',
+          hallazgos: ingress.map(d => ({ sigla: NOMBRE_LLANO[d.patternId] ?? d.name, alg: '', valor: d.snippet ?? '' }))
         }
-        : { n: '02', titulo: 'Redacción DLP', badge: 'Sin coincidencias', detalle: 'Ninguno de los patrones configurados reconoció nada en este texto.' },
+        : { n: '03', titulo: 'Se borran los datos de personas', badge: 'Nada que borrar', detalle: 'En este texto no había ningún documento ni cuenta que reconociera.' },
       {
-        n: '03',
-        titulo: 'Contexto',
-        badge: data.context?.applied ? `${integer(data.context.chars)} caracteres` : 'Sin directrices',
+        n: '04',
+        titulo: 'Se añaden vuestras instrucciones',
+        badge: data.context?.applied ? 'Después de borrar' : 'No hay ninguna',
         detalle: data.context?.applied
-          ? 'Las directrices activas viajan como mensaje de sistema y cuentan como tokens de entrada.'
-          : 'No hay directrices activas en esta instancia.'
+          ? 'El tono y las normas de la casa viajan con cada consulta. Se añaden después del borrado, no antes.'
+          : 'No tenéis instrucciones fijas configuradas, así que no se añade nada.'
       },
       data.source === 'cache'
-        ? { n: '04', titulo: 'Caché', badge: data.matchType === 'semantic' ? 'Por similitud' : 'Coincidencia exacta', tono: 'ok', detalle: 'Servida sin consumir tokens del proveedor.' }
-        : { n: '04', titulo: 'Caché', badge: 'Sin coincidencia', detalle: 'Aislada por inquilino, modelo y contexto.' },
+        ? { n: '05', titulo: 'Se mira si ya se preguntó lo mismo', badge: 'Ya estaba', tono: 'ok', detalle: 'Se responde con lo guardado. Esta consulta no ha costado nada.' }
+        : { n: '05', titulo: 'Se mira si ya se preguntó lo mismo', badge: 'Es nueva', detalle: 'No estaba guardada, así que hay que preguntar al proveedor.' },
       {
-        n: '05',
-        titulo: `Enrutado a ${data.model?.label ?? data.model?.id ?? '—'}`,
+        n: '06',
+        titulo: 'Se envía y se anota',
         badge: `${integer(data.latencyMs)} ms`,
         tono: 'probar',
-        detalle: data.routing?.reasoning ?? 'Entre los proveedores realmente configurados.'
+        detalle: `Respondio ${data.model?.label ?? data.model?.id ?? 'el proveedor'}. El envío queda registrado y no se puede borrar sin que se note.`
       }
     ];
   }
@@ -170,14 +192,14 @@ class Landing {
 
     const nota = modo === 'ejemplo'
       ? `<p style="margin: 12px 0 0; font-size: 13px; color: var(--ink-faint);">
-           Recorrido de ejemplo con datos de muestra${avisar ? '. Para ejecutarlo de verdad, arranca el gateway y abre <a href="/app">el panel</a> con tu clave.' : '.'}
+           Ejemplo con datos inventados${avisar ? '. Para verlo funcionar de verdad, instala el gateway y abre <a href="/app">el panel</a>.' : '.'}
          </p>`
       : '';
 
     $('demo-out').innerHTML = `
       ${pasos}
       <div class="egress">
-        <div class="egress-head"><span class="eyebrow">Texto que sale del perímetro</span></div>
+        <div class="egress-head"><span class="eyebrow">Lo que habría salido de tu empresa</span></div>
         <p>${esc(salida)}</p>
       </div>
       ${nota}`;

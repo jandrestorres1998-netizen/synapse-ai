@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SynapseAI — gateway auto-alojado para tráfico de LLM</title>
-  <meta name="description" content="Se coloca entre tus aplicaciones y los proveedores de modelos. Redacta identificadores con checksum válido antes de la salida y deja registrado qué salió hacia un modelo.">
+  <title>SynapseAI — que la IA no se lleve los datos de tus clientes</title>
+  <meta name="description" content="Tu equipo usa ChatGPT, Claude o Gemini. SynapseAI se instala en tu red, borra los datos personales antes de que salgan y deja constancia de lo que pasó.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -25,43 +25,43 @@
     </a>
 
     <nav class="site-nav" aria-label="Principal">
-      <a href="#producto">Producto</a>
-      <a href="#seguridad">Seguridad</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#documentos">Qué reconoce</a>
+      <a href="#limites">Lo que no hace</a>
       <a href="#precios">Precios</a>
-      <a href="#instalacion">Instalación</a>
     </nav>
 
     <div class="head-actions">
-      <a href="/app">Abrir el panel</a>
+      <a href="/app">Ver el panel</a>
       <a class="btn" href="#instalacion">Instalar</a>
     </div>
   </div>
 </header>
 
-<!-- 02 · Héroe: demo ejecutable, no ilustración ──────────────────────────── -->
+<!-- Héroe ────────────────────────────────────────────────────────────────── -->
 <section class="first">
   <div class="wrap">
-    <p class="eyebrow">Gateway auto-alojado para tráfico de LLM</p>
-    <h1 class="hero">Tus aplicaciones dejan de custodiar claves de proveedor.</h1>
-    <p class="lede">Se coloca entre tus aplicaciones y los proveedores de modelos. Habla el protocolo de OpenAI: integrarlo es cambiar el <code>baseURL</code>. Desde ese punto queda registrado qué salió hacia un modelo.</p>
+    <p class="eyebrow">Para equipos que ya usan IA a diario</p>
+    <h1 class="hero">Tu equipo usa IA. Que no se lleve los datos de tus clientes.</h1>
+    <p class="lede">SynapseAI se instala en tu propia red y revisa todo lo que tu equipo envía a ChatGPT, Claude o Gemini. Si aparece un DNI, un IBAN o el número de una tarjeta, los borra antes de que salgan. Y deja constancia de qué salió y cuándo.</p>
 
     <div class="panel" style="margin-top: 40px;">
       <div class="panel-head">
-        <span class="eyebrow">Trazado de una petición</span>
+        <span class="eyebrow">Míralo con un caso real</span>
         <span class="chip-state" id="demo-mode" style="margin-left: auto;">
-          <span class="dot" id="demo-dot"></span><span id="demo-mode-label">Comprobando la instancia…</span>
+          <span class="dot" id="demo-dot"></span><span id="demo-mode-label">Comprobando…</span>
         </span>
       </div>
 
       <div class="demo-in">
-        <label class="eyebrow" for="demo-prompt" style="display: block; margin-bottom: 8px;">Lo que enviaría tu aplicación</label>
+        <label class="eyebrow" for="demo-prompt" style="display: block; margin-bottom: 8px;">Escribe lo que le pedirías a la IA. Este ejemplo lleva un DNI, una cuenta y una tarjeta.</label>
         <textarea id="demo-prompt" spellcheck="false">Redacta un correo al cliente Martín Salas, DNI 12345678Z, sobre el cargo pendiente en su cuenta ES91 2100 0418 4502 0005 1332 y la tarjeta 4111 1111 1111 1111.</textarea>
         <div class="demo-actions">
           <button class="btn btn-lg" id="demo-run" type="button">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg>
             Ver qué pasa
           </button>
-          <span class="demo-hint">El prompt trae un DNI, un IBAN y una tarjeta. No es una animación: es el mismo componente que usa el panel.</span>
+          <span class="demo-hint">Verás los pasos uno a uno y, al final, el texto exacto que habría salido de tu empresa.</span>
         </div>
       </div>
 
@@ -70,104 +70,87 @@
   </div>
 </section>
 
-<!-- 03 · Las tres capas ──────────────────────────────────────────────────── -->
-<section id="producto">
+<!-- Las tres cosas que hace ──────────────────────────────────────────────── -->
+<section id="como-funciona">
   <div class="wrap">
-    <h2 class="sec">Tres capas, y el límite de cada una</h2>
-    <p class="sec-lede">Cada afirmación viene con su frontera en el mismo bloque. Si una capacidad no puede expresar su límite, no está terminada.</p>
+    <h2 class="sec">Hace tres cosas. Y le decimos hasta dónde llega cada una.</h2>
+    <p class="sec-lede">Nadie compra un candado sin saber qué puerta no cierra. Aquí lo tiene escrito debajo de cada apartado.</p>
 
     <div class="cards c3">
       <div class="cap">
         <span style="color: var(--proteccion);">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
         </span>
-        <h3 class="card-h">Redacción</h3>
-        <p>Secretos e identificadores con checksum válido se sustituyen antes de la salida, y también sobre la respuesta del modelo.</p>
-        <p class="limit">Límite: detecta estructuras, no confidencialidad. Una estrategia comercial escrita en prosa pasa intacta.</p>
+        <h3 class="card-h">Borra los datos antes de que salgan</h3>
+        <p>DNI, NIE, IBAN, tarjetas, RFC, CURP, CPF y contraseñas de sistemas. Se sustituyen por una etiqueta antes de que el texto salga de tu red, y también en lo que la IA responde.</p>
+        <p class="limit">Hasta aquí llega: reconoce un documento por su forma. No entiende si un párrafo cuenta algo confidencial. Si escribes en prosa la estrategia de un cliente, eso sale sin tocar.</p>
       </div>
 
       <div class="cap">
         <span style="color: var(--contexto);">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
         </span>
-        <h3 class="card-h">Registro</h3>
-        <p>Auditoría encadenada por hash en JSONL: cada entrada referencia la anterior, así que un corte se detecta. Exportable a SIEM.</p>
-        <p class="limit">Límite: solo registra el tráfico que se le entrega. Un empleado decidido no usa el gateway.</p>
+        <h3 class="card-h">Deja constancia de lo que pasó</h3>
+        <p>Cada envío queda anotado en un registro que no se puede retocar sin que se note. Si un día tienes que demostrar qué salió de tu empresa y cuándo, está ahí.</p>
+        <p class="limit">Hasta aquí llega: solo anota lo que pasa por él. Quien decida saltárselo, puede. Esto evita el descuido de un martes por la tarde, no la mala fe.</p>
       </div>
 
       <div class="cap">
         <span style="color: var(--ajustes);">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
         </span>
-        <h3 class="card-h">Coste</h3>
-        <p>Enrutado entre los proveedores que tengas configurados, caché aislada por inquilino y límites de gasto con reserva previa.</p>
-        <p class="limit">Límite: el ahorro depende de tu mezcla de tráfico. No publicamos un porcentaje que no hayamos medido en tu instancia.</p>
+        <h3 class="card-h">Controla lo que se gasta</h3>
+        <p>Pones un tope al día y al mes. Antes de cada consulta se aparta lo que podría costar, así que una tarde de uso intensivo no se lleva por delante el presupuesto del mes.</p>
+        <p class="limit">Hasta aquí llega: cuánto ahorras depende de tu uso. No te damos un porcentaje: te damos el contador, y lo mides en tu casa.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 04 · Integración en una línea ────────────────────────────────────────── -->
-<section>
+<!-- Qué reconoce ─────────────────────────────────────────────────────────── -->
+<section id="documentos">
   <div class="wrap">
-    <div class="sec-head">
-      <h2 class="sec" style="margin-bottom: 0;">Integración en una línea</h2>
-      <span style="font-size: 14px; color: var(--ink-faint);">El resto de tu código no cambia.</span>
-    </div>
-
-    <div class="panel">
-      <div class="code-tabs">
-        <button class="btn-tab active" data-lang="python" type="button">Python</button>
-        <button class="btn-tab" data-lang="node" type="button">Node</button>
-        <button class="btn-tab" data-lang="curl" type="button">cURL</button>
-        <button class="btn btn-secondary" id="btn-copy" type="button" style="margin-left: auto; height: 32px; padding: 0 12px; font-size: 13px;">Copiar</button>
-      </div>
-      <pre class="code" id="code-block"></pre>
-    </div>
-  </div>
-</section>
-
-<!-- 05 · Identificadores: la sección que vende el nicho ──────────────────── -->
-<section>
-  <div class="wrap">
-    <h2 class="sec">Identificadores iberoamericanos, validados por checksum</h2>
-    <p class="sec-lede">No se detecta por parecido: se comprueba el dígito de control. Un RFC mal formado no dispara un falso positivo, y uno válido no se escapa por llevar espacios.</p>
+    <h2 class="sec">Conoce los documentos de aquí, no solo los de Estados Unidos</h2>
+    <p class="sec-lede">La mayoría de estas herramientas se hicieron pensando en el número de la seguridad social americana. Esta comprueba el dígito de control de un DNI, de un IBAN o de un RFC, igual que lo haría tu gestor. Por eso no marca por error una referencia de pedido que casualmente lleve ocho números y una letra.</p>
 
     <div class="cards c4">
-      <div class="id-card"><div class="id-top"><span class="id-sigla">DNI / NIE</span><span class="id-pais">ES</span><span class="id-alg">MOD-23</span></div><p class="id-ej">[REDACTED_ES_DNI_NIE]</p></div>
-      <div class="id-card"><div class="id-top"><span class="id-sigla">CIF</span><span class="id-pais">ES</span><span class="id-alg">Letra control</span></div><p class="id-ej">[REDACTED_ES_CIF]</p></div>
-      <div class="id-card"><div class="id-top"><span class="id-sigla">IBAN</span><span class="id-pais">SEPA</span><span class="id-alg">MOD-97</span></div><p class="id-ej">[REDACTED_IBAN]</p></div>
-      <div class="id-card"><div class="id-top"><span class="id-sigla">RFC</span><span class="id-pais">MX</span><span class="id-alg">Homoclave</span></div><p class="id-ej">[REDACTED_MX_RFC]</p></div>
-      <div class="id-card"><div class="id-top"><span class="id-sigla">CURP</span><span class="id-pais">MX</span><span class="id-alg">Dígito verif.</span></div><p class="id-ej">[REDACTED_MX_CURP]</p></div>
-      <div class="id-card"><div class="id-top"><span class="id-sigla">CPF</span><span class="id-pais">BR</span><span class="id-alg">Módulo 11</span></div><p class="id-ej">[REDACTED_BR_CPF]</p></div>
-      <div class="id-card"><div class="id-top"><span class="id-sigla">CNPJ</span><span class="id-pais">BR</span><span class="id-alg">Módulo 11</span></div><p class="id-ej">[REDACTED_BR_CNPJ]</p></div>
-      <div class="id-card"><div class="id-top"><span class="id-sigla">Tarjeta</span><span class="id-pais">Global</span><span class="id-alg">Luhn</span></div><p class="id-ej">[REDACTED_CARD_NUMBER]</p></div>
+      <div class="id-card"><div class="id-top"><span class="id-sigla">DNI y NIE</span><span class="id-pais">España</span></div><p class="id-ej">Con letra comprobada</p></div>
+      <div class="id-card"><div class="id-top"><span class="id-sigla">CIF</span><span class="id-pais">España</span></div><p class="id-ej">De empresa</p></div>
+      <div class="id-card"><div class="id-top"><span class="id-sigla">Cuentas IBAN</span><span class="id-pais">Toda la zona euro</span></div><p class="id-ej">34 países</p></div>
+      <div class="id-card"><div class="id-top"><span class="id-sigla">RFC</span><span class="id-pais">México</span></div><p class="id-ej">Con homoclave</p></div>
+      <div class="id-card"><div class="id-top"><span class="id-sigla">CURP</span><span class="id-pais">México</span></div><p class="id-ej">Con dígito verificador</p></div>
+      <div class="id-card"><div class="id-top"><span class="id-sigla">CPF</span><span class="id-pais">Brasil</span></div><p class="id-ej">De persona</p></div>
+      <div class="id-card"><div class="id-top"><span class="id-sigla">CNPJ</span><span class="id-pais">Brasil</span></div><p class="id-ej">De empresa</p></div>
+      <div class="id-card"><div class="id-top"><span class="id-sigla">Tarjetas</span><span class="id-pais">Cualquiera</span></div><p class="id-ej">Crédito y débito</p></div>
     </div>
+
+    <p style="margin: 20px 0 0; font-size: 15px; color: var(--ink-faint);">También claves y contraseñas de sistemas internos, de las que un programador pega sin pensar cuando pide ayuda con un error.</p>
   </div>
 </section>
 
-<!-- 06 · Lo que no hace ──────────────────────────────────────────────────── -->
-<section class="band wide" id="seguridad">
+<!-- Lo que no hace ───────────────────────────────────────────────────────── -->
+<section class="band wide" id="limites">
   <div class="wrap">
     <h2 class="sec">Lo que no hace</h2>
+    <p class="sec-lede">Esto suele ir en letra pequeña. Preferimos que lo leas antes de pagar y no después.</p>
     <div class="limits" style="margin-top: 24px;">
-      <p>El DLP detecta estructuras. La confidencialidad escrita en prosa no se detecta y sale del perímetro.</p>
-      <p>El filtro de inyección reduce ruido. No cierra la clase de ataque.</p>
-      <p>Concentrar las claves de todos los proveedores en un proceso crea un objetivo. Lo decimos aquí, no en la letra pequeña.</p>
-      <p>Sin <code>SYNAPSE_VAULT_KEY</code>, el cifrado en reposo es ofuscación, no cifrado.</p>
+      <p>Reconoce documentos por su forma. Un secreto contado en un párrafo normal no lo detecta, y sale.</p>
+      <p>Frena los intentos conocidos de engañar a la IA. Uno nuevo y bien escrito puede pasar.</p>
+      <p>Solo ve lo que pasa por él. Si alguien abre ChatGPT en su móvil, ahí no llegamos.</p>
+      <p>Guarda todas las claves de tus proveedores en un mismo sitio. Eso es cómodo, y también concentra el riesgo. Conviene saberlo.</p>
     </div>
-    <p style="margin: 32px 0 0; font-size: 14px; color: var(--ink-muted);">No tenemos certificación SOC 2 ni ISO 27001, y no publicamos cifras de ahorro que no hayamos medido en una instancia real.</p>
+    <p style="margin: 32px 0 0; font-size: 14px; color: var(--ink-muted);">No tenemos sello SOC 2 ni ISO 27001, y no publicamos porcentajes de ahorro que no hayamos medido en una instalación real. Si alguien te promete una cifra sin medirla en tu casa, no está midiendo nada.</p>
   </div>
 </section>
 
-<!-- 07 · Extensión ───────────────────────────────────────────────────────── -->
+<!-- Extensión ────────────────────────────────────────────────────────────── -->
 <section class="wide">
   <div class="wrap two-col">
     <div>
-      <p class="eyebrow">Extensión de navegador · Manifest V3</p>
-      <h2 class="sec" style="margin-top: 12px;">Intercepta antes del envío, en local</h2>
-      <p style="max-width: 60ch; color: var(--ink-muted); margin: 0 0 20px;">Detección en la propia página sobre ChatGPT, Claude y Gemini. El texto no sale del navegador para ser inspeccionado, y los <code>host_permissions</code> apuntan solo a tu instancia.</p>
-      <a class="btn btn-secondary" href="#instalacion">Permisos declarados, uno por uno</a>
+      <p class="eyebrow">Extensión para el navegador</p>
+      <h2 class="sec" style="margin-top: 12px;">Avisa antes de pegar</h2>
+      <p style="max-width: 60ch; color: var(--ink-muted); margin: 0 0 20px;">Casi nadie envía datos de un cliente a propósito: los pega dentro de un texto largo sin fijarse. La extensión los detecta en la propia página, antes de enviar, y pregunta. La comprobación ocurre en el ordenador de tu empleado: el texto no viaja a ningún sitio para ser revisado.</p>
+      <a class="btn btn-secondary" href="#instalacion">Cómo se instala</a>
     </div>
 
     <div class="panel">
@@ -179,73 +162,73 @@
         <div class="intercept">
           <div class="intercept-head">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-            <span>2 identificadores en lo que ibas a pegar</span>
+            <span>Esto lleva datos de un cliente</span>
           </div>
           <div class="intercept-rules">
-            <div>ES_DNI_NIE <em>MOD-23</em></div>
-            <div>IBAN <em>MOD-97</em></div>
+            <div>Un DNI <em>con letra correcta</em></div>
+            <div>Una cuenta bancaria <em>IBAN</em></div>
           </div>
           <div class="fake-btns">
-            <span class="fake-btn primary">Redactar y enviar</span>
+            <span class="fake-btn primary">Quitarlos y enviar</span>
             <span class="fake-btn ghost">Cancelar</span>
           </div>
         </div>
-        <p style="margin: 12px 0 0; font-size: 13px; color: var(--ink-faint);">Maqueta del aviso. Sustituir por captura real de la v2.0.0 antes de publicar.</p>
+        <p style="margin: 12px 0 0; font-size: 13px; color: var(--ink-faint);">Ejemplo del aviso. Se sustituirá por una captura real antes de publicar.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 08 · Precios ─────────────────────────────────────────────────────────── -->
+<!-- Precios ──────────────────────────────────────────────────────────────── -->
 <section class="band wide" id="precios">
   <div class="wrap">
-    <h2 class="sec">Se paga por respuesta humana, no por límites</h2>
-    <p class="sec-lede">El software es MIT y lo alojas tú: cualquier límite de plan sería honorario, no técnico. Así que no los vendemos.</p>
+    <h2 class="sec">Se paga porque alguien responda, no por quitar candados</h2>
+    <p class="sec-lede">El programa es gratuito y se instala en tu red. No hay una versión capada esperando a que pagues: no tendría sentido, porque el código es abierto y cualquiera podría quitarle el candado. Lo que se paga es que haya alguien al otro lado.</p>
 
     <div class="cards c3">
       <div class="plan">
         <div>
-          <h3>Autoalojado</h3>
-          <p class="for">Lo instalas y lo mantienes tú.</p>
+          <h3>Por tu cuenta</h3>
+          <p class="for">Tu equipo lo instala y lo mantiene.</p>
         </div>
         <p class="price">0 €</p>
         <ul>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Código completo bajo licencia MIT</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Docker, npm o Windows</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Auditoría en JSONL exportable</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Incidencias públicas en GitHub</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Todo el programa, sin recortes</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>El registro de lo que salió, descargable</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>La extensión para el navegador</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Preguntas en abierto, sin plazo de respuesta</li>
         </ul>
-        <a class="btn btn-secondary" href="#instalacion">Guía de instalación</a>
+        <a class="btn btn-secondary" href="#instalacion">Cómo se instala</a>
       </div>
 
       <div class="plan">
         <div>
-          <h3>Soporte</h3>
-          <p class="for">Alguien responde cuando falla.</p>
+          <h3>Con soporte</h3>
+          <p class="for">Alguien responde cuando algo falla.</p>
         </div>
         <p class="price">290 €<span style="font-size: 15px; color: var(--ink-faint);">/mes</span></p>
         <ul>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Ventana de respuesta pactada por escrito</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Revisión de tu configuración y despliegue</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Reglas DLP a medida de tus formatos</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Aviso previo de cambios que rompen</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Plazo de respuesta por escrito</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Revisamos cómo lo tienes montado</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Añadimos los formatos propios de tu sector</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Te avisamos antes de cualquier cambio que rompa algo</li>
         </ul>
-        <a class="btn btn-secondary" href="#contacto">Hablar de soporte</a>
+        <a class="btn btn-secondary" href="#contacto">Hablemos</a>
       </div>
 
       <div class="plan">
         <div>
-          <h3>Despliegue gestionado</h3>
-          <p class="for">Nosotros lo ponemos en marcha.</p>
+          <h3>Lo montamos nosotros</h3>
+          <p class="for">No tienes equipo técnico, o no quieres ocuparlo en esto.</p>
         </div>
         <p class="price">A presupuesto</p>
         <ul>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Instalación en tu infraestructura</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Proxy inverso, TLS, copias y rotación</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Contrato de encargo del art. 28 pre-firmable</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Formación al equipo</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Instalación completa en tu red</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Copias de seguridad y cambio de claves</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>El contrato de protección de datos, ya redactado</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Formación a tu equipo</li>
         </ul>
-        <a class="btn btn-secondary" href="#contacto">Contacto</a>
+        <a class="btn btn-secondary" href="#contacto">Pedir presupuesto</a>
       </div>
     </div>
   </div>
@@ -254,34 +237,41 @@
 <!-- Instalación ──────────────────────────────────────────────────────────── -->
 <section class="wide" id="instalacion">
   <div class="wrap">
-    <h2 class="sec">Tres caminos, en orden de fiabilidad</h2>
-    <p class="sec-lede">Los tres dejan el gateway escuchando en el puerto 3000 con el panel en <code>/app</code>.</p>
+    <h2 class="sec">Se levanta en una tarde</h2>
+    <p class="sec-lede">Esta parte la hace tu informático, o la hacemos nosotros. Si no eres tú quien lo va a instalar, puedes saltártela: lo único que necesitas saber es que se queda en tu red y que se quita en un minuto.</p>
 
     <div class="cards c3">
       <div class="cap">
-        <h3 class="card-h" style="margin-top: 0;">Docker</h3>
-        <p>Una línea, con volumen para <code>data/</code> y las variables mínimas.</p>
-        <p class="limit">Recomendado. El <code>Dockerfile</code> está en la raíz del repositorio.</p>
+        <h3 class="card-h" style="margin-top: 0;">En vuestro servidor</h3>
+        <p>Se instala como cualquier otro programa interno y queda escuchando en la red de la empresa.</p>
+        <p class="limit">Es la opción recomendada. Ni los datos ni las claves salen de ahí.</p>
       </div>
       <div class="cap">
-        <h3 class="card-h" style="margin-top: 0;">Node.js</h3>
-        <p><code>npm install</code>, copiar <code>.env.example</code>, generar las claves y <code>npm start</code>.</p>
-        <p class="limit">Requiere Node 24.</p>
+        <h3 class="card-h" style="margin-top: 0;">En un ordenador del equipo</h3>
+        <p>Para probarlo antes de decidir, vale con un portátil.</p>
+        <p class="limit">Sirve para evaluar. Para el día a día, mejor un servidor que esté siempre encendido.</p>
       </div>
       <div class="cap">
-        <h3 class="card-h" style="margin-top: 0;">Windows</h3>
-        <p><code>start_synapse.bat</code> o <code>start_synapse.ps1</code>.</p>
-        <p class="limit">Ya incluidos en el repositorio.</p>
+        <h3 class="card-h" style="margin-top: 0;">Quitarlo</h3>
+        <p>Se deshace el cambio y todo vuelve a estar como estaba.</p>
+        <p class="limit">Un minuto. No retenemos ningún dato tuyo en ninguna parte, porque nunca sale de tu red.</p>
       </div>
     </div>
 
-    <div class="panel" style="margin-top: 24px;">
-      <div class="panel-head"><span class="eyebrow">Antes de arrancar en cualquier sitio que no sea tu portátil</span></div>
-      <pre class="code">SYNAPSE_API_KEYS=$(openssl rand -hex 32)
-SYNAPSE_VAULT_KEY=$(openssl rand -hex 32)
-OPENAI_API_KEY=sk-...          # o ANTHROPIC_API_KEY, o GOOGLE_API_KEY, o Ollama</pre>
+    <div class="panel" style="margin-top: 32px;">
+      <div class="panel-head">
+        <span class="eyebrow">Para tu equipo técnico</span>
+        <span class="chip-state" style="margin-left: auto;">Se conecta cambiando una línea</span>
+      </div>
+      <div class="code-tabs">
+        <button class="btn-tab active" data-lang="python" type="button">Python</button>
+        <button class="btn-tab" data-lang="node" type="button">Node</button>
+        <button class="btn-tab" data-lang="curl" type="button">cURL</button>
+        <button class="btn btn-secondary" id="btn-copy" type="button" style="margin-left: auto; height: 32px; padding: 0 12px; font-size: 13px;">Copiar</button>
+      </div>
+      <pre class="code" id="code-block"></pre>
     </div>
-    <p style="margin: 12px 0 0; font-size: 14px; color: var(--ink-muted);">Sin <code>SYNAPSE_VAULT_KEY</code> el vault arranca en modo reducido y el panel lo avisa. El arranque falla si activas el proveedor mock con <code>NODE_ENV=production</code>.</p>
+    <p style="margin: 12px 0 0; font-size: 14px; color: var(--ink-muted);">Habla el mismo idioma que la API de OpenAI, así que los programas que ya tenéis funcionan sin tocar nada más. Si el gateway se cae, las aplicaciones reciben un error: nunca una respuesta que no haya sido revisada.</p>
   </div>
 </section>
 
@@ -289,36 +279,36 @@ OPENAI_API_KEY=sk-...          # o ANTHROPIC_API_KEY, o GOOGLE_API_KEY, o Ollama
   <div class="wrap">
     <div class="foot-cols">
       <div class="foot-col">
-        <span class="eyebrow">Producto</span>
-        <a href="#producto">Las capas y sus límites</a>
-        <a href="#seguridad">Lo que no hace</a>
-        <a href="#precios">Soporte</a>
-        <a href="/app">Panel</a>
+        <span class="eyebrow">El producto</span>
+        <a href="#como-funciona">Qué hace</a>
+        <a href="#limites">Lo que no hace</a>
+        <a href="#precios">Precios</a>
+        <a href="/app">Ver el panel</a>
       </div>
       <div class="foot-col">
-        <span class="eyebrow">Documentación</span>
+        <span class="eyebrow">Para el equipo técnico</span>
         <a href="#instalacion">Instalación</a>
-        <a href="#instalacion">Configuración</a>
-        <a href="#">Referencia de API</a>
-        <a href="#">Descargas · SHA-256</a>
+        <a href="#">Configuración</a>
+        <a href="#">Referencia de la API</a>
+        <a href="#">Descargas</a>
       </div>
       <div class="foot-col">
         <span class="eyebrow">Legal</span>
         <a href="#">Aviso legal</a>
         <a href="#">Privacidad</a>
-        <a href="#">Encargo del tratamiento y subencargados</a>
-        <a href="#">Uso aceptable</a>
+        <a href="#">Contrato de protección de datos</a>
+        <a href="#">Condiciones de uso</a>
       </div>
       <div class="foot-col">
-        <span class="eyebrow">Proyecto</span>
-        <a href="#">Auditoría adversaria</a>
-        <a href="#">Changelog</a>
-        <a href="#">Divulgación · security.txt</a>
+        <span class="eyebrow">El proyecto</span>
+        <a href="#">La auditoría que nos hicimos</a>
+        <a href="#">Novedades</a>
+        <a href="#">Avisar de un fallo de seguridad</a>
       </div>
     </div>
     <div class="foot-legal">
-      <span>Licencia MIT</span><span>·</span><span>/.well-known/security.txt</span>
-      <span class="push">Sin analítica antes del consentimiento</span>
+      <span>Programa libre, licencia MIT</span><span>·</span><span>Se instala en tu red</span>
+      <span class="push">Sin seguimiento ni analítica sin tu permiso</span>
     </div>
   </div>
 </footer>
