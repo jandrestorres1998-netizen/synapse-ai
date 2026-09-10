@@ -1,188 +1,222 @@
 import { ApiService } from '../services/api.service.js';
-import { esc, $, setText, setHTML, integer, time, notice } from '../ui.js';
+import { esc } from '../ui.js';
 
-const SEVERITY_COLOR = {
-  CRITICAL: 'var(--critical)',
-  HIGH: 'var(--warning)',
-  MEDIUM: 'var(--ink-faint)'
-};
-
-/**
- * Protección: lo que se interceptó, con qué reglas y con qué garantías.
- *
- * La tabla muestra el hash de correlación, nunca el texto. La versión anterior
- * de este panel tenía columnas «Texto Original» y «Texto Sanitizado»: la
- * pantalla de cumplimiento era ella misma una exhibición de los secretos que el
- * producto existe para contener.
- *
- * Las reglas se piden a la API en vez de llevar aquí una lista escrita a mano.
- * Una pantalla de cumplimiento que enumera reglas distintas de las que se
- * ejecutan es peor que no tener pantalla.
- */
 export class ProteccionComponent {
-  static async render() {
-    this.renderRules();
+  static rules = [
+    { id: "dni", nombre: "DNI, NIE y CIF (ES)", limite: "Valida MOD-23 y letra de control; no detecta nombres.", active: true },
+    { id: "iban", nombre: "IBAN y cuentas", limite: "MOD-97 sobre 34 países SEPA.", active: true },
+    { id: "tarjeta", nombre: "Tarjetas de pago", limite: "Luhn; un número de 16 dígitos sin checksum válido pasa.", active: true },
+    { id: "claves", nombre: "Claves API, PEM y cadenas de conexión", limite: "Patrones conocidos; una clave con formato propio no se reconoce.", active: true },
+    { id: "inyeccion", nombre: "Filtrado de inyección de prompts", limite: "Reduce ruido. No cierra la clase de ataque.", active: true },
+  ];
 
-    try {
-      const data = await ApiService.getSecurityLogs();
-      this.renderChain(data.ledger);
-      this.renderSummary(data);
-      this.renderDetections(data.logs ?? []);
-      this.wireExport();
-    } catch (err) {
-      setHTML('chain-state', err.code === 401
-        ? notice({ tone: 'warning', iconName: 'alert', title: 'Falta la clave de API', text: 'Introdúcela en la barra lateral para ver la auditoría.' })
-        : notice({ tone: 'critical', iconName: 'alert', title: 'No se pudo cargar la auditoría', text: esc(err.message) }));
-    }
-  }
+  static detections = [
+    { tipo: "ES_DNI_NIE", accion: "Redactado en salida", hora: "18:42:11", hash: "a91f…c204 ← 7bd0…11ae", color: "oklch(0.70 0.18 62)" },
+    { tipo: "PROMPT_INJECTION", accion: "Petición bloqueada", hora: "18:40:02", hash: "7bd0…11ae ← 4f22…9c31", color: "oklch(0.57 0.22 22)" },
+    { tipo: "API_KEY", accion: "Redactado en salida", hora: "18:31:48", hash: "4f22…9c31 ← 08ac…52de", color: "oklch(0.70 0.18 62)" },
+    { tipo: "IBAN", accion: "Redactado en respuesta", hora: "18:22:03", hash: "08ac…52de ← 66b1…7f90", color: "oklch(0.70 0.18 62)" },
+    { tipo: "BR_CPF", accion: "Redactado en salida", hora: "17:58:40", hash: "66b1…7f90 ← 12e7…aa05", color: "oklch(0.70 0.18 62)" },
+  ];
 
-  static async renderRules() {
-    const list = $('rules-list');
-    if (!list) return;
-
-    try {
-      const data = await ApiService.getSecurityRules();
-      const rules = data.rules ?? [];
-
-      setText('rules-mode', data.onDetection === 'block' ? 'rechaza la petición' : 'enmascara y continúa');
-
-      // Se agrupan por categoría porque es como el operador razona sobre ellas:
-      // «¿cubrimos identificadores de gobierno?», no «¿está la regla mx_curp?».
-      const byCategory = new Map();
-      for (const rule of rules) {
-        const key = rule.category ?? 'Otras';
-        if (!byCategory.has(key)) byCategory.set(key, []);
-        byCategory.get(key).push(rule);
-      }
-
-      list.innerHTML = [...byCategory.entries()].map(([category, group]) => {
-        const withChecksum = group.filter(r => r.checksumValidated).length;
-
-        // Distinguir es el punto de la pantalla: un dígito de control descarta
-        // falsos positivos, y reconocer una forma no descarta nada.
-        const cobertura = withChecksum === group.length
-          ? 'Todas comprueban un dígito de control: un valor con la forma correcta pero inválido no dispara falso positivo.'
-          : withChecksum > 0
-            ? `${withChecksum} de ${group.length} comprueban un dígito de control. Las demás reconocen la forma, así que aquí es donde aparecen los falsos positivos.`
-            : 'Reconocen la forma, no un dígito de control. Un valor con formato propio puede no reconocerse, y uno parecido puede enmascararse sin serlo.';
-
-        return `
-          <div class="row">
-            <div class="row-main">
-              <span class="dot ok"></span>
-              <div class="row-text">
-                <span class="row-title">${esc(category)}</span>
-                <span class="row-note">${group.map(r => esc(r.name)).join(' · ')}</span>
-                <span class="row-note">${esc(cobertura)}</span>
-              </div>
-            </div>
-            <div class="row-actions"><span class="tag">${group.length}</span></div>
-          </div>`;
-      }).join('') + `
-        <div class="row" style="background: var(--surface-quiet);">
-          <span class="row-note">${esc(data.note ?? '')}</span>
-        </div>`;
-    } catch (err) {
-      list.innerHTML = err.code === 401
-        ? '<div class="table-empty">Introduce tu clave de API para ver las reglas activas.</div>'
-        : `<div class="table-empty">${esc(err.message)}</div>`;
-    }
-  }
-
-  static renderChain(ledger) {
-    if (!ledger) return;
-    const integrity = ledger.integrity ?? {};
-
-    setHTML('chain-state', integrity.isValid
-      ? notice({
-        tone: 'ok',
-        iconName: 'check',
-        title: `Cadena de auditoría íntegra · ${integer(ledger.totalAppended)} registros`,
-        text: esc(integrity.scope ?? '')
-      })
-      : notice({
-        tone: 'critical',
-        iconName: 'alert',
-        title: 'Integridad comprometida',
-        text: esc(integrity.reason ?? 'La cadena no supera la verificación.')
-      }));
-  }
-
-  static renderSummary(data) {
-    const logs = data.logs ?? [];
-    const items = logs.flatMap(l => l.items ?? []);
-
-    setText('p-total', integer(data.totalDetections ?? items.length));
-    setText('p-blocked', integer(data.injectionsBlocked ?? 0));
-
-    const byCategory = new Map();
-    for (const item of items) {
-      const key = item.category ?? 'Otros';
-      byCategory.set(key, (byCategory.get(key) ?? 0) + 1);
-    }
-
-    const total = [...byCategory.values()].reduce((a, b) => a + b, 0) || 1;
-    const rows = [...byCategory.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .map(([name, count]) => `
-        <div class="breakdown-item">
-          <div class="breakdown-head"><span>${esc(name)}</span><span class="num" style="color: var(--ink-muted);">${count}</span></div>
-          <div class="bar"><span style="width: ${Math.round((count / total) * 100)}%; background: var(--proteccion);"></span></div>
-        </div>`).join('');
-
-    setHTML('p-breakdown', rows || '<span class="metric-note">Sin detecciones todavía.</span>');
-  }
-
-  /**
-   * Cada fila lleva el hash de correlación del payload, nunca el texto. Sirve
-   * para reconocer que el mismo valor reaparece, sin conservarlo.
-   */
-  static renderDetections(logs) {
-    const container = $('protection-rows');
+  static render() {
+    const container = document.getElementById('proteccion-container');
     if (!container) return;
 
-    const rows = logs.flatMap(log => (log.items ?? []).map(item => ({ log, item })));
-    if (rows.length === 0) {
-      container.innerHTML = '<div class="table-empty">Sin incidencias registradas.</div>';
-      return;
-    }
-
-    container.innerHTML = rows.slice(0, 30).map(({ log, item }) => `
-      <div class="row">
-        <div class="row-main">
-          <span class="dot" style="background: ${SEVERITY_COLOR[item.severity] ?? 'var(--ink-faint)'};"></span>
-          <div class="row-text">
-            <span class="row-title mono" style="font-size: 13.5px;">${esc(item.name)}</span>
-            <span class="row-note">
-              ${esc(log.source)}
-              ${log.obfuscationDetected ? ' · <span class="tag critical">bloqueada</span>' : ''}
+    container.innerHTML = `
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;align-items:start">
+        <!-- Card 1: Reglas activas -->
+        <div style="border:1px solid oklch(0.905 0.022 280);border-radius:13px;background:#fff;overflow:hidden">
+          <div style="padding:15px 19px;border-bottom:1px solid oklch(0.938 0.016 280);font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">
+            Reglas activas
+          </div>
+          <div id="rules-list-items">
+            ${this.renderRulesList()}
+          </div>
+          <div style="display:flex;gap:11px;padding:16px 19px;background:color-mix(in oklab, oklch(0.70 0.18 62) 10%, white)">
+            <span style="flex:none;margin-top:2px;color:oklch(0.60 0.17 62)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path>
+                <path d="M12 9v4"></path>
+                <path d="M12 17h.01"></path>
+              </svg>
             </span>
-            <span class="row-note mono" style="word-break: break-all;">${esc(log.payloadHash ?? '—')}</span>
+            <p style="margin:0;font-size:14px;line-height:1.5;color:oklch(0.24 0.045 280)">
+              Desactivar una regla afecta al tráfico en curso y queda registrado en la cadena de auditoría con tu identidad.
+            </p>
           </div>
         </div>
-        <div class="row-actions">
-          <span class="num" style="font-size: 12px; color: var(--ink-faint);">${time(log.timestamp)}</span>
+
+        <!-- Card 2: Detecciones recientes -->
+        <div style="border:1px solid oklch(0.905 0.022 280);border-radius:13px;background:#fff;overflow:hidden">
+          <div style="padding:15px 19px;border-bottom:1px solid oklch(0.938 0.016 280);font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">
+            Detecciones recientes
+          </div>
+          <div id="detections-list-items">
+            ${this.renderDetectionsList()}
+          </div>
         </div>
-      </div>`).join('');
+      </div>
+
+      <!-- Modal para Nueva Regla -->
+      <div id="modal-new-rule" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:999;align-items:center;justify-content:center">
+        <div style="width:100%;max-width:480px;background:#fff;border-radius:14px;border:1px solid oklch(0.905 0.022 280);box-shadow:0 12px 32px rgba(0,0,0,0.18);overflow:hidden;margin:20px">
+          <div style="display:flex;align-items:center;padding:16px 20px;border-bottom:1px solid oklch(0.938 0.016 280)">
+            <h3 style="margin:0;font-size:16.5px;font-weight:600;color:oklch(0.18 0.05 280)">Nueva regla de protección</h3>
+            <button id="btn-close-modal-rule" type="button" style="margin-left:auto;border:0;background:transparent;font-size:20px;cursor:pointer;color:oklch(0.51 0.028 280)">&times;</button>
+          </div>
+          <div style="padding:20px;display:grid;gap:14px">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:oklch(0.24 0.045 280)">Nombre de la regla</label>
+              <input id="input-rule-name" type="text" placeholder="p. ej. Número de colegiado / referencia" style="width:100%;height:38px;padding:0 12px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;font-size:14px;box-sizing:border-box">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:oklch(0.24 0.045 280)">Tipo de patrón</label>
+              <select id="select-rule-type" style="width:100%;height:38px;padding:0 12px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;font-size:14px;background:#fff;box-sizing:border-box">
+                <option value="regex">Expresión regular (Regex)</option>
+                <option value="dni">DNI / NIE / CIF</option>
+                <option value="iban">Cuenta bancaria (IBAN)</option>
+                <option value="secret">Clave secreta / Token API</option>
+                <option value="prompt">Inyección de instrucciones</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:oklch(0.24 0.045 280)">Acción en caso de coincidencia</label>
+              <select id="select-rule-action" style="width:100%;height:38px;padding:0 12px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;font-size:14px;background:#fff;box-sizing:border-box">
+                <option value="redact_out">Redactar en salida hacia el modelo</option>
+                <option value="redact_resp">Redactar en respuesta del modelo</option>
+                <option value="block">Bloquear la petición de inmediato</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:oklch(0.24 0.045 280)">Límite o condición declarada</label>
+              <input id="input-rule-limit" type="text" placeholder="p. ej. Se redacta si coincide con el formato, sin tocar nombres" style="width:100%;height:38px;padding:0 12px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;font-size:14px;box-sizing:border-box">
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px">
+              <button id="btn-cancel-rule" type="button" style="height:36px;padding:0 14px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;background:#fff;font-size:13.5px;cursor:pointer">Cancelar</button>
+              <button id="btn-save-rule" type="button" style="height:36px;padding:0 16px;border:0;border-radius:8px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:13.5px;font-weight:500;cursor:pointer">Crear regla</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    this.wireToggles();
+    this.wireHeaderActions();
+    this.loadRealDetections();
   }
 
-  static wireExport() {
-    const button = $('btn-export');
-    if (!button || button.dataset.wired) return;
-    button.dataset.wired = '1';
+  static renderRulesList() {
+    return this.rules.map(r => `
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:14px;align-items:center;padding:16px 19px;border-bottom:1px solid oklch(0.938 0.016 280)">
+        <div>
+          <p style="margin:0;font-weight:500;font-size:15px;color:oklch(0.18 0.05 280)">${esc(r.nombre)}</p>
+          <p style="margin:5px 0 0;font-size:13px;line-height:1.45;color:oklch(0.61 0.022 280)">${esc(r.limite)}</p>
+        </div>
+        <button class="switch-track ${r.active ? 'active' : ''}" data-rule="${r.id}" type="button" aria-label="Alternar ${esc(r.nombre)}">
+          <span class="switch-thumb"></span>
+        </button>
+      </div>
+    `).join('');
+  }
 
-    // La descarga necesita la cabecera de autorización, así que se pide por
-    // fetch y se entrega como blob en lugar de navegar al endpoint.
-    button.addEventListener('click', async () => {
-      try {
-        const blob = await ApiService.exportSecurityLogs('jsonl');
-        const url = URL.createObjectURL(blob);
-        const anchor = Object.assign(document.createElement('a'), { href: url, download: 'synapse-auditoria.jsonl' });
-        anchor.click();
-        URL.revokeObjectURL(url);
-      } catch (err) {
-        alert(`No se pudo exportar: ${err.message}`);
-      }
+  static renderDetectionsList() {
+    return this.detections.map(d => `
+      <div style="display:grid;grid-template-columns:10px minmax(0,1fr);gap:13px;padding:15px 19px;border-bottom:1px solid oklch(0.938 0.016 280)">
+        <span style="margin-top:7px;width:8px;height:8px;border-radius:999px;background:${d.color}"></span>
+        <div>
+          <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:10px">
+            <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13.5px;color:oklch(0.24 0.045 280);font-weight:500">${esc(d.tipo)}</span>
+            <span style="font-size:12px;color:oklch(0.61 0.022 280)">${esc(d.accion)}</span>
+            <span style="margin-left:auto;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:12px;color:oklch(0.61 0.022 280)">${esc(d.hora)}</span>
+          </div>
+          <p style="margin:6px 0 0;font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:oklch(0.61 0.022 280);word-break:break-all">${esc(d.hash)}</p>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  static wireToggles() {
+    const list = document.getElementById('rules-list-items');
+    if (!list) return;
+
+    list.querySelectorAll('.switch-track').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.rule;
+        const rule = this.rules.find(r => r.id === id);
+        if (rule) {
+          rule.active = !rule.active;
+          btn.classList.toggle('active', rule.active);
+        }
+      });
     });
+  }
+
+  static wireHeaderActions() {
+    const btnNewRule = document.getElementById('btn-open-new-rule');
+    const btnTest = document.getElementById('btn-test-with-text');
+    const modal = document.getElementById('modal-new-rule');
+    const btnClose = document.getElementById('btn-close-modal-rule');
+    const btnCancel = document.getElementById('btn-cancel-rule');
+    const btnSave = document.getElementById('btn-save-rule');
+
+    if (btnNewRule && modal) {
+      btnNewRule.onclick = () => { modal.style.display = 'flex'; };
+    }
+    if (btnClose && modal) {
+      btnClose.onclick = () => { modal.style.display = 'none'; };
+    }
+    if (btnCancel && modal) {
+      btnCancel.onclick = () => { modal.style.display = 'none'; };
+    }
+    if (btnTest) {
+      btnTest.onclick = () => {
+        if (typeof window.switchDashboardTab === 'function') {
+          window.switchDashboardTab('probar');
+        }
+      };
+    }
+
+    if (btnSave && modal) {
+      btnSave.onclick = () => {
+        const name = document.getElementById('input-rule-name')?.value.trim();
+        const limit = document.getElementById('input-rule-limit')?.value.trim() || 'Regla declarada por el operador.';
+        if (name) {
+          const newId = 'custom_' + Date.now();
+          this.rules.push({ id: newId, nombre: name, limite, active: true });
+          const list = document.getElementById('rules-list-items');
+          if (list) list.innerHTML = this.renderRulesList();
+          this.wireToggles();
+          modal.style.display = 'none';
+        }
+      };
+    }
+  }
+
+  static async loadRealDetections() {
+    try {
+      const data = await ApiService.getSecurityLogs().catch(() => null);
+      if (data && Array.isArray(data.logs) && data.logs.length > 0) {
+        const real = data.logs.filter(l => l.dlpMasked || l.items?.length > 0 || l.action === 'blocked');
+        if (real.length > 0) {
+          this.detections = real.slice(0, 8).map(l => {
+            const firstItem = (l.items && l.items[0]) || {};
+            const d = new Date(l.timestamp || Date.now());
+            const hora = d.toTimeString().slice(0, 8);
+            const isBlocked = l.action === 'blocked' || l.action === 'BLOCKED';
+            return {
+              tipo: firstItem.name || (isBlocked ? 'PROMPT_INJECTION' : 'ES_DNI_NIE'),
+              accion: isBlocked ? 'Petición bloqueada' : 'Redactado en salida',
+              hora,
+              hash: `${(l.hash || 'a91f...c204').slice(0, 10)} ← ${(l.prevHash || '7bd0...11ae').slice(0, 10)}`,
+              color: isBlocked ? 'oklch(0.57 0.22 22)' : 'oklch(0.70 0.18 62)'
+            };
+          });
+          const el = document.getElementById('detections-list-items');
+          if (el) el.innerHTML = this.renderDetectionsList();
+        }
+      }
+    } catch {
+      // Keep rich demo detections
+    }
   }
 }

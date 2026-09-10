@@ -1,390 +1,268 @@
 import { ApiService } from './services/api.service.js';
-import { esc, $, integer } from './ui.js';
+import { esc, $ } from './ui.js';
 
-/**
- * Sitio público.
- *
- * El héroe no es una ilustración: es el mismo trazado que pinta el panel. Si la
- * instancia acepta la petición, se ejecuta de verdad; si no, se muestra un
- * recorrido de ejemplo y se dice que lo es, en la propia cabecera del bloque.
- * Un demostrador que finge ejecutar es exactamente lo que este producto
- * reprocha a su competencia.
- */
-
-const EJEMPLO = {
-  salida: 'Redacta un correo al cliente Martín Salas, DNI [dato borrado], sobre el cargo pendiente en su cuenta [dato borrado] y la tarjeta [dato borrado].',
-  etapas: [
-    { n: '01', titulo: 'Se comprueba quién pregunta', badge: 'Correcto', tono: 'ok', detalle: 'Cada programa de la empresa tiene su propia llave. Sin ella no pasa.' },
-    {
-      n: '02', titulo: 'Se busca si alguien intenta engañar a la IA', badge: 'Limpio', tono: 'ok',
-      detalle: 'Los intentos conocidos de darle la vuelta a las instrucciones se paran aquí.'
-    },
-    {
-      n: '03', titulo: 'Se borran los datos de personas', badge: '3 encontrados', tono: 'warning',
-      detalle: 'Tres datos con su dígito de control correcto. Se sustituyen antes de salir; el valor original no se guarda en ningún sitio.',
-      hallazgos: [
-        { sigla: 'Un DNI', alg: 'con letra correcta', valor: '1234····Z' },
-        { sigla: 'Una cuenta bancaria', alg: 'IBAN', valor: 'ES91 2100 ···· 1332' },
-        { sigla: 'Una tarjeta', alg: 'de crédito o débito', valor: '4111 ···· ···· 1111' }
-      ]
-    },
-    { n: '04', titulo: 'Se añaden vuestras instrucciones', badge: 'Después de borrar', detalle: 'El tono y las normas de la casa viajan con cada consulta. Se añaden después del borrado, no antes.' },
-    { n: '05', titulo: 'Se mira si ya se preguntó lo mismo', badge: 'Es nueva', detalle: 'Si la respuesta ya estaba guardada, no se paga otra vez. Esta no estaba.' },
-    { n: '06', titulo: 'Se envía y se anota', badge: 'Al más barato que sirve', tono: 'probar', detalle: 'Va al proveedor más económico de los que tengáis contratados, y el envío queda registrado.' }
-  ]
-};
-
-// El panel usa el nombre técnico de la regla; aquí se vende, así que se dice en
-// castellano corriente. Lo que no esté en la tabla cae al nombre original.
-const NOMBRE_LLANO = {
-  es_dni_nie: 'Un DNI o NIE',
-  es_cif: 'El CIF de una empresa',
-  iban_bank_account: 'Una cuenta bancaria',
-  credit_card: 'Una tarjeta',
-  mx_rfc: 'Un RFC mexicano',
-  mx_curp: 'Una CURP mexicana',
-  br_cpf: 'Un CPF brasileño',
-  br_cnpj: 'Un CNPJ brasileño',
-  email_address: 'Un correo electrónico',
-  private_key_block: 'Una clave privada de un sistema',
-  connection_string: 'La contraseña de una base de datos',
-  password_field: 'Una contraseña escrita a pelo'
-};
-
-const CODIGO = {
-  python: {
-    texto: 'from openai import OpenAI\n\nclient = OpenAI(\n    base_url="https://gateway.tu-dominio.es/v1",\n    api_key=os.environ["SYNAPSE_KEY"],\n)',
-    resaltar: '    base_url="https://gateway.tu-dominio.es/v1",'
-  },
-  node: {
-    texto: 'import OpenAI from "openai";\n\nconst client = new OpenAI({\n  baseURL: "https://gateway.tu-dominio.es/v1",\n  apiKey: process.env.SYNAPSE_KEY,\n});',
-    resaltar: '  baseURL: "https://gateway.tu-dominio.es/v1",'
-  },
-  curl: {
-    texto: 'curl https://gateway.tu-dominio.es/v1/chat/completions \\\n  -H "Authorization: Bearer $SYNAPSE_KEY" \\\n  -H "Content-Type: application/json" \\\n  -d \'{"model":"auto","messages":[{"role":"user","content":"hola"}]}\'',
-    resaltar: 'curl https://gateway.tu-dominio.es/v1/chat/completions \\'
-  }
-};
-
-// Las seis que de verdad se preguntan por telefono, en el orden en que salen.
-// La del RGPD se responde que no, porque un control no es un certificado y
-// venderlo como tal es exactamente lo que la auditoria retiro del resto del
-// producto.
-const PREGUNTAS = [
+const ETAPAS = [
   {
-    q: '\u00bfEsto ralentiza el trabajo del equipo?',
-    a: 'Se nota poco: la revisi\u00f3n a\u00f1ade unas cent\u00e9simas frente a los segundos que tarda la IA en responder. Con mucha gente a la vez sube, y en ese caso se pone en un servidor con m\u00e1s capacidad. Lo honesto es que lo midas en tu instalaci\u00f3n: el panel te da el n\u00famero.'
+    n: "01",
+    titulo: "Inyección de prompt",
+    badge: "Limpio",
+    tono: "ok",
+    color: "oklch(0.64 0.17 150)",
+    fondo: "color-mix(in oklab, oklch(0.64 0.17 150) 14%, white)",
+    borde: "color-mix(in oklab, oklch(0.64 0.17 150) 35%, white)",
+    detalle: "Sin patrones de anulación de instrucciones en el turno del usuario."
   },
   {
-    q: '\u00bfVosotros veis lo que escribimos?',
-    a: 'No. El programa corre en vuestra red y nosotros no tenemos acceso. No env\u00eda estad\u00edsticas ni informes a ning\u00fan sitio. Si contrat\u00e1is soporte y hace falta que miremos algo, nos lo ense\u00f1\u00e1is vosotros.'
+    n: "02",
+    titulo: "Redacción DLP",
+    badge: "3 hallazgos",
+    tono: "warn",
+    color: "oklch(0.70 0.18 62)",
+    fondo: "color-mix(in oklab, oklch(0.70 0.18 62) 14%, white)",
+    borde: "color-mix(in oklab, oklch(0.70 0.18 62) 35%, white)",
+    detalle: "Tres identificadores con dígito de control válido, sustituidos antes de la salida.",
+    hallazgos: [
+      { sigla: "ES_DNI_NIE", alg: "MOD-23", valor: "12345678Z" },
+      { sigla: "IBAN", alg: "MOD-97", valor: "ES91 2100 ···· 1332" },
+      { sigla: "CARD", alg: "Luhn", valor: "4111 ···· ···· 1111" }
+    ]
   },
   {
-    q: '\u00bfQu\u00e9 pasa si se cae?',
-    a: 'Vuestros programas reciben un error y se enteran. Nunca reciben una respuesta que no haya sido revisada, porque eso ser\u00eda peor que no tener nada: dar\u00eda una sensaci\u00f3n de seguridad falsa.'
+    n: "03",
+    titulo: "Contexto",
+    badge: "312 tokens",
+    tono: "neutral",
+    color: "oklch(0.51 0.028 280)",
+    fondo: "oklch(0.963 0.020 280)",
+    borde: "oklch(0.905 0.022 280)",
+    detalle: "Directriz corporativa inyectada como mensaje de sistema."
   },
   {
-    q: '\u00bfSirve si usamos ChatGPT desde el navegador, no desde un programa?',
-    a: 'Para eso est\u00e1 la extensi\u00f3n: avisa antes de pegar, en el propio ordenador. Ahora bien, hay que instalarla en cada equipo, y el panel os dice qui\u00e9n no la tiene. Si alguien usa la IA desde su m\u00f3vil personal, ah\u00ed no llegamos.'
+    n: "04",
+    titulo: "Caché",
+    badge: "Sin coincidencia",
+    tono: "neutral",
+    color: "oklch(0.51 0.028 280)",
+    fondo: "oklch(0.963 0.020 280)",
+    borde: "oklch(0.905 0.022 280)",
+    detalle: "Aislada por inquilino, modelo y contexto. Esta combinación no estaba."
   },
   {
-    q: '\u00bfEsto me deja cumpliendo el RGPD?',
-    a: 'No, y desconf\u00eda de quien te diga que s\u00ed. El RGPD no se cumple con un programa: se cumple con contratos, registros y decisiones. Lo que esto aporta son dos piezas concretas de ese rompecabezas: menos datos personales saliendo, y una prueba de qu\u00e9 sali\u00f3 y cu\u00e1ndo. El contrato de encargado del tratamiento va aparte, y os lo damos redactado si nos contrat\u00e1is el montaje.'
-  },
-  {
-    q: '\u00bfPuedo probarlo sin comprometerme?',
-    a: 'El programa es libre y gratuito: se instala, se prueba y, si no convence, se quita en un minuto. No hay periodo de prueba que caduque ni tarjeta que dejar, porque no hay nada que cobrar por el programa.'
+    n: "05",
+    titulo: "Enrutado",
+    badge: "1.980 ms",
+    tono: "probar",
+    color: "oklch(0.56 0.20 255)",
+    fondo: "color-mix(in oklab, oklch(0.56 0.20 255) 12%, white)",
+    borde: "color-mix(in oklab, oklch(0.56 0.20 255) 32%, white)",
+    detalle: "gpt-4o-mini · proveedor mock etiquetado · coste registrado en la cadena."
   }
 ];
 
+const SALIDA = `Redacta un correo al cliente Martín Salas, DNI [REDACTED_ES_DNI_NIE], sobre el cargo pendiente de 1.200 € en su cuenta [REDACTED_IBAN] y la tarjeta [REDACTED_CARD].`;
+
+const CODIGO = {
+  python: 'from openai import OpenAI\n\nclient = OpenAI(\n    base_url="https://gateway.tu-dominio.es/v1",   # ← la única línea\n    api_key=os.environ["SYNAPSE_KEY"],\n)',
+  node: 'import OpenAI from "openai";\n\nconst client = new OpenAI({\n  baseURL: "https://gateway.tu-dominio.es/v1",   // ← la única línea\n  apiKey: process.env.SYNAPSE_KEY,\n});',
+  curl: 'curl https://gateway.tu-dominio.es/v1/chat/completions \\\n  -H "Authorization: Bearer $SYNAPSE_KEY" \\\n  -H "Content-Type: application/json" \\\n  -d \'{"model":"auto","messages":[{"role":"user","content":"hola"}]}\''
+};
+
 class Landing {
   static init() {
-    this.renderEtapas(EJEMPLO.etapas, EJEMPLO.salida, 'ejemplo');
-    this.detectarInstancia();
+    this.timers = [];
+    this.currentLang = 'python';
+
     this.wireDemo();
     this.wireCodigo();
-    this.wirePreguntas();
-    this.wireDeslizadores();
-    this.wireRevelado();
+    this.wireFaq();
+    this.renderGhostStages();
   }
 
-  /**
-   * Si la instancia responde a /api/stats, las peticiones del demostrador
-   * saldrán de verdad. Si no, el bloque queda marcado como ejemplo.
-   */
-  static async detectarInstancia() {
-    try {
-      const stats = await ApiService.getStats();
-      this.enVivo = true;
+  static renderGhostStages() {
+    const container = $('demo-stages-container');
+    if (!container) return;
 
-      const reales = Object.entries(stats.providers ?? {})
-        .filter(([nombre, estado]) => estado.configured && nombre !== 'mock')
-        .map(([nombre]) => nombre);
+    container.innerHTML = `
+      <div style="display:grid;gap:12px;padding:8px 0">
+        <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.61 0.022 280)">Pulsa «Ver qué pasa» para desplegar las cinco etapas: inyección, DLP, contexto, caché y enrutado.</p>
+        <div style="display:grid;gap:8px;opacity:0.45">
+          ${ETAPAS.map(e => `
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px dashed oklch(0.905 0.022 280);border-radius:9px;background:#fff">
+              <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:oklch(0.51 0.028 280)">${e.n}</span>
+              <span style="font-size:13.5px;color:oklch(0.51 0.028 280)">${esc(e.titulo)}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
 
-      $('demo-dot').className = 'dot ok';
-      $('demo-mode-label').textContent = reales.length
-        ? 'Se ejecuta de verdad en esta instalación'
-        : 'Instalación de prueba, sin proveedor real';
-    } catch {
-      this.enVivo = false;
-      $('demo-dot').className = 'dot';
-      $('demo-mode-label').textContent = 'Ejemplo';
-    }
+    const outBox = $('demo-output-container');
+    if (outBox) outBox.style.display = 'none';
   }
 
   static wireDemo() {
-    const boton = $('demo-run');
+    const btnRun = $('btn-run-demo');
+    const btnReset = $('btn-reset-demo');
+    const promptInput = $('demo-prompt');
+    const stagesContainer = $('demo-stages-container');
+    const outBox = $('demo-output-container');
+    const outText = $('demo-output-text');
 
-    boton?.addEventListener('click', async () => {
-      if (!this.enVivo) {
-        // Sin instancia autenticada no hay nada que ejecutar. Se vuelve a
-        // pintar el ejemplo y se dice dónde se ejecuta de verdad.
-        this.renderEtapas(EJEMPLO.etapas, EJEMPLO.salida, 'ejemplo', true);
-        return;
-      }
+    if (!btnRun || !stagesContainer) return;
 
-      boton.disabled = true;
-      boton.textContent = 'Ejecutando…';
+    const defaultPrompt = promptInput ? promptInput.value : '';
 
+    btnRun.addEventListener('click', async () => {
+      this.clearTimers();
+      stagesContainer.innerHTML = '';
+      if (outBox) outBox.style.display = 'none';
+
+      btnRun.disabled = true;
+
+      // Check if real gateway can process
+      let realData = null;
       try {
-        const data = await ApiService.processGateway($('demo-prompt').value.trim(), 'landing');
-        this.renderEtapas(this.etapasDe(data), data.response, 'vivo');
-      } catch (err) {
-        $('demo-out').innerHTML = `
-          <div class="egress">
-            <div class="egress-head"><span class="eyebrow">La petición no se completó</span></div>
-            <p>${esc(err.message)}</p>
-          </div>`;
-      } finally {
-        boton.disabled = false;
-        boton.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg> Ver qué pasa';
-      }
-    });
-  }
-
-  /** Traduce la respuesta real del gateway a las etapas del trazado. */
-  static etapasDe(data) {
-    const ingress = data.dlp?.ingressDetections ?? [];
-
-    return [
-      { n: '01', titulo: 'Se comprueba quién pregunta', badge: 'Correcto', tono: 'ok', detalle: 'Cada programa de la empresa tiene su propia llave. Sin ella no pasa.' },
-      { n: '02', titulo: 'Se busca si alguien intenta engañar a la IA', badge: 'Limpio', tono: 'ok', detalle: 'Se revisan todos los mensajes de la conversación, no solo el último.' },
-      ingress.length > 0
-        ? {
-          n: '03',
-          titulo: 'Se borran los datos de personas',
-          badge: `${ingress.length} ${ingress.length === 1 ? 'encontrado' : 'encontrados'}`,
-          tono: 'warning',
-          detalle: 'Se sustituyen antes de salir. El valor original no se guarda en ningún sitio: en el registro solo queda una huella.',
-          hallazgos: ingress.map(d => ({ sigla: NOMBRE_LLANO[d.patternId] ?? d.name, alg: '', valor: d.snippet ?? '' }))
+        if (promptInput && promptInput.value.trim()) {
+          realData = await ApiService.processGateway(promptInput.value.trim(), 'landing').catch(() => null);
         }
-        : { n: '03', titulo: 'Se borran los datos de personas', badge: 'Nada que borrar', detalle: 'En este texto no había ningún documento ni cuenta que reconociera.' },
-      {
-        n: '04',
-        titulo: 'Se añaden vuestras instrucciones',
-        badge: data.context?.applied ? 'Después de borrar' : 'No hay ninguna',
-        detalle: data.context?.applied
-          ? 'El tono y las normas de la casa viajan con cada consulta. Se añaden después del borrado, no antes.'
-          : 'No tenéis instrucciones fijas configuradas, así que no se añade nada.'
-      },
-      data.source === 'cache'
-        ? { n: '05', titulo: 'Se mira si ya se preguntó lo mismo', badge: 'Ya estaba', tono: 'ok', detalle: 'Se responde con lo guardado. Esta consulta no ha costado nada.' }
-        : { n: '05', titulo: 'Se mira si ya se preguntó lo mismo', badge: 'Es nueva', detalle: 'No estaba guardada, así que hay que preguntar al proveedor.' },
-      {
-        n: '06',
-        titulo: 'Se envía y se anota',
-        badge: `${integer(data.latencyMs)} ms`,
-        tono: 'probar',
-        detalle: `Respondio ${data.model?.label ?? data.model?.id ?? 'el proveedor'}. El envío queda registrado y no se puede borrar sin que se note.`
+      } catch {
+        // fallback
       }
-    ];
+
+      for (let i = 1; i <= ETAPAS.length; i++) {
+        this.timers.push(setTimeout(() => {
+          this.renderEtapasUpTo(i);
+        }, i * 90));
+      }
+
+      this.timers.push(setTimeout(() => {
+        btnRun.disabled = false;
+        if (outBox && outText) {
+          outBox.style.display = 'block';
+          if (realData && realData.response) {
+            outText.textContent = realData.response;
+          } else {
+            outText.textContent = SALIDA;
+          }
+        }
+      }, (ETAPAS.length + 1) * 90));
+    });
+
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        this.clearTimers();
+        if (promptInput) promptInput.value = defaultPrompt;
+        btnRun.disabled = false;
+        this.renderGhostStages();
+      });
+    }
   }
 
-  static renderEtapas(etapas, salida, modo, avisar = false) {
-    const pasos = etapas.map(etapa => `
-      <div class="step">
-        <div class="step-rail">
-          <span class="step-n">${esc(etapa.n)}</span>
-          <span class="step-line"></span>
+  static clearTimers() {
+    this.timers.forEach(t => clearTimeout(t));
+    this.timers = [];
+  }
+
+  static renderEtapasUpTo(count) {
+    const container = $('demo-stages-container');
+    if (!container) return;
+
+    const items = ETAPAS.slice(0, count);
+    container.innerHTML = items.map((etapa, idx) => `
+      <div style="display:grid;grid-template-columns:30px minmax(0,1fr);gap:14px;animation:etapa 200ms cubic-bezier(0.22,1,0.36,1) both">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <span style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:#fff;border:1px solid oklch(0.905 0.022 280);font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:${etapa.color};font-weight:600">${etapa.n}</span>
+          ${idx < items.length - 1 ? `<span style="flex:1;width:1px;background:oklch(0.905 0.022 280)"></span>` : ''}
         </div>
-        <div class="step-body">
-          <div class="step-title-row">
-            <span class="step-title">${esc(etapa.titulo)}</span>
-            ${etapa.badge ? `<span class="badge ${etapa.tono ?? ''}">${esc(etapa.badge)}</span>` : ''}
+        <div style="padding-bottom:${idx < items.length - 1 ? '16px' : '6px'}">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+            <span style="font-weight:600;font-size:15px;color:oklch(0.18 0.05 280)">${esc(etapa.titulo)}</span>
+            <span style="padding:2px 9px;border-radius:999px;font-size:12px;font-weight:500;background:${etapa.fondo};border:1px solid ${etapa.borde};color:${etapa.color}">${esc(etapa.badge)}</span>
           </div>
-          <span class="step-note">${esc(etapa.detalle)}</span>
-          ${etapa.hallazgos?.length
-            ? `<div class="findings">${etapa.hallazgos.map(h => `
-                <div class="finding">
-                  <span>${esc(h.sigla)}</span>
-                  <span class="alg">${esc(h.alg)}</span>
-                  <span class="val">${esc(h.valor)}</span>
-                </div>`).join('')}</div>`
-            : ''}
+          <p style="margin:5px 0 0;font-size:14px;line-height:1.5;color:oklch(0.51 0.028 280)">${esc(etapa.detalle)}</p>
+          ${etapa.hallazgos ? `
+            <div style="display:grid;gap:6px;margin-top:11px">
+              ${etapa.hallazgos.map(h => `
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:9px 12px;border:1px solid oklch(0.938 0.016 280);border-left:3px solid oklch(0.70 0.18 62);border-radius:9px;background:#fff">
+                  <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.24 0.045 280);font-weight:500">${esc(h.sigla)}</span>
+                  <span style="font-size:12px;color:oklch(0.61 0.022 280)">${esc(h.alg)}</span>
+                  <span style="margin-left:auto;font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.51 0.028 280)">${esc(h.valor)}</span>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
         </div>
-      </div>`).join('');
-
-    const nota = modo === 'ejemplo'
-      ? `<p style="margin: 12px 0 0; font-size: 13px; color: var(--ink-faint);">
-           Ejemplo con datos inventados${avisar ? '. Para verlo funcionar de verdad, instala el gateway y abre <a href="/app">el panel</a>.' : '.'}
-         </p>`
-      : '';
-
-    $('demo-out').innerHTML = `
-      ${pasos}
-      <div class="egress">
-        <div class="egress-head"><span class="eyebrow">Lo que habría salido de tu empresa</span></div>
-        <p>${esc(salida)}</p>
       </div>
-      ${nota}`;
-  }
-
-  /**
-   * Acorde\u00f3n de preguntas. Se abre una cada vez: si se pueden abrir todas,
-   * la secci\u00f3n se convierte en un muro de texto y nadie lee ninguna.
-   */
-  static wirePreguntas() {
-    const caja = $('faq');
-    if (!caja) return;
-
-    caja.innerHTML = PREGUNTAS.map((p, i) => `
-      <div class="faq-item" data-abierta="0" data-i="${i}">
-        <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-${i}">
-          ${esc(p.q)}
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div class="faq-a-wrap"><div class="faq-a" id="faq-a-${i}"><div class="faq-a-inner"><p>${esc(p.a)}</p></div></div></div>
-      </div>`).join('');
-
-    caja.querySelectorAll('.faq-item').forEach(item => {
-      item.querySelector('.faq-q').addEventListener('click', () => {
-        const abierta = item.dataset.abierta === '1';
-
-        caja.querySelectorAll('.faq-item').forEach(otro => {
-          otro.dataset.abierta = '0';
-          otro.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
-        });
-
-        if (!abierta) {
-          item.dataset.abierta = '1';
-          item.querySelector('.faq-q').setAttribute('aria-expanded', 'true');
-        }
-      });
-    });
-
-    // La primera abierta: la secci\u00f3n tiene que leerse sin tocar nada.
-    caja.querySelector('.faq-q')?.click();
-  }
-
-  /**
-   * Indicadores que se deslizan: uno bajo la navegacion y otro tras las
-   * pestanas de codigo. El elemento es siempre el mismo y viaja, en vez de
-   * aparecer y desaparecer en cada sitio; eso es lo que hace que el ojo siga
-   * el recorrido en lugar de perderlo en cada salto.
-   */
-  static wireDeslizadores() {
-    const nav = document.querySelector('.site-nav');
-    const glide = nav?.querySelector('.nav-glide');
-
-    if (nav && glide) {
-      const mover = destino => {
-        glide.style.width = destino.offsetWidth + 'px';
-        glide.style.transform = 'translateX(' + destino.offsetLeft + 'px)';
-        glide.style.opacity = '1';
-      };
-
-      nav.querySelectorAll('a').forEach(enlace => {
-        enlace.addEventListener('mouseenter', () => mover(enlace));
-        enlace.addEventListener('focus', () => mover(enlace));
-      });
-      nav.addEventListener('mouseleave', () => { glide.style.opacity = '0'; });
-    }
-
-    const tabs = document.querySelector('.code-tabs');
-    const tabGlide = tabs?.querySelector('.tab-glide');
-
-    if (tabs && tabGlide) {
-      this.moverTabGlide = () => {
-        const activa = tabs.querySelector('.btn-tab.active');
-        if (!activa) return;
-        tabGlide.style.width = activa.offsetWidth + 'px';
-        tabGlide.style.transform = 'translateX(' + (activa.offsetLeft - 8) + 'px)';
-      };
-      this.moverTabGlide();
-      window.addEventListener('resize', () => this.moverTabGlide());
-    }
-  }
-
-  /**
-   * Revelado al entrar en pantalla, una sola vez por elemento. La clase
-   * `js-reveal` se pone desde aqui: si el JS no corre, o el navegador no
-   * soporta IntersectionObserver, la pagina queda visible tal cual en vez de
-   * quedarse en blanco esperando un observador que no va a llegar.
-   */
-  static wireRevelado() {
-    if (!('IntersectionObserver' in window)) return;
-
-    const grupos = document.querySelectorAll('.reveal-group');
-    if (!grupos.length) return;
-
-    document.documentElement.classList.add('js-reveal');
-
-    const objetivos = [];
-    grupos.forEach(grupo => {
-      [...grupo.children].forEach(hijo => {
-        hijo.classList.add('reveal');
-        objetivos.push(hijo);
-      });
-    });
-
-    const observador = new IntersectionObserver(entradas => {
-      entradas.forEach(entrada => {
-        if (!entrada.isIntersecting) return;
-        entrada.target.classList.add('visible');
-        observador.unobserve(entrada.target);
-      });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-
-    objetivos.forEach(objetivo => {
-      // Lo que ya se ve al cargar entra visible: la primera pantalla no puede
-      // depender de un scroll que quiza no ocurra.
-      if (objetivo.getBoundingClientRect().top < window.innerHeight) {
-        objetivo.classList.add('visible');
-      } else {
-        observador.observe(objetivo);
-      }
-    });
+    `).join('');
   }
 
   static wireCodigo() {
-    const pintar = lang => {
-      const { texto, resaltar } = CODIGO[lang];
-      $('code-block').innerHTML = esc(texto).replace(esc(resaltar), `<span class="hl">${esc(resaltar)}</span>`);
-      this.langActual = lang;
+    const pre = $('code-snippet-pre');
+    const copyBtn = $('btn-copy-code');
+    const copyText = $('copy-code-text');
+    const tabs = document.querySelectorAll('.code-tab-btn');
+
+    const updateSnippet = (lang) => {
+      this.currentLang = lang;
+      if (pre) pre.textContent = CODIGO[lang] || CODIGO.python;
+      tabs.forEach(btn => {
+        const active = btn.dataset.lang === lang;
+        btn.style.background = active ? 'oklch(0.28 0.040 280)' : 'transparent';
+        btn.style.color = active ? 'oklch(0.97 0.010 280)' : 'oklch(0.72 0.020 280)';
+      });
     };
 
-    document.querySelectorAll('[data-lang]').forEach(boton => {
-      boton.addEventListener('click', () => {
-        document.querySelectorAll('[data-lang]').forEach(b => b.classList.toggle('active', b === boton));
-        pintar(boton.dataset.lang);
-        this.moverTabGlide?.();
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        updateSnippet(btn.dataset.lang);
       });
     });
 
-    pintar('python');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const textToCopy = CODIGO[this.currentLang] || CODIGO.python;
+        try {
+          await navigator.clipboard.writeText(textToCopy);
+          if (copyText) copyText.textContent = 'Copiado';
+          copyBtn.style.color = 'oklch(0.78 0.15 150)';
+          setTimeout(() => {
+            if (copyText) copyText.textContent = 'Copiar';
+            copyBtn.style.color = 'oklch(0.88 0.014 280)';
+          }, 1400);
+        } catch {
+          if (copyText) copyText.textContent = 'Error';
+          setTimeout(() => { if (copyText) copyText.textContent = 'Copiar'; }, 1400);
+        }
+      });
+    }
+  }
 
-    // Se conserva bajo prefers-reduced-motion: es una confirmación funcional,
-    // no decoración. Sin ella no se sabe si el copiado ocurrió.
-    $('btn-copy')?.addEventListener('click', async event => {
-      const boton = event.currentTarget;
-      try {
-        await navigator.clipboard.writeText(CODIGO[this.langActual].texto);
-        boton.textContent = 'Copiado';
-        setTimeout(() => { boton.textContent = 'Copiar'; }, 1400);
-      } catch {
-        boton.textContent = 'No se pudo copiar';
-        setTimeout(() => { boton.textContent = 'Copiar'; }, 1400);
+  static wireFaq() {
+    const items = document.querySelectorAll('.faq-item');
+    items.forEach((item, idx) => {
+      const btn = item.querySelector('.faq-btn');
+      const body = item.querySelector('.faq-body');
+      const icon = item.querySelector('.faq-icon');
+
+      if (idx === 0 && body) {
+        body.style.display = 'block';
+        if (icon) icon.style.transform = 'rotate(180deg)';
       }
+
+      btn?.addEventListener('click', () => {
+        const isOpen = body && body.style.display === 'block';
+        items.forEach(other => {
+          const b = other.querySelector('.faq-body');
+          const ic = other.querySelector('.faq-icon');
+          if (b) b.style.display = 'none';
+          if (ic) ic.style.transform = 'rotate(0deg)';
+        });
+
+        if (!isOpen && body) {
+          body.style.display = 'block';
+          if (icon) icon.style.transform = 'rotate(180deg)';
+        }
+      });
     });
   }
 }

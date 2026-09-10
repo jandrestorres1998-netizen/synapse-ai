@@ -1,6 +1,6 @@
 {
   "version": "5.0.0",
-  "generatedAt": "2026-09-10T03:26:28.560Z",
+  "generatedAt": "2026-09-10T04:56:12.066Z",
   "algorithm": "SHA-256",
   "files": {
     "server/server.js": "571c85cecbaa67af6cc5f6400ced4840bff6bd2f3267a4cc06ecdbac547d23ae",
@@ -37,8 +37,8 @@
     "server/controllers/gateway.controller.js": "122127a581e5cb60d7e538b1422bc6f05f003c01bfd54906975c91b02066cdf2",
     "server/controllers/vault.controller.js": "6cf268efa9d7349f1cd36d2f266dfefcff64b2967037034941390de140a170fe",
     "server/controllers/memory.controller.js": "2cd43ee044221f65f4feecacf736a629d299b78071d49f1e793453182536f9dc",
-    "server/controllers/stats.controller.js": "326d53b142942f294e98ef12fa6476e22b1af54b81f41a804c7dc5998d877ce7",
+    "server/controllers/stats.controller.js": "ba037d3d54be8684df6775ed0b780362d26e306cf8085a63b855b626f4814b46",
     "server/controllers/license.controller.js": "4881eb7781a18490cc626ed9685abbe8a3cc301847c168bfde97758065a5336c",
-    "server/routes/api.routes.js": "7b3ad2acfbeac5ad22460774d6d391847c0a802f6ccfeb0c89d0b293a37bbd99"
+    "server/routes/api.routes.js": "7a4bf26ed64960f01da4b1b396772b9336673b6c6b0b2fe5c425905a75f46590"
   }
 }

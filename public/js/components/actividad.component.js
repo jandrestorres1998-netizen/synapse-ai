@@ -9,9 +9,21 @@ import { esc, $, setText, setHTML, money, integer, time, notice } from '../ui.js
  * comparación, porque asume que todas las peticiones habrían ido a ese modelo.
  */
 export class ActividadComponent {
+  static currentFilter = 'todo';
+  static rawHistory = [];
+
   static init() {
     $('btn-refresh')?.addEventListener('click', () => this.render());
     document.addEventListener('synapse:activity', () => this.render());
+
+    document.querySelectorAll('.filter-pill-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        this.currentFilter = btn.dataset.filter || 'todo';
+        this.renderRows(this.rawHistory);
+      });
+    });
   }
 
   static async render() {
@@ -19,7 +31,8 @@ export class ActividadComponent {
       const stats = await ApiService.getStats();
       this.renderBanner(stats);
       this.renderMetrics(stats);
-      this.renderRows(stats.history ?? []);
+      this.rawHistory = stats.history ?? [];
+      this.renderRows(this.rawHistory);
       document.dispatchEvent(new CustomEvent('synapse:stats', { detail: stats }));
     } catch (err) {
       setHTML('activity-banner', err.code === 401
@@ -94,8 +107,17 @@ export class ActividadComponent {
     const container = $('activity-rows');
     if (!container) return;
 
-    if (history.length === 0) {
-      container.innerHTML = '<div class="table-empty">Sin actividad todavía. Prueba una consulta en la pestaña Probar.</div>';
+    let filtered = history || [];
+    if (this.currentFilter === 'dlp') {
+      filtered = filtered.filter(item => item.dlpMasked);
+    } else if (this.currentFilter === 'bloq') {
+      filtered = filtered.filter(item => item.outcome === 'blocked');
+    } else if (this.currentFilter === 'cache') {
+      filtered = filtered.filter(item => item.outcome === 'cache');
+    }
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="table-empty">Sin peticiones para este filtro.</div>';
       return;
     }
 

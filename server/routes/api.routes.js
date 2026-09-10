@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { handleGatewayProcess } from '../controllers/gateway.controller.js';
-import { getStats, getSecurityLogs, getSecurityRules, exportSecurityLogs, getModels, getIntegrity, recordExtensionEvent, getBudget } from '../controllers/stats.controller.js';
+import { getStats, getSecurityLogs, getSecurityRules, exportSecurityLogs, getModels, getIntegrity, recordExtensionEvent, getBudget, getAccess } from '../controllers/stats.controller.js';
 import { getAllMemories, createMemory, updateMemory, toggleMemory, deleteMemory } from '../controllers/memory.controller.js';
 import { getVaultStatus, setVaultKey, deleteVaultKey } from '../controllers/vault.controller.js';
 import { getLicenseStatus, activateLicense, deactivateLicense } from '../controllers/license.controller.js';
@@ -20,6 +20,7 @@ router.get('/security/rules', getSecurityRules);
 router.get('/security/export', exportSecurityLogs);
 router.get('/integrity', getIntegrity);
 router.get('/budget', getBudget);
+router.get('/access', getAccess);
 router.get('/models', getModels);
 router.post('/extension/event', rateLimiter, recordExtensionEvent);
 

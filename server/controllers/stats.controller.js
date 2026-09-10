@@ -1,4 +1,6 @@
+import crypto from 'crypto';
 import { dlp, cache, memory, router, providers, auditLedger, telemetry, integrity, budget, env } from '../config/container.js';
+import { parseKeyEntry } from '../middlewares/auth.js';
 import { createLogger } from '../config/logger.js';
 
 const log = createLogger('Stats');
@@ -32,12 +34,30 @@ export function getBudget(req, res) {
 }
 
 export function getSecurityLogs(req, res) {
+  const entries = auditLedger.getEntries();
+
   res.json({
     logs: dlp.getAuditLogs(),
     ledger: {
-      blocks: auditLedger.getEntries().length,
+      blocks: entries.length,
       totalAppended: auditLedger.totalAppended,
-      integrity: auditLedger.verifyChainIntegrity()
+      integrity: auditLedger.verifyChainIntegrity(),
+      // Los ultimos registros, para que la pantalla de auditoria pinte la
+      // cadena de verdad en vez de una lista de ejemplo. Van acotados: el
+      // fichero entero puede ser muy grande y esta ruta se pide a menudo.
+      // El texto original nunca esta aqui — solo su hash.
+      recent: entries.slice(-40).reverse().map(record => ({
+        index: record.index,
+        timestamp: record.timestamp,
+        source: record.source,
+        severity: record.severity,
+        threatsCount: record.threatsCount,
+        categories: record.categories,
+        payloadHash: record.payloadHash,
+        hash: record.hash,
+        prevHash: record.prevHash,
+        authenticated: record.authenticated
+      }))
     },
     totalDetections: dlp.getTotalInterceptions(),
     injectionsBlocked: telemetry.counters.injectionsBlocked
@@ -72,6 +92,46 @@ export function getSecurityRules(req, res) {
     })),
     onDetection: env.DLP.ON_DETECTION,
     note: 'Las reglas se compilan con el proceso. Para cambiar entre enmascarar y rechazar, usa SYNAPSE_DLP_ON_DETECTION.'
+  });
+}
+
+/**
+ * GET /api/access — quien puede entrar y con que alcance.
+ *
+ * El producto no tiene cuentas de usuario: la autenticacion es por clave de
+ * API, y cada clave es un inquilino cuyo identificador es el hash de su
+ * secreto. Esta ruta devuelve exactamente eso y nada mas — nunca el secreto,
+ * solo sus cuatro ultimos caracteres, que es lo que permite reconocer una
+ * clave sin poder usarla.
+ *
+ * No se inventa un modelo de personas que no existe. Cuando exista, esta ruta
+ * es la que crece.
+ */
+export function getAccess(req, res) {
+  const entries = env.AUTH.API_KEYS.map(parseKeyEntry);
+  const actual = req.auth?.tenantId ?? null;
+
+  res.json({
+    mode: env.AUTH.DISABLE_AUTH ? 'disabled' : 'keys',
+    scopes: {
+      full: 'Entra a todo: reglas, credenciales de proveedor y auditoría.',
+      inference: 'Solo puede enviar peticiones. No ve la auditoría ni toca la configuración.',
+      report: 'Solo lectura de telemetría y auditoría. No puede enviar peticiones ni cambiar nada.'
+    },
+    current: req.auth ? { tenantId: req.auth.tenantId, scope: req.auth.scope, mode: req.auth.mode ?? 'key' } : null,
+    keys: entries.map(entry => {
+      const tenantId = crypto.createHash('sha256').update(entry.secret).digest('hex').slice(0, 16);
+      return {
+        tenantId,
+        scope: entry.scope,
+        // Los cuatro ultimos caracteres identifican la clave sin revelarla.
+        tail: entry.secret.slice(-4),
+        isCurrent: tenantId === actual
+      };
+    }),
+    note: env.AUTH.DISABLE_AUTH
+      ? 'La autenticación está desactivada: cualquier proceso de esta máquina entra sin clave.'
+      : 'Las claves se definen en SYNAPSE_API_KEYS. Rotar una es sustituirla ahí y reiniciar.'
   });
 }
 

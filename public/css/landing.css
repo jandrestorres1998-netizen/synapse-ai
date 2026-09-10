@@ -612,6 +612,48 @@ pre.code .hl { background: color-mix(in oklch, var(--probar) 12%, transparent); 
 }
 .foot-legal .push { margin-left: auto; }
 
+/* ── Conmutador flotante de vistas (Landing / Panel) ────────────────────── */
+.floating-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 90;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: oklch(0.21 0.035 280);
+  border: 1px solid oklch(0.32 0.030 280);
+  border-radius: 11px;
+  box-shadow: 0 4px 16px oklch(0.18 0.05 280 / 0.25);
+}
+.floating-toggle button, .floating-toggle a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 8px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.floating-toggle .toggle-btn-active {
+  background: oklch(0.97 0.010 280);
+  color: oklch(0.18 0.05 280);
+}
+.floating-toggle .toggle-btn-inactive {
+  background: transparent;
+  color: oklch(0.80 0.020 280);
+}
+.floating-toggle .toggle-btn-inactive:hover {
+  color: oklch(0.97 0.010 280);
+  background: oklch(0.28 0.040 280);
+}
+
 /* ===========================================================================
    Movimiento
    ===========================================================================

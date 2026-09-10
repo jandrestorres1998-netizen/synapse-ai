@@ -194,11 +194,14 @@ export class ProbarComponent {
       }
     }
 
+    const formattedResponse = (data.response || '')
+      .replace(/(\[REDACTED_[A-Z0-9_]+\])/g, '<span class="redacted-tag">$1</span>');
+
     return `
       <div class="trace">${steps.join('')}</div>
       <div style="margin-top: 16px;">
         <span class="eyebrow" style="display: block; margin-bottom: 8px;">Texto que sale del perímetro</span>
-        <p class="answer">${esc(data.response)}</p>
+        <div class="dark-terminal-output">${formattedResponse}</div>
       </div>`;
   }
 

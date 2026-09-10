@@ -1,243 +1,322 @@
 import { ApiService } from '../services/api.service.js';
-import { esc, $, setHTML, money, integer, notice } from '../ui.js';
-
-const PROVIDER_LABEL = {
-  openai: { name: 'OpenAI', note: 'GPT-4o y GPT-4o mini' },
-  anthropic: { name: 'Anthropic', note: 'Claude Sonnet y Haiku' },
-  google: { name: 'Google', note: 'Gemini Flash' },
-  ollama: { name: 'Ollama (local)', note: 'Inferencia dentro de tu perímetro' },
-  mock: { name: 'Proveedor mock', note: 'Devuelve texto sintético: solo para desarrollo' }
-};
-
-const SOURCE_LABEL = {
-  vault: 'Guardada en el vault',
-  env: 'Desde variable de entorno',
-  local: 'Servicio local'
-};
+import { esc } from '../ui.js';
 
 /**
- * Ajustes: proveedores, presupuesto, auditoría y cómo conectar una aplicación.
+ * Proveedores y claves.
  *
- * El estado del vault se muestra tal cual lo reporta la API, incluido el aviso
- * del modo reducido. Un panel que dice «AES-256-GCM» sin decir de dónde sale la
- * clave está describiendo el algoritmo, no la protección.
+ * Todo lo que se enseña viene de la API. Y lo que no se puede hacer, no se
+ * finge: la versión anterior tenía un botón «Rotar» que generaba una cadena
+ * aleatoria en el navegador y ponía «Rotada ✓» sin tocar el servidor. Un
+ * operador podía creer que había cambiado una credencial cuando no había
+ * cambiado nada. Las claves de entrada viven en SYNAPSE_API_KEYS, así que
+ * cambiarlas es editar esa variable y reiniciar, y eso es lo que se explica.
  */
+
+const PROVEEDOR = {
+  openai: 'OpenAI',
+  anthropic: 'Anthropic',
+  google: 'Google',
+  ollama: 'Ollama (en tu servidor)',
+  mock: 'Proveedor de pruebas'
+};
+
+const ORIGEN = {
+  vault: 'guardada aquí, cifrada',
+  env: 'desde una variable del sistema',
+  local: 'servicio local'
+};
+
+const ALCANCE = {
+  full: 'Acceso completo',
+  inference: 'Solo enviar peticiones',
+  report: 'Solo lectura'
+};
+
 export class AjustesComponent {
   static async render() {
-    await Promise.all([this.renderProviders(), this.renderBudget(), this.renderAudit()]);
-    this.renderSnippet();
-  }
+    const container = document.getElementById('ajustes-container');
+    if (!container) return;
 
-  static async renderProviders() {
-    const list = $('provider-list');
-    if (!list) return;
+    container.innerHTML = this.marco('<div class="table-empty">Cargando…</div>', '', '');
 
     try {
-      const [vault, stats] = await Promise.all([ApiService.getVaultStatus(), ApiService.getStats()]);
+      const [stats, vault, acceso] = await Promise.all([
+        ApiService.getStats(),
+        ApiService.getVaultStatus().catch(() => ({})),
+        ApiService.getAccess().catch(() => null)
+      ]);
 
-      setHTML('vault-warning', vault.warning
-        ? notice({
-          tone: 'warning',
-          iconName: 'alert',
-          title: 'El cifrado en reposo está en modo reducido',
-          text: esc(vault.warning)
-        })
-        : notice({
-          tone: 'ok',
-          iconName: 'check',
-          title: 'Vault con clave maestra propia',
-          text: 'Las credenciales están cifradas con una clave que vive fuera de este disco.'
-        }));
+      container.innerHTML = this.marco(
+        this.proveedores(stats.providers ?? {}),
+        this.avisoVault(vault),
+        this.claves(acceso)
+      );
 
-      const providers = stats.providers ?? {};
-      list.innerHTML = Object.entries(providers)
-        .filter(([name]) => name !== 'mock' || providers.mock?.configured)
-        .map(([name, state]) => {
-          const meta = PROVIDER_LABEL[name] ?? { name, note: '' };
-
-          return `
-            <div class="row${state.configured ? '' : ' empty'}">
-              <div class="row-main">
-                <span class="dot ${state.configured ? 'ok' : ''}"></span>
-                <div class="row-text">
-                  <span class="row-title">${esc(meta.name)}</span>
-                  <span class="row-note">${state.configured ? esc(meta.note) : esc(this.emptyNote(name))}</span>
-                </div>
-              </div>
-              <div class="row-actions">
-                ${state.configured ? `<span class="row-note">${esc(SOURCE_LABEL[state.source] ?? '')}</span>` : ''}
-                ${this.needsCredential(name)
-                  ? `<button class="btn btn-secondary" data-provider="${esc(name)}">${state.configured ? 'Cambiar' : 'Añadir clave'}</button>`
-                  : ''}
-              </div>
-            </div>`;
-        }).join('');
-
-      list.querySelectorAll('[data-provider]').forEach(button =>
-        button.addEventListener('click', () => this.setKey(button.dataset.provider)));
+      this.wire(container);
     } catch (err) {
-      list.innerHTML = err.code === 401
-        ? '<div class="table-empty">Introduce tu clave de API para gestionar los proveedores.</div>'
-        : `<div class="table-empty">${esc(err.message)}</div>`;
+      container.innerHTML = this.marco(
+        `<div class="table-empty">${err.code === 401
+          ? 'Introduce tu clave en la barra lateral para ver la configuración.'
+          : esc(err.message)}</div>`, '', '');
     }
   }
 
-  /** Ollama y el mock corren en local: no hay credencial que pedir. */
-  static needsCredential(provider) {
-    return !['ollama', 'mock'].includes(provider);
-  }
+  static proveedores(providers) {
+    const entradas = Object.entries(providers);
+    if (!entradas.length) return '<div class="table-empty">No hay ningún proveedor.</div>';
 
-  static emptyNote(provider) {
-    if (provider === 'ollama') return 'No responde en la URL configurada. Arranca el servicio para usarlo.';
-    return 'Sin credencial. El router no lo elegirá.';
-  }
+    return entradas.map(([id, estado]) => {
+      const nombre = PROVEEDOR[id] ?? id;
+      const conectado = Boolean(estado.configured);
+      const color = conectado ? 'var(--ok-ink)' : 'var(--ink-faint)';
 
-  static async setKey(provider) {
-    const key = prompt(`Pega la credencial de ${PROVIDER_LABEL[provider]?.name ?? provider}.\n\nSe guardará cifrada y no volverá a mostrarse.`);
-    if (!key) return;
-
-    try {
-      const result = await ApiService.setVaultKey(provider, key.trim());
-      if (result.verification?.attempted && !result.verification.ok) {
-        alert(`Guardada, pero el proveedor la rechazó:\n\n${result.verification.error}`);
-      }
-      this.render();
-    } catch (err) {
-      alert(err.message);
-    }
-  }
-
-  static async renderBudget() {
-    const card = $('budget-card');
-    if (!card) return;
-
-    try {
-      const budget = await ApiService.getBudget();
-
-      const period = (scope, label) => `
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-          <span class="card-title">${label}</span>
-          ${[['Hoy', budget[scope].daily], ['Este mes', budget[scope].monthly]].map(([name, p]) => `
-            <div style="display: flex; flex-direction: column; gap: 5px;">
-              <div class="breakdown-head">
-                <span>${name}</span>
-                <span class="num">${money(p.spentUsd)}${p.enforced ? ` <span style="color: var(--ink-faint);">/ ${money(p.limitUsd, { compact: true })}</span>` : ''}</span>
-              </div>
-              ${p.enforced
-                ? `<div class="bar"><span style="width: ${Math.min(100, ((p.spentUsd + p.reservedUsd) / p.limitUsd) * 100)}%"></span></div>`
-                : '<span class="metric-note">Sin tope: se contabiliza, no se detiene.</span>'}
-            </div>`).join('')}
+      return `
+        <div class="row">
+          <span style="font-size:15px;color:var(--ink-strong);font-weight:500">${esc(nombre)}</span>
+          <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:var(--ink-faint)">${
+            conectado ? esc(ORIGEN[estado.source] ?? estado.source ?? '') : 'sin credencial'
+          }</span>
+          <span style="margin-left:auto;display:flex;align-items:center;gap:12px">
+            <span style="display:flex;align-items:center;gap:7px;font-size:13px;color:${color}">
+              <span style="width:6px;height:6px;border-radius:999px;background:${color}"></span>
+              ${conectado ? 'Conectado' : 'Sin configurar'}
+            </span>
+            ${id === 'ollama' || id === 'mock' ? '' :
+              `<button class="btn btn-secondary btn-sm" data-provider="${esc(id)}" type="button">${conectado ? 'Cambiar' : 'Añadir'}</button>`}
+          </span>
         </div>`;
+    }).join('');
+  }
 
-      card.innerHTML = `
-        <div class="split">
-          ${period('tenant', 'Tu clave')}
-          ${period('global', 'Todas las claves')}
-        </div>
-        ${budget.note ? `<p class="metric-note" style="margin: 14px 0 0;">${esc(budget.note)} Configúralos con <code>SYNAPSE_BUDGET_DAILY_USD</code> y <code>SYNAPSE_BUDGET_MONTHLY_USD</code>.</p>` : ''}`;
-    } catch (err) {
-      card.innerHTML = err.code === 401
-        ? '<span class="metric-note">Introduce tu clave de API para ver el presupuesto.</span>'
-        : `<span class="metric-note">${esc(err.message)}</span>`;
+  /** Solo aparece si el vault lo reporta. Sin aviso inventado. */
+  static avisoVault(vault) {
+    if (!vault?.warning) {
+      return `
+        <div class="aside-note ok">
+          <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">Las credenciales están cifradas de verdad</p>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink)">La clave maestra vive fuera de este disco, así que quien copie el fichero no se lleva nada usable.</p>
+        </div>`;
     }
+
+    return `
+      <div style="display:flex;gap:13px;padding:19px;border:1px solid var(--critical);border-radius:13px;background:color-mix(in oklab, var(--critical) 7%, white)">
+        <span style="flex:none;margin-top:2px;color:oklch(0.52 0.20 22)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+            <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+          </svg>
+        </span>
+        <div>
+          <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">Las credenciales no están del todo protegidas</p>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink)">${esc(vault.warning)}</p>
+        </div>
+      </div>`;
   }
 
-  /**
-   * Dos garantías distintas que es fácil confundir, así que se nombran aparte:
-   * la CADENA de auditoría (cada entrada referencia el hash de la anterior) y
-   * los FICHEROS del servidor contra su manifiesto. Un botón único que dijera
-   * «verificar» sin decir qué verifica sería peor que no tenerlo.
-   *
-   * Ambas se lanzan a mano, no en cada refresco: recorren el fichero completo.
-   */
-  static async renderAudit() {
-    const card = $('audit-card');
-    if (!card) return;
+  static claves(acceso) {
+    if (!acceso) return '<div class="table-empty">No se pudo leer la configuración de acceso.</div>';
 
-    card.innerHTML = `
-      <p class="metric-note" style="margin: 0 0 14px;">Cada entrada referencia el hash de la anterior, así que un borrado o una edición rompen la cadena y se detectan al verificarla.</p>
-      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-        <button class="btn btn-secondary" id="btn-verify-chain" type="button">Verificar la cadena</button>
-        <button class="btn btn-secondary" id="btn-verify-files" type="button">Verificar los ficheros del servidor</button>
-        <button class="btn btn-secondary" id="btn-export-csv" type="button">Exportar CSV</button>
+    if (acceso.mode === 'disabled') {
+      return `
+        <div style="padding:20px 19px">
+          <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">No hay ninguna clave: la puerta está abierta</p>
+          <p style="margin:0;max-width:70ch;font-size:14px;line-height:1.55;color:var(--ink-muted)">
+            La autenticación está desactivada, así que cualquier programa de este ordenador entra. Sirve para probar;
+            para trabajar, define <code>SYNAPSE_API_KEYS</code> y reinicia.
+          </p>
+        </div>`;
+    }
+
+    if (!acceso.keys.length) return '<div class="table-empty">No hay ninguna clave configurada.</div>';
+
+    return acceso.keys.map(clave => `
+      <div class="row">
+        <span style="display:grid;gap:3px;min-width:0">
+          <span style="font-size:14.5px;color:var(--ink-strong);font-weight:500">Clave ····${esc(clave.tail)}${clave.isCurrent ? ' · la que estás usando' : ''}</span>
+          <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:12.5px;color:var(--ink-faint)">${esc(clave.tenantId)}</span>
+        </span>
+        <span style="margin-left:auto;font-size:13px;color:var(--ink-muted)">${esc(ALCANCE[clave.scope] ?? clave.scope)}</span>
+      </div>`).join('')
+      + `<div class="row" style="background:var(--surface-quiet)">
+           <span class="row-note">${esc(acceso.note ?? '')}</span>
+         </div>`;
+  }
+
+  static marco(proveedores, avisoVault, claves) {
+    return `
+      <div style="display:grid;gap:18px;max-width:820px">
+        <div class="card flush">
+          <div class="card-head"><span class="eyebrow">Proveedores de IA</span></div>
+          <div id="providers-list-items">${proveedores}</div>
+        </div>
+
+        ${avisoVault}
+
+        <div class="card flush">
+          <div class="card-head">
+            <span class="eyebrow">Quién puede entrar al gateway</span>
+            <button id="btn-open-new-key-modal" type="button" style="margin-left:auto;border:0;background:transparent;font-size:12.5px;font-weight:600;color:var(--probar);cursor:pointer">Crear una clave nueva</button>
+          </div>
+          <div id="keys-list-items">${claves}</div>
+        </div>
+
+        <div class="card" style="padding:22px">
+          <p class="metric-note" style="margin:0 0 12px;color:var(--ink-muted);font-size:14px;line-height:1.6">
+            Para conectar un programa, se cambia una línea: la dirección a la que llama. La credencial del proveedor se queda aquí y el programa nunca la ve.
+          </p>
+          <pre class="snippet-block" id="snippet"></pre>
+          <p class="metric-note" style="margin:12px 0 0;color:var(--ink-faint);font-size:13px">
+            Todavía no soportado: incrustaciones (<code>embeddings</code>) y la API de <code>responses</code>. Las llamadas a herramientas se reenvían tal cual.
+          </p>
+        </div>
       </div>
-      <div id="audit-result" style="margin-top: 14px;"></div>`;
 
-    $('btn-verify-chain')?.addEventListener('click', async () => {
-      setHTML('audit-result', '<span class="metric-note">Recorriendo la cadena…</span>');
-      try {
-        const { ledger } = await ApiService.getSecurityLogs();
-        const integrity = ledger?.integrity ?? {};
+      <div id="modal-add-provider" class="modal-backdrop">
+        <div class="modal">
+          <div class="modal-head">
+            <h3>Conectar un proveedor</h3>
+            <button id="btn-close-modal-prov" type="button" class="modal-x">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="field">
+              <label class="field-label" for="select-provider-type">Proveedor</label>
+              <select id="select-provider-type">
+                <option value="openai">OpenAI</option>
+                <option value="anthropic">Anthropic</option>
+                <option value="google">Google</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="field-label" for="input-provider-key">Su clave</label>
+              <input id="input-provider-key" type="password" placeholder="Pégala aquí" autocomplete="off">
+              <span class="row-note">Se guarda cifrada y no vuelve a mostrarse. Comprobamos con el proveedor que funciona antes de darla por buena.</span>
+            </div>
+            <div id="prov-feedback"></div>
+            <div class="modal-actions">
+              <button id="btn-cancel-prov" type="button" class="btn btn-secondary">Cancelar</button>
+              <button id="btn-save-prov" type="button" class="btn">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        setHTML('audit-result', integrity.isValid
-          ? notice({
-            tone: 'ok',
-            iconName: 'check',
-            title: 'La cadena verifica',
-            text: `${integer(ledger.totalAppended)} registros encadenados, sin cortes. ${esc(integrity.scope ?? '')}`
-          })
-          : notice({
-            tone: 'critical',
-            iconName: 'alert',
-            title: 'La cadena no verifica',
-            text: esc(integrity.reason ?? 'Revisa el fichero de auditoría.')
-          }));
-      } catch (err) {
-        setHTML('audit-result', notice({ tone: 'critical', iconName: 'alert', title: 'No se pudo verificar la cadena', text: esc(err.message) }));
-      }
-    });
-
-    $('btn-verify-files')?.addEventListener('click', async () => {
-      setHTML('audit-result', '<span class="metric-note">Comparando ficheros con el manifiesto…</span>');
-      try {
-        const result = await ApiService.getIntegrity();
-
-        setHTML('audit-result', result.isValid
-          ? notice({
-            tone: 'ok',
-            iconName: 'check',
-            title: 'Los ficheros coinciden con el manifiesto',
-            text: `${integer(result.totalChecked ?? 0)} ficheros comprobados. Esto dice que el código no ha cambiado; no dice nada sobre la cadena de auditoría.`
-          })
-          : notice({
-            tone: 'critical',
-            iconName: 'alert',
-            title: 'Hay ficheros que no coinciden',
-            text: result.tamperedFiles?.length
-              ? esc(result.tamperedFiles.map(f => `${f.file} (${f.issue})`).join(', '))
-              : esc(result.status ?? '')
-          }));
-      } catch (err) {
-        setHTML('audit-result', notice({ tone: 'critical', iconName: 'alert', title: 'No se pudo verificar', text: esc(err.message) }));
-      }
-    });
-
-    $('btn-export-csv')?.addEventListener('click', async () => {
-      try {
-        const blob = await ApiService.exportSecurityLogs('csv');
-        const url = URL.createObjectURL(blob);
-        Object.assign(document.createElement('a'), { href: url, download: 'synapse-auditoria.csv' }).click();
-        URL.revokeObjectURL(url);
-      } catch (err) {
-        alert(`No se pudo exportar: ${err.message}`);
-      }
-    });
+      <div id="modal-add-key" class="modal-backdrop">
+        <div class="modal">
+          <div class="modal-head">
+            <h3>Crear una clave nueva</h3>
+            <button id="btn-close-modal-key" type="button" class="modal-x">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p class="row-note" style="margin:0">
+              El panel no puede darse de alta una clave a sí mismo: las claves viven en la configuración del
+              servidor, y eso es lo que impide que quien entre al panel se fabrique acceso permanente.
+              Aquí se genera una y se explica dónde ponerla.
+            </p>
+            <div class="field">
+              <label class="field-label" for="select-key-scope">Qué podrá hacer</label>
+              <select id="select-key-scope">
+                <option value="full">Todo</option>
+                <option value="inference">Solo enviar peticiones</option>
+                <option value="report">Solo leer informes</option>
+              </select>
+            </div>
+            <div id="key-result"></div>
+            <div class="modal-actions">
+              <button id="btn-cancel-new-key" type="button" class="btn btn-secondary">Cerrar</button>
+              <button id="btn-generate-new-key" type="button" class="btn">Generar</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
   }
 
-  static renderSnippet() {
-    const el = $('snippet');
-    if (!el) return;
+  static wire(container) {
+    const snippet = container.querySelector('#snippet');
+    if (snippet) {
+      snippet.textContent = `import OpenAI from "openai";
 
-    el.textContent = `from openai import OpenAI
+const client = new OpenAI({
+  baseURL: "${location.origin}/v1",   // ← la única línea que cambia
+  apiKey: process.env.SYNAPSE_KEY,
+});`;
+    }
 
-client = OpenAI(
-    base_url="${location.origin}/v1",
-    api_key="<tu clave de Synapse>",
-)
+    const abrir = (id, abierto) => {
+      const modal = container.querySelector(id);
+      if (modal) modal.classList.toggle('open', abierto);
+    };
 
-client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[{"role": "user", "content": "Hola"}],
-)`;
+    container.querySelectorAll('[data-provider]').forEach(boton => {
+      boton.addEventListener('click', () => {
+        const select = container.querySelector('#select-provider-type');
+        if (select) select.value = boton.dataset.provider;
+        container.querySelector('#prov-feedback').innerHTML = '';
+        abrir('#modal-add-provider', true);
+      });
+    });
+
+    container.querySelector('#btn-close-modal-prov')?.addEventListener('click', () => abrir('#modal-add-provider', false));
+    container.querySelector('#btn-cancel-prov')?.addEventListener('click', () => abrir('#modal-add-provider', false));
+    container.querySelector('#btn-close-modal-key')?.addEventListener('click', () => abrir('#modal-add-key', false));
+    container.querySelector('#btn-cancel-new-key')?.addEventListener('click', () => abrir('#modal-add-key', false));
+
+    container.querySelector('#btn-open-new-key-modal')?.addEventListener('click', () => {
+      container.querySelector('#key-result').innerHTML = '';
+      abrir('#modal-add-key', true);
+    });
+
+    // Guardar un proveedor sí llega al servidor, y el servidor comprueba la
+    // credencial contra el proveedor antes de darla por válida.
+    const guardar = container.querySelector('#btn-save-prov');
+    guardar?.addEventListener('click', async () => {
+      const proveedor = container.querySelector('#select-provider-type')?.value;
+      const clave = container.querySelector('#input-provider-key')?.value.trim();
+      const feedback = container.querySelector('#prov-feedback');
+
+      if (!clave) {
+        feedback.innerHTML = '<span class="row-note" style="color:var(--critical-ink)">Falta la clave.</span>';
+        return;
+      }
+
+      guardar.disabled = true;
+      guardar.textContent = 'Comprobando…';
+
+      try {
+        const resultado = await ApiService.setVaultKey(proveedor, clave);
+
+        if (resultado.verification?.attempted && !resultado.verification.ok) {
+          feedback.innerHTML = `<span class="row-note" style="color:var(--critical-ink)">Se guardó, pero el proveedor la rechazó: ${esc(resultado.verification.error ?? '')}</span>`;
+        } else {
+          abrir('#modal-add-provider', false);
+          container.querySelector('#input-provider-key').value = '';
+          await this.render();
+          return;
+        }
+      } catch (err) {
+        feedback.innerHTML = `<span class="row-note" style="color:var(--critical-ink)">${esc(err.message)}</span>`;
+      } finally {
+        guardar.disabled = false;
+        guardar.textContent = 'Guardar';
+      }
+    });
+
+    // Generar una clave es aritmética local: no crea nada en el servidor, y se
+    // dice con todas las letras.
+    container.querySelector('#btn-generate-new-key')?.addEventListener('click', () => {
+      const alcance = container.querySelector('#select-key-scope')?.value ?? 'full';
+      const bytes = crypto.getRandomValues(new Uint8Array(32));
+      const secreto = [...bytes].map(b => b.toString(16).padStart(2, '0')).join('');
+      const entrada = alcance === 'full' ? secreto : `${alcance}:${secreto}`;
+
+      container.querySelector('#key-result').innerHTML = `
+        <div class="field">
+          <label class="field-label">Cópiala ahora: no se vuelve a mostrar</label>
+          <pre class="snippet-block" style="white-space:pre-wrap;word-break:break-all">SYNAPSE_API_KEYS=${esc(entrada)}</pre>
+          <span class="row-note">
+            Añádela a esa variable en el servidor —separando con comas si ya hay otras— y reinicia.
+            <strong>Hasta que no lo hagas, esta clave no vale para nada.</strong>
+          </span>
+        </div>`;
+    });
   }
 }

@@ -76,6 +76,11 @@ export class ApiService {
     return this._request('/api/security/rules');
   }
 
+  /** Claves configuradas y su ámbito. Nunca devuelve el secreto. */
+  static getAccess() {
+    return this._request('/api/access');
+  }
+
   static getIntegrity() {
     return this._request('/api/integrity');
   }
@@ -90,6 +95,10 @@ export class ApiService {
 
   static createMemory(memory) {
     return this._request('/api/memory', { method: 'POST', body: memory });
+  }
+
+  static updateMemory(id, memory) {
+    return this._request(`/api/memory/${id}`, { method: 'PUT', body: memory });
   }
 
   static toggleMemory(id) {
