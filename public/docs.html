@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentación — SynapseAI</title>
+  <meta name="description" content="Índice de documentación técnica y guías de adopción de SynapseAI. Instalación, configuración, referencia de API y catálogo de borrado de datos.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<div class="doc-shell">
+  <nav id="doc-index" aria-label="Índice de la página"></nav>
+
+  <article class="doc">
+    <div class="doc-head">
+      <h1>Documentación técnica</h1>
+      <p class="resumen">Guías de instalación, configuración, integración por API y catálogo de borrado de datos para el equipo informático de tu empresa.</p>
+      <span class="fecha">Versión 2.0.0 · Licencia libre MIT</span>
+    </div>
+
+    <h2>Buscador de documentación</h2>
+    <p>Encuentra de inmediato la guía o el parámetro que necesitas:</p>
+
+    <div class="docs-search-wrap">
+      <div class="docs-search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="search" id="docs-search-input" class="docs-search-input" placeholder="Buscar por tema (ej. docker, iban, .env, api, dni, windows)..." autocomplete="off" aria-label="Buscar en la documentación">
+      </div>
+      <p id="docs-search-status" style="margin:8px 0 0;font-size:13px;color:var(--ink-faint);display:none"></p>
+    </div>
+
+    <h2>Guías principales</h2>
+    <div class="docs-grid" id="docs-cards-container">
+
+      <!-- Tarjeta 1: Instalación -->
+      <a href="/docs/instalacion" class="docs-card">
+        <div class="docs-card-header">
+          <div class="docs-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 4 4-4 4"/><path d="M15 16h2"/></svg>
+          </div>
+          <h3 class="docs-card-title">Instalación</h3>
+        </div>
+        <p class="docs-card-desc">Los tres métodos para poner en marcha el programa en vuestra red: contenedor Docker, Node.js (npm) o como servicio en Windows.</p>
+        <div class="docs-topics">
+          <span class="docs-topic-tag">docker</span>
+          <span class="docs-topic-tag">npm</span>
+          <span class="docs-topic-tag">windows</span>
+          <span class="docs-topic-tag">puerto 3000</span>
+        </div>
+      </a>
+
+      <!-- Tarjeta 2: Configuración -->
+      <a href="/docs/configuracion" class="docs-card">
+        <div class="docs-card-header">
+          <div class="docs-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h3 class="docs-card-title">Configuración</h3>
+        </div>
+        <p class="docs-card-desc">Diccionario completo del archivo <code>.env</code>: claves con ámbitos de seguridad, cifrado del almacén interno, proveedores y límites de gasto.</p>
+        <div class="docs-topics">
+          <span class="docs-topic-tag">.env</span>
+          <span class="docs-topic-tag">claves API</span>
+          <span class="docs-topic-tag">ámbitos</span>
+          <span class="docs-topic-tag">vault</span>
+          <span class="docs-topic-tag">cors</span>
+        </div>
+      </a>
+
+      <!-- Tarjeta 3: API -->
+      <a href="/docs/api" class="docs-card">
+        <div class="docs-card-header">
+          <div class="docs-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h3 class="docs-card-title">Referencia de API</h3>
+        </div>
+        <p class="docs-card-desc">Rutas <code>/v1</code> compatibles con OpenAI para enviar preguntas a la IA sin tocar tus aplicaciones, y rutas <code>/api</code> de control y estadísticas.</p>
+        <div class="docs-topics">
+          <span class="docs-topic-tag">/v1/chat/completions</span>
+          <span class="docs-topic-tag">/v1/models</span>
+          <span class="docs-topic-tag">curl</span>
+          <span class="docs-topic-tag">python</span>
+          <span class="docs-topic-tag">stats</span>
+        </div>
+      </a>
+
+      <!-- Tarjeta 4: Catálogo de borrado -->
+      <a href="/docs/dlp" class="docs-card">
+        <div class="docs-card-header">
+          <div class="docs-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="docs-card-title">Catálogo de borrado (DLP)</h3>
+        </div>
+        <p class="docs-card-desc">Lista detallada de identificadores detectados (DNI, NIE, CIF, IBAN, tarjetas, RFC, CURP, CPF) y cómo se comprueban sus dígitos de control.</p>
+        <div class="docs-topics">
+          <span class="docs-topic-tag">DNI</span>
+          <span class="docs-topic-tag">IBAN</span>
+          <span class="docs-topic-tag">tarjetas</span>
+          <span class="docs-topic-tag">Luhn</span>
+          <span class="docs-topic-tag">módulo 23</span>
+        </div>
+      </a>
+
+    </div>
+
+    <h2>Recursos adicionales</h2>
+    <ul>
+      <li><a href="/extension"><strong>Extensión del navegador:</strong></a> qué permisos solicita y cómo intercepta el copiado y pegado en ChatGPT, Claude y Gemini.</li>
+      <li><a href="/descargas"><strong>Descargas:</strong></a> paquetes empaquetados con su huella SHA-256 verificable.</li>
+      <li><a href="/auditoria"><strong>Auditoría adversaria:</strong></a> el informe de los cinco revisores independientes con los fallos encontrados y corregidos.</li>
+      <li><a href="/legal/licencia"><strong>Licencia de uso:</strong></a> software libre bajo licencia MIT sin cánones ni costes por puesto.</li>
+    </ul>
+
+    <h2>Para tu equipo técnico</h2>
+    <div class="tecnico-box">
+      <span class="eyebrow">Clonado y arranque directo</span>
+      <p>SynapseAI está desarrollado en Node.js estándar. Para poner en marcha una instancia local de prueba en menos de dos minutos:</p>
+      <pre><code># 1. Clonar el repositorio
+git clone https://github.com/synapse-ai/synapse-ai.git
+cd SynapseAI
+
+# 2. Instalar dependencias del servidor
+npm install
+
+# 3. Copiar configuración base e iniciar
+cp .env.example .env
+npm start</code></pre>
+      <p style="margin-top:12px">El servidor escuchará por defecto en <code>http://127.0.0.1:3000</code>. Puedes comprobar que responde abriendo <code>http://127.0.0.1:3000/app</code> en tu navegador.</p>
+    </div>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> Esta documentación describe el funcionamiento técnico del software que se ejecuta en vuestra propia red. SynapseAI no es un servicio en la nube ni mantiene servidores remotos que procesen vuestras consultas; la instalación, copias de seguridad y mantenimiento del servidor corren a cargo de vuestro equipo informático.
+    </div>
+
+  </article>
+</div>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+
+<script>
+  // Buscador interactivo local
+  const searchInput = document.getElementById('docs-search-input');
+  const cardsContainer = document.getElementById('docs-cards-container');
+  const statusMsg = document.getElementById('docs-search-status');
+
+  if (searchInput && cardsContainer) {
+    const cards = Array.from(cardsContainer.querySelectorAll('.docs-card'));
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      let matches = 0;
+
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const matchesQuery = !query || text.includes(query);
+        card.style.display = matchesQuery ? '' : 'none';
+        if (matchesQuery) matches++;
+      });
+
+      if (query) {
+        statusMsg.style.display = 'block';
+        statusMsg.textContent = matches === 1 
+          ? '1 guía encontrada para «' + query + '»' 
+          : matches + ' guías encontradas para «' + query + '»';
+      } else {
+        statusMsg.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>

@@ -18,14 +18,18 @@ const PIE = [
   ['El producto', [
     ['/#como-funciona', 'Qué hace'],
     ['/#limites', 'Lo que no hace'],
+    ['/auditoria', 'Auditoría adversaria'],
+    ['/extension', 'Extensión del navegador'],
     ['/#precios', 'Precios'],
     ['/app', 'Ver el panel']
   ]],
-  ['Para el equipo técnico', [
-    ['/#instalacion', 'Instalación'],
-    ['/descargas', 'Descargas'],
-    ['/legal/licencia', 'Licencia'],
-    ['/.well-known/security.txt', 'security.txt']
+  ['Documentación', [
+    ['/docs', 'Índice de guías'],
+    ['/docs/instalacion', 'Instalación'],
+    ['/docs/configuracion', 'Configuración (.env)'],
+    ['/docs/api', 'Referencia de API'],
+    ['/docs/dlp', 'Catálogo de borrado'],
+    ['/descargas', 'Descargas']
   ]],
   ['Legal', [
     ['/legal/aviso-legal', 'Aviso legal'],
@@ -33,7 +37,9 @@ const PIE = [
     ['/legal/terminos', 'Condiciones'],
     ['/legal/cookies', 'Cookies']
   ]],
-  ['Si algo va mal', [
+  ['Proyecto', [
+    ['/legal/licencia', 'Licencia MIT'],
+    ['/.well-known/security.txt', 'security.txt'],
     ['/legal/uso-aceptable', 'Uso aceptable'],
     ['/legal/vulnerabilidades', 'Avisar de un fallo'],
     ['/#contacto', 'Contacto']

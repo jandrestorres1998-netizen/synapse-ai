@@ -16,6 +16,34 @@ import { esc, integer } from '../ui.js';
  *     nombre de fichero de auditoría. Eso es fabricar pruebas.
  */
 
+// El registro guarda el nombre técnico de la regla, en inglés, porque describe
+// el patrón. Aquí lo lee alguien que no es técnico.
+const NOMBRE_LLANO = {
+  'Spanish DNI / NIE': 'un DNI o NIE',
+  'CIF de empresa española': 'el CIF de una empresa',
+  'International Bank Account (IBAN)': 'una cuenta bancaria',
+  'Credit / Debit Card Number': 'una tarjeta',
+  'RFC mexicano': 'un RFC mexicano',
+  'CURP mexicana': 'una CURP mexicana',
+  'CPF brasileño': 'un CPF brasileño',
+  'CNPJ brasileño': 'un CNPJ brasileño',
+  'US Social Security Number (SSN)': 'un número de la seguridad social',
+  'Personal / Customer Email': 'un correo electrónico',
+  'JSON Web Token': 'una credencial de sesión',
+  'Bloque de clave privada (PEM)': 'una clave privada',
+  'Cadena de conexión con credenciales': 'la contraseña de una base de datos',
+  'Plaintext Password Leak': 'una contraseña escrita a pelo',
+  'Cabecera Authorization con token': 'una credencial de acceso',
+  'OpenAI API Key': 'una clave de OpenAI',
+  'Clave de API de Anthropic': 'una clave de Anthropic',
+  'Clave de API de Google': 'una clave de Google',
+  'AWS Access Key / Secret': 'una clave de AWS',
+  'GitHub Token': 'una clave de GitHub',
+  'Token de GitLab': 'una clave de GitLab',
+  'Token de Slack': 'una clave de Slack',
+  'Clave de Stripe': 'una clave de Stripe'
+};
+
 const COLOR_SEVERIDAD = {
   CRITICAL: 'var(--critical)',
   HIGH: 'var(--warning)',
@@ -80,9 +108,10 @@ export class AuditoriaComponent {
       const color = COLOR_SEVERIDAD[e.severity] ?? 'var(--ink-faint)';
       const categorias = e.categories && e.categories !== 'N/A' ? e.categories.split(';').filter(Boolean) : [];
 
+      const llanas = categorias.map(c => NOMBRE_LLANO[c] ?? c);
       const detalle = e.threatsCount > 0
-        ? `${e.threatsCount} ${e.threatsCount === 1 ? 'elemento sustituido' : 'elementos sustituidos'}${categorias.length ? `: ${categorias.join(', ')}` : ''}.`
-        : 'Sin elementos que sustituir en esta petición.';
+        ? `Se sustituyó ${llanas.length ? llanas.join(', ') : `${e.threatsCount} elemento`}.`
+        : 'No había nada que sustituir en esta petición.';
 
       return `
         <div class="audit-entry-row">

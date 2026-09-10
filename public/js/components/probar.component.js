@@ -1,6 +1,35 @@
 import { ApiService } from '../services/api.service.js';
 import { esc, $, money, integer } from '../ui.js';
 
+// Los nombres de las reglas son técnicos y están en inglés porque describen el
+// patrón. Aquí se le enseñan a alguien que no es técnico, así que se traducen.
+// Lo que no esté en la tabla cae al nombre original.
+const NOMBRE_LLANO = {
+  es_dni_nie: 'Un DNI o NIE',
+  es_cif: 'El CIF de una empresa',
+  iban_bank_account: 'Una cuenta bancaria',
+  credit_card: 'Una tarjeta',
+  mx_rfc: 'Un RFC mexicano',
+  mx_curp: 'Una CURP mexicana',
+  br_cpf: 'Un CPF brasileño',
+  br_cnpj: 'Un CNPJ brasileño',
+  us_ssn: 'Un número de la seguridad social',
+  email_address: 'Un correo electrónico',
+  jwt_token: 'Una credencial de sesión',
+  private_key_block: 'Una clave privada de un sistema',
+  connection_string: 'La contraseña de una base de datos',
+  password_field: 'Una contraseña escrita a pelo',
+  bearer_token: 'Una credencial de acceso',
+  api_key_openai: 'Una clave de OpenAI',
+  api_key_anthropic: 'Una clave de Anthropic',
+  api_key_google: 'Una clave de Google',
+  api_key_aws: 'Una clave de AWS',
+  api_key_github: 'Una clave de GitHub',
+  api_key_gitlab: 'Una clave de GitLab',
+  api_key_slack: 'Una clave de Slack',
+  api_key_stripe: 'Una clave de Stripe'
+};
+
 const SAMPLES = {
   credencial: 'Revisa este despliegue. La clave de producción es sk-proj-8fK2mQ7nR4wX1cV9bN3jL6hT5yU0pA2s y no consigo autenticar el servicio.',
   personales: 'Prepara la factura del cliente con DNI 12345678Z, IBAN GB82WEST12345698765432 y tarjeta 4539578763621486.',
@@ -98,52 +127,52 @@ export class ProbarComponent {
 
     steps.push(this.step({
       n: '01',
-      title: 'Inyección de prompt',
+      title: 'Se comprueba que nadie intente engañar a la IA',
       badge: 'Limpio',
       tone: 'ok',
-      note: 'Los patrones se evaluaron sobre todos los turnos del usuario, no solo el último.'
+      note: 'Se revisan todos los mensajes de la conversación, no solo el último.'
     }));
 
     if (ingress.length > 0) {
       const findings = ingress.map(d => `
         <div class="finding${d.severity === 'CRITICAL' ? ' critical' : ''}">
-          <span>${esc(d.name)}</span>
+          <span>${esc(NOMBRE_LLANO[d.patternId] ?? d.name)}</span>
           <span class="snippet">${esc(d.snippet)}</span>
         </div>`).join('');
 
       steps.push(this.step({
         n: '02',
-        title: 'Redacción DLP',
-        badge: `${ingress.length} ${ingress.length === 1 ? 'hallazgo' : 'hallazgos'}`,
+        title: 'Se borran los datos de personas',
+        badge: `${ingress.length} ${ingress.length === 1 ? 'encontrado' : 'encontrados'}`,
         tone: 'warning',
-        note: 'Sustituidos antes de salir. El valor original no se guarda: en la auditoría queda solo un hash.',
+        note: 'Sustituidos antes de salir. El valor original no se guarda en ningún sitio: en el registro solo queda una huella.',
         extra: `<div class="findings">${findings}</div>`
       }));
     } else {
       steps.push(this.step({
         n: '02',
-        title: 'Redacción DLP',
-        badge: 'Sin coincidencias',
-        note: 'Ninguno de los patrones configurados reconoció nada en este texto.'
+        title: 'Se borran los datos de personas',
+        badge: 'Nada que borrar',
+        note: 'En este texto no había ningún documento ni cuenta que reconociera.'
       }));
     }
 
     const context = data.context;
     steps.push(this.step({
       n: '03',
-      title: 'Contexto',
-      badge: context?.applied ? `${integer(context.chars)} caracteres` : 'Sin directrices',
+      title: 'Se añaden vuestras instrucciones',
+      badge: context?.applied ? `${integer(context.chars)} caracteres` : 'No hay ninguna',
       tone: 'contexto',
       note: context?.applied
-        ? 'Las directrices activas viajan como mensaje de sistema y cuentan como tokens de entrada.'
-        : 'No hay directrices activas, así que no se añadió ningún mensaje de sistema.'
+        ? 'El tono y las normas de la casa viajan con cada consulta. Se añaden después del borrado, no antes.'
+        : 'No tenéis instrucciones fijas configuradas, así que no se añade nada.'
     }));
 
     if (data.source === 'cache') {
       steps.push(this.step({
         n: '04',
-        title: 'Caché',
-        badge: data.matchType === 'semantic' ? 'Por similitud' : 'Coincidencia exacta',
+        title: 'Se mira si ya se preguntó lo mismo',
+        badge: data.matchType === 'semantic' ? 'Una parecida' : 'Ya estaba',
         tone: 'ok',
         note: `Guardada el ${esc(new Date(data.cachedAt).toLocaleString('es-ES'))}. No se consumieron tokens del proveedor.`
           + (data.matchType === 'semantic'
@@ -153,9 +182,9 @@ export class ProbarComponent {
 
       steps.push(this.step({
         n: '05',
-        title: 'Enrutado',
-        badge: 'No se llamó al proveedor',
-        note: 'La respuesta salió de la caché, aislada por inquilino, modelo y contexto.'
+        title: 'Se envía y se anota',
+        badge: 'No hizo falta preguntar',
+        note: 'La respuesta ya estaba guardada, así que esta consulta no ha costado nada.'
       }));
     } else {
       const routing = data.routing ?? {};
@@ -164,32 +193,32 @@ export class ProbarComponent {
 
       steps.push(this.step({
         n: '04',
-        title: 'Caché',
-        badge: 'Sin coincidencia',
-        note: 'Aislada por inquilino, modelo y contexto. Esta combinación no estaba guardada.'
+        title: 'Se mira si ya se preguntó lo mismo',
+        badge: 'Es nueva',
+        note: 'No estaba guardada, así que hay que preguntar al proveedor.'
       }));
 
       steps.push(this.step({
         n: '05',
-        title: `Enrutado a ${esc(data.model?.label ?? data.model?.id ?? '—')}`,
+        title: `Se envía a ${esc(data.model?.label ?? data.model?.id ?? '—')}`,
         badge: `${integer(data.latencyMs)} ms`,
         tone: 'probar',
         note: esc(routing.reasoning ?? ''),
         extra: `
           <div class="stat-row">
-            <div class="stat"><span class="stat-label">Tokens</span><span class="stat-value num">${integer(usage.inputTokens)} · ${integer(usage.outputTokens)}</span></div>
+            <div class="stat"><span class="stat-label">Consumo</span><span class="stat-value num">${integer(usage.inputTokens)} · ${integer(usage.outputTokens)}</span></div>
             <div class="stat"><span class="stat-label">Coste</span><span class="stat-value num">${money(cost.usd)}</span></div>
-            <div class="stat"><span class="stat-label">Origen de la cifra</span><span class="stat-value">${usage.measured ? 'Medido por el proveedor' : 'Estimado'}</span></div>
+            <div class="stat"><span class="stat-label">De dónde sale</span><span class="stat-value">${usage.measured ? 'Lo dice el proveedor' : 'Estimado'}</span></div>
           </div>`
       }));
 
       if (egress.length > 0) {
         steps.push(this.step({
           n: '06',
-          title: 'Redacción de la respuesta',
-          badge: `${egress.length} ${egress.length === 1 ? 'hallazgo' : 'hallazgos'}`,
+          title: 'Se revisa lo que responde la IA',
+          badge: `${egress.length} ${egress.length === 1 ? 'encontrado' : 'encontrados'}`,
           tone: 'warning',
-          note: 'El modelo devolvió algo que coincidía con un patrón sensible y se enmascaró antes de mostrarlo.'
+          note: 'La IA devolvió algo que parecía un dato personal, y se borró antes de enseñarlo.'
         }));
       }
     }
@@ -212,7 +241,7 @@ export class ProbarComponent {
         <div class="trace">
           ${this.step({
             n: '01',
-            title: 'Petición bloqueada. No se envió nada al proveedor.',
+            title: 'Se ha parado. No salió nada de la empresa.',
             badge: 'Rechazada',
             tone: 'critical',
             note: esc(err.message),
@@ -230,7 +259,7 @@ export class ProbarComponent {
     if (err.payload?.error?.type === 'ProviderError') {
       return `<div class="trace">${this.step({
         n: '!',
-        title: 'El proveedor rechazó la credencial guardada',
+        title: 'La IA no acepta la clave guardada',
         badge: 'Proveedor',
         tone: 'critical',
         note: `${esc(err.message)}<br><br>La clave está en el vault pero el proveedor no la acepta. Sustitúyela en <strong>Ajustes → Proveedores</strong>.`
@@ -243,12 +272,12 @@ export class ProbarComponent {
 
     const known = {
       402: {
-        title: 'Límite de gasto alcanzado',
+        title: 'Se ha llegado al tope de gasto',
         note: () => esc(err.message)
       },
       503: {
-        title: 'Ningún proveedor disponible',
-        note: () => 'Añade una credencial en Ajustes. El gateway devuelve un error en lugar de inventar una respuesta.'
+        title: 'No hay ninguna IA configurada',
+        note: () => 'Añade una clave en Proveedores. Antes que inventarse una respuesta, esto devuelve un error.'
       }
     }[err.code];
 

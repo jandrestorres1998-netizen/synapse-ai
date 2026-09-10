@@ -64,8 +64,16 @@ class App {
     this.wireTopActions();
 
     // Render initial tab (inicio)
-    const initialTab = document.querySelector('.side-item.active')?.dataset.tab || 'inicio';
+    // La URL manda sobre el módulo marcado en el HTML.
+    const initialTab = this.tabDeLaUrl()
+      || document.querySelector('.side-item.active')?.dataset.tab
+      || 'inicio';
     this.switchTab(initialTab);
+
+    window.addEventListener('hashchange', () => {
+      const destino = this.tabDeLaUrl();
+      if (destino) this.switchTab(destino);
+    });
 
     // Actualización de estado en segundo plano
     this.refreshSidebar();
@@ -102,6 +110,21 @@ class App {
     });
   }
 
+  /** Módulos válidos, para no aceptar cualquier cosa que venga en la URL. */
+  static get MODULOS() {
+    return ['inicio', 'probar', 'actividad', 'proteccion', 'auditoria', 'usuarios', 'contexto', 'ajustes'];
+  }
+
+  /**
+   * El módulo abierto vive en la URL. Sirve para enlazar directamente a una
+   * pantalla —«mira esto en Auditoría»— y para que recargar no te devuelva al
+   * principio.
+   */
+  static tabDeLaUrl() {
+    const desdeHash = (location.hash || '').replace(/^#/, '');
+    return this.MODULOS.includes(desdeHash) ? desdeHash : null;
+  }
+
   static switchTab(tab) {
     if (!tab) return;
     document.querySelectorAll('.side-item').forEach(button =>
@@ -122,6 +145,10 @@ class App {
         ajustes: 'proveedores y claves'
       };
       breadcrumb.textContent = tabNames[tab] || tab;
+    }
+
+    if (this.MODULOS.includes(tab) && location.hash !== `#${tab}`) {
+      history.replaceState(null, '', `#${tab}`);
     }
 
     RENDERERS[tab]?.();

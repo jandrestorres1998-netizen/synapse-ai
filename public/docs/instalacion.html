@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instalación — SynapseAI</title>
+  <meta name="description" content="Guía de instalación de SynapseAI. Puesta en marcha mediante Docker, Node.js (npm) o en Windows Server / Windows 11.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<div class="doc-shell">
+  <nav id="doc-index" aria-label="Índice de la página"></nav>
+
+  <article class="doc">
+    <div class="doc-head">
+      <h1>Guía de instalación</h1>
+      <p class="resumen">Los tres caminos para poner en marcha el programa en vuestra propia red: contenedor Docker, Node.js estándar o como servicio local en Windows.</p>
+      <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
+    </div>
+
+    <h2>Requisitos mínimos</h2>
+    <p>SynapseAI es un programa ligero desarrollado en JavaScript. No requiere tarjetas gráficas de cálculo (GPU) ni hardware especializado; la comprobación de identificadores corre íntegramente en el procesador convencional (CPU).</p>
+
+    <ul>
+      <li><strong>Procesador:</strong> 2 núcleos o superior.</li>
+      <li><strong>Memoria RAM:</strong> 2 GB disponibles (el proceso consume habitualmente entre 90 y 180 MB).</li>
+      <li><strong>Espacio en disco:</strong> 500 MB para el programa y sus dependencias, más el espacio destinado al registro de auditoría local.</li>
+      <li><strong>Entorno:</strong> Docker 20.10+ o Node.js 18 LTS o superior.</li>
+    </ul>
+
+    <h2>Camino 1 · Docker (Recomendado)</h2>
+    <p>Es la forma más rápida y limpia de instalar el programa en un servidor de oficina o centro de datos sin ensuciar el sistema anfitrión.</p>
+
+    <p>Para arrancarlo con un único comando:</p>
+    <pre class="code"><code>docker run -d \
+  --name synapseai \
+  -p 3000:3000 \
+  -v synapse_data:/data \
+  --restart unless-stopped \
+  synapseai/gateway:2.0.0</code></pre>
+
+    <p style="margin-top:20px">Si gestionáis vuestros servicios mediante <strong>Docker Compose</strong>, podéis incluir esta definición en vuestro <code>docker-compose.yml</code>:</p>
+
+    <pre class="code"><code>version: '3.8'
+services:
+  synapseai:
+    image: synapseai/gateway:2.0.0
+    container_name: synapseai
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - SYNAPSE_VAULT_KEY=genera_una_clave_de_32_caracteres_minimo
+    volumes:
+      - ./data:/data</code></pre>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El contenedor expone el puerto 3000. Si queréis acceder desde fuera de la red local o usar conexiones seguras con certificado (HTTPS), vuestro equipo informático deberá colocar un proxy inverso (como Nginx o Caddy) delante del contenedor.
+    </div>
+
+    <h2>Camino 2 · Node.js y npm</h2>
+    <p>Recomendado si deseáis auditar el código fuente, ejecutar pruebas en local o desplegarlo en un servidor Linux existente:</p>
+
+    <pre class="code"><code># 1. Descargar el código fuente
+git clone https://github.com/synapse-ai/synapse-ai.git
+cd SynapseAI
+
+# 2. Instalar las dependencias oficiales
+npm install --production
+
+# 3. Crear el archivo de configuración
+cp .env.example .env
+
+# 4. Iniciar el programa
+npm start</code></pre>
+
+    <p style="margin-top:14px">Para mantenerlo en ejecución continua en segundo plano, recomendamos utilizar un gestor de procesos estándar como <code>systemd</code> o <code>pm2</code>:</p>
+
+    <pre class="code"><code># Ejecución con PM2
+pm2 start server/server.js --name synapseai
+pm2 save
+pm2 startup</code></pre>
+
+    <h2>Camino 3 · Windows (Servicio local)</h2>
+    <p>Para despachos y asesorías que trabajan íntegramente sobre servidores <strong>Windows Server</strong> o puestos de trabajo con Windows 10/11:</p>
+
+    <ul>
+      <li>Descarga e instala <strong>Node.js 18 o 20 LTS</strong> para Windows desde el instalador oficial <code>.msi</code>.</li>
+      <li>Descarga y descomprime el paquete de SynapseAI en una carpeta fija (por ejemplo, <code>C:\SynapseAI</code>).</li>
+      <li>Abre un terminal de PowerShell como Administrador y navega a la carpeta:
+        <pre class="code" style="margin:8px 0"><code>cd C:\SynapseAI
+npm.cmd install --production
+Copy-Item .env.example .env</code></pre>
+      </li>
+      <li>Para arrancar manualmente:
+        <pre class="code" style="margin:8px 0"><code>npm.cmd start</code></pre>
+      </li>
+      <li>Para que arranque automáticamente al encender el servidor sin necesidad de iniciar sesión, se puede utilizar el Programador de Tareas de Windows o una utilidad de servicios nativos como <code>nssm</code> (Non-Sucking Service Manager).</li>
+    </ul>
+
+    <h2>Comprueba que el programa responde</h2>
+    <p>Una vez levantado el servidor, verifica que el sistema está operativo abriendo en tu navegador:</p>
+
+    <div class="doc-note">
+      <p><strong>Comprobación rápida:</strong> Accede a <a href="http://localhost:3000/app" target="_blank" rel="noopener">http://localhost:3000/app</a> para entrar al panel de administración.</p>
+      <p>También puedes solicitar el estado del almacén de claves por línea de comandos:</p>
+      <pre class="code" style="margin:8px 0"><code>curl.exe http://localhost:3000/api/vault/status</code></pre>
+      <p style="margin:0;font-size:13px;color:var(--ink-muted)">Debe responder con un JSON indicando <code>"status": "ready"</code> o <code>"initialized": true</code>.</p>
+    </div>
+
+    <h2>Para tu equipo técnico</h2>
+    <div class="tecnico-box">
+      <span class="eyebrow">Aislamiento de red y puertos</span>
+      <p>Por seguridad, la variable <code>HOST</code> en <code>.env</code> viene fijada por defecto en <code>127.0.0.1</code> para que el programa solo admita conexiones desde el propio equipo donde está instalado.</p>
+      <p>Si queréis que otros ordenadores de la oficina se conecten al programa:</p>
+      <pre><code># En vuestro archivo .env:
+HOST=0.0.0.0
+PORT=3000</code></pre>
+      <p style="margin-top:10px">Aseguraos de abrir el puerto TCP 3000 en el Firewall de Windows o en el cortafuegos de vuestro conmutador de red, y de definir claves con ámbito en <code>SYNAPSE_API_KEYS</code>.</p>
+    </div>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El instalador no modifica vuestros registros del sistema operativo ni instala controladores ocultos. El programa corre como un proceso de usuario convencional y su ciclo de vida depende exclusivamente de vosotros.
+    </div>
+
+  </article>
+</div>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+</body>
+</html>

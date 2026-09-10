@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de borrado (DLP) — SynapseAI</title>
+  <meta name="description" content="Catálogo exhaustivo de identificadores, expresiones regulares y algoritmos de dígito de control en SynapseAI. DNI, CIF, IBAN, tarjetas, RFC, CURP y CPF.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<div class="doc-shell">
+  <nav id="doc-index" aria-label="Índice de la página"></nav>
+
+  <article class="doc">
+    <div class="doc-head">
+      <h1>Catálogo de borrado de datos</h1>
+      <p class="resumen">Detalle de todos los identificadores personales y credenciales que el programa reconoce, comprueba matemáticamente y borra antes de enviar a la IA.</p>
+      <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
+    </div>
+
+    <h2>Cómo funciona la detección</h2>
+    <p>El motor de borrado de datos de SynapseAI trabaja en dos pasos combinados:</p>
+    <ol style="margin:0 0 16px;padding-left:22px;display:grid;gap:8px">
+      <li><strong>Búsqueda de patrón estructural:</strong> Localiza secuencias numéricas o alfanuméricas que coinciden con el formato formal de un documento (por ejemplo, 8 números seguidos de una letra).</li>
+      <li><strong>Cálculo matemático de control:</strong> Aplica la fórmula oficial del país (algoritmo de letra para DNI, módulo 97 para cuentas bancarias o fórmula de Luhn para tarjetas). Si el número no cuadra con la letra calculada, se descarta para evitar falsas alarmas con números de teléfono o importes de facturas.</li>
+    </ol>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El sistema reconoce documentos con estructura matemática fija. No entiende si un párrafo redactado en lenguaje libre cuenta una estrategia empresarial o una confidencia personal si no contiene un identificador numérico concreto.
+    </div>
+
+    <h2>1 · Documentos de España</h2>
+    <div class="var-table-wrap">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>Identificador</th>
+            <th>Fórmula de comprobación</th>
+            <th>Etiqueta sustituta</th>
+            <th>Severidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">DNI (España)</td>
+            <td>Módulo 23: el número se divide entre 23 y el resto determina la letra oficial en la tabla <code>TRWAGMYFPDXBNJZSQVHLCKE</code>.</td>
+            <td><code>[REDACTED_ES_DNI_NIE]</code></td>
+            <td><span class="badge-status badge-critico">CRITICAL</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">NIE (Extranjeros)</td>
+            <td>Las letras iniciales X, Y o Z se sustituyen por 0, 1 o 2 respectivamente, y se aplica la misma validación de módulo 23.</td>
+            <td><code>[REDACTED_ES_DNI_NIE]</code></td>
+            <td><span class="badge-status badge-critico">CRITICAL</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">CIF (Empresas)</td>
+            <td>Letra inicial según tipo societario (A, B, C...) + suma ponderada de posiciones pares e impares para verificar el dígito de control.</td>
+            <td><code>[REDACTED_ES_CIF]</code></td>
+            <td><span class="badge-status badge-limite">HIGH</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>2 · Cuentas bancarias y tarjetas</h2>
+    <div class="var-table-wrap">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>Instrumento</th>
+            <th>Fórmula de comprobación</th>
+            <th>Etiqueta sustituta</th>
+            <th>Severidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">IBAN (Cuentas bancarias)</td>
+            <td>Norma internacional <strong>ISO 7064 MOD-97-10</strong>. Se trasladan las cuatro primeras posiciones al final y se calcula el residuo 1. Cubre cuentas españolas (24 caracteres) y europeas.</td>
+            <td><code>[REDACTED_IBAN]</code></td>
+            <td><span class="badge-status badge-critico">CRITICAL</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">Tarjetas financieras</td>
+            <td><strong>Algoritmo de Luhn</strong> (módulo 10 con duplicación de posiciones alternas). Reconoce tarjetas Visa, Mastercard, Maestro y American Express de 13 a 19 dígitos.</td>
+            <td><code>[REDACTED_CREDIT_CARD]</code></td>
+            <td><span class="badge-status badge-critico">CRITICAL</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>3 · Identificadores de Iberoamérica</h2>
+    <div class="var-table-wrap">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>País / Documento</th>
+            <th>Estructura y validación</th>
+            <th>Etiqueta sustituta</th>
+            <th>Severidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">RFC (México)</td>
+            <td>Registro Federal de Contribuyentes: 4 letras + fecha AAMMDD + 3 caracteres de homoclave oficial del SAT.</td>
+            <td><code>[REDACTED_MX_RFC]</code></td>
+            <td><span class="badge-status badge-limite">HIGH</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">CURP (México)</td>
+            <td>Clave Única de Registro de Población: 18 caracteres alfanuméricos con estructura RENAPO, fecha, sexo y entidad federativa.</td>
+            <td><code>[REDACTED_MX_CURP]</code></td>
+            <td><span class="badge-status badge-critico">CRITICAL</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">CPF (Brasil)</td>
+            <td>Cadastro de Pessoas Físicas: 11 dígitos numéricos con validación matemática de los dos dígitos verificadores finales (módulo 11).</td>
+            <td><code>[REDACTED_BR_CPF]</code></td>
+            <td><span class="badge-status badge-critico">CRITICAL</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">CNPJ (Brasil)</td>
+            <td>Cadastro Nacional da Pessoa Jurídica: 14 dígitos con cálculo ponderado oficial para personas jurídicas en Brasil.</td>
+            <td><code>[REDACTED_BR_CNPJ]</code></td>
+            <td><span class="badge-status badge-limite">HIGH</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>4 · Claves técnicas y credenciales</h2>
+    <div class="var-table-wrap">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>Tipo de secreto</th>
+            <th>Patrón reconocido</th>
+            <th>Etiqueta sustituta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">OpenAI API Key</td>
+            <td>Cadenas que comienzan por <code>sk-</code> de 20 a 64 caracteres alfanuméricos.</td>
+            <td><code>[REDACTED_OPENAI_KEY]</code></td>
+          </tr>
+          <tr>
+            <td class="var-name">AWS Secret / Access Key</td>
+            <td>Identificadores de clave <code>AKIA...</code> o asignaciones de credencial de AWS.</td>
+            <td><code>[REDACTED_AWS_SECRET]</code></td>
+          </tr>
+          <tr>
+            <td class="var-name">GitHub Token</td>
+            <td>Tokens personales con prefijo oficial <code>ghp_</code>, <code>gho_</code> o <code>ghs_</code>.</td>
+            <td><code>[REDACTED_GITHUB_TOKEN]</code></td>
+          </tr>
+          <tr>
+            <td class="var-name">JSON Web Token (JWT)</td>
+            <td>Estructura de tres bloques separados por punto en formato Base64URL con cabecera válida.</td>
+            <td><code>[REDACTED_JWT]</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Para tu equipo técnico</h2>
+    <div class="tecnico-box">
+      <span class="eyebrow">Localización en el repositorio</span>
+      <p>Los algoritmos matemáticos de comprobación se encuentran centralizados en los archivos:</p>
+      <ul>
+        <li><code>server/identity-checksums.js</code>: validaciones puras de letras y fórmulas.</li>
+        <li><code>server/dlp-engine.js</code>: motor de escaneo, gestión de saltos de línea y sustitución de texto.</li>
+      </ul>
+      <p style="margin-top:10px">La suite completa de pruebas unitarias para estos identificadores puede verificarse con:</p>
+      <pre><code>npm.cmd test</code></pre>
+    </div>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El borrado sustituye los valores antes de que el texto viaje al proveedor de IA. Si vuestro equipo decide copiar un texto directamente fuera del programa o desactivar la extensión del navegador, los datos viajarán sin protección.
+    </div>
+
+  </article>
+</div>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración (.env) — SynapseAI</title>
+  <meta name="description" content="Diccionario completo de variables de entorno de SynapseAI (.env). Ámbitos de claves, cifrado, proveedores de IA y límites de gasto.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+<div id="site-head"></div>
+
+<div class="doc-shell">
+  <nav id="doc-index" aria-label="Índice de la página"></nav>
+
+  <article class="doc">
+    <div class="doc-head">
+      <h1>Configuración del sistema</h1>
+      <p class="resumen">Diccionario y especificación de todas las variables de entorno definidas en <code>.env.example</code>. Ámbitos de seguridad, cifrado en reposo y proveedores.</p>
+      <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
+    </div>
+
+    <h2>El archivo .env</h2>
+    <p>Toda la configuración del programa se gestiona mediante un archivo de texto llamado <code>.env</code> situado en la carpeta raíz del proyecto. Este archivo contiene secretos y contraseñas de vuestros modelos, por lo que <strong>está incluido en <code>.gitignore</code> y nunca debe subirse a ningún repositorio público</strong>.</p>
+    <p>Para empezar, copia la plantilla oficial:</p>
+    <pre class="code"><code>cp .env.example .env</code></pre>
+
+    <h2>1 · Servidor y red local</h2>
+    <div class="var-table-wrap">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Valor por defecto</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">PORT</td>
+            <td class="var-default">3000</td>
+            <td>Puerto TCP donde el programa escucha peticiones HTTP.</td>
+          </tr>
+          <tr>
+            <td class="var-name">HOST</td>
+            <td class="var-default">127.0.0.1</td>
+            <td>Dirección IP de escucha. <code>127.0.0.1</code> solo acepta conexiones del propio equipo; cambia a <code>0.0.0.0</code> para dar servicio a la red local de la oficina.</td>
+          </tr>
+          <tr>
+            <td class="var-name">NODE_ENV</td>
+            <td class="var-default">development</td>
+            <td>Define el entorno de ejecución (<code>production</code> o <code>development</code>). En producción se activan restricciones estrictas de seguridad.</td>
+          </tr>
+          <tr>
+            <td class="var-name">LOG_LEVEL</td>
+            <td class="var-default">info</td>
+            <td>Detalle del registro en consola (<code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>2 · Autenticación y ámbitos de claves</h2>
+    <p>SynapseAI utiliza un sistema de claves con <strong>ámbitos de privilegio estricto</strong> para que una clave comprometida no otorgue acceso al sistema completo:</p>
+
+    <div class="var-table-wrap">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>Formato del secreto</th>
+            <th>Ámbito concedido</th>
+            <th>Uso recomendado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">clave_secreta</td>
+            <td><strong>Ámbito completo (Operador)</strong></td>
+            <td>Acceso a todo: panel, configuración, vault de claves y auditoría. Solo para el responsable de sistemas.</td>
+          </tr>
+          <tr>
+            <td class="var-name">inference:clave_secreta</td>
+            <td><strong>Solo inferencia</strong></td>
+            <td>Permite únicamente enviar preguntas a la IA por <code>/v1/*</code>. No puede leer claves ni ver auditorías.</td>
+          </tr>
+          <tr>
+            <td class="var-name">report:clave_secreta</td>
+            <td><strong>Solo reporte de extensión</strong></td>
+            <td>Permite únicamente notificar incidencias desde la extensión por <code>/api/extension/event</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-note">
+      <p><strong>Regla de seguridad esencial:</strong> Entrega a la extensión del navegador de los empleados únicamente una clave con prefijo <code>report:</code>. Sin ámbitos, la clave guardada en el navegador del empleado podría usarse para descifrar las claves de los modelos o descargar el historial de auditoría del despacho.</p>
+    </div>
+
+    <div class="var-table-wrap">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Valor por defecto</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">SYNAPSE_API_KEYS</td>
+            <td class="var-default">(vacío)</td>
+            <td>Lista de claves de acceso separadas por comas. Permite rotar credenciales sin interrumpir el servicio.</td>
+          </tr>
+          <tr>
+            <td class="var-name">SYNAPSE_DISABLE_AUTH</td>
+            <td class="var-default">false</td>
+            <td>Desactiva la comprobación de claves. <strong>Solo permitido para pruebas en desarrollo</strong>; el servidor rechaza arrancar si se combina con <code>NODE_ENV=production</code>.</td>
+          </tr>
+          <tr>
+            <td class="var-name">SYNAPSE_CORS_ORIGINS</td>
+            <td class="var-default">localhost:3000</td>
+            <td>Lista de orígenes web autorizados para consultar la API desde navegadores. Nunca pongas comodines (<code>*</code>).</td>
+          </tr>
+          <tr>
+            <td class="var-name">SYNAPSE_TRUST_PROXY_HOPS</td>
+            <td class="var-default">0</td>
+            <td>Número de proxies inversos de confianza (Nginx, Caddy) situados delante. <code>0</code> ignora la cabecera <code>X-Forwarded-For</code> para evitar suplantaciones de IP.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>3 · Cifrado en reposo (Vault y Auditoría)</h2>
+    <div class="var-table-wrap">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Requisito</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">SYNAPSE_VAULT_KEY</td>
+            <td>Mínimo 32 caracteres</td>
+            <td>Clave maestra que cifra en reposo las credenciales de OpenAI, Anthropic y Google guardadas en el disco del servidor. Sin ella, el sistema cae a un modo local inseguro.</td>
+          </tr>
+          <tr>
+            <td class="var-name">SYNAPSE_AUDIT_HMAC_KEY</td>
+            <td>Cadena criptográfica</td>
+            <td>Clave secreta para firmar matemáticamente cada bloque del registro de actividad. Impide que nadie pueda retocar el registro de peticiones sin que se rompa la cadena.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>4 · Proveedores de IA</h2>
+    <p>Puedes configurar aquí las claves de acceso de los modelos o introducirlas cifradas a través del panel visual:</p>
+
+    <div class="var-table-wrap">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Valor por defecto</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">OPENAI_API_KEY</td>
+            <td class="var-default">(vacío)</td>
+            <td>Clave de API de OpenAI (ChatGPT, GPT-4o).</td>
+          </tr>
+          <tr>
+            <td class="var-name">OPENAI_BASE_URL</td>
+            <td class="var-default">api.openai.com/v1</td>
+            <td>Dirección del servicio de OpenAI.</td>
+          </tr>
+          <tr>
+            <td class="var-name">ANTHROPIC_API_KEY</td>
+            <td class="var-default">(vacío)</td>
+            <td>Clave de API de Anthropic (Claude 3.5 Sonnet).</td>
+          </tr>
+          <tr>
+            <td class="var-name">GOOGLE_API_KEY</td>
+            <td class="var-default">(vacío)</td>
+            <td>Clave de API de Google (Gemini 1.5 Pro/Flash).</td>
+          </tr>
+          <tr>
+            <td class="var-name">OLLAMA_BASE_URL</td>
+            <td class="var-default">127.0.0.1:11434</td>
+            <td>Dirección de Ollama si ejecutáis modelos de IA en local en vuestro propio hardware, sin conexión a internet.</td>
+          </tr>
+          <tr>
+            <td class="var-name">SYNAPSE_PROVIDER_TIMEOUT_MS</td>
+            <td class="var-default">120000</td>
+            <td>Tiempo máximo de espera (en milisegundos) antes de abortar una petición a un proveedor si no responde (2 minutos por defecto).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>5 · Reglas de borrado de datos (DLP)</h2>
+    <div class="var-table-wrap">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Valores</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">SYNAPSE_DLP_ON_DETECTION</td>
+            <td><code>redact</code> | <code>block</code></td>
+            <td>Acción cuando se detecta un dato confidencial. <code>redact</code> (por defecto) sustituye el dato por una etiqueta inocua y deja continuar la consulta; <code>block</code> rechaza la petición con código 400.</td>
+          </tr>
+          <tr>
+            <td class="var-name">SYNAPSE_DLP_STORE_PLAINTEXT</td>
+            <td><code>false</code> | <code>true</code></td>
+            <td>Guardar el texto sin redactar en el registro de auditoría. <strong>Fijado en false</strong>: almacenar los datos que intentas proteger multiplica el riesgo de fuga.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>6 · Control de gasto y presupuesto</h2>
+    <div class="var-table-wrap">
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Valor por defecto</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">SYNAPSE_BUDGET_DAILY_USD</td>
+            <td class="var-default">0 (sin límite)</td>
+            <td>Tope diario de gasto en dólares por cliente o clave. Antes de enviar cada petición, el programa reserva el coste del peor caso y frena el consumo si se supera el tope.</td>
+          </tr>
+          <tr>
+            <td class="var-name">SYNAPSE_BUDGET_MONTHLY_USD</td>
+            <td class="var-default">0 (sin límite)</td>
+            <td>Tope mensual de gasto por clave.</td>
+          </tr>
+          <tr>
+            <td class="var-name">SYNAPSE_BUDGET_DAILY_USD_GLOBAL</td>
+            <td class="var-default">0 (sin límite)</td>
+            <td>Tope diario acumulado de todas las claves combinadas en vuestra empresa.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Para tu equipo técnico</h2>
+    <div class="tecnico-box">
+      <span class="eyebrow">Generación de claves criptográficas seguras</span>
+      <p>Para generar contraseñas y claves de 32 bytes con entropía real en Linux o macOS:</p>
+      <pre><code>openssl rand -hex 32</code></pre>
+      <p style="margin-top:10px">En Windows con PowerShell:</p>
+      <pre><code>-join ((1..64) | ForEach-Object { '{0:x}' -f (Get-Random -Max 16) })</code></pre>
+    </div>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> Modificar los valores del archivo <code>.env</code> requiere reiniciar el proceso del programa para que la nueva configuración entre en vigor. Los cambios no se aplican en caliente por motivos de seguridad criptográfica.
+    </div>
+
+  </article>
+</div>
+
+<div id="site-foot"></div>
+
+<script type="module" src="/js/page.js"></script>
+</body>
+</html>
