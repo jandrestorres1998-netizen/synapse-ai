@@ -1477,40 +1477,6 @@ pre.code .hl { background: color-mix(in oklch, var(--probar) 12%, transparent); 
   #doc-index a { border-left: 0; padding: 5px 10px; background: var(--surface); border: 1px solid var(--line-quiet); border-radius: var(--radius-sm); }
 }
 
-/* ── El recorrido en movimiento ─────────────────────────────────────────────
-   El vídeo se sirve a ancho completo dentro de la banda de tinta y sin borde:
-   comparte fondo con la sección, así que no hay juntura entre los dos. */
-
-.recorrido-video { margin: 0; }
-.recorrido-video video {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius-lg);
-  background: var(--ink-surface);
-}
-.recorrido-video figcaption {
-  margin-top: 18px;
-  font-size: 15.5px;
-  line-height: 1.55;
-  color: var(--on-ink-muted);
-  text-align: center;
-}
-
-/* Quien pide menos movimiento recibe el fotograma, no el bucle. El póster es
-   una imagen real del vídeo, así que no se pierde nada. */
-@media (prefers-reduced-motion: reduce) {
-  .recorrido-video video { display: none; }
-  .recorrido-video::before {
-    content: "";
-    display: block;
-    width: 100%;
-    aspect-ratio: 1920 / 520;
-    border-radius: var(--radius-lg);
-    background: var(--ink-surface) url("/media/recorrido-poster.jpg") center / cover no-repeat;
-  }
-}
-
 /* ── Enlace al vídeo entero y su diálogo ────────────────────────────────── */
 
 .ver-entero {
@@ -1572,4 +1538,236 @@ pre.code .hl { background: color-mix(in oklch, var(--probar) 12%, transparent); 
 
 @media (max-width: 620px) {
   .ver-entero { margin-left: 0; margin-top: 12px; }
+}
+
+/* ── Diagrama de arquitectura y alineación estricta de pasos ───────────── */
+.arqui-grid {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.85fr) minmax(420px, 1.35fr) minmax(210px, 0.85fr);
+  gap: 18px;
+  margin-top: 40px;
+  align-items: stretch;
+}
+@media (max-width: 980px) {
+  .arqui-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.arqui-card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  border: 1px solid var(--ink-surface-line);
+  border-radius: var(--radius);
+  background: transparent;
+}
+.arqui-card-center {
+  background: var(--ink-surface-raised);
+  border-color: color-mix(in oklab, var(--probar) 35%, var(--ink-surface-line));
+  box-shadow: 0 4px 20px oklch(0 0 0 / 0.15);
+}
+
+.arqui-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.arqui-card-eyebrow {
+  margin: 0 0 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-ink-muted);
+}
+.arqui-pill {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--on-ink-muted);
+}
+
+.arqui-card-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.arqui-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: var(--ink-surface-raised);
+  font-size: 14px;
+  color: var(--on-ink);
+}
+.arqui-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.arqui-item-tag {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--on-ink-muted);
+}
+.arqui-item-tag.muted {
+  color: var(--on-ink-faint);
+}
+
+.arqui-pasos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.arqui-paso-fila {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  background: oklch(0.28 0.040 275);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.arqui-paso-fila:hover {
+  background: oklch(0.31 0.045 272);
+}
+.arqui-paso-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: oklch(0.72 0.030 280);
+  font-weight: 500;
+  text-align: left;
+}
+.arqui-paso-titulo {
+  font-size: 14px;
+  color: oklch(0.96 0.010 280);
+  white-space: nowrap;
+  font-weight: 500;
+}
+.arqui-paso-nota {
+  font-size: 12px;
+  color: oklch(0.78 0.020 280);
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (max-width: 1180px) and (min-width: 981px) {
+  .arqui-paso-fila {
+    grid-template-columns: 26px 1fr;
+    row-gap: 2px;
+    padding: 9px 12px;
+  }
+  .arqui-paso-titulo {
+    font-size: 13.5px;
+    white-space: normal;
+  }
+  .arqui-paso-nota {
+    grid-column: 2;
+    text-align: left;
+    font-size: 11.5px;
+    color: oklch(0.72 0.020 280);
+  }
+}
+
+@media (max-width: 520px) {
+  .arqui-paso-fila {
+    grid-template-columns: 26px 1fr;
+    row-gap: 2px;
+    padding: 10px 12px;
+  }
+  .arqui-paso-titulo {
+    font-size: 13.5px;
+    white-space: normal;
+  }
+  .arqui-paso-nota {
+    grid-column: 2;
+    text-align: left;
+    font-size: 11.5px;
+    color: oklch(0.72 0.020 280);
+  }
+}
+
+
+/* ── La sección que es un vídeo ────────────────────────────────────────────
+   El vídeo va a ancho completo y su proporción marca el alto de la banda: no
+   se recorta y no deja franjas. El titular cae sobre la mitad superior, que se
+   dejó vacía al renderizarlo, así que no pisa el dibujo.
+   =========================================================================== */
+
+.seccion-fondo { padding: 0; }
+
+.fondo-video { position: relative; width: 100%; background: var(--ink-surface); }
+.fondo-video video {
+  display: block;
+  width: 100%;
+  height: auto;          /* la proporción manda: nada se recorta */
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: var(--ink-surface);
+}
+
+.fondo-texto {
+  position: absolute;
+  inset: 0 0 auto 0;
+  /* Hasta el 48 %: justo la zona que el vídeo deja libre. */
+  height: 48%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.fondo-texto .wrap { pointer-events: auto; }
+
+.fondo-texto .paso-num {
+  display: block;
+  margin-bottom: 18px;
+  font-family: var(--font-mono);
+  font-size: clamp(13px, 1vw, 17px);
+  letter-spacing: 0.1em;
+  color: var(--on-ink-faint);
+}
+.fondo-texto h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(28px, 4.2vw, 76px);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: var(--on-ink-strong);
+  max-width: 17ch;
+}
+
+.fondo-texto .ver-entero { margin: clamp(20px, 2.4vw, 40px) 0 0; }
+
+.garantias-banda { padding: 56px 28px 76px; }
+
+/* Por debajo de este ancho el texto encima del vídeo sería ilegible: se apila.
+   El vídeo sigue entero, solo deja de ser fondo. */
+@media (max-width: 900px) {
+  .fondo-texto {
+    position: static;
+    height: auto;
+    padding: 56px 0 32px;
+    background: var(--ink-surface);
+  }
+  .fondo-texto h2 { font-size: clamp(28px, 7vw, 42px); max-width: 22ch; }
+  .garantias-banda { padding-top: 40px; }
+}
+
+/* Quien pide menos movimiento recibe el fotograma. El póster es una imagen real
+   del propio vídeo, así que no se pierde nada de lo que cuenta. */
+@media (prefers-reduced-motion: reduce) {
+  .fondo-video video { display: none; }
+  .fondo-video::before {
+    content: "";
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--ink-surface) url("/media/recorrido-poster.jpg") center / contain no-repeat;
+  }
 }

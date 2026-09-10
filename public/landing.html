@@ -117,42 +117,38 @@
 </section>
 
 <!-- SECCIÓN 01: Todo pasa por el mismo sitio (FONDO OSCURO DE TINTA) ──────────── -->
-<section id="arquitectura" style="background:oklch(0.21 0.035 280);color:oklch(0.94 0.012 280)">
-  <div style="max-width:1180px;margin:0 auto;padding:80px 28px">
-    <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:40px">
-      <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.80 0.14 255);font-weight:600">01</span>
-      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-0.03em;color:oklch(0.97 0.010 280)">Todo pasa por el mismo sitio</h2>
-      <p style="margin:0;max-width:44ch;font-size:15.5px;line-height:1.6;color:oklch(0.75 0.020 280)">Nada llega a la IA sin cruzar estos seis pasos. Y lo que no pasa por aquí no queda anotado: ese es el trato, y conviene entenderlo antes de firmar nada.</p>
-    </div>
+<section id="arquitectura" class="seccion-fondo">
+    <div class="fondo-video">
+      <!-- El vídeo ES la sección. Va a ancho completo y su proporción marca el
+           alto de la banda, así que llena el espacio sin recortarse. La mitad
+           de arriba se dejó vacía al renderizarlo: es donde cae el titular. -->
+      <video
+        src="/media/recorrido.mp4"
+        poster="/media/recorrido-poster.jpg"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="metadata"
+        disablepictureinpicture
+        aria-label="Una petición cruza los seis pasos. Al llegar al tercero, el DNI, la cuenta y la tarjeta se sustituyen por [borrado] antes de salir hacia la IA."
+      ></video>
 
-    <!-- El recorrido, en movimiento. Sustituye al diagrama estático: es el
-           mismo contenido, pero se ve cruzar la petición y borrarse los datos
-           al pasar por el paso 03. Silencioso y en bucle. El póster es un
-           fotograma real, así que sin vídeo la sección sigue contando lo mismo. -->
-      <figure class="recorrido-video">
-        <video
-          src="/media/recorrido.mp4"
-          poster="/media/recorrido-poster.jpg"
-          autoplay
-          loop
-          muted
-          playsinline
-          preload="metadata"
-          disablepictureinpicture
-          aria-label="Una petición cruza los seis pasos. Al llegar al tercero, el DNI, la cuenta y la tarjeta se sustituyen por [borrado] antes de salir hacia la IA."
-        ></video>
-        <figcaption>
-          Una petición de verdad, de vuestros programas a la IA. En el paso 03 los datos se sustituyen, y ya no vuelven.
+      <div class="fondo-texto">
+        <div class="wrap">
+          <span class="paso-num">01</span>
+          <h2>Todo pasa por el mismo sitio</h2>
           <button type="button" class="ver-entero" id="btn-ver-entero">
             Verlo entero
             <span class="dur">90 s</span>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
           </button>
-        </figcaption>
-      </figure>
+        </div>
+      </div>
+    </div>
 
-    <!-- Garantías inferiores con alto contraste -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0 40px;margin-top:44px">
+    <div class="wrap garantias-banda">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0 40px;margin-top:44px">
       <div style="padding:20px 0 0;border-top:1px solid oklch(0.32 0.030 280)">
         <p style="margin:0 0 6px;font-family:Montserrat,sans-serif;font-weight:600;font-size:16px;color:oklch(0.97 0.010 280)">Sin salto silencioso</p>
         <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.75 0.020 280)">Si esto se cae, vuestros programas reciben un error y se enteran. Nunca una respuesta que nadie haya revisado.</p>
@@ -166,11 +162,10 @@
         <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.75 0.020 280)">Se deshace el cambio y todo vuelve a estar como estaba. No retenemos ningún dato vuestro, porque nunca sale de vuestra red.</p>
       </div>
     </div>
-  </div>
-</section>
+    </div>
+  </section>
 
-<!-- SECCIÓN 02: Hace tres cosas. Y le decimos hasta dónde llega cada una. ────────────────────── -->
-<section id="capas" style="max-width:1180px;margin:0 auto;padding:80px 28px 56px">
+  <section id="capas" style="max-width:1180px;margin:0 auto;padding:80px 28px 56px">
   <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:32px">
     <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">02</span>
     <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Hace tres cosas. Y le decimos hasta dónde llega cada una.</h2>

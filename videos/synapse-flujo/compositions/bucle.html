@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=520" />
+    <meta name="viewport" content="width=1920, height=1080" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,31 +12,37 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       /* =====================================================================
-         Bucle de 14 s para la sección «Todo pasa por el mismo sitio».
+         El recorrido, en bucle, para el fondo de la sección.
 
-         Está construido para repetirse sin costura: en el primer y en el
-         último fotograma el token está fuera de cuadro y todo lo demás está
-         en su estado de reposo, así que el salto no se ve. Sin texto que se
-         construya: quien llegue a mitad entiende lo mismo que quien llegue al
-         principio, que es la única forma de que un bucle informe en vez de
-         confundir.
+         Tres reglas que lo gobiernan:
 
-         Fondo en tinta, el mismo de la sección donde va incrustado, para que
-         no haya juntura entre el vídeo y la página.
+         1. La petición SALE de «vuestros programas» y ENTRA en «la IA». No
+            pasa por encima de ninguna de las dos: viaja por un corredor con
+            recorte, y las cajas van por delante.
+         2. Cada paso tiene su color, y es el mismo que ese asunto tiene en el
+            panel. El color no decora: identifica.
+         3. La mitad de arriba se deja vacía. Es donde la página pone el
+            titular, así que el texto no pelea con el dibujo.
+
+         Y se repite sin costura: en el primer y el último fotograma el token
+         está escondido y todo lo demás en reposo.
          ===================================================================== */
       :root {
         --ink-surface: oklch(0.21 0.035 280);
-        --ink-raised: oklch(0.26 0.035 280);
+        --ink-raised: oklch(0.255 0.035 280);
         --ink-line: oklch(0.32 0.030 280);
         --on-ink: oklch(0.94 0.012 280);
         --on-ink-strong: oklch(0.97 0.010 280);
-        --on-ink-muted: oklch(0.75 0.020 280);
-        --on-ink-faint: oklch(0.62 0.022 280);
+        --on-ink-muted: oklch(0.74 0.020 280);
+        --on-ink-faint: oklch(0.60 0.022 280);
 
-        --probar: oklch(0.70 0.16 255);
-        --warning: oklch(0.78 0.16 62);
-        --ok: oklch(0.72 0.14 150);
-        --contexto: oklch(0.72 0.16 305);
+        /* Un color por intención, el mismo que ese asunto tiene en el panel. */
+        --c1: oklch(0.70 0.16 255); /* quién pregunta   · azul    */
+        --c2: oklch(0.70 0.18 22);  /* intentos         · rojo    */
+        --c3: oklch(0.78 0.16 62);  /* datos            · ámbar   */
+        --c4: oklch(0.72 0.16 305); /* instrucciones    · violeta */
+        --c5: oklch(0.72 0.13 200); /* ya preguntado    · cian    */
+        --c6: oklch(0.72 0.14 150); /* se anota         · verde   */
 
         --display: "Montserrat", sans-serif;
         --ui: "Poppins", sans-serif;
@@ -44,119 +50,132 @@
       }
 
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { width: 1920px; height: 520px; overflow: hidden; background: var(--ink-surface); }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ink-surface); }
       body { font-family: var(--ui); color: var(--on-ink); }
 
       .clip {
         position: absolute;
         inset: 0;
         width: 1920px;
-        height: 520px;
+        height: 1080px;
         background: var(--ink-surface);
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        padding: 0 90px;
+        justify-content: flex-end;
+        padding: 0 110px 140px;
       }
 
-      .rotulo {
-        font-family: var(--ui);
-        font-weight: 600;
-        font-size: 20px;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--on-ink-faint);
-        margin-bottom: 22px;
-      }
+      .pista { position: relative; height: 400px; }
 
-      /* La vía por la que cruza el token, con las seis puertas encima. */
-      .pista { position: relative; height: 250px; }
       .via {
         position: absolute;
-        top: 200px;
+        top: 300px;
         left: 0;
         right: 0;
         height: 2px;
         background: var(--ink-line);
       }
+      /* Un pulso de color corre por la vía tomando el color del paso en curso. */
+      .pulso {
+        position: absolute;
+        top: 299px;
+        left: 0;
+        width: 260px;
+        height: 4px;
+        border-radius: 3px;
+        opacity: 0;
+      }
 
+      /* ── Los seis pasos, con hueco real entre ellos ─────────────────────── */
       .puertas {
         position: absolute;
-        top: 22px;
-        left: 268px;
-        right: 268px;
-        display: flex;
-        justify-content: space-between;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 26px;
       }
       .puerta {
-        width: 208px;
-        padding: 26px 20px;
+        position: relative;
+        padding: 26px 20px 24px;
+        border: 1px solid var(--ink-line);
+        border-radius: 18px;
+        background: var(--ink-raised);
+        text-align: center;
+        overflow: hidden;
+      }
+      /* Barra de acento: se rellena de izquierda a derecha al activarse. */
+      .puerta .acento {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        transform: scaleX(0);
+        transform-origin: left center;
+      }
+      .puerta .n { font-family: var(--mono); font-size: 21px; letter-spacing: 0.06em; display: inline-block; }
+      .puerta .que { display: block; margin-top: 12px; font-size: 24px; line-height: 1.32; color: var(--on-ink); }
+      .puerta .brillo { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+
+      /* ── Extremos: van por delante del corredor ─────────────────────────── */
+      .extremo {
+        position: absolute;
+        top: 244px;
+        z-index: 2;
+        width: 254px;
+        padding: 24px 20px;
         border: 1px solid var(--ink-line);
         border-radius: 16px;
         background: var(--ink-raised);
-        text-align: center;
-      }
-      .puerta .n { font-family: var(--mono); font-size: 22px; color: var(--on-ink-faint); }
-      .puerta .que { display: block; margin-top: 12px; font-size: 24px; line-height: 1.35; color: var(--on-ink); }
-      .puerta .halo {
-        position: absolute;
-        inset: -3px;
-        border-radius: 19px;
-        border: 2px solid var(--probar);
-        opacity: 0;
-        pointer-events: none;
-      }
-      .puerta { position: relative; }
-
-      /* Extremos: de dónde viene y a dónde va. */
-      .extremo {
-        position: absolute;
-        top: 152px;
-        width: 232px;
-        padding: 24px 20px;
-        border: 1px solid var(--ink-line);
-        border-radius: 14px;
-        background: var(--ink-raised);
         font-size: 25px;
+        line-height: 1.3;
         color: var(--on-ink-muted);
         text-align: center;
       }
       .extremo.izq { left: 0; }
       .extremo.der { right: 0; }
+      .extremo .halo {
+        position: absolute;
+        inset: -4px;
+        border-radius: 20px;
+        border: 2px solid var(--on-ink-faint);
+        opacity: 0;
+      }
+
+      /* ── El corredor: fuera de él, la petición no se ve ─────────────────── */
+      .corredor {
+        position: absolute;
+        top: 242px;
+        left: 0;
+        right: 0;
+        height: 130px;
+        overflow: hidden;
+        z-index: 1;
+      }
 
       .token {
         position: absolute;
-        top: 170px;
+        top: 22px;
         left: 0;
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 18px 24px;
-        border-radius: 12px;
-        background: oklch(0.30 0.040 278);
+        gap: 14px;
+        padding: 18px 26px;
+        border-radius: 14px;
+        background: oklch(0.31 0.042 278);
         border: 1px solid var(--ink-line);
         font-family: var(--mono);
         font-size: 25px;
         color: var(--on-ink);
         white-space: nowrap;
+        overflow: hidden;
       }
-      .dato {
-        padding: 3px 10px;
-        border-radius: 7px;
-        background: oklch(0.38 0.09 62);
-        color: oklch(0.94 0.08 80);
-      }
-      .dato.borrado { background: oklch(0.32 0.07 150); color: oklch(0.90 0.10 150); }
+      .dato { padding: 4px 12px; border-radius: 8px; background: oklch(0.40 0.10 62); color: oklch(0.95 0.09 82); }
 
-      .titular {
-        font-family: var(--display);
-        font-weight: 700;
-        font-size: 62px;
-        letter-spacing: -0.03em;
-        color: var(--on-ink-strong);
-        margin-bottom: 14px;
-      }
-      .apoyo { font-size: 30px; color: var(--on-ink-muted); max-width: 62ch; }
+      /* El barrido que recorre la petición en el paso 03. */
+      .barrido { position: absolute; top: 0; bottom: 0; width: 130px; opacity: 0; pointer-events: none; }
     </style>
   </head>
   <body>
@@ -166,30 +185,69 @@
       data-start="0"
       data-duration="14"
       data-width="1920"
-      data-height="520"
+      data-height="1080"
     >
       <div class="clip" id="escena" data-start="0" data-duration="14" data-track-index="0">
         <div class="pista">
           <div class="via"></div>
-
-          <div class="extremo izq">Vuestros<br />programas</div>
+          <div class="pulso" id="pulso"></div>
 
           <div class="puertas">
-            <div class="puerta" id="p1"><span class="halo"></span><span class="n">01</span><span class="que">Quién<br />pregunta</span></div>
-            <div class="puerta" id="p2"><span class="halo"></span><span class="n">02</span><span class="que">Intentos<br />de engaño</span></div>
-            <div class="puerta" id="p3"><span class="halo"></span><span class="n">03</span><span class="que">Datos de<br />personas</span></div>
-            <div class="puerta" id="p4"><span class="halo"></span><span class="n">04</span><span class="que">Vuestras<br />instrucciones</span></div>
-            <div class="puerta" id="p5"><span class="halo"></span><span class="n">05</span><span class="que">¿Ya se<br />preguntó?</span></div>
-            <div class="puerta" id="p6"><span class="halo"></span><span class="n">06</span><span class="que">Se anota<br />lo que salió</span></div>
+            <div class="puerta" id="p1">
+              <span class="acento" style="background: var(--c1)"></span>
+              <span class="brillo" style="background: var(--c1)"></span>
+              <span class="n" style="color: var(--c1)">01</span>
+              <span class="que">Quién<br />pregunta</span>
+            </div>
+            <div class="puerta" id="p2">
+              <span class="acento" style="background: var(--c2)"></span>
+              <span class="brillo" style="background: var(--c2)"></span>
+              <span class="n" style="color: var(--c2)">02</span>
+              <span class="que">Intentos<br />de engaño</span>
+            </div>
+            <div class="puerta" id="p3">
+              <span class="acento" style="background: var(--c3)"></span>
+              <span class="brillo" style="background: var(--c3)"></span>
+              <span class="n" style="color: var(--c3)">03</span>
+              <span class="que">Datos de<br />personas</span>
+            </div>
+            <div class="puerta" id="p4">
+              <span class="acento" style="background: var(--c4)"></span>
+              <span class="brillo" style="background: var(--c4)"></span>
+              <span class="n" style="color: var(--c4)">04</span>
+              <span class="que">Vuestras<br />instrucciones</span>
+            </div>
+            <div class="puerta" id="p5">
+              <span class="acento" style="background: var(--c5)"></span>
+              <span class="brillo" style="background: var(--c5)"></span>
+              <span class="n" style="color: var(--c5)">05</span>
+              <span class="que">¿Ya se<br />preguntó?</span>
+            </div>
+            <div class="puerta" id="p6">
+              <span class="acento" style="background: var(--c6)"></span>
+              <span class="brillo" style="background: var(--c6)"></span>
+              <span class="n" style="color: var(--c6)">06</span>
+              <span class="que">Se anota<br />lo que salió</span>
+            </div>
           </div>
 
-          <div class="extremo der">La IA</div>
+          <div class="extremo izq" id="origen">
+            <span class="halo"></span>
+            Vuestros<br />programas
+          </div>
+          <div class="extremo der" id="destino">
+            <span class="halo"></span>
+            La IA
+          </div>
 
-          <div class="token" id="token">
-            Factura del cliente
-            <span class="dato" id="d1">DNI 12345678Z</span>
-            <span class="dato" id="d2">ES91 ···· 1332</span>
-            <span class="dato" id="d3">4111 ···· 1111</span>
+          <div class="corredor">
+            <div class="token" id="token">
+              <span class="barrido" id="barrido"></span>
+              Factura del cliente
+              <span class="dato" id="d1">DNI 12345678Z</span>
+              <span class="dato" id="d2">ES91 ···· 1332</span>
+              <span class="dato" id="d3">4111 ···· 1111</span>
+            </div>
           </div>
         </div>
       </div>
@@ -199,46 +257,109 @@
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
 
-      // Fuera de cuadro por la izquierda al empezar y por la derecha al acabar:
-      // el fotograma 0 y el último son iguales, así que el salto no se nota.
-      const ENTRA = -880;
-      const SALE = 2120;
+      const COLORES = [
+        "oklch(0.70 0.16 255)", "oklch(0.70 0.18 22)", "oklch(0.78 0.16 62)",
+        "oklch(0.72 0.16 305)", "oklch(0.72 0.13 200)", "oklch(0.72 0.14 150)"
+      ];
+      const AMBAR = COLORES[2];
+      const LINEA = "oklch(0.32 0.030 280)";
+      const ORIGINALES = ["DNI 12345678Z", "ES91 ···· 1332", "4111 ···· 1111"];
 
+      const token = document.getElementById("token");
+      const corredor = document.querySelector(".corredor");
+      const CAJA = 254;
+
+      // Sale de detrás de la caja de origen y se esconde detrás de la de
+      // destino: nunca pasa por encima de ninguna de las dos.
+      const ENTRA = CAJA - token.offsetWidth;
+      const SALE = corredor.offsetWidth - CAJA;
+
+      const restaurarDatos = () => {
+        ["#d1", "#d2", "#d3"].forEach((sel, i) => {
+          const el = document.querySelector(sel);
+          el.textContent = ORIGINALES[i];
+          el.style.background = "oklch(0.40 0.10 62)";
+          el.style.color = "oklch(0.95 0.09 82)";
+        });
+      };
+
+      // Reposo. El primer y el último fotograma comparten este estado, así que
+      // el bucle no da un salto visible.
       tl.set("#token", { x: ENTRA })
-        .set(["#d1", "#d2", "#d3"], { className: "dato" })
-        .set(".halo", { opacity: 0 });
+        .set(".acento", { scaleX: 0, transformOrigin: "left center" })
+        .set(".brillo", { opacity: 0 })
+        .set(".puerta", { y: 0, borderColor: LINEA })
+        .set(".puerta .n", { scale: 1 })
+        .set(".halo", { opacity: 0, scale: 1 })
+        .set(".extremo", { scale: 1 })
+        .set("#pulso", { opacity: 0, x: 0 })
+        .set("#barrido", { opacity: 0, x: -140 })
+        .call(restaurarDatos, null, 0.02);
 
-      // Un solo recorrido continuo. La velocidad es constante: el token no
-      // acelera ni frena, porque lo que se cuenta es que nada se salta un paso.
-      tl.to("#token", { x: SALE, duration: 12.6, ease: "none" }, 0.7);
+      // ── La salida: la caja de origen empuja la petición ──────────────────
+      tl.to("#origen .halo", { opacity: 0.85, duration: 0.28, ease: "power2.out" }, 0.3)
+        .to("#origen", { scale: 1.035, duration: 0.22, ease: "power2.out" }, 0.3)
+        .to("#origen", { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.55)" }, 0.55)
+        .to("#origen .halo", { opacity: 0, duration: 0.5, ease: "power2.in" }, 0.7);
 
-      // Cada puerta se enciende cuando el token la cruza y se apaga detrás.
-      const puertas = ["#p1", "#p2", "#p3", "#p4", "#p5", "#p6"];
-      puertas.forEach((p, i) => {
-        const cuando = 2.0 + i * 1.62;
-        tl.to(`${p} .halo`, { opacity: 1, duration: 0.22, ease: "power2.out" }, cuando)
-          .to(`${p} .halo`, { opacity: 0, duration: 0.5, ease: "power2.in" }, cuando + 0.62);
+      // ── El viaje: velocidad constante. Nada se salta un paso ─────────────
+      const SALIDA_T = 0.55;
+      const VIAJE = 11.2;
+      tl.to("#token", { x: SALE, duration: VIAJE, ease: "none" }, SALIDA_T);
+
+      tl.to("#pulso", { opacity: 0.6, duration: 0.3 }, SALIDA_T)
+        .to("#pulso", { x: corredor.offsetWidth, duration: VIAJE - 0.4, ease: "none" }, SALIDA_T)
+        .to("#pulso", { opacity: 0, duration: 0.4 }, SALIDA_T + VIAJE - 0.75);
+
+      // ── Cada paso se enciende cuando le toca, y se apaga detrás ──────────
+      const P1 = 1.55;
+      const PASO = 1.62;
+
+      for (let i = 0; i < 6; i++) {
+        const p = `#p${i + 1}`;
+        const t = P1 + i * PASO;
+        const color = COLORES[i];
+
+        tl.set("#pulso", { backgroundColor: color, boxShadow: `0 0 26px ${color}` }, Math.max(0.1, t - 0.3));
+
+        tl.to(`${p} .acento`, { scaleX: 1, duration: 0.42, ease: "power3.out" }, t)
+          .to(`${p} .brillo`, { opacity: 0.13, duration: 0.25, ease: "power2.out" }, t)
+          .to(p, { y: -12, borderColor: color, duration: 0.28, ease: "power3.out" }, t)
+          .to(`${p} .n`, { scale: 1.2, duration: 0.28, ease: "back.out(2.4)" }, t)
+          .to(`${p} .n`, { scale: 1, duration: 0.35, ease: "power2.inOut" }, t + 0.6)
+          .to(p, { y: 0, borderColor: LINEA, duration: 0.5, ease: "power2.inOut" }, t + 0.66)
+          .to(`${p} .brillo`, { opacity: 0, duration: 0.5, ease: "power2.in" }, t + 0.66)
+          .set(`${p} .acento`, { transformOrigin: "right center" }, t + 0.78)
+          .to(`${p} .acento`, { scaleX: 0, duration: 0.4, ease: "power2.in" }, t + 0.8)
+          .set(`${p} .acento`, { transformOrigin: "left center" }, t + 1.25);
+      }
+
+      // ── El paso 03: barrido sobre la petición y sustitución en cascada ───
+      const T3 = P1 + 2 * PASO;
+
+      tl.set("#barrido", { background: `linear-gradient(90deg, transparent, ${AMBAR}, transparent)` }, T3 - 0.12)
+        .to("#barrido", { opacity: 0.5, duration: 0.14 }, T3)
+        .to("#barrido", { x: token.offsetWidth + 140, duration: 0.74, ease: "power1.inOut" }, T3)
+        .to("#barrido", { opacity: 0, duration: 0.2 }, T3 + 0.64);
+
+      ["#d1", "#d2", "#d3"].forEach((sel, i) => {
+        const t = T3 + 0.22 + i * 0.17;
+        tl.to(sel, { scaleY: 0.55, opacity: 0.35, duration: 0.13, ease: "power2.in" }, t)
+          .call(() => {
+            const el = document.querySelector(sel);
+            el.textContent = "[borrado]";
+            el.style.background = "oklch(0.33 0.075 150)";
+            el.style.color = "oklch(0.90 0.11 150)";
+          }, null, t + 0.13)
+          .to(sel, { scaleY: 1, opacity: 1, duration: 0.3, ease: "back.out(2.6)" }, t + 0.13);
       });
 
-      // En la puerta 03 los tres datos se sustituyen a la vista. Es el momento
-      // que justifica todo lo demás, así que ocurre despacio y en cascada.
-      const enTercera = 2.0 + 2 * 1.62;
-      [["#d1", "[borrado]"], ["#d2", "[borrado]"], ["#d3", "[borrado]"]].forEach(([sel, texto], i) => {
-        tl.to(sel, {
-          duration: 0.18,
-          ease: "power2.in",
-          onComplete: () => {
-            const el = document.querySelector(sel);
-            el.textContent = texto;
-            el.classList.add("borrado");
-          },
-          onReverseComplete: () => {
-            const el = document.querySelector(sel);
-            el.textContent = ["DNI 12345678Z", "ES91 ···· 1332", "4111 ···· 1111"][i];
-            el.classList.remove("borrado");
-          }
-        }, enTercera + 0.1 + i * 0.16);
-      });
+      // ── La llegada: la caja de destino acusa el impacto ──────────────────
+      const LLEGADA = SALIDA_T + VIAJE - 0.5;
+      tl.to("#destino .halo", { opacity: 0.85, scale: 1.04, duration: 0.26, ease: "power2.out" }, LLEGADA)
+        .to("#destino", { scale: 1.035, duration: 0.2, ease: "power2.out" }, LLEGADA)
+        .to("#destino", { scale: 1, duration: 0.55, ease: "elastic.out(1, 0.55)" }, LLEGADA + 0.2)
+        .to("#destino .halo", { opacity: 0, scale: 1, duration: 0.6, ease: "power2.in" }, LLEGADA + 0.35);
 
       window.__timelines["bucle"] = tl;
     </script>
