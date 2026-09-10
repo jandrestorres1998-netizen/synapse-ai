@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 import { ENV, validateEnv } from './config/env.js';
@@ -12,6 +13,7 @@ import { createAuthMiddleware } from './middlewares/auth.js';
 import { createRateLimiter, resolveClientIp } from './middlewares/rate-limiter.js';
 import { validateOpenAIInput } from './middlewares/validators.js';
 import { handleOpenAIChatCompletions } from './controllers/gateway.controller.js';
+import { listDownloads } from './controllers/downloads.controller.js';
 import { handleStripeWebhook } from './controllers/license.controller.js';
 import { getHealth } from './controllers/stats.controller.js';
 import { providers, integrity, budget } from './config/container.js';
@@ -80,6 +82,25 @@ app.use(cors((req, callback) => {
 // ── Public routes (no authentication) ────────────────────────────────────────
 app.get('/healthz', getHealth);
 
+// La pagina de descargas es publica: pedir una clave para bajarse el paquete
+// que sirve para empezar a usar el producto no tendria ningun sentido.
+app.get('/api/public/downloads', listDownloads);
+
+// Un producto de seguridad sin una via declarada para avisar de un fallo no es
+// creible. RFC 9116.
+app.get('/.well-known/security.txt', (req, res) => {
+  res.type('text/plain').send([
+    '# Si encuentras un fallo de seguridad, escribe antes de publicarlo.',
+    'Contact: mailto:seguridad@synapse.example',
+    'Preferred-Languages: es, en',
+    'Canonical: ' + req.protocol + '://' + req.get('host') + '/.well-known/security.txt',
+    'Policy: ' + req.protocol + '://' + req.get('host') + '/legal/vulnerabilidades',
+    '',
+    '# Respondemos en 5 dias laborables. No emprendemos acciones legales contra',
+    '# quien investigue de buena fe y no acceda a datos de terceros.'
+  ].join('\n'));
+});
+
 // Stripe verifies a signature over the exact bytes, so the raw body is kept.
 app.post('/api/webhooks/stripe',
   express.raw({ type: 'application/json', limit: '1mb' }),
@@ -102,7 +123,32 @@ app.use('/api', authenticate, apiRoutes);
 const publicDir = path.join(__dirname, '../public');
 
 app.get('/app', (req, res) => res.sendFile(path.join(publicDir, 'index.html')));
+
+// Los paquetes se sirven desde el propio dominio, nunca desde un tercero.
+// Sin redireccion ni indice: /descargas es la pagina, y /descargas/<fichero>
+// es el artefacto. Con el redirect por defecto, la estatica se quedaba con la
+// ruta y la pagina no llegaba a servirse nunca.
+app.use('/descargas', express.static(path.join(__dirname, '../dist'), { redirect: false, index: false }));
+
+// Paginas sin extension: /legal/privacidad sirve public/legal/privacidad.html.
+app.use((req, res, next) => {
+  if (req.method !== 'GET' || req.path.includes('.')) return next();
+  const candidato = path.join(publicDir, `${req.path.replace(/^\/+/, '')}.html`);
+  if (candidato.startsWith(publicDir) && fs.existsSync(candidato)) return res.sendFile(candidato);
+  next();
+});
 app.use(express.static(publicDir, { index: 'landing.html' }));
+
+// Una ruta de navegador que no existe recibe la página; una de API, el JSON de
+// siempre. Devolver HTML a un cliente que espera JSON rompe su parseo.
+app.use((req, res, next) => {
+  const quiereHtml = req.method === 'GET' && (req.headers.accept || '').includes('text/html');
+  if (!quiereHtml) return next();
+
+  const pagina = path.join(publicDir, '404.html');
+  if (fs.existsSync(pagina)) return res.status(404).sendFile(pagina);
+  next();
+});
 
 app.use(notFoundHandler);
 app.use(errorHandler);

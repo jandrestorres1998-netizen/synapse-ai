@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SynapseAI — que la IA no se lleve los datos de tus clientes</title>
-  <meta name="description" content="Gateway auto-alojado para tráfico de LLM. Se coloca entre tus aplicaciones y los proveedores de modelos. Habla el protocolo de OpenAI: integrarlo es cambiar el baseURL.">
+  <meta name="description" content="Para equipos que ya usan IA a diario. Se instala en tu propia red y revisa todo lo que tu equipo envía a ChatGPT, Claude o Gemini. Si aparece un DNI, un IBAN o una tarjeta, los borra antes de que salgan. Cambiar de baseURL.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -48,10 +48,10 @@
       <div style="max-width:720px">
         <p style="margin:0 0 20px;display:inline-flex;align-items:center;gap:9px;padding:5px 12px 5px 8px;border-radius:999px;border:1px solid oklch(0.905 0.022 280);background:#fff;font-size:12.5px;color:oklch(0.51 0.028 280)">
           <span style="padding:2px 7px;border-radius:999px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:11px;font-weight:600;letter-spacing:0.04em">MIT</span>
-          Gateway auto-alojado para tráfico de LLM
+          Para equipos que ya usan IA a diario
         </p>
-        <h1 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(40px,6.4vw,76px);line-height:1.02;letter-spacing:-0.035em;color:oklch(0.18 0.05 280)">Tus aplicaciones dejan de custodiar claves de proveedor.</h1>
-        <p style="margin:26px 0 0;max-width:56ch;font-size:19px;line-height:1.6;color:oklch(0.51 0.028 280)">Se coloca entre tus aplicaciones y los proveedores de modelos. Habla el protocolo de OpenAI: integrarlo es cambiar el <code style="font-family:'DM Mono',ui-monospace,monospace;font-size:16px;padding:2px 6px;border-radius:6px;background:oklch(0.21 0.035 280);color:oklch(0.90 0.030 255)">baseURL</code>. Desde ese punto queda registrado qué salió hacia un modelo.</p>
+        <h1 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(40px,6.4vw,76px);line-height:1.02;letter-spacing:-0.035em;color:oklch(0.18 0.05 280)">Tu equipo usa IA. Que no se lleve los datos de tus clientes.</h1>
+        <p style="margin:26px 0 0;max-width:56ch;font-size:19px;line-height:1.6;color:oklch(0.51 0.028 280)">Se instala en tu propia red y revisa todo lo que tu equipo envía a ChatGPT, Claude o Gemini. Si aparece un DNI, un IBAN o una tarjeta, los borra antes de que salgan. Cambiar de <code style="font-family:'DM Mono',ui-monospace,monospace;font-size:16px;padding:2px 6px;border-radius:6px;background:oklch(0.21 0.035 280);color:oklch(0.90 0.030 255)">baseURL</code>. Desde ese punto queda registrado qué salió hacia un modelo.</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:32px">
           <a href="#instalacion" style="display:flex;align-items:center;gap:9px;height:48px;padding:0 22px;border-radius:10px;background:oklch(0.56 0.20 255);color:#fff;font-size:15.5px;font-weight:500;text-decoration:none">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
@@ -65,19 +65,19 @@
       <div style="display:grid;gap:0;border-top:1px solid oklch(0.905 0.022 280)">
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
           <span style="min-width:104px;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:23px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">1 línea</span>
-          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">El baseURL de tus SDK. Sin reescribir llamadas.</span>
+          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Una línea en tus programas. Nada más que tocar.</span>
         </div>
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
           <span style="min-width:104px;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:23px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">8 formatos</span>
-          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Identificadores ES, MX, BR y SEPA validados por checksum.</span>
+          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Documentos de España, México, Brasil y cuentas europeas.</span>
         </div>
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
           <span style="min-width:104px;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:23px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">0 nubes</span>
-          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Corre en tu red. Sin telemetría hacia nosotros.</span>
+          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Corre en tu red. No nos llega ni una estadística.</span>
         </div>
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
           <span style="min-width:104px;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:23px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">0 certif.</span>
-          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Ni SOC 2 ni ISO 27001. Lo decimos aquí y no en la letra pequeña.</span>
+          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Ni SOC 2 ni ISO 27001. Lo decimos aquí, no en la letra pequeña.</span>
         </div>
       </div>
     </div>
@@ -85,9 +85,9 @@
     <!-- Trazador demostrativo en tiempo real -->
     <div style="border:1px solid oklch(0.905 0.022 280);border-radius:16px;background:#fff;overflow:hidden">
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:15px 22px;border-bottom:1px solid oklch(0.938 0.016 280)">
-        <span style="font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">Trazado real de una petición</span>
+        <span style="font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">Míralo con un caso real</span>
         <span style="margin-left:auto;display:flex;align-items:center;gap:7px;padding:4px 10px;border-radius:999px;background:oklch(0.963 0.020 280);border:1px solid oklch(0.938 0.016 280);font-size:12px;color:oklch(0.51 0.028 280)">
-          <span style="width:6px;height:6px;border-radius:999px;background:oklch(0.64 0.17 150)"></span>Instancia de demostración · proveedor mock
+          <span style="width:6px;height:6px;border-radius:999px;background:oklch(0.64 0.17 150)"></span>Ejemplo con datos inventados
         </span>
       </div>
       <div style="display:grid;grid-template-columns:minmax(320px,0.9fr) minmax(340px,1.1fr)">
@@ -100,7 +100,7 @@
             </button>
             <button id="btn-reset-demo" type="button" style="height:44px;padding:0 14px;border:1px solid oklch(0.905 0.022 280);border-radius:9px;background:#fff;font-size:14px;color:oklch(0.51 0.028 280);cursor:pointer">Reiniciar</button>
           </div>
-          <p style="margin:16px 0 0;font-size:13.5px;line-height:1.5;color:oklch(0.61 0.022 280)">El prompt trae un DNI, un IBAN y una tarjeta. No es una animación: es el mismo componente que verás en el panel.</p>
+          <p style="margin:16px 0 0;font-size:13.5px;line-height:1.5;color:oklch(0.61 0.022 280)">El texto lleva un DNI, una cuenta y una tarjeta. No es una animación: es lo mismo que verás en el panel.</p>
         </div>
 
         <div style="padding:22px;background:oklch(0.968 0.018 280)" id="demo-stages-col">
@@ -116,13 +116,13 @@
   </div>
 </section>
 
-<!-- SECCIÓN 01: Un solo punto de paso (FONDO OSCURO DE TINTA) ──────────── -->
+<!-- SECCIÓN 01: Todo pasa por el mismo sitio (FONDO OSCURO DE TINTA) ──────────── -->
 <section id="arquitectura" style="background:oklch(0.21 0.035 280);color:oklch(0.94 0.012 280)">
   <div style="max-width:1180px;margin:0 auto;padding:80px 28px">
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:40px">
       <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.80 0.14 255);font-weight:600">01</span>
-      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-0.03em;color:oklch(0.97 0.010 280)">Un solo punto de paso</h2>
-      <p style="margin:0;max-width:44ch;font-size:15.5px;line-height:1.6;color:oklch(0.75 0.020 280)">Nada llega al proveedor sin cruzar las seis capas. Y nada que no cruce el gateway queda registrado: ese es el trato.</p>
+      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-0.03em;color:oklch(0.97 0.010 280)">Todo pasa por el mismo sitio</h2>
+      <p style="margin:0;max-width:44ch;font-size:15.5px;line-height:1.6;color:oklch(0.75 0.020 280)">Nada llega a la IA sin cruzar estos seis pasos. Y lo que no pasa por aquí no queda anotado: ese es el trato, y conviene entenderlo antes de firmar nada.</p>
     </div>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;align-items:stretch">
@@ -130,16 +130,16 @@
       <div style="display:flex;flex-direction:column;gap:10px;padding:22px;border:1px solid oklch(0.32 0.030 280);border-radius:14px;background:transparent">
         <p style="margin:0 0 6px;font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.72 0.020 280)">Origen</p>
         <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:10px;background:oklch(0.26 0.035 280);font-size:14px;color:oklch(0.92 0.012 280)">
-          <span style="width:7px;height:7px;border-radius:2px;background:oklch(0.70 0.16 255)"></span>App interna de expedientes
+          <span style="width:7px;height:7px;border-radius:2px;background:oklch(0.70 0.16 255)"></span>Vuestros programas internos
         </div>
         <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:10px;background:oklch(0.26 0.035 280);font-size:14px;color:oklch(0.92 0.012 280)">
-          <span style="width:7px;height:7px;border-radius:2px;background:oklch(0.72 0.16 305)"></span>Extensión en el navegador
+          <span style="width:7px;height:7px;border-radius:2px;background:oklch(0.72 0.16 305)"></span>El navegador del equipo
         </div>
         <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:10px;background:oklch(0.26 0.035 280);font-size:14px;color:oklch(0.92 0.012 280)">
-          <span style="width:7px;height:7px;border-radius:2px;background:oklch(0.72 0.14 150)"></span>Hojas de cálculo y scripts
+          <span style="width:7px;height:7px;border-radius:2px;background:oklch(0.72 0.14 150)"></span>Hojas de cálculo y automatismos
         </div>
         <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:10px;background:oklch(0.26 0.035 280);font-size:14px;color:oklch(0.92 0.012 280)">
-          <span style="width:7px;height:7px;border-radius:2px;background:oklch(0.78 0.16 62)"></span>Automatizaciones (n8n, cron)
+          <span style="width:7px;height:7px;border-radius:2px;background:oklch(0.78 0.16 62)"></span>Tareas automáticas de la noche
         </div>
       </div>
 
@@ -209,25 +209,25 @@
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0 40px;margin-top:44px">
       <div style="padding:20px 0 0;border-top:1px solid oklch(0.32 0.030 280)">
         <p style="margin:0 0 6px;font-family:Montserrat,sans-serif;font-weight:600;font-size:16px;color:oklch(0.97 0.010 280)">Sin salto silencioso</p>
-        <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.75 0.020 280)">Si el gateway no responde, tus apps reciben un error. Nunca una respuesta sin inspeccionar.</p>
+        <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.75 0.020 280)">Si esto se cae, vuestros programas reciben un error y se enteran. Nunca una respuesta que nadie haya revisado.</p>
       </div>
       <div style="padding:20px 0 0;border-top:1px solid oklch(0.32 0.030 280)">
-        <p style="margin:0 0 6px;font-family:Montserrat,sans-serif;font-weight:600;font-size:16px;color:oklch(0.97 0.010 280)">Compatible con lo que ya tienes</p>
-        <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.75 0.020 280)">Protocolo de OpenAI. Los SDK oficiales, LangChain y tus scripts funcionan sin cambios.</p>
+        <p style="margin:0 0 6px;font-family:Montserrat,sans-serif;font-weight:600;font-size:16px;color:oklch(0.97 0.010 280)">Funciona con lo que ya tenéis</p>
+        <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.75 0.020 280)">Habla el mismo idioma que la IA que ya usáis, así que vuestros programas siguen funcionando sin reescribir nada.</p>
       </div>
       <div style="padding:20px 0 0;border-top:1px solid oklch(0.32 0.030 280)">
         <p style="margin:0 0 6px;font-family:Montserrat,sans-serif;font-weight:600;font-size:16px;color:oklch(0.97 0.010 280)">Reversible en un minuto</p>
-        <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.75 0.020 280)">Quitas el baseURL y vuelves al estado anterior. No hay dato tuyo retenido en ningún lado.</p>
+        <p style="margin:0;font-size:14px;line-height:1.55;color:oklch(0.75 0.020 280)">Se deshace el cambio y todo vuelve a estar como estaba. No retenemos ningún dato vuestro, porque nunca sale de vuestra red.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SECCIÓN 02: Tres capas, y el límite de cada una ────────────────────── -->
+<!-- SECCIÓN 02: Hace tres cosas. Y le decimos hasta dónde llega cada una. ────────────────────── -->
 <section id="capas" style="max-width:1180px;margin:0 auto;padding:80px 28px 56px">
   <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:32px">
     <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">02</span>
-    <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Tres capas, y el límite de cada una</h2>
+    <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Hace tres cosas. Y le decimos hasta dónde llega cada una.</h2>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px">
     <!-- Capa 1: Redacción -->
@@ -238,10 +238,10 @@
         </span>
         <h3 style="margin:0;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;line-height:1.2;color:oklch(0.18 0.05 280)">Redacción</h3>
       </div>
-      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">Secretos e identificadores con checksum válido se sustituyen antes de la salida, y también sobre la respuesta del modelo.</p>
+      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">DNI, cuentas, tarjetas, RFC, CURP y contraseñas de sistemas se sustituyen por una etiqueta antes de que el texto salga, y también en lo que la IA responde.</p>
       <div style="display:flex;gap:9px;margin:18px 0 0;padding:14px;border-radius:10px;background:oklch(0.963 0.020 280)">
         <span style="flex:none;font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;font-weight:500;color:oklch(0.52 0.15 62)">LÍMITE</span>
-        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.51 0.028 280)">Detecta estructuras, no confidencialidad. Una estrategia comercial en prosa pasa intacta.</p>
+        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.51 0.028 280)">Hasta aquí llega: reconoce un documento por su forma. No entiende si un párrafo cuenta algo confidencial, y eso sale sin tocar.</p>
       </div>
     </div>
 
@@ -253,10 +253,10 @@
         </span>
         <h3 style="margin:0;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;line-height:1.2;color:oklch(0.18 0.05 280)">Registro</h3>
       </div>
-      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">Auditoría encadenada por hash en JSONL: cada entrada referencia la anterior y el corte se detecta. Exportable a SIEM.</p>
+      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">Cada envío queda anotado en un registro que no se puede retocar sin que se note. Si un día tienes que demostrar qué salió y cuándo, está ahí.</p>
       <div style="display:flex;gap:9px;margin:18px 0 0;padding:14px;border-radius:10px;background:oklch(0.963 0.020 280)">
         <span style="flex:none;font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;font-weight:500;color:oklch(0.52 0.15 62)">LÍMITE</span>
-        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.51 0.028 280)">Solo registra el tráfico que se le entrega. Un empleado decidido no usa el gateway.</p>
+        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.51 0.028 280)">Hasta aquí llega: solo anota lo que pasa por él. Quien decida saltárselo, puede. Esto evita el descuido de un martes por la tarde, no la mala fe.</p>
       </div>
     </div>
 
@@ -268,36 +268,36 @@
         </span>
         <h3 style="margin:0;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;line-height:1.2;color:oklch(0.18 0.05 280)">Coste</h3>
       </div>
-      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">Enrutado entre los proveedores que tengas configurados, caché aislada por inquilino y límites de gasto con reserva previa.</p>
+      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">Elige el proveedor más barato que sirva, reutiliza respuestas repetidas y te deja poner un tope al día y al mes.</p>
       <div style="display:flex;gap:9px;margin:18px 0 0;padding:14px;border-radius:10px;background:oklch(0.963 0.020 280)">
         <span style="flex:none;font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;font-weight:500;color:oklch(0.52 0.15 62)">LÍMITE</span>
-        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.51 0.028 280)">El ahorro depende de tu mezcla de tráfico. No publicamos un porcentaje que no hayamos medido en tu instancia.</p>
+        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.51 0.028 280)">Hasta aquí llega: cuánto ahorras depende de tu uso. No te damos un porcentaje; te damos el contador para que lo midas en tu casa.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SECCIÓN 03: Integración en una línea ───────────────────────────────── -->
+<!-- SECCIÓN 03: Se conecta cambiando una línea ───────────────────────────────── -->
 <section id="integracion" style="max-width:1180px;margin:0 auto;padding:24px 28px 72px">
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:36px;align-items:start">
     <div>
       <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:16px">
         <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">03</span>
-        <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Integración en una línea</h2>
+        <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Se conecta cambiando una línea</h2>
       </div>
-      <p style="margin:0 0 22px;max-width:48ch;font-size:16.5px;line-height:1.6;color:oklch(0.51 0.028 280)">El resto de tu código no cambia: mismos SDK, mismos modelos, mismas respuestas. Si el gateway cae, el fallo es explícito y no silencioso.</p>
+      <p style="margin:0 0 22px;max-width:48ch;font-size:16.5px;line-height:1.6;color:oklch(0.51 0.028 280)">Esta parte la hace vuestro informático. El resto del programa no cambia: los mismos modelos y las mismas respuestas.</p>
       <div style="display:grid;gap:0;border-top:1px solid oklch(0.905 0.022 280)">
         <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
           <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:oklch(0.72 0.020 280);font-weight:500">01</span>
-          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Levantas el contenedor en tu red y defines SYNAPSE_VAULT_KEY.</span>
+          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Se instala en un servidor vuestro y se le da una contraseña maestra.</span>
         </div>
         <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
           <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:oklch(0.72 0.020 280);font-weight:500">02</span>
-          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Cargas las claves de proveedor una sola vez, en el vault del gateway.</span>
+          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Las claves de la IA se cargan una sola vez, aquí dentro y cifradas.</span>
         </div>
         <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
           <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:oklch(0.72 0.020 280);font-weight:500">03</span>
-          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Cambias el baseURL de cada aplicación y retiras las claves de sus entornos.</span>
+          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Cada programa apunta aquí, y se le quitan las claves que tenía sueltas.</span>
         </div>
       </div>
     </div>
@@ -328,7 +328,7 @@ client = OpenAI(
   <div style="max-width:1180px;margin:0 auto;padding:72px 28px">
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:10px">
       <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">04</span>
-      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Identificadores iberoamericanos, validados por checksum</h2>
+      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Conoce los documentos de aquí, no solo los de Estados Unidos</h2>
     </div>
     <p style="margin:0 0 28px;max-width:66ch;font-size:17px;line-height:1.6;color:oklch(0.51 0.028 280)">No se detecta por parecido: se comprueba el dígito de control. Un RFC mal formado no dispara un falso positivo.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(226px,1fr));gap:12px">
@@ -557,7 +557,7 @@ client = OpenAI(
 <section id="precios" style="max-width:1180px;margin:0 auto;padding:80px 28px">
   <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:10px">
     <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">08</span>
-    <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Se paga por respuesta humana, no por límites</h2>
+    <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Se paga porque alguien responda, no por quitar candados</h2>
   </div>
   <p style="margin:0 0 30px;max-width:66ch;font-size:17px;line-height:1.6;color:oklch(0.51 0.028 280)">El software es MIT y lo alojas tú: cualquier límite de plan sería honorario, no técnico. Así que no los vendemos.</p>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(262px,1fr));gap:18px">
@@ -616,7 +616,7 @@ client = OpenAI(
   <div style="max-width:900px;margin:0 auto;padding:72px 28px">
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:28px">
       <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">09</span>
-      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Preguntas que nos hacen antes de firmar</h2>
+      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Lo que nos preguntan antes de firmar</h2>
     </div>
     <div style="display:grid;gap:10px" id="faq-accordion-container">
       <!-- 6 preguntas clave desplegables -->

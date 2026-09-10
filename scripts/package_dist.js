@@ -133,7 +133,11 @@ function addDirectoryToZip(zip, baseDir, relativePrefix = '') {
 const extZip = new SimpleZip();
 addDirectoryToZip(extZip, EXTENSION_DIR);
 const extZipBuffer = extZip.build();
-const extZipPath = path.join(DIST_DIR, 'synapse-ai-extension-v1.0.0.zip');
+// La version sale del manifiesto, no de una constante: el paquete se quedo en
+// la v1.0.0 mientras el manifiesto ya iba por la 2.0.0, y nadie lo noto porque
+// el nombre del fichero estaba escrito a mano.
+const manifest = JSON.parse(fs.readFileSync(path.join(EXTENSION_DIR, 'manifest.json'), 'utf8'));
+const extZipPath = path.join(DIST_DIR, `synapse-ai-extension-v${manifest.version}.zip`);
 fs.writeFileSync(extZipPath, extZipBuffer);
 
 console.log(`✓ Paquete de Extensión Web Creado: ${extZipPath} (${(extZipBuffer.length / 1024).toFixed(1)} KB)`);
