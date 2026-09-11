@@ -40,3 +40,7 @@ videos/*/renders/
 .agent/
 .vscode/
 skills-lock.json
+
+# Estado de ejecucion: lo escribe el servidor al arrancar, y lleva dentro
+# identificadores de inquilino y gasto real. No es fuente del proyecto.
+data/budget.json

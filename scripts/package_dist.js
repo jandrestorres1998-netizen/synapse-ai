@@ -154,6 +154,19 @@ const SERVIDOR_INCLUYE = [
   'package.json', 'package-lock.json', 'LICENSE', 'README.md'
 ];
 
+// De docs/ se eligen a mano los que sostienen lo que la web afirma y los que
+// le sirven a quien instala esto. Lo demas —estrategia comercial, backlog,
+// planes internos, encargos a otros modelos— no tiene por que viajar al
+// ordenador de un cliente.
+const DOCS_INCLUYE = [
+  'AUDIT_2026.md',
+  'VIABILIDAD.md',
+  'ARCHITECTURE.md',
+  'SECURITY.md',
+  'BENCHMARK_RESULTS.md',
+  'EXTENSION_INSTALL_GUIDE.md'
+];
+
 const srvZip = new SimpleZip();
 let incluidos = 0;
 for (const nombre of SERVIDOR_INCLUYE) {
@@ -175,6 +188,15 @@ if (fuga) {
   console.error(`
 ✗ ABORTADO: el paquete del servidor incluiria "${fuga.name}", que no debe distribuirse.`);
   process.exit(1);
+}
+
+for (const doc of DOCS_INCLUYE) {
+  const origen = path.join(PROJECT_ROOT, 'docs', doc);
+  if (!fs.existsSync(origen)) {
+    console.log(`  · documento omitido (no existe): docs/${doc}`);
+    continue;
+  }
+  srvZip.addFile(`docs/${doc}`, fs.readFileSync(origen));
 }
 
 const pkg = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'package.json'), 'utf8'));
