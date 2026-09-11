@@ -44,3 +44,16 @@ skills-lock.json
 # Estado de ejecucion: lo escribe el servidor al arrancar, y lleva dentro
 # identificadores de inquilino y gasto real. No es fuente del proyecto.
 data/budget.json
+
+# Documentos de trabajo interno: estrategia comercial, estudio de mercado,
+# backlog, planes y encargos a otros modelos. Se quedan en disco; no viajan al
+# repositorio ni al paquete que se descarga un cliente.
+docs/BRIEF_REDISENO_WEB.md
+docs/DEEP_RESEARCH_AND_PROS_CONS.md
+docs/ENCARGO_GEMINI.md
+docs/GO_TO_MARKET_STRATEGY.md
+docs/HANDOVER_CLAUDE.md
+docs/MARKET_RESEARCH.md
+docs/PLAN_MODULARIZACION.md
+docs/PLAN_VIDEO_FLUJO.md
+docs/TASKS_AND_BACKLOG.md
