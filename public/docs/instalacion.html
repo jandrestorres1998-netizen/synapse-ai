@@ -37,47 +37,46 @@
     </ul>
 
     <h2>Camino 1 · Docker (Recomendado)</h2>
-    <p>Es la forma más rápida y limpia de instalar el programa en un servidor de oficina o centro de datos sin ensuciar el sistema anfitrión.</p>
+    <p>Es la forma más limpia de dejarlo corriendo en un servidor de oficina sin ensuciar el sistema anfitrión. La imagen se construye <strong>en vuestra propia máquina, a partir del código que descargáis</strong>: no se baja ningún programa ya compilado de internet, así que lo que acaba corriendo es exactamente lo que podéis leer antes de arrancarlo.</p>
 
-    <p>Para arrancarlo con un único comando:</p>
-    <pre class="code"><code>docker run -d \
-  --name synapseai \
-  -p 3000:3000 \
-  -v synapse_data:/data \
-  --restart unless-stopped \
-  synapseai/gateway:2.0.0</code></pre>
+    <pre class="code"><code># 1. Descargar y descomprimir el paquete del servidor
+#    (está en la página de Descargas, con su huella SHA-256)
+unzip synapse-ai-servidor-v2.0.0.zip -d synapseai
+cd synapseai
 
-    <p style="margin-top:20px">Si gestionáis vuestros servicios mediante <strong>Docker Compose</strong>, podéis incluir esta definición en vuestro <code>docker-compose.yml</code>:</p>
+# 2. Crear el archivo de configuración y rellenarlo
+cp .env.example .env
 
-    <pre class="code"><code>version: '3.8'
-services:
-  synapseai:
-    image: synapseai/gateway:2.0.0
-    container_name: synapseai
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - HOST=0.0.0.0
-      - SYNAPSE_VAULT_KEY=genera_una_clave_de_32_caracteres_minimo
-    volumes:
-      - ./data:/data</code></pre>
+# 3. Construir y arrancar
+docker compose up -d --build
+
+# 4. Comprobar que responde
+curl http://localhost:3000/healthz</code></pre>
+
+    <p style="margin-top:20px">El <code>docker-compose.yml</code> viene dentro del paquete y ya deja los datos fuera del contenedor. Si preferís lanzarlo a mano, el equivalente es:</p>
+
+    <pre class="code"><code>docker build -t synapseai:2.0.0 .
+
+docker run -d   --name synapseai   -p 3000:3000   --env-file .env   -v "$(pwd)/data:/app/data"   --restart unless-stopped   synapseai:2.0.0</code></pre>
+
+    <div class="doc-note">
+      <p><strong>Cuidado con dónde se monta la carpeta de datos.</strong></p>
+      <p>Tiene que ser <code>/app/data</code>, no <code>/data</code>. Ahí dentro viven el almacén de claves cifrado, el registro de auditoría y el control de gasto. Si se monta en el sitio equivocado el programa arranca igual, sin quejarse, pero esos ficheros se quedan dentro del contenedor y <strong>desaparecen la próxima vez que lo recreéis</strong>.</p>
+    </div>
 
     <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> El contenedor expone el puerto 3000. Si queréis acceder desde fuera de la red local o usar conexiones seguras con certificado (HTTPS), vuestro equipo informático deberá colocar un proxy inverso (como Nginx o Caddy) delante del contenedor.
+      <strong>Hasta aquí llega:</strong> El contenedor abre el puerto 3000 en la red local, que es de donde llegan las peticiones de vuestros programas. Para llegar desde fuera de la oficina, o para usar conexiones cifradas con certificado (HTTPS), vuestro equipo informático deberá colocar delante un proxy inverso como Nginx o Caddy.
     </div>
 
     <h2>Camino 2 · Node.js y npm</h2>
     <p>Recomendado si deseáis auditar el código fuente, ejecutar pruebas en local o desplegarlo en un servidor Linux existente:</p>
 
-    <pre class="code"><code># 1. Descargar el código fuente
-git clone https://github.com/synapse-ai/synapse-ai.git
-cd SynapseAI
+    <pre class="code"><code># 1. Descomprimir el paquete descargado
+unzip synapse-ai-servidor-v2.0.0.zip -d synapseai
+cd synapseai
 
 # 2. Instalar las dependencias oficiales
-npm install --production
+npm install --omit=dev
 
 # 3. Crear el archivo de configuración
 cp .env.example .env

@@ -117,7 +117,7 @@ openssl rand -hex 32</code></pre>
     <pre class="code"><code># Copia diaria automatizada mediante cron o tarea programada
 tar -czf /backups/synapse-$(date +%Y%m%d).tar.gz -C /ruta/a/synapse data/</code></pre>
 
-    <p>Si utilizáis volúmenes en Docker, asegurad el volumen montado (por ejemplo <code>-v synapse_data:/data</code>) incluyendo dicha ruta en vuestro plan habitual de copias de seguridad de la infraestructura.</p>
+    <p>Si utilizáis volúmenes en Docker, asegurad el volumen montado (<code>-v ./data:/app/data</code>) incluyendo esa ruta en vuestro plan habitual de copias de seguridad de la infraestructura.</p>
 
     <h2>Política de rotación de claves</h2>
     <p>Para mantener una higiene de seguridad impecable sin provocar caídas en vuestros programas:</p>

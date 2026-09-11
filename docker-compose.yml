@@ -1,0 +1,43 @@
+# ==============================================================================
+# SynapseAI — arranque con Docker Compose
+# ==============================================================================
+#
+# Se construye aquí mismo, desde el Dockerfile de al lado. No se descarga
+# ninguna imagen de internet: el programa que acaba corriendo es exactamente el
+# código que tienes delante, y puedes leerlo antes de levantarlo.
+#
+#   1. cp .env.example .env     y rellena SYNAPSE_VAULT_KEY y tus claves
+#   2. docker compose up -d --build
+#   3. curl http://localhost:3000/healthz
+#
+# Para parar:      docker compose down
+# Para actualizar: docker compose up -d --build
+# ==============================================================================
+
+services:
+  synapseai:
+    build: .
+    container_name: synapseai
+    restart: unless-stopped
+
+    ports:
+      # El puerto queda abierto a la red de la oficina, que es de donde llegan
+      # las peticiones de vuestros programas. Para llegar desde fuera, o para
+      # usar HTTPS, poned delante un proxy inverso con certificado.
+      - "3000:3000"
+
+    # Toda la configuración vive en .env, que no se copia dentro de la imagen.
+    env_file:
+      - .env
+
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=3000
+
+    volumes:
+      # El almacén de claves cifrado, el registro de auditoría y el presupuesto
+      # viven aquí dentro. La ruta del contenedor es /app/data, no /data: si se
+      # monta en el sitio equivocado el volumen queda vacío, los datos se
+      # quedan dentro del contenedor y se pierden al recrearlo.
+      - ./data:/app/data

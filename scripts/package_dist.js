@@ -142,6 +142,48 @@ fs.writeFileSync(extZipPath, extZipBuffer);
 
 console.log(`✓ Paquete de Extensión Web Creado: ${extZipPath} (${(extZipBuffer.length / 1024).toFixed(1)} KB)`);
 console.log(`✓ Compatible con Chrome, Brave, Microsoft Edge y Firefox.`);
+
+// 2. Package the server itself.
+//
+// Sin esto, dist/ solo contenia la extension: la web ofrecia el accesorio y no
+// el programa. Se incluye lo justo para arrancar y para poder auditarlo, y se
+// deja fuera lo que nunca debe salir de esta maquina.
+const SERVIDOR_INCLUYE = [
+  'server', 'public', 'scripts', 'tests',
+  'Dockerfile', 'docker-compose.yml', '.env.example',
+  'package.json', 'package-lock.json', 'LICENSE', 'README.md'
+];
+
+const srvZip = new SimpleZip();
+let incluidos = 0;
+for (const nombre of SERVIDOR_INCLUYE) {
+  const origen = path.join(PROJECT_ROOT, nombre);
+  if (!fs.existsSync(origen)) {
+    console.log(`  · omitido (no existe): ${nombre}`);
+    continue;
+  }
+  if (fs.statSync(origen).isDirectory()) addDirectoryToZip(srvZip, origen, nombre);
+  else srvZip.addFile(nombre, fs.readFileSync(origen));
+  incluidos++;
+}
+
+// Cinturon y tirantes: si algun dia alguien anade data/ o .env a la lista de
+// arriba, esto lo para antes de publicar el paquete.
+const PROHIBIDO = [/^data[\/]/, /^\.env$/, /vendor_private/, /^node_modules[\/]/, /^dist[\/]/];
+const fuga = srvZip.files.find(f => PROHIBIDO.some(re => re.test(f.name)));
+if (fuga) {
+  console.error(`
+✗ ABORTADO: el paquete del servidor incluiria "${fuga.name}", que no debe distribuirse.`);
+  process.exit(1);
+}
+
+const pkg = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'package.json'), 'utf8'));
+const srvZipBuffer = srvZip.build();
+const srvZipPath = path.join(DIST_DIR, `synapse-ai-servidor-v${pkg.version}.zip`);
+fs.writeFileSync(srvZipPath, srvZipBuffer);
+
+console.log(`✓ Paquete del Servidor Creado: ${srvZipPath} (${(srvZipBuffer.length / 1024).toFixed(1)} KB)`);
+console.log(`  ${incluidos} elementos, ${srvZip.files.length} ficheros. Sin data/, sin .env, sin node_modules.`);
 console.log("\n==============================================================================");
 console.log("🎉 EMPAQUETADO COMPLETADO EXITOSAMENTE");
 console.log("==============================================================================");

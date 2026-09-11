@@ -120,7 +120,7 @@
     <div class="audit-decision-box">
       <h3>El dictamen vinculante</h3>
       <p><strong>«Mata el producto de pago: borra la capa de licencias y los documentos comerciales, publica el programa como proyecto MIT honesto, y construye la verificación de datos personales como principal activo.»</strong></p>
-      <p>No había un negocio de licencias que defender. Lo que sí existía era una credencial técnica real: una batería de más de 100 pruebas automatizadas y una auditoría que admite por escrito sus propios fallos. Esa honestidad es lo que genera confianza en el sector profesional.</p>
+      <p>No había un negocio de licencias que defender. Lo que sí existía era una credencial técnica real: una batería de más de cien pruebas automatizadas y una auditoría que admite por escrito sus propios fallos. Esa honestidad es lo que genera confianza en el sector profesional.</p>
 
       <div class="conserva-tira-grid">
         <div class="conserva-col">
@@ -130,7 +130,7 @@
             <li>Sustitución inmediata de datos confidenciales antes de salir a la IA.</li>
             <li>Registro de actividad que no se puede retocar sin que se note.</li>
             <li>Cifrado de claves de los modelos dentro de vuestra red.</li>
-            <li>Las 105 pruebas automatizadas que verifican cada caso.</li>
+            <li>Las 118 pruebas automatizadas que verifican cada caso.</li>
           </ul>
         </div>
         <div class="tira-col">
@@ -184,11 +184,12 @@
     <h2>Para tu equipo técnico</h2>
     <div class="tecnico-box">
       <span class="eyebrow">Documentación técnica original</span>
-      <p>El informe técnico pormenorizado de las dos rondas de auditoría de seguridad y las mediciones de rendimiento se conservan íntegros en el repositorio del proyecto: <code>AUDIT_2026.md</code> y <code>docs/VIABILIDAD.md</code>.</p>
-      <p>Vuestro equipo de sistemas puede clonar el código y ejecutar la suite completa de 105 pruebas unitarias para verificar la detección y el borrado de identificadores:</p>
-      <pre><code># Clonar el proyecto y comprobar la batería de pruebas
-git clone https://github.com/synapse-ai/synapse-ai.git
-cd SynapseAI
+      <p>El informe técnico pormenorizado de las dos rondas de auditoría de seguridad y las mediciones de rendimiento vienen dentro del paquete del servidor: <code>docs/VIABILIDAD.md</code>.</p>
+      <p>Vuestro equipo de sistemas puede descargar el código y ejecutar la batería completa de 118 pruebas para verificar la detección y el borrado de identificadores:</p>
+      <pre><code># Descomprimir el paquete y comprobar la batería de pruebas
+unzip synapse-ai-servidor-v2.0.0.zip -d synapseai
+cd synapseai
+npm install
 npm test</code></pre>
     </div>
 
