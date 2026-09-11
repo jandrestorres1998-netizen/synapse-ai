@@ -9,7 +9,6 @@ import { AuditChainLedger } from '../../server/security/audit-chain.js';
 import { PromptInjectionShield } from '../../server/security/prompt-injection-shield.js';
 import { StreamRedactor } from '../../server/core/stream-redactor.js';
 import { DLPEngine } from '../../server/dlp-engine.js';
-import { verifyStripeSignature } from '../../server/security/stripe-signature.js';
 import { resolveClientIp } from '../../server/middlewares/rate-limiter.js';
 import { SecureVault } from '../../server/secure-vault.js';
 
@@ -130,18 +129,6 @@ test('el redactor de streaming acaba emitiendo todo el texto inocuo', () => {
 
 // ── Webhook de facturación ───────────────────────────────────────────────────
 
-test('REGRESIÓN: el webhook rechaza firmas ausentes, falsas y caducadas', () => {
-  // El handler anterior emitía una licencia ENTERPRISE a quien publicara un JSON.
-  const secret = 'whsec_prueba';
-  const body = JSON.stringify({ type: 'checkout.session.completed' });
-  const now = Math.floor(Date.now() / 1000);
-  const sign = ts => crypto.createHmac('sha256', secret).update(`${ts}.${body}`).digest('hex');
-
-  assert.equal(verifyStripeSignature(body, null, secret).ok, false);
-  assert.equal(verifyStripeSignature(body, `t=${now},v1=deadbeef`, secret).ok, false);
-  assert.equal(verifyStripeSignature(body, `t=${now - 4000},v1=${sign(now - 4000)}`, secret).ok, false, 'un payload capturado no puede reproducirse indefinidamente');
-  assert.equal(verifyStripeSignature(body, `t=${now},v1=${sign(now)}`, secret).ok, true);
-});
 
 // ── Resolución de IP del cliente ─────────────────────────────────────────────
 

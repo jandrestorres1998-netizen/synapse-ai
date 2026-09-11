@@ -18,7 +18,6 @@ import { MemoryHub } from '../memory-hub.js';
 import { SecureVault } from '../secure-vault.js';
 import { ProviderRegistry } from '../providers/index.js';
 import { IntegrityChecker } from '../integrity-checker.js';
-import { LicenseManager } from '../license-manager.js';
 import { PromptInjectionShield } from '../security/prompt-injection-shield.js';
 import { AuditChainLedger } from '../security/audit-chain.js';
 
@@ -55,7 +54,6 @@ export const auditLedger = new AuditChainLedger({
 
 export const integrity = new IntegrityChecker();
 
-export const licenseManager = new LicenseManager({ dataDir: ENV.DATA_DIR });
 
 export const telemetry = new Telemetry();
 

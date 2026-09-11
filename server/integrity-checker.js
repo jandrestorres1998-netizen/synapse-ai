@@ -24,7 +24,6 @@ export class IntegrityChecker {
       'server/secure-vault.js',
       'server/smart-router.js',
       'server/memory-hub.js',
-      'server/license-manager.js',
       'server/core/pipeline.js',
       'server/core/response-cache.js',
       'server/core/stream-redactor.js',
@@ -53,7 +52,6 @@ export class IntegrityChecker {
       'server/controllers/vault.controller.js',
       'server/controllers/memory.controller.js',
       'server/controllers/stats.controller.js',
-      'server/controllers/license.controller.js',
       'server/routes/api.routes.js'
     ];
   }

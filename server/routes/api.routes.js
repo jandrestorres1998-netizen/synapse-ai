@@ -3,7 +3,6 @@ import { handleGatewayProcess } from '../controllers/gateway.controller.js';
 import { getStats, getSecurityLogs, getSecurityRules, exportSecurityLogs, getModels, getIntegrity, recordExtensionEvent, getBudget, getAccess } from '../controllers/stats.controller.js';
 import { getAllMemories, createMemory, updateMemory, toggleMemory, deleteMemory } from '../controllers/memory.controller.js';
 import { getVaultStatus, setVaultKey, deleteVaultKey } from '../controllers/vault.controller.js';
-import { getLicenseStatus, activateLicense, deactivateLicense } from '../controllers/license.controller.js';
 import { createRateLimiter } from '../middlewares/rate-limiter.js';
 import { validateGatewayInput, validateVaultInput, validateMemoryInput } from '../middlewares/validators.js';
 
@@ -37,8 +36,5 @@ router.post('/vault/keys', validateVaultInput, setVaultKey);
 router.delete('/vault/keys/:provider', deleteVaultKey);
 
 // Licensing
-router.get('/license/status', getLicenseStatus);
-router.post('/license/activate', activateLicense);
-router.delete('/license/deactivate', deactivateLicense);
 
 export default router;

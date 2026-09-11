@@ -139,16 +139,4 @@ export class ApiService {
   static setVaultKey(provider, apiKey) {
     return this._request('/api/vault/keys', { method: 'POST', body: { provider, apiKey } });
   }
-
-  static getLicenseStatus() {
-    return this._request('/api/license/status');
-  }
-
-  static activateLicense(licenseKey) {
-    return this._request('/api/license/activate', { method: 'POST', body: { licenseKey } });
-  }
-
-  static deactivateLicense() {
-    return this._request('/api/license/deactivate', { method: 'DELETE' });
-  }
 }

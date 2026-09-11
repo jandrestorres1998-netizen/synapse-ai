@@ -32,3 +32,11 @@ coverage/
 
 # Los renders se regeneran; el bucle publicado vive en public/media/.
 videos/*/renders/
+
+# Cache de herramientas del agente: se reinstalan solas y son casi 1.900
+# ficheros que no son fuente de este proyecto.
+.claude/skills/
+.agents/
+.agent/
+.vscode/
+skills-lock.json

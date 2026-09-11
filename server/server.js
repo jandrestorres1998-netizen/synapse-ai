@@ -14,7 +14,6 @@ import { createRateLimiter, resolveClientIp } from './middlewares/rate-limiter.j
 import { validateOpenAIInput } from './middlewares/validators.js';
 import { handleOpenAIChatCompletions } from './controllers/gateway.controller.js';
 import { listDownloads } from './controllers/downloads.controller.js';
-import { handleStripeWebhook } from './controllers/license.controller.js';
 import { getHealth } from './controllers/stats.controller.js';
 import { providers, integrity, budget } from './config/container.js';
 import { logProviderStartupState, startProviderProbes } from './providers/index.js';
@@ -101,13 +100,6 @@ app.get('/.well-known/security.txt', (req, res) => {
   ].join('\n'));
 });
 
-// Stripe verifies a signature over the exact bytes, so the raw body is kept.
-app.post('/api/webhooks/stripe',
-  express.raw({ type: 'application/json', limit: '1mb' }),
-  (req, res, next) => { req.rawBody = req.body; next(); },
-  handleStripeWebhook
-);
-
 // ── Authenticated API ────────────────────────────────────────────────────────
 const authenticate = createAuthMiddleware(ENV);
 const rateLimiter = createRateLimiter(ENV);
@@ -132,7 +124,7 @@ app.use('/descargas', express.static(path.join(__dirname, '../dist'), { redirect
 
 // Paginas sin extension: /legal/privacidad sirve public/legal/privacidad.html.
 app.use((req, res, next) => {
-  if (req.method !== 'GET' || req.path.includes('.')) return next();
+  if ((req.method !== 'GET' && req.method !== 'HEAD') || req.path.includes('.')) return next();
   const candidato = path.join(publicDir, `${req.path.replace(/^\/+/, '')}.html`);
   if (candidato.startsWith(publicDir) && fs.existsSync(candidato)) return res.sendFile(candidato);
   next();
