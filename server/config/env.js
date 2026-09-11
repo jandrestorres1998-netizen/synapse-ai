@@ -137,10 +137,6 @@ export const ENV = {
     MAX_TRACKED_CLIENTS: int('SYNAPSE_RATE_MAX_CLIENTS', 10_000)
   },
 
-  BILLING: {
-    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET || ''
-  },
-
   DATA_DIR: process.env.SYNAPSE_DATA_DIR || path.join(PROJECT_ROOT, 'data')
 };
 
@@ -173,10 +169,6 @@ export function validateEnv(env = ENV) {
 
     if (env.DLP.STORE_PLAINTEXT_SAMPLES) {
       warnings.push('SYNAPSE_DLP_STORE_PLAINTEXT está activo: el registro de auditoría almacenará el texto sensible en claro.');
-    }
-
-    if (!env.BILLING.STRIPE_WEBHOOK_SECRET) {
-      warnings.push('STRIPE_WEBHOOK_SECRET ausente: el endpoint de webhooks queda deshabilitado.');
     }
   }
 

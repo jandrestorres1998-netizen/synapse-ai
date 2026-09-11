@@ -150,8 +150,8 @@ cd synapseai
 # 2. Instalar dependencias del servidor
 npm install
 
-# 3. Copiar configuración base e iniciar
-cp .env.example .env
+# 3. Generar la configuración e iniciar
+node scripts/init_env.js
 npm start</code></pre>
       <p style="margin-top:12px">El servidor escuchará por defecto en <code>http://127.0.0.1:3000</code>. Puedes comprobar que responde abriendo <code>http://127.0.0.1:3000/app</code> en tu navegador.</p>
     </div>

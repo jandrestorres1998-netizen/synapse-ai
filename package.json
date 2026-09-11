@@ -19,7 +19,8 @@
     "integrity:manifest": "node scripts/generate_manifest.js",
     "fuzz": "node tests/fuzz/dlp-fuzzer.js",
     "fuzz:strict": "node tests/fuzz/dlp-fuzzer.js --strict",
-    "security:scan": "node --env-file=.env scripts/aikido_scan.js"
+    "security:scan": "node --env-file=.env scripts/aikido_scan.js",
+    "init": "node scripts/init_env.js"
   },
   "keywords": [
     "llm-gateway",

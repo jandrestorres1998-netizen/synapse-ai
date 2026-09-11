@@ -44,8 +44,8 @@
 unzip synapse-ai-servidor-v2.0.0.zip -d synapseai
 cd synapseai
 
-# 2. Crear el archivo de configuración y rellenarlo
-cp .env.example .env
+# 2. Generar la configuración (claves de acceso, almacén y registro)
+node scripts/init_env.js
 
 # 3. Construir y arrancar
 docker compose up -d --build
@@ -57,7 +57,12 @@ curl http://localhost:3000/healthz</code></pre>
 
     <pre class="code"><code>docker build -t synapseai:2.0.0 .
 
-docker run -d   --name synapseai   -p 3000:3000   --env-file .env   -v "$(pwd)/data:/app/data"   --restart unless-stopped   synapseai:2.0.0</code></pre>
+docker run -d   --name synapseai   -p 3000:3000   --env-file .env   -e HOST=0.0.0.0   -v "$(pwd)/data:/app/data"   --restart unless-stopped   synapseai:2.0.0</code></pre>
+
+    <div class="doc-note">
+      <p><strong>Dentro de Docker hace falta <code>HOST=0.0.0.0</code>.</strong></p>
+      <p>El fichero de configuración trae <code>HOST=127.0.0.1</code>, que es lo correcto cuando el programa corre directamente en una máquina. Dentro de un contenedor significa escuchar solo en su propio bucle interno: el puerto queda publicado pero no lleva a ninguna parte, y como la comprobación de salud también mira ahí dentro, <strong>el contenedor se declara sano mientras nadie puede entrar</strong>. El <code>docker-compose.yml</code> ya lo pone; si lanzáis el comando a mano, no lo olvidéis.</p>
+    </div>
 
     <div class="doc-note">
       <p><strong>Cuidado con dónde se monta la carpeta de datos.</strong></p>
@@ -78,8 +83,8 @@ cd synapseai
 # 2. Instalar las dependencias oficiales
 npm install --omit=dev
 
-# 3. Crear el archivo de configuración
-cp .env.example .env
+# 3. Generar la configuración
+node scripts/init_env.js
 
 # 4. Iniciar el programa
 npm start</code></pre>
