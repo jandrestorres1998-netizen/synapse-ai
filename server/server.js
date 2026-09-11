@@ -87,16 +87,29 @@ app.get('/api/public/downloads', listDownloads);
 
 // Un producto de seguridad sin una via declarada para avisar de un fallo no es
 // creible. RFC 9116.
+//
+// La direccion la pone quien instala esto, en SYNAPSE_SECURITY_CONTACT: cada
+// empresa lo corre en su propia red, y quien encuentre un fallo en una
+// instalacion ajena tiene que poder avisar a esa empresa, no a nosotros. Sin
+// la variable la ruta devuelve 404, porque publicar un buzon que no recibe es
+// peor que no publicar ninguno: el que avisa se cree avisado, nadie lee nada,
+// y meses despues el fallo sale publicado porque «no contestaron». Ademas RFC
+// 9116 exige Contact, y un security.txt sin Contact valido no lo es.
 app.get('/.well-known/security.txt', (req, res) => {
+  const contacto = (process.env.SYNAPSE_SECURITY_CONTACT || '').trim();
+  if (!contacto) return res.status(404).type('text/plain').send('');
+
+  const destino = /^(mailto:|https?:)/i.test(contacto) ? contacto : `mailto:${contacto}`;
+
   res.type('text/plain').send([
     '# Si encuentras un fallo de seguridad, escribe antes de publicarlo.',
-    'Contact: mailto:seguridad@synapse.example',
+    `Contact: ${destino}`,
     'Preferred-Languages: es, en',
     'Canonical: ' + req.protocol + '://' + req.get('host') + '/.well-known/security.txt',
     'Policy: ' + req.protocol + '://' + req.get('host') + '/legal/vulnerabilidades',
     '',
-    '# Respondemos en 5 dias laborables. No emprendemos acciones legales contra',
-    '# quien investigue de buena fe y no acceda a datos de terceros.'
+    '# No emprendemos acciones legales contra quien investigue de buena fe y no',
+    '# acceda a datos de terceros.'
   ].join('\n'));
 });
 
