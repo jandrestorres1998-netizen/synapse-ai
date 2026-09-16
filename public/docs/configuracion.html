@@ -27,10 +27,10 @@
     </div>
 
     <h2>El archivo .env</h2>
-    <p>Toda la configuración del programa se gestiona mediante un archivo de texto llamado <code>.env</code> situado en la carpeta raíz del proyecto. Este archivo contiene secretos y contraseñas de vuestros modelos, por lo que <strong>está incluido en <code>.gitignore</code> y nunca debe subirse a ningún repositorio público</strong>.</p>
-    <p>Para empezar, genera el fichero. No copies la plantilla a mano: deja vacías las tres claves que el programa exige en producción —la de acceso, la del almacén y la del registro— y el contenedor muere al arrancar.</p>
+    <p>Toda la configuración del programa se gestiona mediante un archivo de texto llamado <code>.env</code> situado en la carpeta raíz del proyecto. Este archivo contiene secretos y contraseñas de sus modelos, por lo que <strong>está incluido en <code>.gitignore</code> y nunca debe subirse a ningún repositorio público</strong>.</p>
+    <p>Para empezar, genera el archivo. No copies la plantilla a mano: deja vacías las tres claves que el programa exige en producción —la de acceso, la del almacén y la del registro— y el contenedor muere al arrancar.</p>
     <pre class="code"><code>node scripts/init_env.js</code></pre>
-    <p>Genera esas tres, apaga el proveedor simulado, te enseña una sola vez la clave de acceso y se niega a pisar un <code>.env</code> que ya exista. El resto del fichero sale de la plantilla, con sus comentarios, para que rellenes a mano lo que es vuestro.</p>
+    <p>Genera esas tres, apaga el proveedor simulado, te enseña una sola vez la clave de acceso y se niega a pisar un <code>.env</code> que ya exista. El resto del archivo sale de la plantilla, con sus comentarios, para que rellenes a mano lo que es su.</p>
 
     <h2>1 · Servidor y red local</h2>
     <div class="var-table-wrap">
@@ -198,7 +198,7 @@
           <tr>
             <td class="var-name">OLLAMA_BASE_URL</td>
             <td class="var-default">127.0.0.1:11434</td>
-            <td>Dirección de Ollama si ejecutáis modelos de IA en local en vuestro propio hardware, sin conexión a internet.</td>
+            <td>Dirección de Ollama si ejecutan modelos de IA en local en su propio hardware, sin conexión a internet.</td>
           </tr>
           <tr>
             <td class="var-name">SYNAPSE_PROVIDER_TIMEOUT_MS</td>
@@ -258,7 +258,7 @@
           <tr>
             <td class="var-name">SYNAPSE_BUDGET_DAILY_USD_GLOBAL</td>
             <td class="var-default">0 (sin límite)</td>
-            <td>Tope diario acumulado de todas las claves combinadas en vuestra empresa.</td>
+            <td>Tope diario acumulado de todas las claves combinadas en su empresa.</td>
           </tr>
         </tbody>
       </table>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>El producto: las seis capas explicadas — SynapseAI</title>
-  <meta name="description" content="El recorrido completo de una petición por SynapseAI: seis capas de inspección y protección antes de que el texto salga de vuestra red.">
+  <meta name="description" content="El recorrido completo de una petición por SynapseAI: seis capas de inspección y protección antes de que el texto salga de su red.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,12 +23,12 @@
     <div class="doc-head">
       <h1>Las seis capas del programa</h1>
       <p class="resumen">El recorrido completo que sigue cada mensaje antes de salir hacia ChatGPT, Claude o Gemini. Nada llega al proveedor sin cruzar estos seis pasos en este orden exacto.</p>
-      <span class="fecha">Versión 2.0.0 · Programa instalado en vuestra red</span>
+      <span class="fecha">Versión 2.0.0 · Programa instalado en su red</span>
     </div>
 
     <h2>Un único punto de paso</h2>
-    <p>SynapseAI es un programa que instaláis en un servidor de vuestra propia oficina o centro de datos. Se coloca justo en medio: entre los programas de vuestro equipo y las inteligencias artificiales externas.</p>
-    <p>Para usarlo, vuestro equipo solo tiene que cambiar <strong>una sola línea en sus programas</strong>: la dirección a la que envían las preguntas. A partir de ese momento, ningún texto sale hacia fuera sin haber sido revisado primero por seis capas consecutivas.</p>
+    <p>SynapseAI es un programa que se instala en un servidor de su propia oficina o centro de datos. Se coloca justo en medio: entre los programas de su equipo y las inteligencias artificiales externas.</p>
+    <p>Para usarlo, su equipo solo tiene que cambiar <strong>una sola línea en sus programas</strong>: la dirección a la que manda las preguntas. A partir de ese momento, ningún texto sale hacia fuera sin haber sido revisado primero por seis capas consecutivas.</p>
 
     <div class="hasta-aqui">
       <strong>Hasta aquí llega:</strong> El programa solo puede revisar el tráfico que se le envía directamente. Si un empleado abre ChatGPT desde su teléfono personal o desde un navegador fuera de la red de la empresa sin la extensión configurada, este programa no tiene forma material de intervenir.
@@ -60,14 +60,14 @@
       <li><strong>Tarjetas de crédito o débito:</strong> Algoritmo de Luhn.</li>
       <li><strong>Identificadores iberoamericanos:</strong> CIF (España), RFC y CURP (México), CPF y CNPJ (Brasil).</li>
     </ul>
-    <p>Si el identificador es matemáticamente válido, se sustituye en vuelo por una etiqueta segura como <code>[REDACTED_ES_DNI_NIE]</code> antes de que el texto salga de vuestro servidor.</p>
+    <p>Si el identificador es matemáticamente válido, se sustituye en vuelo por una etiqueta segura como <code>[REDACTED_ES_DNI_NIE]</code> antes de que el texto salga de su servidor.</p>
     <div class="hasta-aqui">
       <strong>Hasta aquí llega:</strong> El programa reconoce estructuras numéricas y documentos regulados con fórmula matemática. No comprende si un párrafo en prosa libre relata un secreto comercial o una conversación privada sin identificadores formales.
     </div>
 
-    <h2>Capa 04 · Se añaden vuestras instrucciones</h2>
-    <p>Una vez que el texto está completamente limpio de datos personales, el programa puede incorporar de forma automática las directrices generales de vuestra empresa (instrucciones de tono, confidencialidad o políticas internas).</p>
-    <p>El orden es crucial: vuestras instrucciones se acoplan <em>después</em> del borrado de datos, asegurando que nunca interfieran con la verificación de identificadores.</p>
+    <h2>Capa 04 · Se añaden sus instrucciones</h2>
+    <p>Una vez que el texto está completamente limpio de datos personales, el programa puede incorporar de forma automática las directrices generales de su empresa (instrucciones de tono, confidencialidad o políticas internas).</p>
+    <p>El orden es crucial: sus instrucciones se acoplan <em>después</em> del borrado de datos, asegurando que nunca interfieran con la verificación de identificadores.</p>
     <div class="hasta-aqui">
       <strong>Hasta aquí llega:</strong> Las instrucciones añadidas orientan las respuestas del modelo, pero los modelos de terceros pueden ignorar directrices en situaciones complejas de conversación.
     </div>
@@ -83,7 +83,7 @@
     </div>
 
     <h2>Capa 06 · Se anota lo que salió</h2>
-    <p>El programa escribe un apunte en un fichero de registro con una propiedad fundamental: <strong>cada anotación se enlaza matemáticamente con la anterior mediante una huella digital</strong>.</p>
+    <p>El programa escribe un apunte en un archivo de registro con una propiedad fundamental: <strong>cada anotación se enlaza matemáticamente con la anterior mediante una huella digital</strong>.</p>
     <p>Esto significa que si alguien intentara manipular o borrar una línea del registro semanas después, toda la cadena posterior quedaría rota y el programa avisaría de inmediato en el panel de control.</p>
     <div class="hasta-aqui">
       <strong>Hasta aquí llega:</strong> El registro certifica qué salió y a qué hora. El programa no almacena el texto confidencial del cliente una vez borrado, por lo que no es un repositorio de copias de seguridad de expedientes.
@@ -96,7 +96,7 @@
       <ul>
         <li><code>DNI/NIE</code>: Validación de residuo 23 (Real Decreto 1553/2005) sobre cadena alfanumérica filtrada.</li>
         <li><code>IBAN</code>: Validación ISO 13616 / MOD-97-10 con chequeo de código de país.</li>
-        <li><code>Ledger</code>: Un fichero en disco, una línea por petición, cada una enlazada a la anterior por su huella SHA-256.</li>
+        <li><code>Ledger</code>: Un archivo en disco, una línea por petición, cada una enlazada a la anterior por su huella SHA-256.</li>
       </ul>
       <pre><code># Ver el funcionamiento del pipeline en la consola local
 curl -X POST http://localhost:3000/v1/chat/completions \
@@ -109,7 +109,7 @@ curl -X POST http://localhost:3000/v1/chat/completions \
     </div>
 
     <h2>Pruébalo en directo</h2>
-    <p>Puedes examinar cómo responde cada una de las capas con vuestros propios ejemplos en el simulador del panel:</p>
+    <p>Puedes examinar cómo responde cada una de las capas con sus propios ejemplos en el simulador del panel:</p>
     <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 12px">
       <a class="btn" href="/app" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--ink-surface);color:var(--on-ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>

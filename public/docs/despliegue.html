@@ -32,17 +32,17 @@
     <p>La topología recomendada sitúa un proxy inverso fiable (como Nginx o Caddy) en la frontera del servidor o de la red interna:</p>
 
     <ul>
-      <li><strong>Cifrado punto a punto (TLS/HTTPS):</strong> Todo el tráfico entre vuestros programas y SynapseAI viaja cifrado mediante certificados SSL/TLS actualizados.</li>
+      <li><strong>Cifrado punto a punto (TLS/HTTPS):</strong> Todo el tráfico entre sus programas y SynapseAI viaja cifrado mediante certificados SSL/TLS actualizados.</li>
       <li><strong>Aislamiento de red:</strong> SynapseAI escucha únicamente en la interfaz local (<code>HOST=127.0.0.1</code>) o dentro de una red privada virtual de Docker.</li>
       <li><strong>Terminación de certificados:</strong> El proxy inverso asume la carga criptográfica y renueva automáticamente los certificados.</li>
     </ul>
 
     <h2>Configuración con Nginx</h2>
-    <p>Si utilizáis un servidor Linux tradicional (Debian, Ubuntu, RHEL) con Nginx instalado, esta es la configuración de bloque de servidor recomendada:</p>
+    <p>Si utilizan un servidor Linux tradicional (Debian, Ubuntu, RHEL) con Nginx instalado, esta es la configuración de bloque de servidor recomendada:</p>
 
     <pre class="code"><code>server {
     listen 443 ssl http2;
-    server_name ai.vuestra-empresa.local;
+    server_name ai.su-empresa.local;
 
     ssl_certificate     /etc/ssl/certs/synapse.crt;
     ssl_certificate_key /etc/ssl/private/synapse.key;
@@ -75,13 +75,13 @@
 }</code></pre>
 
     <div class="para-tecnicos">
-      <strong>Para tu equipo técnico · Salto de proxies:</strong> Cuando colocáis Nginx delante de SynapseAI, debéis configurar <code>TRUST_PROXY_HOPS=1</code> en vuestro archivo <code>.env</code>. Con este ajuste, el limitador de tasa de SynapseAI utilizará la dirección IP real del cliente reportada en la cabecera <code>X-Forwarded-For</code> en lugar de bloquear la IP local del proxy.
+      <strong>Para tu equipo técnico · Salto de proxies:</strong> Cuando colocáis Nginx delante de SynapseAI, deben configurar <code>TRUST_PROXY_HOPS=1</code> en su archivo <code>.env</code>. Con este ajuste, el limitador de tasa de SynapseAI utilizará la dirección IP real del cliente reportada en la cabecera <code>X-Forwarded-For</code> en lugar de bloquear la IP local del proxy.
     </div>
 
     <h2>Configuración con Caddy</h2>
     <p>Caddy es la alternativa más sencilla para servidores modernos, ya que gestiona y renueva automáticamente certificados HTTPS válidos sin necesidad de configurar scripts externos:</p>
 
-    <pre class="code"><code>ai.vuestra-empresa.local {
+    <pre class="code"><code>ai.su-empresa.local {
     reverse_proxy 127.0.0.1:3000 {
         # Desactivar buffer para respuestas inmediatas de la IA
         flush_interval -1
@@ -100,7 +100,7 @@
 openssl rand -hex 32</code></pre>
 
     <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> Si perdéis el valor de <code>SYNAPSE_VAULT_KEY</code>, las claves almacenadas no se podrán descifrar. SynapseAI no guarda copias de rescate de vuestra clave maestra en ningún servidor externo. Tendréis que volver a introducir las claves de los proveedores en el panel.
+      <strong>Hasta aquí llega:</strong> Si perdéis el valor de <code>SYNAPSE_VAULT_KEY</code>, las claves almacenadas no se podrán descifrar. SynapseAI no guarda copias de rescate de su clave maestra en ningún servidor externo. Tendréis que volver a introducir las claves de los proveedores en el panel.
     </div>
 
     <h2>Copias de seguridad del registro de auditoría</h2>
@@ -117,13 +117,13 @@ openssl rand -hex 32</code></pre>
     <pre class="code"><code># Copia diaria automatizada mediante cron o tarea programada
 tar -czf /backups/synapse-$(date +%Y%m%d).tar.gz -C /ruta/a/synapse data/</code></pre>
 
-    <p>Si utilizáis volúmenes en Docker, asegurad el volumen montado (<code>-v ./data:/app/data</code>) incluyendo esa ruta en vuestro plan habitual de copias de seguridad de la infraestructura.</p>
+    <p>Si utilizan volúmenes en Docker, asegurad el volumen montado (<code>-v ./data:/app/data</code>) incluyendo esa ruta en su plan habitual de copias de seguridad de la infraestructura.</p>
 
     <h2>Política de rotación de claves</h2>
-    <p>Para mantener una higiene de seguridad impecable sin provocar caídas en vuestros programas:</p>
+    <p>Para mantener una higiene de seguridad impecable sin provocar caídas en sus programas:</p>
 
     <ol>
-      <li><strong>Claves de operador (SynapseAI):</strong> Generad una clave nueva con el ámbito requerido (<code>inference:</code> o <code>report:</code>) en la pestaña <em>Ajustes</em> del panel. Actualizad vuestras aplicaciones cliente con la nueva clave. Solo cuando hayáis verificado que el tráfico entra correctamente, proceded a revocar la clave antigua.</li>
+      <li><strong>Claves de operador (SynapseAI):</strong> Generad una clave nueva con el ámbito requerido (<code>inference:</code> o <code>report:</code>) en la pestaña <em>Ajustes</em> del panel. Actualizad sus aplicaciones cliente con la nueva clave. Solo cuando hayáis verificado que el tráfico entra correctamente, proceded a revocar la clave antigua.</li>
       <li><strong>Claves de proveedores de IA:</strong> Actualizad las claves en la consola de OpenAI o Anthropic e introducid la nueva clave en SynapseAI. El cambio se aplica en memoria de forma instantánea sin reiniciar el contenedor.</li>
     </ol>
 

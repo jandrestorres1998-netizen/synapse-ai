@@ -94,7 +94,7 @@ export class AjustesComponent {
       return `
         <div class="aside-note ok">
           <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">Las credenciales están cifradas de verdad</p>
-          <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink)">La clave maestra vive fuera de este disco, así que quien copie el fichero no se lleva nada usable.</p>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink)">La clave maestra vive fuera de este disco, así que quien copie el archivo no se lleva nada usable.</p>
         </div>`;
     }
 
@@ -121,7 +121,7 @@ export class AjustesComponent {
         <div style="padding:20px 19px">
           <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">No hay ninguna clave: la puerta está abierta</p>
           <p style="margin:0;max-width:70ch;font-size:14px;line-height:1.55;color:var(--ink-muted)">
-            La autenticación está desactivada, así que cualquier programa de este ordenador entra. Sirve para probar;
+            La autenticación está desactivada, así que cualquier programa de esta computadora entra. Sirve para probar;
             para trabajar, define <code>SYNAPSE_API_KEYS</code> y reinicia.
           </p>
         </div>`;

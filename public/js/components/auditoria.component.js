@@ -10,10 +10,10 @@ import { esc, integer } from '../ui.js';
  *     la rama de error, así que siempre decía que sí. En un producto cuyo
  *     argumento es el registro, un verificador que nunca falla no es un fallo
  *     de interfaz: es la funcionalidad al revés.
- *  2. Verificaba con /api/integrity, que compara los ficheros del servidor con
+ *  2. Verificaba con /api/integrity, que compara los archivos del servidor con
  *     su manifiesto. Eso no dice nada sobre la cadena.
  *  3. Al fallar la exportación, escribía a disco las entradas de ejemplo con
- *     nombre de fichero de auditoría. Eso es fabricar pruebas.
+ *     nombre de archivo de auditoría. Eso es fabricar pruebas.
  */
 
 // El registro guarda el nombre técnico de la regla, en inglés, porque describe
@@ -91,7 +91,7 @@ export class AuditoriaComponent {
     const integridad = ledger.integrity ?? {};
 
     if (integridad.isValid === false) {
-      return `La cadena no verifica — ${esc(integridad.reason ?? 'revisa el fichero')}`;
+      return `La cadena no verifica — ${esc(integridad.reason ?? 'revisa el archivo')}`;
     }
     return `${total} ${ledger.totalAppended === 1 ? 'entrada' : 'entradas'}, cadena íntegra`;
   }
@@ -184,7 +184,7 @@ export class AuditoriaComponent {
       btnVerify.textContent = 'Comprobando…';
 
       try {
-        // Se recorre la cadena de verdad, no el manifiesto de ficheros: son dos
+        // Se recorre la cadena de verdad, no el manifiesto de archivos: son dos
         // garantías distintas y confundirlas fue el fallo de la versión previa.
         const { ledger } = await ApiService.getSecurityLogs();
         const integridad = ledger?.integrity ?? {};
@@ -194,7 +194,7 @@ export class AuditoriaComponent {
             `${integer(ledger.totalAppended)} entradas comprobadas, una por una, y todas enlazan con la anterior.`);
         } else {
           aviso('critical', 'El registro no cuadra',
-            integridad.reason ?? 'Alguna entrada no coincide con su hash. Revisa el fichero.');
+            integridad.reason ?? 'Alguna entrada no coincide con su hash. Revisa el archivo.');
         }
 
         await this.render();
@@ -218,7 +218,7 @@ export class AuditoriaComponent {
         a.click();
         URL.revokeObjectURL(url);
       } catch (err) {
-        // Sin recurso alternativo a propósito: escribir un fichero de auditoría
+        // Sin recurso alternativo a propósito: escribir un archivo de auditoría
         // con datos que no vienen del registro sería fabricar una prueba.
         aviso('critical', 'No se pudo descargar', err.message);
       }

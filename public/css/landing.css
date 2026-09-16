@@ -8,7 +8,7 @@
    Tres secciones van en tinta —el recorrido, los límites y el cierre— porque
    son las que sostienen el argumento. El resto es fondo claro para leer.
 
-   El movimiento vive al final del fichero, en su propio bloque.
+   El movimiento vive al final del archivo, en su propio bloque.
    =========================================================================== */
 
 body { font-size: 16px; line-height: 1.6; }
@@ -1805,7 +1805,7 @@ pre.code .hl { background: color-mix(in oklch, var(--probar) 12%, transparent); 
 /* ── El mapa del hero: dónde se pone esto ──────────────────────────────────
    La columna de la derecha tenía los cuatro hechos pegados abajo y un hueco
    blanco encima. Lo que va ahí no repite el vídeo ni el trazador: enseña lo
-   único que ninguno de los dos cuenta, que esto vive dentro de vuestra red y
+   único que ninguno de los dos cuenta, que esto vive dentro de su red y
    que es el único cable que sale hacia fuera.
    =========================================================================== */
 
@@ -1871,7 +1871,7 @@ pre.code .hl { background: color-mix(in oklch, var(--probar) 12%, transparent); 
   text-anchor: middle;
 }
 
-/* El punto sale de vuestros programas, entra en el nodo, el nodo responde y
+/* El punto sale de sus programas, entra en el nodo, el nodo responde y
    solo entonces sale el de fuera. Primero pasa, luego cruza: nunca los dos a
    la vez, porque no es lo que ocurre. */
 .m-punto { fill: var(--probar); opacity: 0; }
@@ -1915,7 +1915,7 @@ pre.code .hl { background: color-mix(in oklch, var(--probar) 12%, transparent); 
 
 /* Por debajo de este ancho el mapa se escala tanto que sus rotulos dejan de
    leerse, y un dibujo que no se lee no es un dibujo. Se retira: lo que dice
-   -- que esto vive dentro de vuestra red -- ya esta escrito en el parrafo de
+   -- que esto vive dentro de su red -- ya esta escrito en el parrafo de
    entrada y lo repite la seccion 01. */
 @media (max-width: 720px) {
   .hero-mapa { display: none; }

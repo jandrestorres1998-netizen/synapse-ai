@@ -3,7 +3,7 @@ import { esc } from './ui.js';
 /**
  * Lista de descargas con su huella.
  *
- * La huella la calcula el servidor del fichero que hay en disco. Si estuviera
+ * La huella la calcula el servidor del archivo que hay en disco. Si estuviera
  * escrita a mano en el HTML, al repaquetar la extensión seguiría publicándose
  * la huella de la versión anterior — y entonces el checksum ya no comprueba
  * nada, solo tranquiliza.

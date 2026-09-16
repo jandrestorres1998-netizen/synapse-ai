@@ -71,7 +71,7 @@
             <td style="padding:14px 16px;color:var(--critical);font-weight:600">Ninguno</td>
             <td style="padding:14px 16px;color:var(--ink-muted)">Registro en base de datos; sin encadenado por huella documentado</td>
             <td style="padding:14px 16px;color:var(--ink-muted)">Analítica en su nube con retención limitada</td>
-            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150);background:oklch(0.98 0.01 280)">Sí · Cadena de huellas SHA-256 en un fichero vuestro</td>
+            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150);background:oklch(0.98 0.01 280)">Sí · Cadena de huellas SHA-256 en un archivo su</td>
           </tr>
           <tr style="border-bottom:1px solid var(--line)">
             <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Catálogo de proveedores soportados</td>
@@ -101,20 +101,20 @@
 
     <h3>1 · Comprobación del dígito de control de los documentos de España e Iberoamérica</h3>
     <p>Cualquier herramienta puede buscar una secuencia de 8 números y una letra con una expresión regular. El problema es que en España eso genera miles de falsos positivos con números de factura, códigos postales o referencias catastrales. SynapseAI valida el <strong>módulo 23 del DNI/NIE</strong>, el dígito de control del CIF, el algoritmo de Luhn en tarjetas y el <strong>MOD-97-10 en códigos de cuenta bancaria e IBAN</strong>.</p>
-    <p>Si la letra no encaja matemáticamente con los números, <strong>no es un documento de identidad y no se borra</strong>. Esto evita que vuestros informes queden ilegibles por sobre-borrado absurdo.</p>
+    <p>Si la letra no encaja matemáticamente con los números, <strong>no es un documento de identidad y no se borra</strong>. Esto evita que sus informes queden ilegibles por sobre-borrado absurdo.</p>
 
     <h3>2 · La extensión intercepta en el puesto de trabajo</h3>
-    <p>En una gestoría o un despacho, buena parte del riesgo no está en vuestros programas: está en alguien pegando un documento escaneado en la web de ChatGPT o de Claude. La extensión de SynapseAI actúa en el propio navegador, sustituyendo DNI y cuentas bancarias antes de que el texto viaje a internet.</p>
+    <p>En una gestoría o un despacho, buena parte del riesgo no está en sus programas: está en alguien pegando un documento escaneado en la web de ChatGPT o de Claude. La extensión de SynapseAI actúa en el propio navegador, sustituyendo DNI y cuentas bancarias antes de que el texto viaje a internet.</p>
 
     <h3>3 · Registro demostrable que nadie puede maquillar</h3>
-    <p>Si un auditor o la AEPD inspecciona vuestra empresa, un registro en MySQL o PostgreSQL no demuestra nada: cualquier informático con acceso de administrador puede modificar una fila sin dejar rastro. SynapseAI encadena cada petición con la huella SHA-256 de la anterior. Alterar una coma invalida toda la cadena posterior.</p>
+    <p>Si un auditor o la AEPD inspecciona su empresa, un registro en MySQL o PostgreSQL no demuestra nada: cualquier informático con acceso de administrador puede modificar una fila sin dejar rastro. SynapseAI encadena cada petición con la huella SHA-256 de la anterior. Alterar una coma invalida toda la cadena posterior.</p>
 
     <h2>3. Dónde pierde SynapseAI (y no intentamos competir)</h2>
 
     <div class="para-tecnicos">
       <strong>Derrotas reconocidas con honestidad:</strong>
       <ul>
-        <li><strong>Si necesitas 80 proveedores exóticos:</strong> Usa <strong>LiteLLM</strong>. Tienen una comunidad inmensa y añaden cada nuevo modelo chino o europeo a los dos días de publicarse. SynapseAI conecta con cuatro: OpenAI, Anthropic, Google y modelos vuestros.</li>
+        <li><strong>Si necesitas 80 proveedores exóticos:</strong> Usa <strong>LiteLLM</strong>. Tienen una comunidad inmensa y añaden cada nuevo modelo chino o europeo a los dos días de publicarse. SynapseAI conecta con cuatro: OpenAI, Anthropic, Google y modelos sus.</li>
         <li><strong>Si necesitas aceleración perimetral en 100 países:</strong> Usa <strong>Cloudflare AI Gateway</strong>. Tienen centros de datos en cada rincón del planeta y una infraestructura masiva que nosotros no podemos igualar.</li>
         <li><strong>Si necesitas integración profunda con Active Directory en 5.000 puestos:</strong> Usa <strong>Microsoft Purview</strong>. Viene integrado en el sistema operativo Windows y en las licencias E5 de Office.</li>
       </ul>
@@ -125,10 +125,10 @@
 
     <pre class="code"><code>Tus programas &rarr; SynapseAI (borrado y auditoría local) &rarr; LiteLLM / Cloudflare &rarr; Proveedores de IA</code></pre>
 
-    <p>SynapseAI revisa y limpia los datos en vuestra red de oficina; una vez que los DNI, tarjetas e IBAN han sido retirados, el tráfico viaja limpio hacia cualquier enrutador o proveedor que ya tengáis contratado.</p>
+    <p>SynapseAI revisa y limpia los datos en su red de oficina; una vez que los DNI, tarjetas e IBAN han sido retirados, el tráfico viaja limpio hacia cualquier enrutador o proveedor que ya tengáis contratado.</p>
 
     <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> SynapseAI no sustituye vuestra infraestructura corporativa ni hace magia frente a fugas organizativas intencionadas (como un usuario haciendo fotos a la pantalla con su móvil). Se encarga estrictamente de que lo que se envíe en texto digital no contenga identificadores reconocibles de personas.
+      <strong>Hasta aquí llega:</strong> SynapseAI no sustituye su infraestructura corporativa ni hace magia frente a fugas organizativas intencionadas (como un usuario haciendo fotos a la pantalla con su celular). Se encarga estrictamente de que lo que se envíe en texto digital no contenga identificadores reconocibles de personas.
     </div>
 
   </article>
