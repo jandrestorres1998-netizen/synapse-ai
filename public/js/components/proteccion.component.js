@@ -3,19 +3,19 @@ import { esc } from '../ui.js';
 
 export class ProteccionComponent {
   static rules = [
-    { id: "dni", nombre: "Identificadores de Identidad (DNI, NIE, CIF, RFC, CURP)", limite: "Validación matemática de checksum (MOD-23 y homoclaves internacionales).", active: true },
-    { id: "iban", nombre: "Cuentas bancarias e IBAN", limite: "Validación algorítmica MOD-97 sobre 34 países SEPA e internacionales.", active: true },
-    { id: "tarjeta", nombre: "Tarjetas de pago y crédito", limite: "Algoritmo de Luhn para emisores Visa, Mastercard, Amex y Discover.", active: true },
-    { id: "claves", nombre: "Llaves API, certificados PEM y secretos", limite: "Análisis de entropía y firmas de proveedores cloud (AWS, GitHub, OpenAI).", active: true },
-    { id: "inyeccion", nombre: "Mitigación de Prompt Injection y manipulación", limite: "Filtrado heurístico de jailbreaks y directivas de anulación en tiempo real.", active: true },
+    { id: "dni", nombre: "DNI, NIE y CIF (ES)", limite: "Valida MOD-23 y letra de control; no detecta nombres.", active: true },
+    { id: "iban", nombre: "IBAN y cuentas", limite: "MOD-97 sobre 34 países SEPA.", active: true },
+    { id: "tarjeta", nombre: "Tarjetas de pago", limite: "Luhn; un número de 16 dígitos sin checksum válido pasa.", active: true },
+    { id: "claves", nombre: "Claves API, PEM y cadenas de conexión", limite: "Patrones conocidos; una clave con formato propio no se reconoce.", active: true },
+    { id: "inyeccion", nombre: "Filtrado de inyección de prompts", limite: "Reduce ruido. No cierra la clase de ataque.", active: true },
   ];
 
   static detections = [
-    { tipo: "ES_DNI_NIE", accion: "Anonimizado en salida", hora: "18:42:11", hash: "a91f…c204 ← 7bd0…11ae", color: "oklch(0.70 0.18 62)" },
+    { tipo: "ES_DNI_NIE", accion: "Redactado en salida", hora: "18:42:11", hash: "a91f…c204 ← 7bd0…11ae", color: "oklch(0.70 0.18 62)" },
     { tipo: "PROMPT_INJECTION", accion: "Petición bloqueada", hora: "18:40:02", hash: "7bd0…11ae ← 4f22…9c31", color: "oklch(0.57 0.22 22)" },
-    { tipo: "API_KEY", accion: "Anonimizado en salida", hora: "18:31:48", hash: "4f22…9c31 ← 08ac…52de", color: "oklch(0.70 0.18 62)" },
-    { tipo: "IBAN", accion: "Anonimizado en respuesta", hora: "18:22:03", hash: "08ac…52de ← 66b1…7f90", color: "oklch(0.70 0.18 62)" },
-    { tipo: "BR_CPF", accion: "Anonimizado en salida", hora: "17:58:40", hash: "66b1…7f90 ← 12e7…aa05", color: "oklch(0.70 0.18 62)" },
+    { tipo: "API_KEY", accion: "Redactado en salida", hora: "18:31:48", hash: "4f22…9c31 ← 08ac…52de", color: "oklch(0.70 0.18 62)" },
+    { tipo: "IBAN", accion: "Redactado en respuesta", hora: "18:22:03", hash: "08ac…52de ← 66b1…7f90", color: "oklch(0.70 0.18 62)" },
+    { tipo: "BR_CPF", accion: "Redactado en salida", hora: "17:58:40", hash: "66b1…7f90 ← 12e7…aa05", color: "oklch(0.70 0.18 62)" },
   ];
 
   static render() {
@@ -27,7 +27,7 @@ export class ProteccionComponent {
         <!-- Card 1: Reglas activas -->
         <div style="border:1px solid oklch(0.905 0.022 280);border-radius:13px;background:#fff;overflow:hidden">
           <div style="padding:15px 19px;border-bottom:1px solid oklch(0.938 0.016 280);font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">
-            Directivas y Reglas Activas
+            Reglas activas
           </div>
           <div id="rules-list-items">
             ${this.renderRulesList()}
@@ -41,7 +41,7 @@ export class ProteccionComponent {
               </svg>
             </span>
             <p style="margin:0;font-size:14px;line-height:1.5;color:oklch(0.24 0.045 280)">
-              Desactivar una directiva afecta el tráfico en curso y queda registrado en la cadena de auditoría SHA-256 con su identidad de operador.
+              Desactivar una regla afecta al tráfico en curso y queda registrado en la cadena de auditoría con tu identidad.
             </p>
           </div>
         </div>
@@ -49,7 +49,7 @@ export class ProteccionComponent {
         <!-- Card 2: Detecciones recientes -->
         <div style="border:1px solid oklch(0.905 0.022 280);border-radius:13px;background:#fff;overflow:hidden">
           <div style="padding:15px 19px;border-bottom:1px solid oklch(0.938 0.016 280);font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">
-            Detecciones e Incidentes Recientes
+            Detecciones recientes
           </div>
           <div id="detections-list-items">
             ${this.renderDetectionsList()}
@@ -61,39 +61,39 @@ export class ProteccionComponent {
       <div id="modal-new-rule" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:999;align-items:center;justify-content:center">
         <div style="width:100%;max-width:480px;background:#fff;border-radius:14px;border:1px solid oklch(0.905 0.022 280);box-shadow:0 12px 32px rgba(0,0,0,0.18);overflow:hidden;margin:20px">
           <div style="display:flex;align-items:center;padding:16px 20px;border-bottom:1px solid oklch(0.938 0.016 280)">
-            <h3 style="margin:0;font-size:16.5px;font-weight:600;color:oklch(0.18 0.05 280)">Nueva directiva de protección</h3>
+            <h3 style="margin:0;font-size:16.5px;font-weight:600;color:oklch(0.18 0.05 280)">Nueva regla de protección</h3>
             <button id="btn-close-modal-rule" type="button" style="margin-left:auto;border:0;background:transparent;font-size:20px;cursor:pointer;color:oklch(0.51 0.028 280)">&times;</button>
           </div>
           <div style="padding:20px;display:grid;gap:14px">
             <div>
-              <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:oklch(0.24 0.045 280)">Nombre de la directiva</label>
+              <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:oklch(0.24 0.045 280)">Nombre de la regla</label>
               <input id="input-rule-name" type="text" placeholder="p. ej. Número de colegiado / referencia" style="width:100%;height:38px;padding:0 12px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;font-size:14px;box-sizing:border-box">
             </div>
             <div>
               <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:oklch(0.24 0.045 280)">Tipo de patrón</label>
               <select id="select-rule-type" style="width:100%;height:38px;padding:0 12px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;font-size:14px;background:#fff;box-sizing:border-box">
                 <option value="regex">Expresión regular (Regex)</option>
-                <option value="dni">Documento de identidad (DNI / RFC / CURP)</option>
-                <option value="iban">Cuenta bancaria (IBAN / CLABE)</option>
-                <option value="secret">Llave secreta / Token API</option>
-                <option value="prompt">Inyección de prompts / Jailbreak</option>
+                <option value="dni">DNI / NIE / CIF</option>
+                <option value="iban">Cuenta bancaria (IBAN)</option>
+                <option value="secret">Clave secreta / Token API</option>
+                <option value="prompt">Inyección de instrucciones</option>
               </select>
             </div>
             <div>
               <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:oklch(0.24 0.045 280)">Acción en caso de coincidencia</label>
               <select id="select-rule-action" style="width:100%;height:38px;padding:0 12px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;font-size:14px;background:#fff;box-sizing:border-box">
-                <option value="redact_out">Anonimizar en salida hacia el modelo (DLP)</option>
-                <option value="redact_resp">Anonimizar en respuesta del modelo (DLP)</option>
+                <option value="redact_out">Redactar en salida hacia el modelo</option>
+                <option value="redact_resp">Redactar en respuesta del modelo</option>
                 <option value="block">Bloquear la petición de inmediato</option>
               </select>
             </div>
             <div>
-              <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:oklch(0.24 0.045 280)">Condición o alcance declarado</label>
-              <input id="input-rule-limit" type="text" placeholder="p. ej. Se anonimiza si coincide con el formato oficial" style="width:100%;height:38px;padding:0 12px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;font-size:14px;box-sizing:border-box">
+              <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:oklch(0.24 0.045 280)">Límite o condición declarada</label>
+              <input id="input-rule-limit" type="text" placeholder="p. ej. Se redacta si coincide con el formato, sin tocar nombres" style="width:100%;height:38px;padding:0 12px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;font-size:14px;box-sizing:border-box">
             </div>
             <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px">
               <button id="btn-cancel-rule" type="button" style="height:36px;padding:0 14px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;background:#fff;font-size:13.5px;cursor:pointer">Cancelar</button>
-              <button id="btn-save-rule" type="button" style="height:36px;padding:0 16px;border:0;border-radius:8px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:13.5px;font-weight:500;cursor:pointer">Crear directiva</button>
+              <button id="btn-save-rule" type="button" style="height:36px;padding:0 16px;border:0;border-radius:8px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:13.5px;font-weight:500;cursor:pointer">Crear regla</button>
             </div>
           </div>
         </div>

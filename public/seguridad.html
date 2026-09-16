@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arquitectura de Seguridad y Modelo de Protección — SynapseAI</title>
-  <meta name="description" content="Conoce la arquitectura de seguridad, cifrado AES-256-GCM, bóveda de credenciales y controles de privacidad que blindan el uso corporativo de Inteligencia Artificial.">
+  <title>Modelo de seguridad y superficie de ataque — SynapseAI</title>
+  <meta name="description" content="Qué protege SynapseAI, qué queda fuera de su alcance, el modelo de amenaza y la superficie de ataque expuesta al concentrar claves.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,84 +21,96 @@
 
   <article class="doc">
     <div class="doc-head">
-      <h1>Arquitectura de Seguridad y Protección</h1>
-      <p class="resumen">Cómo protege SynapseAI los activos de tu empresa: aislamiento de datos en memoria, cifrado simétrico AES-256-GCM y trazabilidad criptográfica inmutable.</p>
-      <span class="fecha">Revisión técnica de seguridad · Versión 2.0.0</span>
+      <h1>Modelo de seguridad</h1>
+      <p class="resumen">Qué protege exactamente este programa, qué queda fuera de su alcance y qué riesgos asumes al instalarlo. Sin superlativos comerciales: la seguridad empieza por la honestidad.</p>
+      <span class="fecha">Revisión de seguridad: Septiembre de 2026 · Versión 2.0.0</span>
     </div>
 
-    <h2>1 · Protección integral contra fugas de datos (DLP)</h2>
-    <p>SynapseAI neutraliza un riesgo crítico en las operaciones corporativas modernas: <strong>el copiado y pegado involuntario de datos personales, financieros o confidenciales de clientes al consultar modelos de inteligencia artificial</strong>.</p>
-    <p>La protección se ejecuta en dos puntos estratégicos:</p>
+    <h2>1 · Qué protege SynapseAI</h2>
+    <p>SynapseAI está diseñado para resolver un problema operativo muy común en oficinas profesionales: <strong>el copiado y pegado involuntario de datos confidenciales de clientes al consultar herramientas de inteligencia artificial</strong>.</p>
+    <p>El programa interviene sobre dos vectores concretos:</p>
     <ul>
-      <li><strong>En la infraestructura interna:</strong> Actúa como gateway seguro para tus aplicaciones empresariales, bots y flujos automatizados. Si una consulta contiene identificaciones oficiales (DNI, RFC, CURP, CPF, CNPJ), cuentas bancarias o tarjetas de crédito válidas, se enmascaran antes de salir a internet.</li>
-      <li><strong>En la computadora del usuario:</strong> Mediante la extensión de navegador oficial (Manifest V3), supervisa en tiempo real los cuadros de texto en ChatGPT, Claude y Gemini para alertar al colaborador y enmascarar datos antes del envío.</li>
+      <li><strong>En los servidores de la empresa:</strong> Actúa como punto de paso obligatorio para vuestros programas internos y aplicaciones de gestión. Si una consulta contiene un DNI, un IBAN o una tarjeta con dígitos de control correctos, se sustituyen por etiquetas antes de que el texto viaje a internet.</li>
+      <li><strong>En el puesto del usuario:</strong> A través de la extensión de navegador (Manifest V3), vigila los campos de texto en ChatGPT, Claude y Gemini para alertar al empleado en el momento exacto en que pulsa Enviar.</li>
     </ul>
 
-    <div class="doc-note">
-      <strong>Garantía de privacidad:</strong> La inspección y el enmascaramiento se realizan en la memoria de tu servidor y en el navegador local. Ningún dato sensible se almacena sin cifrar ni se envía a servidores de terceros.
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El programa busca identificadores formales regulados con fórmulas matemáticas. No es un analista humano: si un empleado pega un memorando estratégico, una carta de despido o una conversación confidencial que no contenga un DNI o un número de cuenta, el programa no tiene forma de juzgar su confidencialidad y dejará pasar el texto.
     </div>
 
-    <h2>2 · Bóveda centralizada y cifrado de credenciales</h2>
-    <p>En lugar de repartir claves secretas de OpenAI, Anthropic o Google en las computadoras personales de los colaboradores o en archivos de configuración desprotegidos, SynapseAI centraliza su custodia en una bóveda segura.</p>
+    <h2>2 · La superficie de ataque que se genera</h2>
+    <p>Todo programa de seguridad que se añade a una red introduce a su vez nuevos riesgos. En SynapseAI preferimos decirlos en voz alta en lugar de esconderlos en un anexo técnico:</p>
 
     <div class="audit-card">
       <div class="audit-card-head">
-        <h3>Bóveda con cifrado AES-256-GCM</h3>
-        <span class="badge-status badge-ok">Protección activa</span>
+        <h3>Concentración de claves de proveedores</h3>
+        <span class="badge-status badge-limite">Riesgo asumido</span>
       </div>
-      <p>Todas las credenciales de proveedores externos se almacenan cifradas en reposo mediante el algoritmo estándar <strong>AES-256-GCM</strong>, con vectores de inicialización únicos y etiquetas de autenticación de 16 bytes por registro.</p>
-      <p>Al configurar la variable maestra <code>SYNAPSE_VAULT_KEY</code> en su servidor, garantiza que las llaves permanezcan completamente inaccesibles ante cualquier intento de extracción externa.</p>
+      <p>Para que vuestros empleados no tengan que guardar individualmente las claves secretas de OpenAI o Anthropic en sus ordenadores personales, SynapseAI las custodia de forma centralizada en su servidor interno.</p>
+      <p><strong>Consecuencia de seguridad:</strong> Este diseño crea un objetivo de alto valor dentro de vuestra red local. Si un intruso lograra acceso de administrador al servidor donde corre SynapseAI, podría intentar extraer esas credenciales.</p>
+      <div class="hasta-aqui">
+        <strong>Hasta aquí llega:</strong> Las claves se almacenan cifradas mediante el algoritmo AES-256-GCM. Sin embargo, para que el cifrado sea realmente inviolable en reposo, es <strong>obligatorio configurar la variable <code>SYNAPSE_VAULT_KEY</code></strong> en el entorno del servidor. Si no se configura esa clave maestra, el programa entra en modo degradado y utiliza una clave derivada de la máquina, lo que en la práctica constituye mera ofuscación ante un atacante con acceso total a la máquina.
+      </div>
     </div>
 
     <div class="audit-card">
       <div class="audit-card-head">
-        <h3>Arquitectura de Confianza Cero (Zero Trust)</h3>
-        <span class="badge-status badge-ok">Principio de diseño</span>
+        <h3>Dependencia del punto de paso voluntario</h3>
+        <span class="badge-status badge-limite">Límite estructural</span>
       </div>
-      <p>Cada consulta requiere autenticación interna con token propio. Los permisos se segmentan por aplicación o equipo de trabajo, asignando presupuestos independientes y restringiendo el acceso a modelos según las políticas de su organización.</p>
+      <p>SynapseAI solo puede inspeccionar y filtrar el texto que efectivamente se le entrega. No es un cortafuegos a nivel de cable ni un sistema de espionaje del teclado del trabajador.</p>
+      <div class="hasta-aqui">
+        <strong>Hasta aquí llega:</strong> Si un empleado con malas intenciones decide abrir la aplicación móvil de ChatGPT en su teléfono particular o desconectar la extensión en su navegador personal para extraer datos, SynapseAI no tiene capacidad técnica de impedirlo. Este programa previene descuidos y hábitos peligrosos de trabajo, pero no sustituye la disciplina interna ni los controles de acceso a los expedientes.
+      </div>
     </div>
 
-    <h2>3 · Registro de auditoría criptográfica inmutable</h2>
-    <p>Para demostrar ante autoridades regulatorias, auditorías externas o clientes la estricta diligencia de su empresa, SynapseAI genera un registro secuencial incorruptible:</p>
+    <h2>3 · Seguridad del registro de auditoría</h2>
+    <p>Para demostrar ante una inspección o ante un cliente qué consultas se realizaron, SynapseAI mantiene un fichero de registro con una línea por petición, encadenadas entre sí:</p>
     <ul>
-      <li>Cada transacción incluye la huella digital criptográfica (hash SHA-256) de la transacción anterior.</li>
-      <li>Si alguien intentara manipular o suprimir un registro histórico, la cadena completa se invalida de forma inmediata.</li>
-      <li>El panel de control permite verificar la integridad matemática del registro completo con un solo clic.</li>
+      <li>Cada apunte incluye la huella digital criptográfica (SHA-256) del apunte anterior.</li>
+      <li>Si alguien modifica un registro histórico a posteriori (para borrar una consulta indebida), la cadena de huellas se rompe de inmediato.</li>
+      <li>El panel de control verifica la integridad completa del archivo con un solo clic y avisa si detecta cualquier discrepancia.</li>
     </ul>
 
-    <h2>4 · Divulgación responsable de seguridad (RFC 9116)</h2>
-    <p>La seguridad rigurosa se basa en la transparencia y en canales estandarizados de atención:</p>
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El registro certifica que nadie ha alterado las líneas escritas. Para garantizar su conservación legal a largo plazo frente a fallos de hardware o borrados del disco duro, vuestro equipo de sistemas debe programar copias de seguridad periódicas del directorio <code>data/</code> a un soporte externo protegido contra escritura.
+    </div>
+
+    <h2>4 · Política de divulgación de fallos (Security.txt)</h2>
+    <p>Ningún programa informático está exento de errores o vulnerabilidades. El programa trae preparado el canal estándar para que investigadores y administradores avisen de un fallo antes de publicarlo. Cada instalación declara el suyo:</p>
     <ul>
-      <li><strong>Archivo estándar:</strong> Disponible en <a href="/.well-known/security.txt"><code>/.well-known/security.txt</code></a> tan pronto como se define la dirección de contacto corporativa en <code>SYNAPSE_SECURITY_CONTACT</code>.</li>
-      <li><strong>Compromiso de buena fe:</strong> Respaldamos la investigación ética y responsable de seguridad que no vulnere datos de terceros.</li>
+      <li><strong>Fichero estándar:</strong> En la ruta que todo el mundo mira, <a href="/.well-known/security.txt"><code>/.well-known/security.txt</code></a>, en cuanto la instalación declare una dirección.</li>
+      <li><strong>Dirección de contacto:</strong> <span class="rellenar">[Pendiente de configurar]</span> — la pone quien instala el programa, en <code>SYNAPSE_SECURITY_CONTACT</code>. Mientras no esté, <code>/.well-known/security.txt</code> no se publica: anunciar un buzón que no recibe es peor que no anunciar ninguno.</li>
+      <li><strong>Plazo de respuesta:</strong> <span class="rellenar">[Pendiente de definir]</span>. No ponemos una cifra hasta que haya alguien comprometido a cumplirla.</li>
+      <li><strong>Garantía de buena fe:</strong> No emprendemos acciones legales contra quienes investiguen la seguridad del programa de buena fe sin acceder a datos de terceros.</li>
     </ul>
 
-    <h2>Para su equipo de ingeniería</h2>
+    <h2>Para tu equipo técnico</h2>
     <div class="tecnico-box">
-      <span class="eyebrow">Parámetros criptográficos y de red</span>
-      <p>Estándares técnicos implementados en el núcleo del gateway:</p>
+      <span class="eyebrow">Detalles criptográficos y de red</span>
+      <p>Los estándares implementados en el núcleo del servidor son:</p>
       <ul>
-        <li><code>Cifrado</code>: AES-256-GCM simétrico con IV aleatorio de 12 bytes y Auth Tag de 16 bytes.</li>
-        <li><code>Cadena de hashes</code>: SHA-256 continuo sobre metadatos y estado de cada solicitud.</li>
-        <li><code>Cabeceras HTTP</code>: CSP estricto, <code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: DENY</code> y deshabilitación estricta de CORS para orígenes no autorizados.</li>
+        <li><code>Vault</code>: Cifrado simétrico AES-256-GCM con vector de inicialización aleatorio de 12 bytes y etiqueta de autenticación (auth tag) de 16 bytes por registro.</li>
+        <li><code>Hash chain</code>: SHA-256 continuo sobre <code>[hash_anterior + timestamp + tenant_id + route + status]</code>.</li>
+        <li><code>Cabeceras HTTP</code>: CSP restrictiva, <code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: DENY</code> y deshabilitación explícita de CORS para orígenes no autorizados.</li>
       </ul>
-      <pre><code># Verificar la integridad criptográfica de la cadena de auditoría
+      <pre><code># Comprobar la integridad criptográfica de la cadena de registro
 curl -s -H "Authorization: Bearer $SYNAPSE_API_KEY" \
   http://localhost:3000/api/ledger/integrity | jq .</code></pre>
     </div>
 
-    <h2>Conoce más sobre la seguridad</h2>
+    <h2>Explora más sobre la seguridad</h2>
     <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 12px">
       <a class="btn" href="/auditoria" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--ink-surface);color:var(--on-ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>
-        Ver informe de auditoría técnica
+        Leer la auditoría adversaria
       </a>
       <a class="btn" href="/extension" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--line-strong);color:var(--ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 4 4-4 4"/><path d="M15 16h2"/></svg>
         Permisos de la extensión
       </a>
       <a class="btn" href="/legal/vulnerabilidades" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--surface-quiet);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:14px">
-        Reportar vulnerabilidad
+        Aviso de vulnerabilidades
       </a>
     </div>
 

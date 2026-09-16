@@ -24,12 +24,12 @@ export class ContextoComponent {
         <!-- Directriz corporativa -->
         <div style="border:1px solid oklch(0.905 0.022 280);border-radius:13px;background:#fff">
           <div style="display:flex;align-items:center;padding:15px 19px;border-bottom:1px solid oklch(0.938 0.016 280)">
-            <span style="font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">Directriz de Sistema Corporativa</span>
+            <span style="font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">Directriz corporativa</span>
             <span id="directive-token-count" style="margin-left:auto;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:12px;color:oklch(0.61 0.022 280)">${tkCount} tokens por petición</span>
           </div>
           <div style="padding:19px">
             <textarea id="directive-input" style="width:100%;min-height:210px;resize:vertical;padding:15px;border:1px solid oklch(0.905 0.022 280);border-radius:10px;background:oklch(0.963 0.020 280);font-size:15px;line-height:1.6;color:oklch(0.24 0.045 280);outline:none;box-sizing:border-box" spellcheck="false">${esc(this.directriz)}</textarea>
-            <p style="margin:13px 0 0;font-size:13px;line-height:1.45;color:oklch(0.61 0.022 280)">Se inyecta como directriz de sistema (system prompt) en cada petición. Se computa en los tokens de entrada de cada proveedor.</p>
+            <p style="margin:13px 0 0;font-size:13px;line-height:1.45;color:oklch(0.61 0.022 280)">Se inyecta como mensaje de sistema en cada petición. Cuenta como tokens de entrada en todos los proveedores.</p>
           </div>
         </div>
 
@@ -46,7 +46,7 @@ export class ContextoComponent {
           </div>
 
           <div style="padding:19px;border:1px solid oklch(0.905 0.022 280);border-left:3px solid oklch(0.58 0.22 305);border-radius:13px;background:#fff">
-            <p style="margin:0;font-size:14px;line-height:1.6;color:oklch(0.24 0.045 280)">El contexto se inyecta tras la sanitización DLP: las directrices de sistema son transmitidas directamente al proveedor. No almacene credenciales ni secretos en este campo.</p>
+            <p style="margin:0;font-size:14px;line-height:1.6;color:oklch(0.24 0.045 280)">El contexto se inyecta después de la redacción DLP: lo que escribas aquí sí sale hacia el proveedor tal cual. No pongas credenciales en la directriz.</p>
           </div>
         </div>
       </div>
@@ -66,10 +66,10 @@ export class ContextoComponent {
             <div>
               <label style="display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:oklch(0.24 0.045 280)">Ámbito de aplicación</label>
               <select id="select-frag-scope" style="width:100%;height:38px;padding:0 12px;border:1px solid oklch(0.860 0.028 280);border-radius:8px;font-size:14px;background:#fff;box-sizing:border-box">
-                <option value="Toda la organización">Toda la organización (Global)</option>
-                <option value="Equipo fiscal">Equipo fiscal y contable</option>
-                <option value="Equipo legal">Equipo legal y cumplimiento</option>
-                <option value="Solo administradores">Solo administradores</option>
+                <option value="Todo el inquilino">Todo el inquilino</option>
+                <option value="Equipo fiscal">Equipo fiscal</option>
+                <option value="Equipo laboral">Equipo laboral</option>
+                <option value="Solo socios">Solo socios</option>
               </select>
             </div>
             <div>
@@ -157,7 +157,7 @@ export class ContextoComponent {
       btn.onclick = async () => {
         const id = btn.dataset.id;
         if (!id) return;
-        if (!confirm('¿Eliminar esta directriz de contexto? Dejará de inyectarse en las consultas.')) return;
+        if (!confirm('¿Quitar esta pieza de contexto? Dejará de enviarse en cada petición.')) return;
 
         btn.disabled = true;
         try {
@@ -190,14 +190,14 @@ export class ContextoComponent {
       try {
         if (this.directrizId) {
           await ApiService.updateMemory(this.directrizId, {
-            title: 'Directriz Corporativa',
+            title: 'Directriz de la casa',
             content: contenido,
             category: 'Directriz',
             isActive: true
           });
         } else {
           const creada = await ApiService.createMemory({
-            title: 'Directriz Corporativa',
+            title: 'Directriz de la casa',
             content: contenido,
             category: 'Directriz',
             isActive: true
@@ -231,7 +231,7 @@ export class ContextoComponent {
       const memories = await ApiService.getMemories();
       const lista = Array.isArray(memories) ? memories : [];
 
-      // La directriz corporativa es una pieza más, pero tiene su propia caja.
+      // La directriz de la casa es una pieza más, pero tiene su propia caja.
       const directriz = lista.find(m => m.category === 'Directriz');
       this.directrizId = directriz?.id ?? null;
       this.directriz = directriz?.content ?? '';
@@ -249,7 +249,7 @@ export class ContextoComponent {
       if (el) {
         el.innerHTML = this.fragmentos.length
           ? this.renderFragmentsList()
-          : '<div class="table-empty">Sin fragmentos de contexto adicionales. Solo se inyecta la directriz general superior.</div>';
+          : '<div class="table-empty">Sin piezas de contexto. Solo se envía la directriz de arriba.</div>';
         this.wireDeleteButtons();
       }
 
@@ -257,7 +257,7 @@ export class ContextoComponent {
     } catch (err) {
       if (el) {
         el.innerHTML = `<div class="table-empty">${err.code === 401
-          ? 'Ingrese su llave de API para consultar el contexto.'
+          ? 'Introduce tu clave para ver el contexto.'
           : esc(err.message)}</div>`;
       }
     }

@@ -21,40 +21,28 @@
 
   <article class="doc">
     <div class="doc-head">
-      <h1>Política de Divulgación Responsable de Vulnerabilidades</h1>
-      <p class="resumen">Directrices para la notificación, evaluación coordinada y mitigación de fallos de seguridad en SynapseAI bajo principios de divulgación ética y puerto seguro (Safe Harbor).</p>
-      <span class="fecha">Última actualización: Septiembre de 2026</span>
+      <h1>Avisar de un fallo de seguridad</h1>
+      <p class="resumen">Cómo contarnos un fallo, qué hacemos con él y qué no te va a pasar por avisar.</p>
+      <span class="fecha">Última revisión: 10 de septiembre de 2026</span>
     </div>
+    <h2>Escríbenos antes de publicarlo</h2>
+    <p>Si encuentras un fallo, cuéntanoslo a <strong><span class="rellenar">[seguridad@dominio]</span></strong>. Si prefieres cifrar, la clave pública está en <span class="rellenar">[enlace a la clave pública]</span>.</p>
+    <p>Ayuda mucho que incluyas: qué versión, qué hace falta para reproducirlo y qué consigue quien lo aproveche. Un caso que podamos repetir vale más que una descripción larga.</p>
 
-    <h2>1. Canal Oficial de Notificación</h2>
-    <p>La seguridad de nuestro ecosistema y de las organizaciones que confían en SynapseAI es prioritaria. Si identifica una potencial vulnerabilidad de seguridad en nuestro software, portal o dependencias, solicitamos que nos la comunique directamente a:</p>
-    <p><strong style="font-family:DM Mono,monospace;font-size:16px;color:var(--accent-primary)">seguridad@synapse-ai.com</strong></p>
-    <p>Para comunicaciones que requieran confidencialidad criptográfica, agradecemos utilizar nuestra llave PGP pública disponible a solicitud.</p>
-
-    <h2>2. Información Necesaria para el Reporte</h2>
-    <p>Para agilizar la reproducción y remediación inmediata del incidente, recomendamos incluir en su reporte:</p>
+    <h2>Qué hacemos</h2>
     <ul>
-      <li>Versión exacta de SynapseAI afectada o entorno de ejecución (Docker, Node.js, Sistema Operativo).</li>
-      <li>Descripción detallada de la vulnerabilidad y vector de explotación técnica.</li>
-      <li>Pasos reproducibles paso a paso o script de prueba de concepto (PoC) en formato seguro.</li>
-      <li>Evaluación del impacto potencial (CVSS si aplica) y posibles medidas de mitigación identificadas.</li>
+      <li>Acusamos recibo en <strong>5 días laborables</strong>.</li>
+      <li>Te decimos si lo hemos podido reproducir en <strong>10 días laborables</strong>.</li>
+      <li>Publicamos el arreglo y, si quieres, tu nombre junto a él.</li>
+      <li>Si afecta a quien tenga el programa instalado, lo anunciamos aunque nos deje en mal lugar.</li>
     </ul>
 
-    <h2>3. Compromisos de Respuesta y Tiempos de Atención</h2>
-    <p>Nuestro equipo de ingeniería de seguridad opera bajo los siguientes acuerdos de nivel de servicio:</p>
-    <ul>
-      <li><strong>Acuse de recibo:</strong> En un plazo no mayor a <strong>24 horas hábiles</strong>.</li>
-      <li><strong>Evaluación y confirmación preliminar:</strong> En un plazo no mayor a <strong>72 horas hábiles</strong>.</li>
-      <li><strong>Desarrollo y publicación del parche:</strong> Priorización crítica según la severidad del fallo, con emisión de boletín de seguridad y crédito formal al investigador en nuestro changelog oficial.</li>
-    </ul>
+    <h2>Qué no te va a pasar</h2>
+    <p>No emprendemos acciones legales contra quien investigue de buena fe: sin acceder a datos de terceros, sin degradar el servicio de nadie y sin publicar antes de que haya arreglo.</p>
+    <p>Esto no es un programa de recompensas: no hay dinero de por medio. Es un compromiso de que avisar no te va a salir caro.</p>
 
-    <h2>4. Puerto Seguro para Investigadores (Safe Harbor)</h2>
-    <p>SynapseAI Technologies se compromete expresamente a no emprender acciones legales contra investigadores de seguridad que actúen de buena fe y cumplan las siguientes pautas:</p>
-    <ul>
-      <li>No acceder, alterar ni destruir información confidencial de clientes o terceros.</li>
-      <li>No ejecutar ataques de denegación de servicio (DoS/DDoS) ni pruebas que degraden el rendimiento de sistemas en producción.</li>
-      <li>Mantener estricta confidencialidad sobre los hallazgos hasta que el parche de seguridad haya sido publicado oficialmente (divulgación coordinada).</li>
-    </ul>
+    <h2>Lo que ya sabemos que falla</h2>
+    <p>Publicamos nuestras propias limitaciones en <a href="/#limites">la página de límites</a>, y el proyecto encargó una auditoría con el encargo explícito de destrozarlo. No hace falta que nos cuentes que el filtro de inyección no cierra la clase de ataque: lo decimos nosotros primero.</p>
 
   </article>
 </div>

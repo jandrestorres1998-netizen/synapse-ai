@@ -36,7 +36,7 @@ export class ActividadComponent {
       document.dispatchEvent(new CustomEvent('synapse:stats', { detail: stats }));
     } catch (err) {
       setHTML('activity-banner', err.code === 401
-        ? notice({ tone: 'warning', iconName: 'alert', title: 'Llave de API requerida', text: 'Ingrese su llave en la barra lateral para consultar la telemetría.' })
+        ? notice({ tone: 'warning', iconName: 'alert', title: 'Falta la clave de API', text: 'Introdúcela en la cabecera para ver la telemetría.' })
         : notice({ tone: 'critical', iconName: 'alert', title: 'No se pudo cargar la telemetría', text: esc(err.message) }));
     }
   }
@@ -46,8 +46,8 @@ export class ActividadComponent {
       setHTML('activity-banner', notice({
         tone: 'critical',
         iconName: 'alert',
-        title: 'Sin proveedores LLM configurados',
-        text: 'Las peticiones de inferencia responderán con 503 hasta que configure una llave en Proveedores y Bóveda. El gateway no genera texto sintético simulado.'
+        title: 'Ningún proveedor de modelos configurado',
+        text: 'Las peticiones de inferencia fallarán con 503 hasta que añadas una credencial en Ajustes. El gateway no devuelve texto sintético en su lugar.'
       }));
       return;
     }
@@ -57,8 +57,8 @@ export class ActividadComponent {
       setHTML('activity-banner', notice({
         tone: 'warning',
         iconName: 'info',
-        title: 'Consumo parcialmente estimado',
-        text: `${money(estimated)} proceden de llamadas cuyo proveedor no reportó el uso de tokens en tiempo real.`
+        title: 'Parte del gasto es una estimación',
+        text: `${money(estimated)} proceden de llamadas cuyo proveedor no reportó el uso de tokens.`
       }));
       return;
     }
@@ -78,10 +78,10 @@ export class ActividadComponent {
       const pct = Math.min(100, ((budget.spentUsd + budget.reservedUsd) / budget.limitUsd) * 100);
       bar.querySelector('span').style.width = `${pct}%`;
       bar.className = `bar${pct >= 90 ? ' critical' : pct >= 70 ? ' warning' : ''}`;
-      setText('m-spend-note', `${Math.round(pct)} % del límite diario de ${money(budget.limitUsd, { compact: true })}`);
+      setText('m-spend-note', `${Math.round(pct)} % del tope diario de ${money(budget.limitUsd, { compact: true })}`);
     } else {
       bar.querySelector('span').style.width = '0%';
-      setText('m-spend-note', 'Sin límite asignado: se registra el consumo sin bloqueo por cuota.');
+      setText('m-spend-note', 'Sin tope configurado: se contabiliza, no se detiene.');
     }
 
     setText('m-requests', integer(counters.requestsTotal));
@@ -93,24 +93,14 @@ export class ActividadComponent {
     setText('m-latency', latency.p50Ms === null || latency.p50Ms === undefined ? '—' : `${Math.round(latency.p50Ms)}`);
     const unit = $('m-latency');
     if (unit && latency.p50Ms !== null && latency.p50Ms !== undefined) {
-      unit.textContent = `${Math.round(latency.p50Ms)} `;
-      const span = document.createElement('span');
-      span.className = 'unit';
-      span.textContent = 'ms';
-      unit.appendChild(span);
+      unit.innerHTML = `${Math.round(latency.p50Ms)} <span class="unit">ms</span>`;
     }
     setText('m-latency-note', latency.samples
       ? `p95 en ${Math.round(latency.p95Ms)} ms · ${integer(latency.samples)} muestras`
       : 'Sin muestras todavía.');
 
     const cacheEl = $('m-cache');
-    if (cacheEl) {
-      cacheEl.textContent = `${stats.cacheHitRatePercent ?? 0} `;
-      const span = document.createElement('span');
-      span.className = 'unit';
-      span.textContent = '%';
-      cacheEl.appendChild(span);
-    }
+    if (cacheEl) cacheEl.innerHTML = `${stats.cacheHitRatePercent ?? 0} <span class="unit">%</span>`;
   }
 
   static renderRows(history) {
@@ -126,98 +116,31 @@ export class ActividadComponent {
       filtered = filtered.filter(item => item.outcome === 'cache');
     }
 
-    container.replaceChildren();
-
     if (filtered.length === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'table-empty';
-      empty.textContent = 'No hay peticiones para este filtro.';
-      container.appendChild(empty);
+      container.innerHTML = '<div class="table-empty">Sin peticiones para este filtro.</div>';
       return;
     }
 
-    const fragment = document.createDocumentFragment();
+    const tag = {
+      cache: '<span class="tag">caché</span>',
+      blocked: '<span class="tag critical">bloqueada</span>',
+      error: '<span class="tag critical">error</span>',
+      cancelled: '<span class="tag">cancelada</span>',
+      upstream: ''
+    };
 
-    filtered.slice(0, 30).forEach(item => {
-      const row = document.createElement('div');
-      row.className = 'table-row';
-      row.style.gridTemplateColumns = '84px 1fr 140px 120px 100px 88px';
-
-      const timeCol = document.createElement('span');
-      timeCol.className = 'num';
-      timeCol.style.color = 'var(--ink-muted)';
-      timeCol.textContent = time(item.timestamp);
-      row.appendChild(timeCol);
-
-      const provCol = document.createElement('span');
-      provCol.style.display = 'flex';
-      provCol.style.alignItems = 'center';
-      provCol.style.gap = '8px';
-      provCol.style.minWidth = '0';
-
-      const provName = document.createElement('span');
-      provName.style.overflow = 'hidden';
-      provName.style.textOverflow = 'ellipsis';
-      provName.style.whiteSpace = 'nowrap';
-      provName.textContent = item.provider ?? '—';
-      provCol.appendChild(provName);
-
-      if (item.outcome === 'cache') {
-        const tagCache = document.createElement('span');
-        tagCache.className = 'tag';
-        tagCache.textContent = 'caché';
-        provCol.appendChild(tagCache);
-      } else if (item.outcome === 'blocked') {
-        const tagBloq = document.createElement('span');
-        tagBloq.className = 'tag critical';
-        tagBloq.textContent = 'bloqueada';
-        provCol.appendChild(tagBloq);
-      } else if (item.outcome === 'error') {
-        const tagErr = document.createElement('span');
-        tagErr.className = 'tag critical';
-        tagErr.textContent = 'error';
-        provCol.appendChild(tagErr);
-      }
-
-      if (item.dlpMasked) {
-        const tagDlp = document.createElement('span');
-        tagDlp.className = 'tag warning';
-        tagDlp.textContent = 'enmascarado';
-        provCol.appendChild(tagDlp);
-      }
-      row.appendChild(provCol);
-
-      const modelCol = document.createElement('span');
-      modelCol.style.color = 'var(--ink-muted)';
-      modelCol.textContent = item.model ?? '—';
-      row.appendChild(modelCol);
-
-      const tokensCol = document.createElement('span');
-      tokensCol.className = 'num';
-      tokensCol.style.color = 'var(--ink-muted)';
-      tokensCol.textContent = item.inputTokens === null ? '—' : `${integer(item.inputTokens)} · ${integer(item.outputTokens)}`;
-      row.appendChild(tokensCol);
-
-      const costCol = document.createElement('span');
-      costCol.className = 'num';
-      costCol.textContent = money(item.costUsd);
-      if (item.costIsEstimate && item.costUsd > 0) {
-        const estSpan = document.createElement('span');
-        estSpan.style.color = 'var(--ink-faint)';
-        estSpan.textContent = ' est.';
-        costCol.appendChild(estSpan);
-      }
-      row.appendChild(costCol);
-
-      const latCol = document.createElement('span');
-      latCol.className = 'num';
-      latCol.style.color = 'var(--ink-muted)';
-      latCol.textContent = item.latencyMs === null ? '—' : `${item.latencyMs} ms`;
-      row.appendChild(latCol);
-
-      fragment.appendChild(row);
-    });
-
-    container.appendChild(fragment);
+    container.innerHTML = history.slice(0, 30).map(item => `
+      <div class="table-row" style="grid-template-columns: 84px 1fr 140px 120px 100px 88px;">
+        <span class="num" style="color: var(--ink-muted);">${time(item.timestamp)}</span>
+        <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+          <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${esc(item.provider ?? '—')}</span>
+          ${tag[item.outcome] ?? ''}
+          ${item.dlpMasked ? '<span class="tag warning">enmascarado</span>' : ''}
+        </span>
+        <span style="color: var(--ink-muted);">${esc(item.model ?? '—')}</span>
+        <span class="num" style="color: var(--ink-muted);">${item.inputTokens === null ? '—' : `${integer(item.inputTokens)} · ${integer(item.outputTokens)}`}</span>
+        <span class="num">${money(item.costUsd)}${item.costIsEstimate && item.costUsd > 0 ? '<span style="color: var(--ink-faint);"> est.</span>' : ''}</span>
+        <span class="num" style="color: var(--ink-muted);">${item.latencyMs === null ? '—' : `${item.latencyMs} ms`}</span>
+      </div>`).join('');
   }
 }

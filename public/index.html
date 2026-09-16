@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/tokens.css">
-  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
 
@@ -35,23 +35,25 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
       </span>
     </button>
+
+    <!-- Navegación agrupada -->
     <nav class="side-nav" aria-label="Módulos del panel">
       <div class="side-group">
         <p class="side-group-label">Operación</p>
         <button class="side-item active" data-tab="inicio"><span class="chip"></span>Inicio</button>
-        <button class="side-item" data-tab="probar"><span class="chip"></span>Probar Gateway</button>
-        <button class="side-item" data-tab="actividad"><span class="chip"></span>Actividad y Telemetría</button>
+        <button class="side-item" data-tab="probar"><span class="chip"></span>Probar</button>
+        <button class="side-item" data-tab="actividad"><span class="chip"></span>Actividad</button>
       </div>
       <div class="side-group">
-        <p class="side-group-label">Gobierno y Seguridad</p>
-        <button class="side-item" data-tab="proteccion"><span class="chip"></span>Reglas DLP y Filtros <span class="side-badge warn" id="badge-proteccion" hidden></span></button>
-        <button class="side-item" data-tab="auditoria"><span class="chip"></span>Auditoría Criptográfica</button>
-        <button class="side-item" data-tab="usuarios"><span class="chip"></span>Control de Acceso</button>
+        <p class="side-group-label">Gobierno</p>
+        <button class="side-item" data-tab="proteccion"><span class="chip"></span>Protección <span class="side-badge warn" id="badge-proteccion" hidden></span></button>
+        <button class="side-item" data-tab="auditoria"><span class="chip"></span>Auditoría</button>
+        <button class="side-item" data-tab="usuarios"><span class="chip"></span>Quién tiene acceso</button>
       </div>
       <div class="side-group">
         <p class="side-group-label">Configuración</p>
-        <button class="side-item" data-tab="contexto"><span class="chip"></span>Políticas de Contexto</button>
-        <button class="side-item" data-tab="ajustes"><span class="chip"></span>Proveedores y Bóveda</button>
+        <button class="side-item" data-tab="contexto"><span class="chip"></span>Contexto</button>
+        <button class="side-item" data-tab="ajustes"><span class="chip"></span>Proveedores y claves</button>
       </div>
     </nav>
 
@@ -60,27 +62,27 @@
       <!-- Tarjeta de presupuesto -->
       <div class="side-block" id="spend-chip">
         <div style="display:flex;align-items:baseline;gap:8px">
-          <span class="eyebrow" style="margin:0">Presupuesto USD</span>
+          <span class="eyebrow" style="margin:0">Presupuesto</span>
           <span style="margin-left:auto;font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;color:oklch(0.70 0.020 280)" id="spend-pct">—</span>
         </div>
         <p class="spend-figure"><span id="spend-value">—</span> <span class="limit" id="spend-limit"></span></p>
         <div class="bar" id="spend-bar"><span style="width:0%"></span></div>
-        <span class="metric-note" id="spend-note">Control de consumo y límite presupuestario mensual.</span>
+        <span class="metric-note" id="spend-note">Se aparta el coste máximo antes de cada llamada.</span>
       </div>
 
       <!-- Usuario activo -->
       <div class="side-user">
         <span class="side-user-avatar" id="session-avatar">··</span>
         <span class="side-user-details">
-          <span class="side-user-name" id="session-name">Sin llave</span>
-          <span class="side-user-role" id="session-role">Ingrese una llave para acceder</span>
+          <span class="side-user-name" id="session-name">Sin clave</span>
+          <span class="side-user-role" id="session-role">Introduce una para entrar</span>
         </span>
       </div>
 
       <!-- Estado de clave y validación -->
       <div class="field" style="margin-top: 6px;">
         <div class="key-input-wrapper">
-          <input type="password" id="api-key" placeholder="Llave de API (API Key)" autocomplete="off" aria-label="Llave de API">
+          <input type="password" id="api-key" placeholder="Clave de API" autocomplete="off" aria-label="Clave de API">
           <button class="btn btn-secondary" id="btn-validate-key" type="button">Validar</button>
         </div>
         <span class="key-badge" id="key-state"></span>
@@ -96,10 +98,10 @@
       <span class="top-breadcrumb" id="top-breadcrumb">inicio</span>
       <div class="top-search">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input type="text" id="global-search" placeholder="Buscar en auditoría, reglas DLP y eventos..." aria-label="Buscar en el panel">
+        <input type="text" id="global-search" placeholder="Buscar en los movimientos y en las reglas" aria-label="Buscar en el panel">
       </div>
       <div class="top-actions">
-        <span class="chain-badge" id="chain-badge"><span class="dot"></span><span id="chain-badge-text">Verificando cadena SHA-256…</span></span>
+        <span class="chain-badge" id="chain-badge"><span class="dot"></span><span id="chain-badge-text">Comprobando el registro…</span></span>
         <button class="btn btn-secondary" id="btn-top-export" type="button" style="height:36px;padding:0 14px;border:1px solid oklch(0.860 0.028 280);border-radius:9px;background:#fff;font-size:13.5px;color:oklch(0.24 0.045 280);cursor:pointer;display:inline-flex;align-items:center;gap:8px">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M3 21h18"/></svg>
           Exportar
@@ -114,7 +116,7 @@
       <section class="pane active" id="pane-inicio">
         <div class="module-head">
           <div class="module-title-row"><h1 class="page-title">Inicio</h1></div>
-          <p class="module-sub">Monitoreo en tiempo real del gateway, salud operativa de los modelos y directivas de seguridad activas.</p>
+          <p class="module-sub">Qué está pasando en tu instancia ahora mismo, y qué necesita una decisión tuya.</p>
         </div>
         <div id="inicio-container"></div>
       </section>
@@ -122,26 +124,26 @@
       <!-- 2. Probar ──────────────────────────────────────────────────────── -->
       <section class="pane" id="pane-probar">
         <div class="module-head">
-          <div class="module-title-row"><h1 class="page-title">Probar Gateway</h1></div>
-          <p class="module-sub">Ejecute pruebas en vivo a través del gateway e inspeccione el trazado por etapas: detección DLP, enmascaramiento, verificación de inyecciones y enrutamiento inteligente antes de la salida al proveedor.</p>
+          <div class="module-title-row"><h1 class="page-title">Probar</h1></div>
+          <p class="module-sub">Envía una petición real por el gateway y mira el trazado etapa por etapa: qué se filtra, qué se enmascara y a qué modelo va, antes de que salga hacia el proveedor.</p>
         </div>
 
         <div class="grid cols">
           <div class="card flush composer">
             <div class="card-head">
-              <span class="eyebrow">Petición de Prueba</span>
-              <span class="tag" style="margin-left: auto;">auto · costo optimizado</span>
+              <span class="eyebrow">Petición</span>
+              <span class="tag" style="margin-left: auto;">auto · coste mínimo</span>
             </div>
             <div class="card-body">
-              <textarea id="prompt-input" placeholder="Escriba o pegue aquí el mensaje para auditar..." spellcheck="false"></textarea>
+              <textarea id="prompt-input" placeholder="Escribe o pega aquí el mensaje que quieres probar…" spellcheck="false"></textarea>
               <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;">
-                <button class="btn btn-quiet" data-sample="credencial">Simular credencial API</button>
-                <button class="btn btn-quiet" data-sample="personales">Simular datos personales (DLP)</button>
-                <button class="btn btn-quiet" data-sample="inyeccion">Simular Prompt Injection</button>
-                <button class="btn btn-quiet" data-sample="normal">Consulta general estándar</button>
+                <button class="btn btn-quiet" data-sample="credencial">Con una credencial</button>
+                <button class="btn btn-quiet" data-sample="personales">Con datos personales</button>
+                <button class="btn btn-quiet" data-sample="inyeccion">Intento de manipulación</button>
+                <button class="btn btn-quiet" data-sample="normal">Consulta corriente</button>
               </div>
               <div style="display: flex; gap: 10px; margin-top: 14px;">
-                <button class="btn" id="btn-send">Auditar y Enviar por Gateway</button>
+                <button class="btn" id="btn-send">Enviar por el gateway</button>
                 <button class="btn btn-secondary" id="btn-clear">Limpiar</button>
               </div>
             </div>
@@ -149,11 +151,11 @@
 
           <div class="card flush">
             <div class="card-head">
-              <span class="eyebrow">Trazado de Seguridad</span>
+              <span class="eyebrow">Trazado</span>
               <span class="num" id="trace-latency" style="margin-left: auto; font-size: 12px; color: var(--ink-muted);"></span>
             </div>
             <div class="card-body" id="trace">
-              <div class="placeholder">Envíe una petición para inspeccionar la canalización de seguridad y el payload sanitizado.</div>
+              <div class="placeholder">Envía la petición para ver las etapas y el texto que sale del perímetro.</div>
             </div>
           </div>
         </div>
@@ -163,23 +165,23 @@
       <section class="pane" id="pane-actividad">
         <div class="module-head">
           <div class="module-title-row">
-            <h1 class="page-title">Actividad y Telemetría</h1>
+            <h1 class="page-title">Actividad</h1>
             <button class="btn btn-quiet" id="btn-refresh">Actualizar</button>
           </div>
-          <p class="module-sub">Telemetría agregada del gateway: volumen de peticiones procesadas, incidentes DLP prevenidos, consumo en USD y ahorro por caché semántica.</p>
+          <p class="module-sub">Lo que ha pasado por el gateway desde que arrancó el proceso. Cada cifra dice si está medida por el proveedor o estimada.</p>
         </div>
 
         <div id="activity-banner"></div>
 
         <div class="grid metrics" style="margin-bottom: 16px;">
           <div class="card metric">
-            <span class="metric-title">Costo Acumulado</span>
+            <span class="metric-title">Gasto real</span>
             <span class="metric-value" id="m-spend">—</span>
             <div class="bar" id="m-spend-bar"><span></span></div>
             <span class="metric-note" id="m-spend-note"></span>
           </div>
           <div class="card metric">
-            <span class="metric-title">Peticiones Procesadas</span>
+            <span class="metric-title">Peticiones</span>
             <span class="metric-value" id="m-requests">—</span>
             <span class="metric-note" id="m-requests-note"></span>
           </div>
@@ -189,28 +191,28 @@
             <span class="metric-note" id="m-latency-note"></span>
           </div>
           <div class="card metric">
-            <span class="metric-title">Servido desde Caché</span>
+            <span class="metric-title">Servido desde caché</span>
             <span class="metric-value" id="m-cache">—</span>
-            <span class="metric-note">Ahorro y aceleración mediante respuestas locales.</span>
+            <span class="metric-note">Depende de que tu tráfico se repita.</span>
           </div>
         </div>
 
         <div class="card flush">
           <div class="card-head" style="display:flex;align-items:center;flex-wrap:wrap;gap:10px">
-            <span class="eyebrow">Últimas Peticiones Auditadas</span>
+            <span class="eyebrow">Últimas peticiones</span>
             <div class="filter-pill-bar" style="margin-left:auto">
               <button class="filter-pill-btn active" data-filter="todo">Todo</button>
-              <button class="filter-pill-btn" data-filter="dlp">Con DLP / Redacción</button>
+              <button class="filter-pill-btn" data-filter="dlp">Con redacción</button>
               <button class="filter-pill-btn" data-filter="bloq">Bloqueadas</button>
               <button class="filter-pill-btn" data-filter="cache">Caché</button>
             </div>
           </div>
           <div class="table-scroll">
             <div class="table-head" style="grid-template-columns: 84px 1fr 140px 120px 100px 88px; min-width: 700px;">
-              <span>Hora</span><span>Origen</span><span>Modelo</span><span>Tokens</span><span>Costo (USD)</span><span>Latencia</span>
+              <span>Hora</span><span>Origen</span><span>Modelo</span><span>Tokens</span><span>Coste</span><span>Latencia</span>
             </div>
             <div id="activity-rows">
-              <div class="table-empty">Sin actividad registrada aún. Realice una prueba desde el módulo Probar Gateway.</div>
+              <div class="table-empty">Sin actividad todavía. Prueba una consulta en Probar.</div>
             </div>
           </div>
         </div>
@@ -220,12 +222,13 @@
       <section class="pane" id="pane-proteccion">
         <div class="module-head">
           <div class="module-title-row">
-            <h1 class="page-title">Reglas DLP y Filtros de Seguridad</h1>
+            <h1 class="page-title">Protección</h1>
             <div style="margin-left:auto;display:flex;flex-wrap:wrap;gap:9px">
-              <button class="btn btn-secondary" id="btn-test-with-text" style="height:38px;padding:0 15px;border-radius:9px;font-size:13.5px;font-weight:500;cursor:pointer;border:1px solid oklch(0.860 0.028 280);background:#fff;color:oklch(0.24 0.045 280)" data-goto="probar">Probar con texto</button>
+              
+              <button class="btn btn-secondary" id="btn-test-with-text" style="height:38px;padding:0 15px;border-radius:9px;font-size:13.5px;font-weight:500;cursor:pointer;border:1px solid oklch(0.860 0.028 280);background:#fff;color:oklch(0.24 0.045 280)" data-goto="probar">Probar con un texto</button>
             </div>
           </div>
-          <p class="module-sub">Directivas activas de prevención de fuga de datos (DLP), validación algorítmica matemática y mitigación de prompt injection.</p>
+          <p class="module-sub">Reglas de redacción y detecciones, con su límite escrito al lado.</p>
         </div>
         <div id="proteccion-container"></div>
       </section>
@@ -234,11 +237,13 @@
       <section class="pane" id="pane-auditoria">
         <div class="module-head">
           <div class="module-title-row">
-            <h1 class="page-title">Auditoría Criptográfica</h1>
+            <h1 class="page-title">Auditoría</h1>
             <div style="margin-left:auto;display:flex;flex-wrap:wrap;gap:9px">
+              
+              
             </div>
           </div>
-          <p class="module-sub">Registro inmutable encadenado por hashes criptográficos SHA-256. Garantía de integridad matemática y trazabilidad legal no repudiable.</p>
+          <p class="module-sub">Todo lo que ha salido, en orden y enlazado. Si alguien toca una línea, la comprobación lo detecta.</p>
         </div>
         <div id="auditoria-container"></div>
       </section>
@@ -247,11 +252,13 @@
       <section class="pane" id="pane-usuarios">
         <div class="module-head">
           <div class="module-title-row">
-            <h1 class="page-title">Control de Acceso y Llaves de API</h1>
+            <h1 class="page-title">Usuarios y roles</h1>
             <div style="margin-left:auto;display:flex;flex-wrap:wrap;gap:9px">
+              
+              
             </div>
           </div>
-          <p class="module-sub">Gestión granular de llaves de acceso, asignación de roles (RBAC), cuotas presupuestarias por aplicación y límites de tasa.</p>
+          <p class="module-sub">Con qué claves se entra y qué puede hacer cada una.</p>
         </div>
         <div id="usuarios-container"></div>
       </section>
@@ -260,12 +267,12 @@
       <section class="pane" id="pane-contexto">
         <div class="module-head">
           <div class="module-title-row">
-            <h1 class="page-title">Políticas de Contexto y Sistema</h1>
+            <h1 class="page-title">Contexto</h1>
             <div style="margin-left:auto;display:flex;flex-wrap:gap;gap:9px">
-              <button class="btn" id="btn-save-context" style="height:38px;padding:0 15px;border-radius:9px;font-size:13.5px;font-weight:500;cursor:pointer;border:0;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280)">Guardar Cambios</button>
+              <button class="btn" id="btn-save-context" style="height:38px;padding:0 15px;border-radius:9px;font-size:13.5px;font-weight:500;cursor:pointer;border:0;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280)">Guardar cambios</button>
             </div>
           </div>
-          <p class="module-sub">Directrices corporativas inyectadas automáticamente para gobernar el comportamiento de los modelos y prevenir fugas de directivas.</p>
+          <p class="module-sub">La directriz y los fragmentos que se inyectan en cada petición.</p>
         </div>
         <div id="contexto-container"></div>
       </section>
@@ -274,12 +281,12 @@
       <section class="pane" id="pane-ajustes">
         <div class="module-head">
           <div class="module-title-row">
-            <h1 class="page-title">Proveedores y Bóveda de Claves</h1>
+            <h1 class="page-title">Proveedores y claves</h1>
             <div style="margin-left:auto;display:flex;flex-wrap:wrap;gap:9px">
-              <button class="btn" id="btn-open-add-provider" style="height:38px;padding:0 15px;border-radius:9px;font-size:13.5px;font-weight:500;cursor:pointer;border:0;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280)">Conectar Proveedor</button>
+              <button class="btn" id="btn-open-add-provider" style="height:38px;padding:0 15px;border-radius:9px;font-size:13.5px;font-weight:500;cursor:pointer;border:0;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280)">Añadir proveedor</button>
             </div>
           </div>
-          <p class="module-sub">Bóveda criptográfica protegida con AES-256-GCM para llaves de OpenAI, Anthropic, Google y modelos locales (Ollama/vLLM).</p>
+          <p class="module-sub">Conexiones salientes, estado del vault y claves de entrada al gateway.</p>
         </div>
         <div id="ajustes-container"></div>
       </section>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Despliegue en Producción — SynapseAI</title>
+  <title>Despliegue en producción — SynapseAI</title>
   <meta name="description" content="Guía de despliegue en producción para SynapseAI: proxy inverso con Nginx o Caddy, certificados TLS, copias de seguridad de auditoría y rotación de claves.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,119 +21,118 @@
 
   <article class="doc">
     <div class="doc-head">
-      <h1>Despliegue en Producción</h1>
-      <p class="resumen">Directrices para la puesta en producción en servidores corporativos: protección con proxy inverso, certificados TLS/HTTPS, copias de respaldo del libro de auditoría y rotación de credenciales.</p>
-      <span class="fecha">Versión estable v2.0.0 · Arquitectura de Alta Seguridad</span>
+      <h1>Despliegue en producción</h1>
+      <p class="resumen">Recomendaciones para instalar SynapseAI en servidores de empresa: protección con proxy inverso, certificados de seguridad, copias de respaldo del registro de auditoría y rotación ordenada de credenciales.</p>
+      <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
     </div>
 
-    <h2>Arquitectura de Producción</h2>
-    <p>Por diseño, el servidor central de SynapseAI expone tráfico HTTP en el puerto 3000 (o el definido en <code>PORT</code>). En entornos corporativos de producción, el servicio <strong>nunca debe exponerse directamente a internet</strong> sin un intermediario que gestione los certificados de cifrado y aplique directivas de red.</p>
+    <h2>Arquitectura de producción</h2>
+    <p>Por diseño, el servidor interno de SynapseAI expone tráfico HTTP plano en el puerto 3000 (o el definido en <code>PORT</code>). En un entorno real de empresa, el programa <strong>nunca debe exponerse directamente a internet</strong> sin un intermediario que gestione los certificados de cifrado y filtre accesos no autorizados.</p>
 
-    <p>La topología recomendada sitúa un proxy inverso robusto (como Nginx o Caddy) en el perímetro del servidor o de la red interna:</p>
+    <p>La topología recomendada sitúa un proxy inverso fiable (como Nginx o Caddy) en la frontera del servidor o de la red interna:</p>
 
     <ul>
-      <li><strong>Cifrado de extremo a extremo (TLS/HTTPS):</strong> Todo el tráfico entre las aplicaciones clientes y SynapseAI viaja cifrado mediante protocolos modernos (TLS 1.2 / 1.3).</li>
-      <li><strong>Aislamiento de red:</strong> SynapseAI escucha únicamente en la interfaz local (<code>HOST=127.0.0.1</code>) o dentro de una red privada de Docker.</li>
-      <li><strong>Terminación de certificados:</strong> El proxy inverso asume la gestión y renovación automatizada de los certificados SSL/TLS.</li>
+      <li><strong>Cifrado punto a punto (TLS/HTTPS):</strong> Todo el tráfico entre vuestros programas y SynapseAI viaja cifrado mediante certificados SSL/TLS actualizados.</li>
+      <li><strong>Aislamiento de red:</strong> SynapseAI escucha únicamente en la interfaz local (<code>HOST=127.0.0.1</code>) o dentro de una red privada virtual de Docker.</li>
+      <li><strong>Terminación de certificados:</strong> El proxy inverso asume la carga criptográfica y renueva automáticamente los certificados.</li>
     </ul>
 
     <h2>Configuración con Nginx</h2>
-    <p>Plantilla de configuración de bloque de servidor para distribuciones Linux empresariales (Ubuntu, Debian, RHEL):</p>
+    <p>Si utilizáis un servidor Linux tradicional (Debian, Ubuntu, RHEL) con Nginx instalado, esta es la configuración de bloque de servidor recomendada:</p>
 
     <pre class="code"><code>server {
     listen 443 ssl http2;
-    server_name ai.su-empresa.com;
+    server_name ai.vuestra-empresa.local;
 
     ssl_certificate     /etc/ssl/certs/synapse.crt;
     ssl_certificate_key /etc/ssl/private/synapse.key;
     ssl_protocols       TLSv1.2 TLSv1.3;
     ssl_ciphers         HIGH:!aNULL:!MD5;
 
-    # Límite de carga para prompts extensos o documentos
+    # Límite de cuerpo para mensajes grandes o documentos adjuntos
     client_max_body_size 10M;
 
     location / {
         proxy_pass http://127.0.0.1:3000;
         proxy_http_version 1.1;
 
-        # Propagación de encabezados estándar de cliente y protocolo
+        # Cabeceras estándar para propagar IP real y protocolo
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
 
-        # Soporte para respuestas en flujo continuo (streaming de tokens)
+        # Soporte para respuestas en flujo continuo (streaming de LLM)
         proxy_set_header Connection '';
         proxy_buffering off;
         proxy_cache off;
         chunked_transfer_encoding on;
 
-        # Tiempos de espera adecuados para consultas analíticas profundas
+        # Tiempos de espera generosos para respuestas largas
         proxy_read_timeout 300s;
         proxy_send_timeout 300s;
     }
 }</code></pre>
 
-    <div class="tecnico-box" style="margin:20px 0">
-      <span class="eyebrow">Ajuste de Proxies de Confianza</span>
-      <p>Al implementar Nginx o Caddy delante de SynapseAI, configure <code>SYNAPSE_TRUST_PROXY_HOPS=1</code> en su archivo <code>.env</code>. Con este ajuste, el limitador de tasa de SynapseAI utilizará la dirección IP real del cliente reportada en <code>X-Forwarded-For</code> en lugar de la IP local del proxy.</p>
+    <div class="para-tecnicos">
+      <strong>Para tu equipo técnico · Salto de proxies:</strong> Cuando colocáis Nginx delante de SynapseAI, debéis configurar <code>TRUST_PROXY_HOPS=1</code> en vuestro archivo <code>.env</code>. Con este ajuste, el limitador de tasa de SynapseAI utilizará la dirección IP real del cliente reportada en la cabecera <code>X-Forwarded-For</code> en lugar de bloquear la IP local del proxy.
     </div>
 
     <h2>Configuración con Caddy</h2>
-    <p>Para configuraciones automatizadas con emisión y renovación transparente de certificados Let's Encrypt / ZeroSSL:</p>
+    <p>Caddy es la alternativa más sencilla para servidores modernos, ya que gestiona y renueva automáticamente certificados HTTPS válidos sin necesidad de configurar scripts externos:</p>
 
-    <pre class="code"><code>ai.su-empresa.com {
+    <pre class="code"><code>ai.vuestra-empresa.local {
     reverse_proxy 127.0.0.1:3000 {
-        # Desactivación de buffer para streaming inmediato de respuestas
+        # Desactivar buffer para respuestas inmediatas de la IA
         flush_interval -1
     }
 }</code></pre>
 
-    <h2>Seguridad de la Bóveda de Claves (Vault)</h2>
-    <p>SynapseAI custodia las claves maestras de OpenAI, Anthropic y Google cifradas en disco dentro de su almacén interno. Para garantizar un cifrado de nivel bancario en reposo:</p>
+    <h2>Seguridad del almacén de claves (Vault)</h2>
+    <p>SynapseAI guarda las claves de proveedores de IA (OpenAI, Anthropic, Google) cifradas en disco dentro de su almacén interno. Para garantizar un cifrado de nivel bancario en reposo:</p>
 
     <ul>
-      <li><strong>Definir siempre <code>SYNAPSE_VAULT_KEY</code>:</strong> Si esta variable no se define en <code>.env</code>, el sistema opera con una clave temporal derivada del entorno local y emite alertas de seguridad.</li>
-      <li><strong>Generar una clave con entropía criptográfica:</strong> Utilice al menos 32 bytes aleatorios (256 bits):</li>
+      <li><strong>Definir siempre <code>SYNAPSE_VAULT_KEY</code>:</strong> Si esta variable no está presente, el programa arranca en modo advertencia (<code>machine</code>), derivando una clave provisional de los identificadores del equipo.</li>
+      <li><strong>Generar una clave con entropía alta:</strong> Utilizad al menos 32 bytes aleatorios en formato hexadecimal:</li>
     </ul>
 
-    <pre class="code"><code># Generar clave de 32 bytes en terminal
+    <pre class="code"><code># Generar clave segura de 32 bytes en terminal
 openssl rand -hex 32</code></pre>
 
-    <div class="alcance-box" style="padding:16px 20px;border-radius:var(--radius-sm);background:var(--surface-quiet);border-left:4px solid var(--accent);margin:20px 0">
-      <strong style="color:var(--ink-strong)">Custodia de la Llave Maestra:</strong> Resguarde el valor de <code>SYNAPSE_VAULT_KEY</code> en el gestor de secretos de su organización. SynapseAI no almacena copias de recuperación externas de su clave de descifrado.
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> Si perdéis el valor de <code>SYNAPSE_VAULT_KEY</code>, las claves almacenadas no se podrán descifrar. SynapseAI no guarda copias de rescate de vuestra clave maestra en ningún servidor externo. Tendréis que volver a introducir las claves de los proveedores en el panel.
     </div>
 
-    <h2>Copias de Seguridad del Libro de Auditoría</h2>
-    <p>El libro de auditoría certifica formalmente qué solicitudes fueron procesadas y qué datos fueron anonimizados. Los archivos de estado residen en la carpeta <code>data/</code>:</p>
+    <h2>Copias de seguridad del registro de auditoría</h2>
+    <p>El registro de auditoría es la prueba documental de qué peticiones cruzaron el sistema y qué datos se borraron. Toda la información persistente vive en la carpeta <code>data/</code>:</p>
 
     <ul>
-      <li><code>data/audit.jsonl</code>: Registro encadenado de transacciones firmado con SHA-256.</li>
-      <li><code>data/vault.enc</code>: Bóveda cifrada de credenciales de proveedores.</li>
-      <li><code>data/budget.json</code>: Contadores de consumo presupuestario y cuotas.</li>
+      <li><code>data/audit.jsonl</code>: Registro encadenado de peticiones firmado por SHA-256.</li>
+      <li><code>data/vault.enc</code>: Almacén de credenciales cifrado.</li>
+      <li><code>data/budget.json</code>: Contadores de consumo de tokens y presupuesto preventivo.</li>
     </ul>
 
-    <p>Para respaldar estos datos de forma consistente:</p>
+    <p>Para realizar copias de seguridad consistentes sin detener el servicio:</p>
 
-    <pre class="code"><code># Copia de seguridad automatizada periódica
+    <pre class="code"><code># Copia diaria automatizada mediante cron o tarea programada
 tar -czf /backups/synapse-$(date +%Y%m%d).tar.gz -C /ruta/a/synapse data/</code></pre>
 
-    <p>En despliegues con Docker, asegúrese de incluir el volumen persistente (<code>-v ./data:/app/data</code>) en sus políticas rutinarias de respaldo de infraestructura.</p>
+    <p>Si utilizáis volúmenes en Docker, asegurad el volumen montado (<code>-v ./data:/app/data</code>) incluyendo esa ruta en vuestro plan habitual de copias de seguridad de la infraestructura.</p>
 
-    <h2>Política de Rotación de Credenciales</h2>
-    <p>Para mantener una higiene de seguridad continua sin interrumpir los servicios:</p>
+    <h2>Política de rotación de claves</h2>
+    <p>Para mantener una higiene de seguridad impecable sin provocar caídas en vuestros programas:</p>
 
     <ol>
-      <li><strong>Claves de SynapseAI:</strong> Cree una nueva clave con el ámbito requerido (<code>inference:</code> o <code>report:</code>) en la consola de administración. Actualice las aplicaciones clientes con la nueva credencial. Tras verificar el tráfico, proceda a dar de baja la clave previa.</li>
-      <li><strong>Claves de proveedores de IA:</strong> Genere nuevas llaves en la consola del proveedor (OpenAI, Anthropic, Google) e ingréselas en SynapseAI mediante la consola web. La actualización se efectúa en memoria de forma instantánea sin requerir reinicio del servidor.</li>
+      <li><strong>Claves de operador (SynapseAI):</strong> Generad una clave nueva con el ámbito requerido (<code>inference:</code> o <code>report:</code>) en la pestaña <em>Ajustes</em> del panel. Actualizad vuestras aplicaciones cliente con la nueva clave. Solo cuando hayáis verificado que el tráfico entra correctamente, proceded a revocar la clave antigua.</li>
+      <li><strong>Claves de proveedores de IA:</strong> Actualizad las claves en la consola de OpenAI o Anthropic e introducid la nueva clave en SynapseAI. El cambio se aplica en memoria de forma instantánea sin reiniciar el contenedor.</li>
     </ol>
 
-    <h2>Monitoreo de Salud y Disponibilidad</h2>
-    <p>SynapseAI proporciona una ruta ligera para sondas de disponibilidad (Kubernetes, AWS CloudWatch, Datadog, Uptime Kuma):</p>
+    <h2>Comprobación de estado y monitorización</h2>
+    <p>El servicio ofrece una ruta pública y ultraligera para sondas de monitorización (Nagios, Zabbix, Uptime Kuma, AWS Route53 o Kubernetes health probes):</p>
 
     <pre class="code"><code>curl -s -i http://127.0.0.1:3000/healthz</code></pre>
 
-    <p>Responde con código HTTP <code>200 OK</code> certificando que el proceso está activo y listo para enrutar tráfico.</p>
+    <p>Responde con código <code>200 OK</code> y un documento JSON que certifica que el proceso se encuentra activo y listo para procesar peticiones.</p>
 
   </article>
 </div>
@@ -143,4 +142,3 @@ tar -czf /backups/synapse-$(date +%Y%m%d).tar.gz -C /ruta/a/synapse data/</code>
 <script type="module" src="/js/page.js"></script>
 </body>
 </html>
-

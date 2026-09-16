@@ -127,10 +127,10 @@ export class ProbarComponent {
 
     steps.push(this.step({
       n: '01',
-      title: 'Mitigación de Prompt Injection y Jailbreaks',
+      title: 'Se comprueba que nadie intente engañar a la IA',
       badge: 'Limpio',
       tone: 'ok',
-      note: 'Inspección heurística y semántica de todo el contexto de la conversación.'
+      note: 'Se revisan todos los mensajes de la conversación, no solo el último.'
     }));
 
     if (ingress.length > 0) {
@@ -142,49 +142,49 @@ export class ProbarComponent {
 
       steps.push(this.step({
         n: '02',
-        title: 'Anonimización Perimetral DLP (Entrada)',
+        title: 'Se borran los datos de personas',
         badge: `${ingress.length} ${ingress.length === 1 ? 'encontrado' : 'encontrados'}`,
         tone: 'warning',
-        note: 'Datos confidenciales enmascarados antes del envío. El dato original jamás toca la red externa ni se persiste en disco; únicamente se genera una firma criptográfica SHA-256 en el registro.',
+        note: 'Sustituidos antes de salir. El valor original no se guarda en ningún sitio: en el registro solo queda una huella.',
         extra: `<div class="findings">${findings}</div>`
       }));
     } else {
       steps.push(this.step({
         n: '02',
-        title: 'Filtro de Datos Confidenciales (DLP)',
-        badge: 'Sin datos confidenciales',
-        note: 'No se identificaron documentos de identidad, cuentas bancarias ni credenciales en el mensaje.'
+        title: 'Se borran los datos de personas',
+        badge: 'Nada que borrar',
+        note: 'En este texto no había ningún documento ni cuenta que reconociera.'
       }));
     }
 
     const context = data.context;
     steps.push(this.step({
       n: '03',
-      title: 'Inyección de Directivas de Contexto Corporativo',
-      badge: context?.applied ? `${integer(context.chars)} caracteres` : 'Sin directivas activas',
+      title: 'Se añaden vuestras instrucciones',
+      badge: context?.applied ? `${integer(context.chars)} caracteres` : 'No hay ninguna',
       tone: 'contexto',
       note: context?.applied
-        ? 'Las directrices empresariales y políticas de tono se incorporan a la solicitud de forma segura tras la sanitización DLP.'
-        : 'Sin directivas corporativas preconfiguradas; se envía el payload base.'
+        ? 'El tono y las normas de la casa viajan con cada consulta. Se añaden después del borrado, no antes.'
+        : 'No tenéis instrucciones fijas configuradas, así que no se añade nada.'
     }));
 
     if (data.source === 'cache') {
       steps.push(this.step({
         n: '04',
-        title: 'Evaluación de Caché Semántica Local',
-        badge: data.matchType === 'semantic' ? 'Coincidencia Semántica' : 'Acierto de Caché (Exacto)',
+        title: 'Se mira si ya se preguntó lo mismo',
+        badge: data.matchType === 'semantic' ? 'Una parecida' : 'Ya estaba',
         tone: 'ok',
-        note: `Respuesta almacenada el ${esc(new Date(data.cachedAt).toLocaleString('es-ES'))}. Cero consumo de tokens en el proveedor.`
+        note: `Guardada el ${esc(new Date(data.cachedAt).toLocaleString('es-ES'))}. No se consumieron tokens del proveedor.`
           + (data.matchType === 'semantic'
-            ? ' <strong>Nota:</strong> respuesta generada previamente para una consulta semánticamente equivalente.'
+            ? ' <strong>Ojo:</strong> la respuesta se generó para un prompt distinto pero parecido.'
             : '')
       }));
 
       steps.push(this.step({
         n: '05',
-        title: 'Respuesta Inmediata Servida desde Caché',
-        badge: 'Sin costo de inferencia',
-        note: 'Respuesta recuperada de la memoria local: latencia mínima y cero consumo de tokens en USD.'
+        title: 'Se envía y se anota',
+        badge: 'No hizo falta preguntar',
+        note: 'La respuesta ya estaba guardada, así que esta consulta no ha costado nada.'
       }));
     } else {
       const routing = data.routing ?? {};
@@ -193,32 +193,32 @@ export class ProbarComponent {
 
       steps.push(this.step({
         n: '04',
-        title: 'Evaluación de Caché Semántica Local',
-        badge: 'Sin coincidencia previa (Miss)',
-        note: 'Consulta no registrada previamente; enrutamiento inteligente hacia el proveedor óptimo.'
+        title: 'Se mira si ya se preguntó lo mismo',
+        badge: 'Es nueva',
+        note: 'No estaba guardada, así que hay que preguntar al proveedor.'
       }));
 
       steps.push(this.step({
         n: '05',
-        title: `Enrutamiento hacia ${esc(data.model?.label ?? data.model?.id ?? '—')}`,
+        title: `Se envía a ${esc(data.model?.label ?? data.model?.id ?? '—')}`,
         badge: `${integer(data.latencyMs)} ms`,
         tone: 'probar',
         note: esc(routing.reasoning ?? ''),
         extra: `
           <div class="stat-row">
-            <div class="stat"><span class="stat-label">Tokens</span><span class="stat-value num">${integer(usage.inputTokens)} · ${integer(usage.outputTokens)}</span></div>
-            <div class="stat"><span class="stat-label">Costo (USD)</span><span class="stat-value num">${money(cost.usd)}</span></div>
-            <div class="stat"><span class="stat-label">Telemetría</span><span class="stat-value">${usage.measured ? 'Reporte oficial del proveedor' : 'Estimado'}</span></div>
+            <div class="stat"><span class="stat-label">Consumo</span><span class="stat-value num">${integer(usage.inputTokens)} · ${integer(usage.outputTokens)}</span></div>
+            <div class="stat"><span class="stat-label">Coste</span><span class="stat-value num">${money(cost.usd)}</span></div>
+            <div class="stat"><span class="stat-label">De dónde sale</span><span class="stat-value">${usage.measured ? 'Lo dice el proveedor' : 'Estimado'}</span></div>
           </div>`
       }));
 
       if (egress.length > 0) {
         steps.push(this.step({
           n: '06',
-          title: 'Inspección DLP en Salida (Egress DLP)',
+          title: 'Se revisa lo que responde la IA',
           badge: `${egress.length} ${egress.length === 1 ? 'encontrado' : 'encontrados'}`,
           tone: 'warning',
-          note: 'La respuesta del modelo contenía identificadores confidenciales generados o reflejados; sanitizados antes de la entrega final.'
+          note: 'La IA devolvió algo que parecía un dato personal, y se borró antes de enseñarlo.'
         }));
       }
     }
@@ -229,7 +229,7 @@ export class ProbarComponent {
     return `
       <div class="trace">${steps.join('')}</div>
       <div style="margin-top: 16px;">
-        <span class="eyebrow" style="display: block; margin-bottom: 8px;">Payload Sanitizado Transmitido al Modelo</span>
+        <span class="eyebrow" style="display: block; margin-bottom: 8px;">Texto que sale del perímetro</span>
         <div class="dark-terminal-output">${formattedResponse}</div>
       </div>`;
   }
@@ -241,7 +241,7 @@ export class ProbarComponent {
         <div class="trace">
           ${this.step({
             n: '01',
-            title: 'Petición bloqueada por seguridad perimetral. Ningún dato salió de la infraestructura local.',
+            title: 'Se ha parado. No salió nada de la empresa.',
             badge: 'Rechazada',
             tone: 'critical',
             note: esc(err.message),
@@ -253,28 +253,31 @@ export class ProbarComponent {
         </div>`;
     }
 
+    // Dos 401 muy distintos comparten código de estado: el del gateway
+    // rechazando tu clave, y el del proveedor rechazando la credencial que el
+    // gateway custodia. Confundirlos manda al operador a arreglar lo que no es.
     if (err.payload?.error?.type === 'ProviderError') {
       return `<div class="trace">${this.step({
         n: '!',
-        title: 'Credencial rechazada por el proveedor',
+        title: 'La IA no acepta la clave guardada',
         badge: 'Proveedor',
         tone: 'critical',
-        note: `${esc(err.message)}<br><br>La llave está almacenada en la bóveda pero fue rechazada por la API del proveedor. Actualícela en <strong>Proveedores y Bóveda</strong>.`
+        note: `${esc(err.message)}<br><br>La clave está en el vault pero el proveedor no la acepta. Sustitúyela en <strong>Ajustes → Proveedores</strong>.`
       })}</div>`;
     }
 
     if (err.code === 401) {
-      return '<div class="placeholder">Ingrese su llave de API en la barra lateral para enviar peticiones.</div>';
+      return '<div class="placeholder">Introduce tu clave de API en la barra lateral para poder enviar peticiones.</div>';
     }
 
     const known = {
       402: {
-        title: 'Límite presupuestario alcanzado',
+        title: 'Se ha llegado al tope de gasto',
         note: () => esc(err.message)
       },
       503: {
-        title: 'Sin proveedores LLM configurados',
-        note: () => 'Configure al menos una llave de proveedor en Proveedores y Bóveda.'
+        title: 'No hay ninguna IA configurada',
+        note: () => 'Añade una clave en Proveedores. Antes que inventarse una respuesta, esto devuelve un error.'
       }
     }[err.code];
 

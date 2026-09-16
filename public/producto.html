@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arquitectura y Funcionamiento: Las 6 Capas de Protección — SynapseAI</title>
-  <meta name="description" content="El recorrido completo de cada consulta en SynapseAI: seis capas de seguridad, anonimización DLP y optimización de costos antes de interactuar con la IA.">
+  <title>El producto: las seis capas explicadas — SynapseAI</title>
+  <meta name="description" content="El recorrido completo de una petición por SynapseAI: seis capas de inspección y protección antes de que el texto salga de vuestra red.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,83 +21,95 @@
 
   <article class="doc">
     <div class="doc-head">
-      <h1>Las seis capas de protección inteligente</h1>
-      <p class="resumen">El recorrido completo que sigue cada mensaje antes de comunicarse con ChatGPT, Claude o Gemini. Nada llega al proveedor externo sin superar estos seis filtros de seguridad y optimización.</p>
-      <span class="fecha">Versión 2.0.0 · Despliegue en tu propia infraestructura</span>
+      <h1>Las seis capas del programa</h1>
+      <p class="resumen">El recorrido completo que sigue cada mensaje antes de salir hacia ChatGPT, Claude o Gemini. Nada llega al proveedor sin cruzar estos seis pasos en este orden exacto.</p>
+      <span class="fecha">Versión 2.0.0 · Programa instalado en vuestra red</span>
     </div>
 
-    <h2>Punto de acceso centralizado y seguro</h2>
-    <p>SynapseAI es un gateway de seguridad que se instala en un servidor o nube privada de tu empresa. Se ubica de forma transparente entre las aplicaciones o colaboradores de tu organización y las inteligencias artificiales externas.</p>
-    <p>Para comenzar a utilizarlo, tu equipo técnico solo debe cambiar <strong>una sola línea en la configuración de sus aplicaciones</strong>: la dirección base (<code>baseURL</code>) a la que envían las consultas. A partir de ese instante, cada texto es inspeccionado, protegido y optimizado por seis capas automáticas consecutivas.</p>
+    <h2>Un único punto de paso</h2>
+    <p>SynapseAI es un programa que instaláis en un servidor de vuestra propia oficina o centro de datos. Se coloca justo en medio: entre los programas de vuestro equipo y las inteligencias artificiales externas.</p>
+    <p>Para usarlo, vuestro equipo solo tiene que cambiar <strong>una sola línea en sus programas</strong>: la dirección a la que envían las preguntas. A partir de ese momento, ningún texto sale hacia fuera sin haber sido revisado primero por seis capas consecutivas.</p>
 
-    <div class="doc-note">
-      <strong>Alcance y cobertura:</strong> SynapseAI protege de forma integral todo el tráfico de tus sistemas internos y el uso de ChatGPT, Claude o Gemini en los navegadores de tus colaboradores mediante la extensión oficial de escritorio.
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El programa solo puede revisar el tráfico que se le envía directamente. Si un empleado abre ChatGPT desde su teléfono personal o desde un navegador fuera de la red de la empresa sin la extensión configurada, este programa no tiene forma material de intervenir.
     </div>
 
-    <h2>Capa 01 · Control de identidad, permisos y presupuesto</h2>
-    <p>Cada aplicación, departamento o usuario dispone de credenciales de acceso internas. Cuando llega una solicitud, el sistema verifica de inmediato:</p>
+    <h2>Capa 01 · Se comprueba quién pregunta</h2>
+    <p>Cada aplicación, departamento o usuario dispone de su propia clave de acceso interna. Cuando llega un mensaje, el programa verifica de inmediato:</p>
     <ul>
-      <li>Que la clave de API interna esté activa, autorizada y no haya sido revocada.</li>
-      <li>A qué modelos específicos tiene autorización de consultar cada equipo (por ejemplo, restringir modelos costosos a tareas avanzadas).</li>
-      <li>El límite de consumo diario o mensual asignado para evitar sorpresas o sobrecostos en la facturación.</li>
+      <li>Que la clave esté activa y no haya sido revocada.</li>
+      <li>Qué modelos tiene permiso para consultar (por ejemplo, si puede preguntar a Claude o solo a un modelo local).</li>
+      <li>Qué tope de gasto tiene asignado ese equipo para evitar sorpresas a fin de mes.</li>
     </ul>
-    <p><strong>Beneficio directo:</strong> Control financiero absoluto y gobernanza de acceso sin fricción.</p>
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> La comprobación valida la clave entregada. Si alguien comparte su clave interna con un compañero o la deja pegada en un documento compartido, el programa no puede distinguir físicamente quién pulsa el teclado.
+    </div>
 
-    <h2>Capa 02 · Detección y bloqueo de prompt injections</h2>
-    <p>El gateway analiza minuciosamente cada mensaje entrante para identificar técnicas de manipulación de instrucciones (intentos de forzar al modelo a ignorar directrices corporativas, actuar como sistemas sin restricciones o comandos maliciosos ocultos).</p>
-    <p>Si se detecta un intento de manipulación o vulneración de seguridad, la consulta se neutraliza de inmediato antes de consumir saldo con el proveedor, y se emite una alerta en el panel de auditoría.</p>
-    <p><strong>Beneficio directo:</strong> Blindaje contra ataques dirigidos que busquen extraer datos o vulnerar el comportamiento previsto de tus aplicaciones.</p>
+    <h2>Capa 02 · Se buscan intentos de engaño</h2>
+    <p>El programa inspecciona los mensajes buscando patrones conocidos de manipulación (técnicas de inyección de instrucciones como «olvida tus reglas anteriores», «actúa como un sistema sin restricciones» o textos ocultos con caracteres especiales).</p>
+    <p>Si detecta un intento flagrante de burlar la seguridad, la petición se detiene en el acto antes de consumir presupuesto y queda registrada la alerta.</p>
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El filtro detiene trucos conocidos y textos maliciosos comunes. No existe en la industria informática ninguna garantía matemática que cierre el 100 % de los ataques de persuasión hacia un modelo de lenguaje.
+    </div>
 
-    <h2>Capa 03 · Anonimización DLP con validación matemática</h2>
-    <p>Esta es la capa principal de privacidad de SynapseAI. Mientras que otras soluciones dependen de expresiones regulares básicas con alta tasa de fallos, SynapseAI valida <strong>algoritmos matemáticos y dígitos de control oficiales</strong>:</p>
+    <h2>Capa 03 · Se borran los datos de personas</h2>
+    <p>Esta es la capa principal y la más diferencial del programa. Mientras otros sistemas solo buscan expresiones aproximadas que fallan a menudo, SynapseAI comprueba los <strong>dígitos de control matemáticos reales</strong>:</p>
     <ul>
-      <li><strong>Identificaciones oficiales:</strong> DNI y NIE (algoritmo MOD-23), RFC y CURP (México con dígito verificador), CPF y CNPJ (Brasil con Módulo 11).</li>
-      <li><strong>Cuentas bancarias internacionales (IBAN):</strong> Algoritmo internacional MOD-97-10.</li>
-      <li><strong>Tarjetas de crédito o débito:</strong> Algoritmo de comprobación Luhn internacional.</li>
-      <li><strong>Secretos de infraestructura:</strong> Detección de claves de API, tokens privados y contraseñas.</li>
+      <li><strong>DNI y NIE español:</strong> Comprobación por algoritmo MOD-23. Si la letra no corresponde al número, sabe que no es un documento real y no lo rompe.</li>
+      <li><strong>Cuentas bancarias (IBAN):</strong> Algoritmo internacional MOD-97.</li>
+      <li><strong>Tarjetas de crédito o débito:</strong> Algoritmo de Luhn.</li>
+      <li><strong>Identificadores iberoamericanos:</strong> CIF (España), RFC y CURP (México), CPF y CNPJ (Brasil).</li>
     </ul>
-    <p>Al identificar un dato auténtico, se reemplaza en milisegundos por una etiqueta segura (como <code>[REDACTED_ES_DNI_NIE]</code> o <code>[REDACTED_CARD]</code>) antes de salir de tu servidor. Cuando el modelo responde, el dato se restaura limpiamente para el usuario final.</p>
-    <p><strong>Beneficio directo:</strong> Cumplimiento normativo riguroso (GDPR, normativas latinoamericanas y de EE.UU.) y cero exposición de datos confidenciales de clientes.</p>
+    <p>Si el identificador es matemáticamente válido, se sustituye en vuelo por una etiqueta segura como <code>[REDACTED_ES_DNI_NIE]</code> antes de que el texto salga de vuestro servidor.</p>
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El programa reconoce estructuras numéricas y documentos regulados con fórmula matemática. No comprende si un párrafo en prosa libre relata un secreto comercial o una conversación privada sin identificadores formales.
+    </div>
 
-    <h2>Capa 04 · Inyección automática de directrices corporativas</h2>
-    <p>Una vez que el mensaje está completamente desinfectado de datos personales, SynapseAI puede adjuntar de forma transparente las políticas globales de tu empresa (reglas de confidencialidad, tono de respuesta o instrucciones de negocio obligatorias).</p>
-    <p>El orden es estratégico: las instrucciones institucionales se aplican <em>después</em> de la anonimización, asegurando que nunca interfieran con la verificación de identificadores.</p>
-    <p><strong>Beneficio directo:</strong> Respuestas alineadas con los estándares de calidad y cumplimiento de tu organización sin depender de la memoria de cada colaborador.</p>
+    <h2>Capa 04 · Se añaden vuestras instrucciones</h2>
+    <p>Una vez que el texto está completamente limpio de datos personales, el programa puede incorporar de forma automática las directrices generales de vuestra empresa (instrucciones de tono, confidencialidad o políticas internas).</p>
+    <p>El orden es crucial: vuestras instrucciones se acoplan <em>después</em> del borrado de datos, asegurando que nunca interfieran con la verificación de identificadores.</p>
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> Las instrucciones añadidas orientan las respuestas del modelo, pero los modelos de terceros pueden ignorar directrices en situaciones complejas de conversación.
+    </div>
 
-    <h2>Capa 05 · Memoria caché inteligente y control de gasto</h2>
-    <p>Antes de reenviar la consulta a OpenAI, Anthropic o Google, SynapseAI ejecuta dos comprobaciones automáticas de alta eficiencia:</p>
+    <h2>Capa 05 · Se mira si ya se preguntó y se respeta el tope</h2>
+    <p>Antes de reenviar la consulta a OpenAI, Anthropic o Google, el programa ejecuta dos comprobaciones de eficiencia:</p>
     <ul>
-      <li><strong>Caché semántica aislada:</strong> Si otro miembro del mismo departamento ya realizó la misma consulta sobre un documento o proceso, el sistema devuelve la respuesta almacenada sin demoras y sin generar costos de API.</li>
-      <li><strong>Reserva previa de presupuesto:</strong> Comprueba en tiempo real que el equipo cuente con saldo disponible dentro de su cupo antes de efectuar la llamada externa.</li>
+      <li><strong>Respuestas repetidas (caché aislada):</strong> Si otro miembro del mismo equipo ya hizo exactamente la misma pregunta sobre el mismo documento, el programa devuelve la respuesta almacenada sin volver a pagar ni un céntimo al proveedor.</li>
+      <li><strong>Reserva previa de gasto:</strong> El programa comprueba si el equipo tiene saldo dentro de su tope diario antes de llamar. Si se ha alcanzado el límite, frena la petición de forma controlada.</li>
     </ul>
-    <p><strong>Beneficio directo:</strong> Reducción de costos de hasta un 40% y respuestas hasta 10 veces más veloces para preguntas frecuentes.</p>
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> La caché solo ahorra en consultas idénticas. En tareas creativas o con textos variables, cada consulta se envía y se factura al proveedor de IA correspondiente.
+    </div>
 
-    <h2>Capa 06 · Auditoría criptográfica inmutable (SHA-256)</h2>
-    <p>Cada transacción completada se asienta en un registro de auditoría con una propiedad fundamental: <strong>cada anotación está sellada criptográficamente con la huella digital (hash) de la anterior</strong>.</p>
-    <p>Si alguien intentara modificar o eliminar una entrada histórica para encubrir un incidente, la cadena completa se invalida de inmediato y el panel emite una alerta visual permanente.</p>
-    <p><strong>Beneficio directo:</strong> Evidencia forense con plena validez técnica y legal ante auditorías regulatorias, clientes o revisiones judiciales.</p>
+    <h2>Capa 06 · Se anota lo que salió</h2>
+    <p>El programa escribe un apunte en un fichero de registro con una propiedad fundamental: <strong>cada anotación se enlaza matemáticamente con la anterior mediante una huella digital</strong>.</p>
+    <p>Esto significa que si alguien intentara manipular o borrar una línea del registro semanas después, toda la cadena posterior quedaría rota y el programa avisaría de inmediato en el panel de control.</p>
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El registro certifica qué salió y a qué hora. El programa no almacena el texto confidencial del cliente una vez borrado, por lo que no es un repositorio de copias de seguridad de expedientes.
+    </div>
 
     <h2>Para tu equipo técnico</h2>
     <div class="tecnico-box">
       <span class="eyebrow">Especificación técnica del pipeline</span>
-      <p>El flujo se procesa en memoria local de alta velocidad mediante Node.js en <code>server/controllers/gateway.controller.js</code> y servicios especializados de validación:</p>
+      <p>El flujo se ejecuta de forma síncrona en memoria mediante Node.js en <code>server/routes/v1.js</code> y <code>server/services/dlp.service.js</code>. Los identificadores se validan contra tablas de residuos oficiales:</p>
       <ul>
-        <li><code>Identificaciones</code>: Validación de residuos matemáticos oficiales y tablas de control.</li>
-        <li><code>Financiero</code>: Validación ISO 13616 / MOD-97-10 y algoritmo de Luhn en tiempo real.</li>
-        <li><code>Ledger Inmutable</code>: Registro secuencial encadenado con firmas criptográficas SHA-256.</li>
+        <li><code>DNI/NIE</code>: Validación de residuo 23 (Real Decreto 1553/2005) sobre cadena alfanumérica filtrada.</li>
+        <li><code>IBAN</code>: Validación ISO 13616 / MOD-97-10 con chequeo de código de país.</li>
+        <li><code>Ledger</code>: Un fichero en disco, una línea por petición, cada una enlazada a la anterior por su huella SHA-256.</li>
       </ul>
-      <pre><code># Probar el gateway con una solicitud de ejemplo
+      <pre><code># Ver el funcionamiento del pipeline en la consola local
 curl -X POST http://localhost:3000/v1/chat/completions \
   -H "Authorization: Bearer TU_CLAVE_SYNAPSE" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "gpt-4o-mini",
-    "messages": [{"role": "user", "content": "Cliente Martín Salas, DNI 12345678Z, saldo $1,200 USD"}]
+    "messages": [{"role": "user", "content": "Cliente con DNI 12345678Z"}]
   }'</code></pre>
     </div>
 
-    <h2>Compruébalo en vivo</h2>
-    <p>Examina en tiempo real cómo responde cada capa protectora utilizando tus propios textos en el simulador interactivo:</p>
+    <h2>Pruébalo en directo</h2>
+    <p>Puedes examinar cómo responde cada una de las capas con vuestros propios ejemplos en el simulador del panel:</p>
     <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 12px">
       <a class="btn" href="/app" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--ink-surface);color:var(--on-ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>

@@ -62,7 +62,7 @@ a:hover { text-decoration: underline; }
 
 /* La navegación lleva un indicador que se desliza al elemento apuntado. */
 .site-nav { position: relative; display: flex; gap: 22px; font-size: 14px; }
-.site-nav a { position: relative; z-index: 1; padding: 6px 2px; color: var(--ink-muted); white-space: nowrap; }
+.site-nav a { position: relative; z-index: 1; padding: 6px 2px; color: var(--ink-muted); }
 .site-nav a:hover { color: var(--ink-strong); text-decoration: none; }
 .nav-glide {
   position: absolute;

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Comparativa frente a alternativas del mercado — SynapseAI</title>
-  <meta name="description" content="Comparativa técnica y comercial de SynapseAI frente a la conexión directa con modelos, LiteLLM y Cloudflare AI Gateway. Privacidad, DLP y custodia en tu infraestructura.">
+  <title>Comparativa frente a alternativas — SynapseAI</title>
+  <meta name="description" content="Comparativa honesta de SynapseAI frente a LiteLLM, Cloudflare AI Gateway y Microsoft Purview. Dónde ganamos y dónde perdemos.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,24 +21,24 @@
 
   <article class="doc">
     <div class="doc-head">
-      <h1>Comparativa frente a alternativas del mercado</h1>
-      <p class="resumen">Análisis objetivo de SynapseAI frente a conexiones directas sin protección, soluciones genéricas de proxy como LiteLLM y plataformas de nube como Cloudflare AI Gateway.</p>
-      <span class="fecha">Revisión de arquitectura · Versión 2.0.0</span>
+      <h1>Frente a las alternativas reales</h1>
+      <p class="resumen">Una evaluación honesta frente a LiteLLM, Cloudflare AI Gateway y Microsoft Purview. Dónde este programa es la opción correcta y dónde las alternativas son claramente superiores.</p>
+      <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
     </div>
 
     <div class="doc-note">
-      <p><strong>Criterio de evaluación:</strong></p>
-      <p>SynapseAI no busca ser un enrutador genérico con cientos de modelos experimentales. Su diseño está enfocado con precisión quirúrgica en tres necesidades corporativas: <strong>privacidad de datos con validación matemática (DLP), gobernanza de costos y trazabilidad legal inmutable</strong> dentro de tu propio perímetro de red.</p>
+      <p><strong>El criterio de comparación:</strong></p>
+      <p>La categoría genérica de herramientas para conectar modelos de IA está dominada por gigantes que regalan funciones básicas. No intentamos competir en lo que ellos hacen mejor; explicamos exactamente en qué frontera técnica tiene sentido utilizar SynapseAI.</p>
     </div>
 
-    <h2>1. Cuadro comparativo integral</h2>
+    <h2>1. Cuadro comparativo global</h2>
 
     <div style="overflow-x:auto;margin:28px 0;border:1px solid var(--line);border-radius:12px;background:#fff">
       <table style="width:100%;border-collapse:collapse;font-size:14px;line-height:1.5">
         <thead>
           <tr style="border-bottom:2px solid var(--line);text-align:left;background:oklch(0.97 0.015 280)">
             <th style="padding:14px 16px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Capacidad</th>
-            <th style="padding:14px 16px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Conexión directa</th>
+            <th style="padding:14px 16px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Sin nada (Directo)</th>
             <th style="padding:14px 16px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">LiteLLM Proxy</th>
             <th style="padding:14px 16px;font-family:Montserrat,sans-serif;color:var(--ink-strong)">Cloudflare AI</th>
             <th style="padding:14px 16px;font-family:Montserrat,sans-serif;color:var(--probar);font-weight:700">SynapseAI</th>
@@ -46,84 +46,89 @@
         </thead>
         <tbody>
           <tr style="border-bottom:1px solid var(--line)">
-            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Custodia y residencia del tráfico</td>
-            <td style="padding:14px 16px;color:var(--ink-muted)">Nube del proveedor de IA</td>
+            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Dónde vive el tráfico</td>
+            <td style="padding:14px 16px;color:var(--ink-muted)">Nube del proveedor</td>
             <td style="padding:14px 16px;color:var(--ink-muted)">Servidor propio</td>
             <td style="padding:14px 16px;color:var(--ink-muted)">Nube de Cloudflare</td>
-            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong);background:oklch(0.98 0.01 280)">Tu propio servidor o red local</td>
+            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong);background:oklch(0.98 0.01 280)">Servidor en tu red</td>
           </tr>
           <tr style="border-bottom:1px solid var(--line)">
-            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Anonimización DLP con validación matemática</td>
+            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Comprobación del dígito de control</td>
             <td style="padding:14px 16px;color:var(--critical);font-weight:600">No</td>
-            <td style="padding:14px 16px;color:var(--ink-muted)">Filtros Regex genéricos</td>
-            <td style="padding:14px 16px;color:var(--ink-muted)">Sin validación matemática de documentos</td>
-            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150);background:oklch(0.98 0.01 280)">Sí · Algoritmos Luhn, MOD-23, MOD-97 y Módulo 11</td>
+            <td style="padding:14px 16px;color:var(--ink-muted)">Reglas de texto configurables; sin dígito de control documentado</td>
+            <td style="padding:14px 16px;color:var(--ink-muted)">Sin comprobación de dígito de control para DNI o CIF documentada</td>
+            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150);background:oklch(0.98 0.01 280)">Sí · MOD-23, MOD-97, Luhn y algoritmos iberoamericanos</td>
           </tr>
           <tr style="border-bottom:1px solid var(--line)">
-            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Extensión de navegador para colaboradores</td>
+            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Extensión de navegador para empleados</td>
             <td style="padding:14px 16px;color:var(--critical);font-weight:600">No</td>
             <td style="padding:14px 16px;color:var(--ink-muted)">No incluye extensión</td>
-            <td style="padding:14px 16px;color:var(--ink-muted)">Requiere cliente corporativo (WARP)</td>
-            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150);background:oklch(0.98 0.01 280)">Sí · Ligera, local y sin telemetría externa</td>
+            <td style="padding:14px 16px;color:var(--ink-muted)">Requiere instalar agente corporativo Zero Trust (WARP)</td>
+            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150);background:oklch(0.98 0.01 280)">Sí · Ligera, local y sin conexión a servidores nuestros</td>
           </tr>
           <tr style="border-bottom:1px solid var(--line)">
-            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Auditoría inmutable con validez técnica</td>
-            <td style="padding:14px 16px;color:var(--critical);font-weight:600">Inexistente</td>
-            <td style="padding:14px 16px;color:var(--ink-muted)">Tablas SQL editables</td>
-            <td style="padding:14px 16px;color:var(--ink-muted)">Registros en nube con retención limitada</td>
-            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150);background:oklch(0.98 0.01 280)">Sí · Cadena de firmas SHA-256 incorruptible</td>
+            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Registro inmutable demostrable</td>
+            <td style="padding:14px 16px;color:var(--critical);font-weight:600">Ninguno</td>
+            <td style="padding:14px 16px;color:var(--ink-muted)">Registro en base de datos; sin encadenado por huella documentado</td>
+            <td style="padding:14px 16px;color:var(--ink-muted)">Analítica en su nube con retención limitada</td>
+            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150);background:oklch(0.98 0.01 280)">Sí · Cadena de huellas SHA-256 en un fichero vuestro</td>
           </tr>
           <tr style="border-bottom:1px solid var(--line)">
-            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Motores y modelos principales</td>
+            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Catálogo de proveedores soportados</td>
             <td style="padding:14px 16px;color:var(--ink-muted)">1 a 1</td>
-            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150)">Catálogo extenso</td>
-            <td style="padding:14px 16px;color:var(--ink-muted)">Catálogo de nube</td>
-            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong);background:oklch(0.98 0.01 280)">Modelos líderes (OpenAI, Anthropic, Google, Ollama)</td>
+            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150)">140+ proveedores y modelos</td>
+            <td style="padding:14px 16px;color:var(--ink-muted)">20+ proveedores</td>
+            <td style="padding:14px 16px;color:var(--ink-muted);background:oklch(0.98 0.01 280)">4 principales (OpenAI, Anthropic, Google, Ollama)</td>
           </tr>
           <tr style="border-bottom:1px solid var(--line)">
-            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Ahorro de costos mediante caché inteligente</td>
-            <td style="padding:14px 16px;color:var(--critical);font-weight:600">No</td>
-            <td style="padding:14px 16px;color:var(--ink-muted)">Caché básica opcional</td>
-            <td style="padding:14px 16px;color:var(--ink-muted)">Caché perimetral en la nube</td>
-            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150);background:oklch(0.98 0.01 280)">Sí · Aislada por usuario, departamento y contexto</td>
+            <td style="padding:14px 16px;font-weight:600;color:var(--ink-strong)">Velocidad por cercanía a cada país</td>
+            <td style="padding:14px 16px;color:var(--ink-muted)">Directa</td>
+            <td style="padding:14px 16px;color:var(--ink-muted)">Depende de tu VPS</td>
+            <td style="padding:14px 16px;font-weight:600;color:oklch(0.50 0.15 150)">Líder mundial: red propia en más de 300 ciudades</td>
+            <td style="padding:14px 16px;color:var(--ink-muted);background:oklch(0.98 0.01 280)">Misma red local de tu oficina</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <h2>2. Ventajas clave de SynapseAI</h2>
+    <p style="margin:18px 0 0;font-size:13.5px;line-height:1.6;color:var(--ink-faint)">
+      La columna de SynapseAI es lo que hace este programa y se puede comprobar en su
+      código. Las otras tres resumen lo que sus fabricantes publican en su propia
+      documentación, no pruebas nuestras: antes de decidir nada, miradlo en la suya.
+    </p>
 
-    <h3>1 · Validación matemática real contra falsos positivos</h3>
-    <p>La mayoría de los sistemas utilizan expresiones regulares arbitrarias que confunden códigos postales, folios de facturas o referencias de productos con documentos de identidad. SynapseAI comprueba los algoritmos oficiales de validación matemática (algoritmo MOD-23 para DNI, MOD-97 para IBAN bancario, algoritmo Luhn para tarjetas y módulos de control para RFC, CURP, CPF y CNPJ).</p>
-    <p>Si los números no satisfacen la fórmula matemática oficial, el sistema sabe que no se trata de un documento genuino y no deteriora la coherencia del texto.</p>
+    <h2>2. Dónde gana SynapseAI con claridad</h2>
 
-    <h3>2 · Protección activa en el navegador del colaborador</h3>
-    <p>En el uso corporativo diario, el mayor riesgo de fuga no proviene de las API de backend, sino de colaboradores que copian y pegan contratos, nóminas o informes financieros directamente en la interfaz web de ChatGPT o Claude. La extensión de SynapseAI interviene en tiempo real antes de que el mensaje salga de la computadora.</p>
+    <h3>1 · Comprobación del dígito de control de los documentos de España e Iberoamérica</h3>
+    <p>Cualquier herramienta puede buscar una secuencia de 8 números y una letra con una expresión regular. El problema es que en España eso genera miles de falsos positivos con números de factura, códigos postales o referencias catastrales. SynapseAI valida el <strong>módulo 23 del DNI/NIE</strong>, el dígito de control del CIF, el algoritmo de Luhn en tarjetas y el <strong>MOD-97-10 en códigos de cuenta bancaria e IBAN</strong>.</p>
+    <p>Si la letra no encaja matemáticamente con los números, <strong>no es un documento de identidad y no se borra</strong>. Esto evita que vuestros informes queden ilegibles por sobre-borrado absurdo.</p>
 
-    <h3>3 · Evidencia inmutable ante auditorías de cumplimiento</h3>
-    <p>En una auditoría legal o regulatoria (como GDPR o normativas de protección de datos), un registro editable en base de datos carece de certeza jurídica. SynapseAI encadena cada solicitud con la huella digital criptográfica de la anterior, garantizando que el historial sea matemáticamente inalterable.</p>
+    <h3>2 · La extensión intercepta en el puesto de trabajo</h3>
+    <p>En una gestoría o un despacho, buena parte del riesgo no está en vuestros programas: está en alguien pegando un documento escaneado en la web de ChatGPT o de Claude. La extensión de SynapseAI actúa en el propio navegador, sustituyendo DNI y cuentas bancarias antes de que el texto viaje a internet.</p>
 
-    <h2>3. Compatibilidad e integración conjunta</h2>
-    <p>SynapseAI está diseñado bajo estándares abiertos de API. Esto permite utilizarlo como <strong>capa de inspección previa</strong> en cualquier arquitectura corporativa existente:</p>
+    <h3>3 · Registro demostrable que nadie puede maquillar</h3>
+    <p>Si un auditor o la AEPD inspecciona vuestra empresa, un registro en MySQL o PostgreSQL no demuestra nada: cualquier informático con acceso de administrador puede modificar una fila sin dejar rastro. SynapseAI encadena cada petición con la huella SHA-256 de la anterior. Alterar una coma invalida toda la cadena posterior.</p>
 
-    <pre class="code"><code>Tus aplicaciones y colaboradores &rarr; SynapseAI (DLP y auditoría en tu red) &rarr; Enrutador / Proveedor externo de IA</code></pre>
+    <h2>3. Dónde pierde SynapseAI (y no intentamos competir)</h2>
 
-    <p>SynapseAI purifica y anonimiza el tráfico dentro de tu infraestructura de seguridad. Una vez que las identificaciones oficiales, tarjetas y datos bancarios fueron protegidos, el tráfico viaja limpio hacia el destino que tu empresa decida.</p>
+    <div class="para-tecnicos">
+      <strong>Derrotas reconocidas con honestidad:</strong>
+      <ul>
+        <li><strong>Si necesitas 80 proveedores exóticos:</strong> Usa <strong>LiteLLM</strong>. Tienen una comunidad inmensa y añaden cada nuevo modelo chino o europeo a los dos días de publicarse. SynapseAI conecta con cuatro: OpenAI, Anthropic, Google y modelos vuestros.</li>
+        <li><strong>Si necesitas aceleración perimetral en 100 países:</strong> Usa <strong>Cloudflare AI Gateway</strong>. Tienen centros de datos en cada rincón del planeta y una infraestructura masiva que nosotros no podemos igualar.</li>
+        <li><strong>Si necesitas integración profunda con Active Directory en 5.000 puestos:</strong> Usa <strong>Microsoft Purview</strong>. Viene integrado en el sistema operativo Windows y en las licencias E5 de Office.</li>
+      </ul>
+    </div>
 
-    <h2>Comprueba la diferencia</h2>
-    <p>Pon a prueba las capacidades de detección en vivo o despliega SynapseAI en tus servidores:</p>
-    <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 12px">
-      <a class="btn" href="/app" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--ink-surface);color:var(--on-ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-        Probar simulador en el panel
-      </a>
-      <a class="btn" href="/docs/instalacion" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--line-strong);color:var(--ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 4 4-4 4"/><path d="M15 16h2"/></svg>
-        Guía de instalación
-      </a>
-      <a class="btn" href="/contacto" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--surface-quiet);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:14px">
-        Hablar con un asesor
-      </a>
+    <h2>4. La combinación recomendada: uno delante de otro</h2>
+    <p>No tienes por qué elegir. De hecho, el diseño de SynapseAI favorece que se coloque <strong>por delante de herramientas como LiteLLM</strong>:</p>
+
+    <pre class="code"><code>Tus programas &rarr; SynapseAI (borrado y auditoría local) &rarr; LiteLLM / Cloudflare &rarr; Proveedores de IA</code></pre>
+
+    <p>SynapseAI revisa y limpia los datos en vuestra red de oficina; una vez que los DNI, tarjetas e IBAN han sido retirados, el tráfico viaja limpio hacia cualquier enrutador o proveedor que ya tengáis contratado.</p>
+
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> SynapseAI no sustituye vuestra infraestructura corporativa ni hace magia frente a fugas organizativas intencionadas (como un usuario haciendo fotos a la pantalla con su móvil). Se encarga estrictamente de que lo que se envíe en texto digital no contenga identificadores reconocibles de personas.
     </div>
 
   </article>

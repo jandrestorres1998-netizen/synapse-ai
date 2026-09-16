@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Instalación — SynapseAI</title>
-  <meta name="description" content="Guía de instalación de SynapseAI. Puesta en marcha mediante Docker, Node.js (npm) o como servicio en segundo plano en Windows Server y Windows 11.">
+  <meta name="description" content="Guía de instalación de SynapseAI. Puesta en marcha mediante Docker, Node.js (npm) o en Windows Server / Windows 11.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,128 +21,127 @@
 
   <article class="doc">
     <div class="doc-head">
-      <h1>Guía de Instalación</h1>
-      <p class="resumen">Tres modalidades para poner en marcha la pasarela en su propia infraestructura: contenedor Docker, Node.js estándar o como servicio local en Windows.</p>
-      <span class="fecha">Versión estable v2.0.0 · Arquitectura Multiplataforma</span>
+      <h1>Guía de instalación</h1>
+      <p class="resumen">Los tres caminos para poner en marcha el programa en vuestra propia red: contenedor Docker, Node.js estándar o como servicio local en Windows.</p>
+      <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
     </div>
 
-    <h2>Requisitos mínimos del sistema</h2>
-    <p>SynapseAI es una solución ligera optimizada en JavaScript. No requiere tarjetas gráficas especializadas (GPU); el motor de validación de reglas DLP se ejecuta íntegramente en el procesador convencional (CPU) con mínima sobrecarga.</p>
+    <h2>Requisitos mínimos</h2>
+    <p>SynapseAI es un programa ligero desarrollado en JavaScript. No requiere tarjetas gráficas de cálculo (GPU) ni hardware especializado; la comprobación de identificadores corre íntegramente en el procesador convencional (CPU).</p>
 
     <ul>
       <li><strong>Procesador:</strong> 2 núcleos o superior.</li>
-      <li><strong>Memoria RAM:</strong> 2 GB disponibles (consumo típico del proceso: entre 90 y 180 MB).</li>
-      <li><strong>Espacio en disco:</strong> 500 MB para el sistema base y dependencias, más el almacenamiento reservado para el registro de auditoría.</li>
+      <li><strong>Memoria RAM:</strong> 2 GB disponibles (el proceso consume habitualmente entre 90 y 180 MB).</li>
+      <li><strong>Espacio en disco:</strong> 500 MB para el programa y sus dependencias, más el espacio destinado al registro de auditoría local.</li>
       <li><strong>Entorno:</strong> Docker 20.10+ o Node.js 18 LTS o superior.</li>
     </ul>
 
-    <h2>Método 1 · Despliegue con Docker (Recomendado)</h2>
-    <p>La opción recomendada para servidores de producción y aislamiento total. La imagen se construye directamente en su equipo a partir del código fuente auditado:</p>
+    <h2>Camino 1 · Docker (Recomendado)</h2>
+    <p>Es la forma más limpia de dejarlo corriendo en un servidor de oficina sin ensuciar el sistema anfitrión. La imagen se construye <strong>en vuestra propia máquina, a partir del código que descargáis</strong>: no se baja ningún programa ya compilado de internet, así que lo que acaba corriendo es exactamente lo que podéis leer antes de arrancarlo.</p>
 
-    <pre class="code"><code># 1. Clonar o descargar el código de SynapseAI
-git clone https://github.com/jandrestorres1998-netizen/synapse-ai.git
-cd synapse-ai
+    <pre class="code"><code># 1. Descargar y descomprimir el paquete del servidor
+#    (está en la página de Descargas, con su huella SHA-256)
+unzip synapse-ai-servidor-v2.0.0.zip -d synapseai
+cd synapseai
 
-# 2. Generar el archivo de configuración (.env)
+# 2. Generar la configuración (claves de acceso, almacén y registro)
 node scripts/init_env.js
 
-# 3. Construir la imagen y levantar el contenedor
+# 3. Construir y arrancar
 docker compose up -d --build
 
-# 4. Verificar el estado del servicio
+# 4. Comprobar que responde
 curl http://localhost:3000/healthz</code></pre>
 
-    <p style="margin-top:20px">Si prefiere utilizar la CLI de Docker sin Compose:</p>
+    <p style="margin-top:20px">El <code>docker-compose.yml</code> viene dentro del paquete y ya deja los datos fuera del contenedor. Si preferís lanzarlo a mano, el equivalente es:</p>
 
     <pre class="code"><code>docker build -t synapseai:2.0.0 .
 
-docker run -d \
-  --name synapseai \
-  -p 3000:3000 \
-  --env-file .env \
-  -e HOST=0.0.0.0 \
-  -v "$(pwd)/data:/app/data" \
-  --restart unless-stopped \
-  synapseai:2.0.0</code></pre>
+docker run -d   --name synapseai   -p 3000:3000   --env-file .env   -e HOST=0.0.0.0   -v "$(pwd)/data:/app/data"   --restart unless-stopped   synapseai:2.0.0</code></pre>
 
     <div class="doc-note">
-      <p><strong>Configuración de red en Docker:</strong></p>
-      <p>Dentro del contenedor es indispensable definir <code>HOST=0.0.0.0</code> para que el puerto publicado reciba conexiones desde la red externa o del host. En <code>docker-compose.yml</code> este ajuste ya viene preconfigurado.</p>
+      <p><strong>Dentro de Docker hace falta <code>HOST=0.0.0.0</code>.</strong></p>
+      <p>El fichero de configuración trae <code>HOST=127.0.0.1</code>, que es lo correcto cuando el programa corre directamente en una máquina. Dentro de un contenedor significa escuchar solo en su propio bucle interno: el puerto queda publicado pero no lleva a ninguna parte, y como la comprobación de salud también mira ahí dentro, <strong>el contenedor se declara sano mientras nadie puede entrar</strong>. El <code>docker-compose.yml</code> ya lo pone; si lanzáis el comando a mano, no lo olvidéis.</p>
     </div>
 
     <div class="doc-note">
-      <p><strong>Persistencia del volumen de datos:</strong></p>
-      <p>Asegúrese de montar la carpeta local en <code>/app/data</code> dentro del contenedor. Allí se preservan la bóveda cifrada, el registro de auditoría y los contadores presupuestarios entre reinicios.</p>
+      <p><strong>Cuidado con dónde se monta la carpeta de datos.</strong></p>
+      <p>Tiene que ser <code>/app/data</code>, no <code>/data</code>. Ahí dentro viven el almacén de claves cifrado, el registro de auditoría y el control de gasto. Si se monta en el sitio equivocado el programa arranca igual, sin quejarse, pero esos ficheros se quedan dentro del contenedor y <strong>desaparecen la próxima vez que lo recreéis</strong>.</p>
     </div>
 
-    <h2>Método 2 · Node.js y npm</h2>
-    <p>Recomendado si desea ejecutar pruebas en desarrollo o alojar el servicio directamente sobre un servidor Linux existente:</p>
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El contenedor abre el puerto 3000 en la red local, que es de donde llegan las peticiones de vuestros programas. Para llegar desde fuera de la oficina, o para usar conexiones cifradas con certificado (HTTPS), vuestro equipo informático deberá colocar delante un proxy inverso como Nginx o Caddy.
+    </div>
 
-    <pre class="code"><code># 1. Acceder al directorio del proyecto
-cd synapse-ai
+    <h2>Camino 2 · Node.js y npm</h2>
+    <p>Recomendado si deseáis auditar el código fuente, ejecutar pruebas en local o desplegarlo en un servidor Linux existente:</p>
 
-# 2. Instalar dependencias de producción
+    <pre class="code"><code># 1. Descomprimir el paquete descargado
+unzip synapse-ai-servidor-v2.0.0.zip -d synapseai
+cd synapseai
+
+# 2. Instalar las dependencias oficiales
 npm install --omit=dev
 
-# 3. Generar la configuración inicial
+# 3. Generar la configuración
 node scripts/init_env.js
 
-# 4. Iniciar el servicio
+# 4. Iniciar el programa
 npm start</code></pre>
 
-    <p style="margin-top:14px">Para mantener el servicio en ejecución continua en segundo plano, puede emplear <code>pm2</code> o un servicio <code>systemd</code>:</p>
+    <p style="margin-top:14px">Para mantenerlo en ejecución continua en segundo plano, recomendamos utilizar un gestor de procesos estándar como <code>systemd</code> o <code>pm2</code>:</p>
 
-    <pre class="code"><code># Gestión con PM2
+    <pre class="code"><code># Ejecución con PM2
 pm2 start server/server.js --name synapseai
 pm2 save
 pm2 startup</code></pre>
 
-    <h2>Método 3 · Windows (Instalación automática como servicio)</h2>
-    <p>Para oficinas y despachos que operan bajo <strong>Windows 10, Windows 11 o Windows Server</strong> y prefieren una instalación guiada sin consolas activas:</p>
+    <h2>Camino 3 · Windows (Instalador automático como servicio)</h2>
+    <p>Para despachos, gestorías y oficinas que trabajan sobre <strong>Windows 10, Windows 11 o Windows Server</strong> y buscan una instalación rápida sin ventanas negras de comandos:</p>
 
     <div class="audit-card" style="margin:16px 0 24px;border-color:var(--probar)">
       <div class="audit-card-head">
-        <h3 style="margin:0;font-size:16px">Instalador automatizado para Windows</h3>
-        <span class="badge-status badge-corregido">Asistente en un clic</span>
+        <h3 style="margin:0;font-size:16px">Instalación automática en un clic</h3>
+        <span class="badge-status badge-corregido">Recomendado para Windows</span>
       </div>
-      <p style="margin:10px 0">El paquete incluye el script <code>instalar_servicio_windows.bat</code>, que realiza el aprovisionamiento de manera transparente:</p>
+      <p style="margin:10px 0">El paquete incluye el script <code>instalar_servicio_windows.bat</code>, que realiza todo el proceso de forma automática:</p>
       <ol style="margin:0 0 14px;padding-left:20px;font-size:14px;line-height:1.7">
-        <li>Verifica o instala Node.js LTS mediante el gestor oficial de Windows (winget).</li>
-        <li>Instala los módulos de producción en segundo plano.</li>
-        <li>Configura SynapseAI en el <strong>Inicio automático del sistema</strong> para iniciar al encender la computadora.</li>
-        <li>Crea un acceso directo en su Escritorio: <strong>«SynapseAI — Panel de Control»</strong>.</li>
-        <li>Inicia el servicio en segundo plano de manera silenciosa y abre la consola en su navegador.</li>
+        <li>Comprueba o instala Node.js LTS mediante el gestor oficial de paquetes de Windows (winget).</li>
+        <li>Instala los componentes del programa en segundo plano sin dependencias de desarrollo.</li>
+        <li>Registra SynapseAI en el <strong>Inicio automático de Windows</strong> para que arranque solo al encender el ordenador.</li>
+        <li>Crea un acceso directo en tu Escritorio: <strong>«SynapseAI — Panel de Control»</strong>.</li>
+        <li>Arranca el programa <strong>en segundo plano de forma silenciosa</strong> (sin dejar abierta ninguna ventana negra de consola) y abre el panel en tu navegador.</li>
       </ol>
       <div style="background:var(--ground-sunken);padding:10px 14px;border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:13px">
-        Ejecutar: <strong>instalar_servicio_windows.bat</strong>
+        Doble clic en: <strong>instalar_servicio_windows.bat</strong>
       </div>
     </div>
 
-    <p>Para detener o reiniciar el servicio cuando lo requiera, utilice el script <code>detener_servicio_windows.bat</code>.</p>
+    <p>Para detener o gestionar el servicio en segundo plano cuando lo necesites, se incluye también el archivo <code>detener_servicio_windows.bat</code>.</p>
 
-    <h2>Verificación de Disponibilidad</h2>
-    <p>Una vez iniciado el servidor, compruebe que la pasarela responde correctamente accediendo a la consola web:</p>
+    <h2>Comprueba que el programa responde</h2>
+    <p>Una vez levantado el servidor, verifica que el sistema está operativo abriendo en tu navegador:</p>
 
     <div class="doc-note">
-      <p><strong>Verificación en navegador:</strong> Ingrese a <a href="http://localhost:3000/app" target="_blank" rel="noopener">http://localhost:3000/app</a> para visualizar el panel de administración.</p>
-      <p>También puede consultar el estado de la bóveda mediante terminal:</p>
-      <pre class="code" style="margin:8px 0"><code>curl http://localhost:3000/api/vault/status</code></pre>
-      <p style="margin:0;font-size:13px;color:var(--ink-muted)">La respuesta indicará <code>"status": "ready"</code> con el esquema de seguridad habilitado.</p>
+      <p><strong>Comprobación rápida:</strong> Accede a <a href="http://localhost:3000/app" target="_blank" rel="noopener">http://localhost:3000/app</a> para entrar al panel de administración.</p>
+      <p>También puedes solicitar el estado del almacén de claves por línea de comandos:</p>
+      <pre class="code" style="margin:8px 0"><code>curl.exe http://localhost:3000/api/vault/status</code></pre>
+      <p style="margin:0;font-size:13px;color:var(--ink-muted)">Debe responder con un JSON indicando <code>"status": "ready"</code> o <code>"initialized": true</code>.</p>
     </div>
 
-    <h2>Parámetros de Red y Conectividad</h2>
+    <h2>Para tu equipo técnico</h2>
     <div class="tecnico-box">
-      <span class="eyebrow">Acceso en Red Local</span>
-      <p>Por diseño de seguridad preventiva, <code>HOST</code> en <code>.env</code> está configurado inicialmente en <code>127.0.0.1</code> (solo llamadas locales).</p>
-      <p>Para permitir que otras estaciones de trabajo de su red corporativa consuman la pasarela, configure:</p>
-      <pre><code># En su archivo .env:
+      <span class="eyebrow">Aislamiento de red y puertos</span>
+      <p>Por seguridad, la variable <code>HOST</code> en <code>.env</code> viene fijada por defecto en <code>127.0.0.1</code> para que el programa solo admita conexiones desde el propio equipo donde está instalado.</p>
+      <p>Si queréis que otros ordenadores de la oficina se conecten al programa:</p>
+      <pre><code># En vuestro archivo .env:
 HOST=0.0.0.0
 PORT=3000</code></pre>
-      <p style="margin-top:10px">Habilite el puerto TCP 3000 en el Firewall de Windows o en el enrutador corporativo, y asigne llaves con ámbito en <code>SYNAPSE_API_KEYS</code>.</p>
+      <p style="margin-top:10px">Aseguraos de abrir el puerto TCP 3000 en el Firewall de Windows o en el cortafuegos de vuestro conmutador de red, y de definir claves con ámbito en <code>SYNAPSE_API_KEYS</code>.</p>
     </div>
 
-    <div class="alcance-box" style="padding:16px 20px;border-radius:var(--radius-sm);background:var(--surface-quiet);border-left:4px solid var(--accent);margin-top:24px">
-      <strong style="color:var(--ink-strong)">Soberanía y Mantenimiento:</strong> SynapseAI se ejecuta como un proceso estándar en su entorno sin instalar controladores de bajo nivel. Su equipo de TI mantiene el control total sobre copias de respaldo y ciclo de vida del servicio.
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> El instalador no modifica vuestros registros del sistema operativo ni instala controladores ocultos. El programa corre como un proceso de usuario convencional y su ciclo de vida depende exclusivamente de vosotros.
     </div>
 
   </article>

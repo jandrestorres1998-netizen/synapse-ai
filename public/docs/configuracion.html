@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Configuración (.env) — SynapseAI</title>
-  <meta name="description" content="Diccionario completo de variables de entorno de SynapseAI (.env). Ámbitos de claves, cifrado, proveedores de IA y límites presupuestarios en USD.">
+  <meta name="description" content="Diccionario completo de variables de entorno de SynapseAI (.env). Ámbitos de claves, cifrado, proveedores de IA y límites de gasto.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,17 +21,18 @@
 
   <article class="doc">
     <div class="doc-head">
-      <h1>Configuración del Sistema</h1>
-      <p class="resumen">Diccionario y especificación de todas las variables de entorno definidas en <code>.env.example</code>. Ámbitos de seguridad, cifrado en reposo, proveedores y control presupuestario en USD.</p>
-      <span class="fecha">Versión estable v2.0.0 · Gestión por Entorno</span>
+      <h1>Configuración del sistema</h1>
+      <p class="resumen">Diccionario y especificación de todas las variables de entorno definidas en <code>.env.example</code>. Ámbitos de seguridad, cifrado en reposo y proveedores.</p>
+      <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
     </div>
 
-    <h2>El archivo de entorno (.env)</h2>
-    <p>Toda la configuración del sistema se gobierna mediante el archivo <code>.env</code> en la raíz del proyecto. Este archivo contiene secretos criptográficos y credenciales maestras, por lo que <strong>está incluido en <code>.gitignore</code> y jamás debe publicarse en repositorios públicos</strong>.</p>
-    <p>Para iniciar la configuración, copie la plantilla base:</p>
-    <pre class="code"><code>cp .env.example .env</code></pre>
+    <h2>El archivo .env</h2>
+    <p>Toda la configuración del programa se gestiona mediante un archivo de texto llamado <code>.env</code> situado en la carpeta raíz del proyecto. Este archivo contiene secretos y contraseñas de vuestros modelos, por lo que <strong>está incluido en <code>.gitignore</code> y nunca debe subirse a ningún repositorio público</strong>.</p>
+    <p>Para empezar, genera el fichero. No copies la plantilla a mano: deja vacías las tres claves que el programa exige en producción —la de acceso, la del almacén y la del registro— y el contenedor muere al arrancar.</p>
+    <pre class="code"><code>node scripts/init_env.js</code></pre>
+    <p>Genera esas tres, apaga el proveedor simulado, te enseña una sola vez la clave de acceso y se niega a pisar un <code>.env</code> que ya exista. El resto del fichero sale de la plantilla, con sus comentarios, para que rellenes a mano lo que es vuestro.</p>
 
-    <h2>1 · Servidor y Conectividad</h2>
+    <h2>1 · Servidor y red local</h2>
     <div class="var-table-wrap">
       <table class="var-table">
         <thead>
@@ -45,35 +46,35 @@
           <tr>
             <td class="var-name">PORT</td>
             <td class="var-default">3000</td>
-            <td>Puerto TCP donde la pasarela escucha solicitudes HTTP.</td>
+            <td>Puerto TCP donde el programa escucha peticiones HTTP.</td>
           </tr>
           <tr>
             <td class="var-name">HOST</td>
             <td class="var-default">127.0.0.1</td>
-            <td>Dirección IP de enlace. <code>127.0.0.1</code> restringe el tráfico a la máquina local; use <code>0.0.0.0</code> para recibir solicitudes desde la red interna de su empresa o contenedor Docker.</td>
+            <td>Dirección IP de escucha. <code>127.0.0.1</code> solo acepta conexiones del propio equipo; cambia a <code>0.0.0.0</code> para dar servicio a la red local de la oficina.</td>
           </tr>
           <tr>
             <td class="var-name">NODE_ENV</td>
             <td class="var-default">development</td>
-            <td>Entorno de ejecución (<code>production</code> o <code>development</code>). En producción se activan cabeceras de seguridad estrictas y validaciones adicionales.</td>
+            <td>Define el entorno de ejecución (<code>production</code> o <code>development</code>). En producción se activan restricciones estrictas de seguridad.</td>
           </tr>
           <tr>
             <td class="var-name">LOG_LEVEL</td>
             <td class="var-default">info</td>
-            <td>Nivel de detalle de eventos en consola (<code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>).</td>
+            <td>Detalle del registro en consola (<code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>).</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <h2>2 · Autenticación y Ámbitos de Claves</h2>
-    <p>SynapseAI implementa un modelo de <strong>privilegios mínimos por ámbito</strong> para mitigar riesgos en caso de que una clave de cliente se vea comprometida:</p>
+    <h2>2 · Autenticación y ámbitos de claves</h2>
+    <p>SynapseAI utiliza un sistema de claves con <strong>ámbitos de privilegio estricto</strong> para que una clave comprometida no otorgue acceso al sistema completo:</p>
 
     <div class="var-table-wrap">
       <table class="var-table">
         <thead>
           <tr>
-            <th>Formato de la llave</th>
+            <th>Formato del secreto</th>
             <th>Ámbito concedido</th>
             <th>Uso recomendado</th>
           </tr>
@@ -82,24 +83,24 @@
           <tr>
             <td class="var-name">clave_secreta</td>
             <td><strong>Ámbito completo (Operador)</strong></td>
-            <td>Acceso total: consola de gestión, configuración, bóveda de claves y exportación de auditoría. Exclusivo para administradores de TI.</td>
+            <td>Acceso a todo: panel, configuración, vault de claves y auditoría. Solo para el responsable de sistemas.</td>
           </tr>
           <tr>
             <td class="var-name">inference:clave_secreta</td>
             <td><strong>Solo inferencia</strong></td>
-            <td>Autoriza exclusivamente el envío de prompts mediante <code>/v1/*</code>. No puede consultar claves ni registros de auditoría.</td>
+            <td>Permite únicamente enviar preguntas a la IA por <code>/v1/*</code>. No puede leer claves ni ver auditorías.</td>
           </tr>
           <tr>
             <td class="var-name">report:clave_secreta</td>
             <td><strong>Solo reporte de extensión</strong></td>
-            <td>Autoriza exclusivamente la notificación de eventos preventivos desde el navegador mediante <code>/api/extension/event</code>.</td>
+            <td>Permite únicamente notificar incidencias desde la extensión por <code>/api/extension/event</code>.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="doc-note">
-      <p><strong>Regla de seguridad:</strong> Asigne a las extensiones de los colaboradores únicamente claves con prefijo <code>report:</code>. De esta manera, el navegador no almacena secretos que puedan acceder a la bóveda o al libro de auditoría.</p>
+      <p><strong>Regla de seguridad esencial:</strong> Entrega a la extensión del navegador de los empleados únicamente una clave con prefijo <code>report:</code>. Sin ámbitos, la clave guardada en el navegador del empleado podría usarse para descifrar las claves de los modelos o descargar el historial de auditoría del despacho.</p>
     </div>
 
     <div class="var-table-wrap">
@@ -115,28 +116,28 @@
           <tr>
             <td class="var-name">SYNAPSE_API_KEYS</td>
             <td class="var-default">(vacío)</td>
-            <td>Lista de claves de acceso separadas por comas. Permite rotación de credenciales en caliente sin interrumpir la operación.</td>
+            <td>Lista de claves de acceso separadas por comas. Permite rotar credenciales sin interrumpir el servicio.</td>
           </tr>
           <tr>
             <td class="var-name">SYNAPSE_DISABLE_AUTH</td>
             <td class="var-default">false</td>
-            <td>Deshabilita la validación de claves. <strong>Solo permitido en pruebas locales de desarrollo</strong>; el servidor rechaza iniciar si se combina con <code>NODE_ENV=production</code>.</td>
+            <td>Desactiva la comprobación de claves. <strong>Solo permitido para pruebas en desarrollo</strong>; el servidor rechaza arrancar si se combina con <code>NODE_ENV=production</code>.</td>
           </tr>
           <tr>
             <td class="var-name">SYNAPSE_CORS_ORIGINS</td>
             <td class="var-default">localhost:3000</td>
-            <td>Orígenes autorizados para solicitudes CORS desde navegadores web. Evite comodines globales (<code>*</code>) en producción.</td>
+            <td>Lista de orígenes web autorizados para consultar la API desde navegadores. Nunca pongas comodines (<code>*</code>).</td>
           </tr>
           <tr>
             <td class="var-name">SYNAPSE_TRUST_PROXY_HOPS</td>
             <td class="var-default">0</td>
-            <td>Número de proxies inversos intermedios de confianza (Nginx, Caddy). <code>0</code> ignora <code>X-Forwarded-For</code> para prevenir suplantación de IP.</td>
+            <td>Número de proxies inversos de confianza (Nginx, Caddy) situados delante. <code>0</code> ignora la cabecera <code>X-Forwarded-For</code> para evitar suplantaciones de IP.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <h2>3 · Cifrado en Reposo y Auditoría</h2>
+    <h2>3 · Cifrado en reposo (Vault y Auditoría)</h2>
     <div class="var-table-wrap">
       <table class="var-table">
         <thead>
@@ -149,20 +150,20 @@
         <tbody>
           <tr>
             <td class="var-name">SYNAPSE_VAULT_KEY</td>
-            <td>Mínimo 32 caracteres (256 bits)</td>
-            <td>Llave maestra que cifra en reposo (AES-256-GCM) las credenciales de OpenAI, Anthropic y Google en el disco.</td>
+            <td>Mínimo 32 caracteres</td>
+            <td>Clave maestra que cifra en reposo las credenciales de OpenAI, Anthropic y Google guardadas en el disco del servidor. Sin ella, el sistema cae a un modo local inseguro.</td>
           </tr>
           <tr>
             <td class="var-name">SYNAPSE_AUDIT_HMAC_KEY</td>
             <td>Cadena criptográfica</td>
-            <td>Llave para firmar criptográficamente cada registro de actividad SHA-256, garantizando la inmutabilidad de la cadena de auditoría.</td>
+            <td>Clave secreta para firmar matemáticamente cada bloque del registro de actividad. Impide que nadie pueda retocar el registro de peticiones sin que se rompa la cadena.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <h2>4 · Proveedores de Inteligencia Artificial</h2>
-    <p>Configure las credenciales maestras de los modelos en el entorno o adminístrelas de forma cifrada mediante el panel web:</p>
+    <h2>4 · Proveedores de IA</h2>
+    <p>Puedes configurar aquí las claves de acceso de los modelos o introducirlas cifradas a través del panel visual:</p>
 
     <div class="var-table-wrap">
       <table class="var-table">
@@ -177,38 +178,38 @@
           <tr>
             <td class="var-name">OPENAI_API_KEY</td>
             <td class="var-default">(vacío)</td>
-            <td>Llave de API de OpenAI (GPT-4o, GPT-4o-mini).</td>
+            <td>Clave de API de OpenAI (ChatGPT, GPT-4o).</td>
           </tr>
           <tr>
             <td class="var-name">OPENAI_BASE_URL</td>
             <td class="var-default">api.openai.com/v1</td>
-            <td>Endpoint oficial de OpenAI.</td>
+            <td>Dirección del servicio de OpenAI.</td>
           </tr>
           <tr>
             <td class="var-name">ANTHROPIC_API_KEY</td>
             <td class="var-default">(vacío)</td>
-            <td>Llave de API de Anthropic (Claude 3.5 Sonnet, Haiku).</td>
+            <td>Clave de API de Anthropic (Claude 3.5 Sonnet).</td>
           </tr>
           <tr>
             <td class="var-name">GOOGLE_API_KEY</td>
             <td class="var-default">(vacío)</td>
-            <td>Llave de API de Google (Gemini 1.5 Pro, Flash).</td>
+            <td>Clave de API de Google (Gemini 1.5 Pro/Flash).</td>
           </tr>
           <tr>
             <td class="var-name">OLLAMA_BASE_URL</td>
             <td class="var-default">127.0.0.1:11434</td>
-            <td>URL de Ollama para ejecutar modelos de código abierto en hardware propio, con soberanía y aislamiento absoluto de internet.</td>
+            <td>Dirección de Ollama si ejecutáis modelos de IA en local en vuestro propio hardware, sin conexión a internet.</td>
           </tr>
           <tr>
             <td class="var-name">SYNAPSE_PROVIDER_TIMEOUT_MS</td>
             <td class="var-default">120000</td>
-            <td>Tiempo máximo de espera (en milisegundos) antes de abortar una llamada si el proveedor de IA no responde (120 segundos por defecto).</td>
+            <td>Tiempo máximo de espera (en milisegundos) antes de abortar una petición a un proveedor si no responde (2 minutos por defecto).</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <h2>5 · Directivas de Prevención de Fuga de Datos (DLP)</h2>
+    <h2>5 · Reglas de borrado de datos (DLP)</h2>
     <div class="var-table-wrap">
       <table class="var-table">
         <thead>
@@ -222,18 +223,18 @@
           <tr>
             <td class="var-name">SYNAPSE_DLP_ON_DETECTION</td>
             <td><code>redact</code> | <code>block</code></td>
-            <td>Acción ante detección de datos sensibles. <code>redact</code> (por defecto) sustituye el dato por una etiqueta segura y permite continuar la consulta; <code>block</code> rechaza la petición con código HTTP 400.</td>
+            <td>Acción cuando se detecta un dato confidencial. <code>redact</code> (por defecto) sustituye el dato por una etiqueta inocua y deja continuar la consulta; <code>block</code> rechaza la petición con código 400.</td>
           </tr>
           <tr>
             <td class="var-name">SYNAPSE_DLP_STORE_PLAINTEXT</td>
             <td><code>false</code> | <code>true</code></td>
-            <td>Almacenamiento de texto en bruto en auditoría. <strong>Fijado en false</strong>: nunca se almacenan datos sin anonimizar para evitar brechas secundarias.</td>
+            <td>Guardar el texto sin redactar en el registro de auditoría. <strong>Fijado en false</strong>: almacenar los datos que intentas proteger multiplica el riesgo de fuga.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <h2>6 · Control de Costos y Presupuesto en USD ($)</h2>
+    <h2>6 · Control de gasto y presupuesto</h2>
     <div class="var-table-wrap">
       <table class="var-table">
         <thead>
@@ -247,33 +248,33 @@
           <tr>
             <td class="var-name">SYNAPSE_BUDGET_DAILY_USD</td>
             <td class="var-default">0 (sin límite)</td>
-            <td>Límite diario de gasto en dólares (USD) por clave. El sistema reserva saldo preventivamente antes de cada llamada y bloquea consumos excedentes.</td>
+            <td>Tope diario de gasto en dólares por cliente o clave. Antes de enviar cada petición, el programa reserva el coste del peor caso y frena el consumo si se supera el tope.</td>
           </tr>
           <tr>
             <td class="var-name">SYNAPSE_BUDGET_MONTHLY_USD</td>
             <td class="var-default">0 (sin límite)</td>
-            <td>Límite mensual de gasto en dólares (USD) por clave.</td>
+            <td>Tope mensual de gasto por clave.</td>
           </tr>
           <tr>
             <td class="var-name">SYNAPSE_BUDGET_DAILY_USD_GLOBAL</td>
             <td class="var-default">0 (sin límite)</td>
-            <td>Límite diario consolidado en USD para todas las claves activas de la organización.</td>
+            <td>Tope diario acumulado de todas las claves combinadas en vuestra empresa.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <h2>Generación de Llaves Seguras</h2>
+    <h2>Para tu equipo técnico</h2>
     <div class="tecnico-box">
-      <span class="eyebrow">Comando Criptográfico</span>
-      <p>Para generar llaves maestras de 32 bytes con entropía segura en Linux o macOS:</p>
+      <span class="eyebrow">Generación de claves criptográficas seguras</span>
+      <p>Para generar contraseñas y claves de 32 bytes con entropía real en Linux o macOS:</p>
       <pre><code>openssl rand -hex 32</code></pre>
       <p style="margin-top:10px">En Windows con PowerShell:</p>
       <pre><code>-join ((1..64) | ForEach-Object { '{0:x}' -f (Get-Random -Max 16) })</code></pre>
     </div>
 
-    <div class="alcance-box" style="padding:16px 20px;border-radius:var(--radius-sm);background:var(--surface-quiet);border-left:4px solid var(--accent);margin-top:24px">
-      <strong style="color:var(--ink-strong)">Aplicación de Cambios:</strong> Al actualizar valores en el archivo <code>.env</code>, es necesario reiniciar el servicio o contenedor para cargar las nuevas variables criptográficas en memoria.
+    <div class="hasta-aqui">
+      <strong>Hasta aquí llega:</strong> Modificar los valores del archivo <code>.env</code> requiere reiniciar el proceso del programa para que la nueva configuración entre en vigor. Los cambios no se aplican en caliente por motivos de seguridad criptográfica.
     </div>
 
   </article>
@@ -284,4 +285,3 @@
 <script type="module" src="/js/page.js"></script>
 </body>
 </html>
-

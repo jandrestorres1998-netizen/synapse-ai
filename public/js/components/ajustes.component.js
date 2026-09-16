@@ -16,20 +16,20 @@ const PROVEEDOR = {
   openai: 'OpenAI',
   anthropic: 'Anthropic',
   google: 'Google',
-  ollama: 'Ollama (Servidor Local On-Premise)',
-  mock: 'Proveedor de pruebas (Mock)'
+  ollama: 'Ollama (en tu servidor)',
+  mock: 'Proveedor de pruebas'
 };
 
 const ORIGEN = {
-  vault: 'Bóveda local cifrada (AES-256-GCM)',
-  env: 'Variable de entorno (.env)',
-  local: 'Servicio local On-Premise'
+  vault: 'guardada aquí, cifrada',
+  env: 'desde una variable del sistema',
+  local: 'servicio local'
 };
 
 const ALCANCE = {
-  full: 'Acceso completo (Administrador)',
-  inference: 'Solo inferencia (Envío)',
-  report: 'Solo lectura (Auditoría)'
+  full: 'Acceso completo',
+  inference: 'Solo enviar peticiones',
+  report: 'Solo lectura'
 };
 
 export class AjustesComponent {
@@ -37,7 +37,7 @@ export class AjustesComponent {
     const container = document.getElementById('ajustes-container');
     if (!container) return;
 
-    container.innerHTML = this.marco('<div class="table-empty">Cargando configuración…</div>', '', '');
+    container.innerHTML = this.marco('<div class="table-empty">Cargando…</div>', '', '');
 
     try {
       const [stats, vault, acceso] = await Promise.all([
@@ -56,14 +56,14 @@ export class AjustesComponent {
     } catch (err) {
       container.innerHTML = this.marco(
         `<div class="table-empty">${err.code === 401
-          ? 'Ingrese su llave de API en la barra lateral para ver la configuración.'
+          ? 'Introduce tu clave en la barra lateral para ver la configuración.'
           : esc(err.message)}</div>`, '', '');
     }
   }
 
   static proveedores(providers) {
     const entradas = Object.entries(providers);
-    if (!entradas.length) return '<div class="table-empty">No hay ningún proveedor configurado.</div>';
+    if (!entradas.length) return '<div class="table-empty">No hay ningún proveedor.</div>';
 
     return entradas.map(([id, estado]) => {
       const nombre = PROVEEDOR[id] ?? id;
@@ -82,7 +82,7 @@ export class AjustesComponent {
               ${conectado ? 'Conectado' : 'Sin configurar'}
             </span>
             ${id === 'ollama' || id === 'mock' ? '' :
-              `<button class="btn btn-secondary btn-sm" data-provider="${esc(id)}" type="button">${conectado ? 'Actualizar' : 'Configurar'}</button>`}
+              `<button class="btn btn-secondary btn-sm" data-provider="${esc(id)}" type="button">${conectado ? 'Cambiar' : 'Añadir'}</button>`}
           </span>
         </div>`;
     }).join('');
@@ -93,8 +93,8 @@ export class AjustesComponent {
     if (!vault?.warning) {
       return `
         <div class="aside-note ok">
-          <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">Bóveda Criptográfica Activa y Segura</p>
-          <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink)">Cifrado AES-256-GCM activo con llave maestra protegida. Los respaldos de base de datos no contienen texto plano legible.</p>
+          <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">Las credenciales están cifradas de verdad</p>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink)">La clave maestra vive fuera de este disco, así que quien copie el fichero no se lleva nada usable.</p>
         </div>`;
     }
 
@@ -107,7 +107,7 @@ export class AjustesComponent {
           </svg>
         </span>
         <div>
-          <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">Advertencia de Bóveda Criptográfica</p>
+          <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">Las credenciales no están del todo protegidas</p>
           <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink)">${esc(vault.warning)}</p>
         </div>
       </div>`;
@@ -119,20 +119,20 @@ export class AjustesComponent {
     if (acceso.mode === 'disabled') {
       return `
         <div style="padding:20px 19px">
-          <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">Modo desarrollo: autenticación desactivada</p>
+          <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">No hay ninguna clave: la puerta está abierta</p>
           <p style="margin:0;max-width:70ch;font-size:14px;line-height:1.55;color:var(--ink-muted)">
-            Cualquier proceso local puede acceder sin llave. Adecuado para pruebas locales;
-            para producción, defina <code>SYNAPSE_API_KEYS</code> y reinicie el servicio.
+            La autenticación está desactivada, así que cualquier programa de este ordenador entra. Sirve para probar;
+            para trabajar, define <code>SYNAPSE_API_KEYS</code> y reinicia.
           </p>
         </div>`;
     }
 
-    if (!acceso.keys.length) return '<div class="table-empty">No hay ninguna llave configurada.</div>';
+    if (!acceso.keys.length) return '<div class="table-empty">No hay ninguna clave configurada.</div>';
 
     return acceso.keys.map(clave => `
       <div class="row">
         <span style="display:grid;gap:3px;min-width:0">
-          <span style="font-size:14.5px;color:var(--ink-strong);font-weight:500">Llave ····${esc(clave.tail)}${clave.isCurrent ? ' · sesión activa' : ''}</span>
+          <span style="font-size:14.5px;color:var(--ink-strong);font-weight:500">Clave ····${esc(clave.tail)}${clave.isCurrent ? ' · la que estás usando' : ''}</span>
           <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:12.5px;color:var(--ink-faint)">${esc(clave.tenantId)}</span>
         </span>
         <span style="margin-left:auto;font-size:13px;color:var(--ink-muted)">${esc(ALCANCE[clave.scope] ?? clave.scope)}</span>
@@ -146,7 +146,7 @@ export class AjustesComponent {
     return `
       <div style="display:grid;gap:18px;max-width:820px">
         <div class="card flush">
-          <div class="card-head"><span class="eyebrow">Proveedores de Modelos de Lenguaje</span></div>
+          <div class="card-head"><span class="eyebrow">Proveedores de IA</span></div>
           <div id="providers-list-items">${proveedores}</div>
         </div>
 
@@ -154,19 +154,19 @@ export class AjustesComponent {
 
         <div class="card flush">
           <div class="card-head">
-            <span class="eyebrow">Llaves de Acceso al Gateway</span>
-            <button id="btn-open-new-key-modal" type="button" style="margin-left:auto;border:0;background:transparent;font-size:12.5px;font-weight:600;color:var(--probar);cursor:pointer">Generar Nueva Llave</button>
+            <span class="eyebrow">Quién puede entrar al gateway</span>
+            <button id="btn-open-new-key-modal" type="button" style="margin-left:auto;border:0;background:transparent;font-size:12.5px;font-weight:600;color:var(--probar);cursor:pointer">Crear una clave nueva</button>
           </div>
           <div id="keys-list-items">${claves}</div>
         </div>
 
         <div class="card" style="padding:22px">
           <p class="metric-note" style="margin:0 0 12px;color:var(--ink-muted);font-size:14px;line-height:1.6">
-            Para conectar cualquier aplicación existente, modifique únicamente la variable baseURL. Las credenciales maestras de los proveedores permanecen cifradas en la bóveda local.
+            Para conectar un programa, se cambia una línea: la dirección a la que llama. La credencial del proveedor se queda aquí y el programa nunca la ve.
           </p>
           <pre class="snippet-block" id="snippet"></pre>
           <p class="metric-note" style="margin:12px 0 0;color:var(--ink-faint);font-size:13px">
-            Soporte nativo OpenAI-compatible: chat completions, streaming y tool calling (function calling).
+            Todavía no soportado: incrustaciones (<code>embeddings</code>) y la API de <code>responses</code>. Las llamadas a herramientas se reenvían tal cual.
           </p>
         </div>
       </div>
@@ -174,7 +174,7 @@ export class AjustesComponent {
       <div id="modal-add-provider" class="modal-backdrop">
         <div class="modal">
           <div class="modal-head">
-            <h3>Conectar Proveedor de Modelos</h3>
+            <h3>Conectar un proveedor</h3>
             <button id="btn-close-modal-prov" type="button" class="modal-x">&times;</button>
           </div>
           <div class="modal-body">
@@ -187,9 +187,9 @@ export class AjustesComponent {
               </select>
             </div>
             <div class="field">
-              <label class="field-label" for="input-provider-key">Llave de API del Proveedor</label>
-              <input id="input-provider-key" type="password" placeholder="Pegue la llave aquí (sk-...)" autocomplete="off">
-              <span class="row-note">Se almacena con cifrado AES-256-GCM. El gateway valida la conexión con el proveedor antes de persistirla en la bóveda.</span>
+              <label class="field-label" for="input-provider-key">Su clave</label>
+              <input id="input-provider-key" type="password" placeholder="Pégala aquí" autocomplete="off">
+              <span class="row-note">Se guarda cifrada y no vuelve a mostrarse. Comprobamos con el proveedor que funciona antes de darla por buena.</span>
             </div>
             <div id="prov-feedback"></div>
             <div class="modal-actions">
@@ -203,19 +203,21 @@ export class AjustesComponent {
       <div id="modal-add-key" class="modal-backdrop">
         <div class="modal">
           <div class="modal-head">
-            <h3>Generar Llave de Acceso al Gateway</h3>
+            <h3>Crear una clave nueva</h3>
             <button id="btn-close-modal-key" type="button" class="modal-x">&times;</button>
           </div>
           <div class="modal-body">
             <p class="row-note" style="margin:0">
-              Por motivos de máxima seguridad y principio de mínimo privilegio, las llaves de acceso se declaran en la configuración del servidor anfitrión. Genere aquí una llave criptográfica segura para integrarla en sus variables de entorno.
+              El panel no puede darse de alta una clave a sí mismo: las claves viven en la configuración del
+              servidor, y eso es lo que impide que quien entre al panel se fabrique acceso permanente.
+              Aquí se genera una y se explica dónde ponerla.
             </p>
             <div class="field">
-              <label class="field-label" for="select-key-scope">Alcance y Permisos (Scope)</label>
+              <label class="field-label" for="select-key-scope">Qué podrá hacer</label>
               <select id="select-key-scope">
-                <option value="full">Acceso completo (Administrador)</option>
-                <option value="inference">Solo inferencia (Envío)</option>
-                <option value="report">Solo lectura (Auditoría)</option>
+                <option value="full">Todo</option>
+                <option value="inference">Solo enviar peticiones</option>
+                <option value="report">Solo leer informes</option>
               </select>
             </div>
             <div id="key-result"></div>
@@ -272,32 +274,18 @@ const client = new OpenAI({
       const feedback = container.querySelector('#prov-feedback');
 
       if (!clave) {
-        if (feedback) {
-          feedback.replaceChildren();
-          const note = document.createElement('span');
-          note.className = 'row-note';
-          note.style.color = 'var(--critical-ink)';
-          note.textContent = 'Ingrese la llave de API.';
-          feedback.appendChild(note);
-        }
+        feedback.innerHTML = '<span class="row-note" style="color:var(--critical-ink)">Falta la clave.</span>';
         return;
       }
 
       guardar.disabled = true;
-      guardar.textContent = 'Validando…';
+      guardar.textContent = 'Comprobando…';
 
       try {
         const resultado = await ApiService.setVaultKey(proveedor, clave);
 
         if (resultado.verification?.attempted && !resultado.verification.ok) {
-          if (feedback) {
-            feedback.replaceChildren();
-            const note = document.createElement('span');
-            note.className = 'row-note';
-            note.style.color = 'var(--critical-ink)';
-            note.textContent = `La llave fue almacenada, pero el proveedor la rechazó: ${resultado.verification.error ?? ''}`;
-            feedback.appendChild(note);
-          }
+          feedback.innerHTML = `<span class="row-note" style="color:var(--critical-ink)">Se guardó, pero el proveedor la rechazó: ${esc(resultado.verification.error ?? '')}</span>`;
         } else {
           abrir('#modal-add-provider', false);
           container.querySelector('#input-provider-key').value = '';
@@ -305,52 +293,30 @@ const client = new OpenAI({
           return;
         }
       } catch (err) {
-        if (feedback) {
-          feedback.replaceChildren();
-          const note = document.createElement('span');
-          note.className = 'row-note';
-          note.style.color = 'var(--critical-ink)';
-          note.textContent = err.message;
-          feedback.appendChild(note);
-        }
+        feedback.innerHTML = `<span class="row-note" style="color:var(--critical-ink)">${esc(err.message)}</span>`;
       } finally {
         guardar.disabled = false;
         guardar.textContent = 'Guardar';
       }
     });
 
-    // Generar una clave es aritmética local: no crea nada en el servidor
+    // Generar una clave es aritmética local: no crea nada en el servidor, y se
+    // dice con todas las letras.
     container.querySelector('#btn-generate-new-key')?.addEventListener('click', () => {
       const alcance = container.querySelector('#select-key-scope')?.value ?? 'full';
       const bytes = crypto.getRandomValues(new Uint8Array(32));
       const secreto = [...bytes].map(b => b.toString(16).padStart(2, '0')).join('');
       const entrada = alcance === 'full' ? secreto : `${alcance}:${secreto}`;
 
-      const keyResult = container.querySelector('#key-result');
-      if (keyResult) {
-        keyResult.replaceChildren();
-        const field = document.createElement('div');
-        field.className = 'field';
-
-        const label = document.createElement('label');
-        label.className = 'field-label';
-        label.textContent = 'Copie la llave ahora (no se volverá a mostrar):';
-        field.appendChild(label);
-
-        const pre = document.createElement('pre');
-        pre.className = 'snippet-block';
-        pre.style.whiteSpace = 'pre-wrap';
-        pre.style.wordBreak = 'break-all';
-        pre.textContent = `SYNAPSE_API_KEYS=${entrada}`;
-        field.appendChild(pre);
-
-        const note = document.createElement('span');
-        note.className = 'row-note';
-        note.textContent = 'Incorpore este valor en la variable SYNAPSE_API_KEYS de su archivo .env y reinicie el servicio para aplicar los permisos.';
-        field.appendChild(note);
-
-        keyResult.appendChild(field);
-      }
+      container.querySelector('#key-result').innerHTML = `
+        <div class="field">
+          <label class="field-label">Cópiala ahora: no se vuelve a mostrar</label>
+          <pre class="snippet-block" style="white-space:pre-wrap;word-break:break-all">SYNAPSE_API_KEYS=${esc(entrada)}</pre>
+          <span class="row-note">
+            Añádela a esa variable en el servidor —separando con comas si ya hay otras— y reinicia.
+            <strong>Hasta que no lo hagas, esta clave no vale para nada.</strong>
+          </span>
+        </div>`;
     });
   }
 }
