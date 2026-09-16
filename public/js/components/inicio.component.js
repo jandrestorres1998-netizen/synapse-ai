@@ -26,7 +26,7 @@ export class InicioComponent {
       this.wire();
     } catch (err) {
       this.container.innerHTML = err.code === 401
-        ? '<div class="card"><span class="metric-note">Introduce tu clave en la barra lateral para ver el estado de la instancia.</span></div>'
+        ? '<div class="card"><span class="metric-note">Ingrese su llave de API en la barra lateral para ver el estado de la instancia.</span></div>'
         : `<div class="card"><span class="metric-note">${esc(err.message)}</span></div>`;
     }
   }
@@ -90,20 +90,20 @@ export class InicioComponent {
     const hayTrafico = serieTotal.some(v => v > 0);
 
     const kpis = [
-      this.kpi('Peticiones', integer(contadores.requestsTotal),
+      this.kpi('Peticiones Procesadas', integer(contadores.requestsTotal),
         InicioComponent.chispa(serieTotal, 'var(--probar)'),
         'Medido · contador del gateway'),
-      this.kpi('Datos sustituidos', integer(stats.dlp?.totalDetections),
+      this.kpi('Datos Anonimizados (DLP)', integer(stats.dlp?.totalDetections),
         InicioComponent.chispa(serieRedac, 'var(--warning)'),
-        'Medido · uno por cada dato encontrado'),
-      this.kpi('Respuestas reutilizadas', `${stats.cacheHitRatePercent ?? 0} <span class="unit">%</span>`,
+        'Medido · detecciones prevenidas por DLP'),
+      this.kpi('Ahorro por Caché Semántica', `${stats.cacheHitRatePercent ?? 0} <span class="unit">%</span>`,
         InicioComponent.chispa(horas.map(h => h.limpio), 'var(--ok)'),
-        'Medido · sobre tu tráfico real'),
-      this.kpi('Gasto', money(gasto.actualUsd, { compact: true }),
+        'Medido · sobre su tráfico real'),
+      this.kpi('Consumo Total (USD)', money(gasto.actualUsd, { compact: true }),
         InicioComponent.chispa(serieTotal, 'var(--spend)'),
         gasto.estimatedPortionUsd > 0
-          ? 'Parte estimada: algún proveedor no informó del consumo'
-          : 'Medido · lo que informa cada proveedor')
+          ? 'Parte estimada · proveedores sin reporte en tiempo real'
+          : 'Medido · telemetría reportada por proveedores')
     ].join('');
 
     return `
@@ -115,7 +115,7 @@ export class InicioComponent {
         <div class="grid cols">
           <div class="card flush">
             <div class="card-head">
-              <span class="eyebrow">Estado de la instancia</span>
+              <span class="eyebrow">Estado de la Instancia</span>
               ${this.contadorAvisos(stats, seguridad)}
             </div>
             ${this.estado(stats, seguridad)}
@@ -134,8 +134,8 @@ export class InicioComponent {
                     </div>`).join('')}
                 </div>
                 <div class="legend">
-                  <span><span class="key" style="background:var(--probar)"></span> Sin nada que sustituir</span>
-                  <span><span class="key" style="background:var(--warning)"></span> Con datos sustituidos</span>
+                  <span><span class="key" style="background:var(--probar)"></span> Tráfico regular</span>
+                  <span><span class="key" style="background:var(--warning)"></span> Con datos enmascarados</span>
                   <span class="push">${hayTrafico ? 'Medido · contador del gateway' : 'Sin tráfico en las últimas 12 h'}</span>
                 </div>
               </div>
@@ -143,16 +143,16 @@ export class InicioComponent {
 
             <div class="grid tight">
               <button class="shortcut-btn" data-target-tab="probar">
-                <span class="shortcut-title">Probar un texto</span>
-                <span class="shortcut-desc">Ver paso a paso qué saldría de la empresa.</span>
+                <span class="shortcut-title">Probar Gateway</span>
+                <span class="shortcut-desc">Inspeccionar en vivo el payload sanitizado.</span>
               </button>
               <button class="shortcut-btn" data-target-tab="proteccion">
-                <span class="shortcut-title">Revisar lo interceptado</span>
-                <span class="shortcut-desc">Lo que se ha sustituido últimamente.</span>
+                <span class="shortcut-title">Reglas DLP</span>
+                <span class="shortcut-desc">Filtros activos y patrones de validación.</span>
               </button>
               <button class="shortcut-btn" data-target-tab="ajustes">
-                <span class="shortcut-title">Revisar la configuración</span>
-                <span class="shortcut-desc">Proveedores, claves y topes de gasto.</span>
+                <span class="shortcut-title">Proveedores y Bóveda</span>
+                <span class="shortcut-desc">Conectores LLM, llaves y topes USD.</span>
               </button>
             </div>
           </div>
@@ -169,30 +169,30 @@ export class InicioComponent {
 
     if (integridad) {
       filas.push(integridad.isValid
-        ? { ok: true, titulo: 'El registro está intacto', detalle: `${integer(seguridad.ledger.totalAppended)} movimientos, todos enlazados.`, valor: 'Bien' }
-        : { ok: false, titulo: 'El registro no cuadra', detalle: integridad.reason ?? 'Alguna entrada no coincide con su hash.', valor: 'Revisar' });
+        ? { ok: true, titulo: 'Registro Criptográfico Válido', detalle: `${integer(seguridad.ledger.totalAppended)} eventos encadenados por SHA-256.`, valor: 'Íntegro' }
+        : { ok: false, titulo: 'Discrepancia en Registro Criptográfico', detalle: integridad.reason ?? 'Alguna entrada no coincide con su hash.', valor: 'Revisar' });
     }
 
     filas.push(reales.length > 0
-      ? { ok: true, titulo: 'Proveedores conectados', detalle: `Responden: ${reales.map(([n]) => n).join(', ')}.`, valor: `${reales.length} / ${Object.keys(providers).length - (providers.mock ? 1 : 0)}` }
-      : { ok: false, titulo: 'Ningún proveedor conectado', detalle: 'Sin credencial, las peticiones fallan. El gateway no se inventa una respuesta.', valor: 'Revisar' });
+      ? { ok: true, titulo: 'Proveedores LLM Conectados', detalle: `Activos: ${reales.map(([n]) => n).join(', ')}.`, valor: `${reales.length} / ${Object.keys(providers).length - (providers.mock ? 1 : 0)}` }
+      : { ok: false, titulo: 'Sin Proveedores Configurados', detalle: 'Configure al menos una llave de proveedor en la bóveda.', valor: 'Pendiente' });
 
     if (providers.mock?.configured) {
-      filas.push({ ok: false, titulo: 'El proveedor de pruebas está activo', detalle: 'Devuelve texto inventado y etiquetado como tal. No sirve para trabajar.', valor: 'Aviso' });
+      filas.push({ ok: false, titulo: 'Modo Simulación (Mock) Activo', detalle: 'Devuelve respuestas sintéticas para pruebas locales.', valor: 'Simulación' });
     }
 
     if (stats.dlp?.plaintextRetention) {
-      filas.push({ ok: false, titulo: 'Se están guardando los textos completos', detalle: 'El registro conserva el texto original, no solo su hash. Solo para depurar.', valor: 'Aviso' });
+      filas.push({ ok: false, titulo: 'Retención de Texto Plano Activa', detalle: 'El registro almacena el texto sin cifrar. Desactive en producción.', valor: 'Aviso' });
     }
 
     const tope = stats.budget?.tenant?.daily;
     if (tope?.enforced) {
       const usado = (tope.spentUsd + tope.reservedUsd) / tope.limitUsd;
       filas.push(usado >= 0.8
-        ? { ok: false, titulo: 'Cerca del tope de gasto', detalle: `${Math.round(usado * 100)} % del tope de hoy. Al llegar, las peticiones se rechazan.`, valor: 'Aviso' }
-        : { ok: true, titulo: 'Gasto dentro del tope', detalle: `${Math.round(usado * 100)} % del tope de hoy, con la reserva previa incluida.`, valor: 'Bien' });
+        ? { ok: false, titulo: 'Alerta de Presupuesto USD (≥80%)', detalle: `${Math.round(usado * 100)} % del límite diario consumido o reservado.`, valor: 'Alerta' }
+        : { ok: true, titulo: 'Consumo dentro de Presupuesto', detalle: `${Math.round(usado * 100)} % del límite diario en uso.`, valor: 'Normal' });
     } else {
-      filas.push({ ok: false, titulo: 'Sin tope de gasto', detalle: 'Se contabiliza lo que se gasta, pero nada lo detiene.', valor: 'Aviso' });
+      filas.push({ ok: false, titulo: 'Sin Límite de Presupuesto Asignado', detalle: 'El consumo se registra pero no cuenta con tope de detención.', valor: 'Informativo' });
     }
 
     return filas;
@@ -200,7 +200,7 @@ export class InicioComponent {
 
   contadorAvisos(stats, seguridad) {
     const avisos = this.comprobaciones(stats, seguridad).filter(f => !f.ok).length;
-    if (avisos === 0) return '<span class="tag ok pill" style="margin-left:auto">Todo en orden</span>';
+    if (avisos === 0) return '<span class="tag ok pill" style="margin-left:auto">Operativo</span>';
     return `<span class="tag warning pill" style="margin-left:auto">${avisos} ${avisos === 1 ? 'aviso' : 'avisos'}</span>`;
   }
 
@@ -235,16 +235,16 @@ export class InicioComponent {
       <div class="onboarding-card" id="onboarding-card">
         <div class="onboarding-head">
           <div style="display:flex;align-items:center;gap:10px">
-            <span class="eyebrow" style="margin:0;color:var(--probar)">Alta guiada</span>
+            <span class="eyebrow" style="margin:0;color:var(--probar)">Puesta en Marcha</span>
             <span class="badge-step-count">${progreso} de 3 completados</span>
           </div>
           <h2 style="font-size:20px;margin:8px 0 4px;font-family:var(--font-display);color:var(--ink-strong)">
-            ${progreso === 3 ? 'Instalación completada y verificada' : 'Puesta en marcha de tu instancia en 3 pasos'}
+            ${progreso === 3 ? 'Instalación Verificada y Operativa' : 'Puesta en marcha de su instancia en 3 pasos'}
           </h2>
           <p style="font-size:14px;color:var(--ink-muted);margin:0">
             ${progreso === 3
-              ? 'Tu pasarela está plenamente operativa: clave validada, proveedores activos y peticiones registradas.'
-              : 'Sigue estos tres pasos para dejar tu pasarela funcionando con tus aplicaciones y modelos de IA.'}
+              ? 'Su pasarela está plenamente operativa: llave validada, proveedores activos y peticiones registradas.'
+              : 'Siga estos tres pasos para activar su pasarela de seguridad con sus aplicaciones y modelos de IA.'}
           </p>
         </div>
 
@@ -253,12 +253,12 @@ export class InicioComponent {
           <div class="onboarding-step-item ${claveValida ? 'is-complete' : 'is-active'}">
             <div class="step-num">${claveValida ? '✓' : '1'}</div>
             <div class="step-content">
-              <h4>1. Clave de acceso</h4>
-              <p>Autentica tu sesión de operador para gobernar el gateway y generar claves de aplicación.</p>
+              <h4>1. Llave de acceso</h4>
+              <p>Autentique su sesión para gobernar el gateway y administrar llaves de aplicación.</p>
               <div class="step-action">
                 ${claveValida
-                  ? '<span class="step-status-tag ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Clave autenticada</span>'
-                  : '<button class="btn btn-sm btn-onboarding-action" data-action="focus-key">Validar clave</button>'}
+                  ? '<span class="step-status-tag ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Llave autenticada</span>'
+                  : '<button class="btn btn-sm btn-onboarding-action" data-action="focus-key">Validar llave</button>'}
               </div>
             </div>
           </div>
@@ -268,11 +268,11 @@ export class InicioComponent {
             <div class="step-num">${tieneProveedor ? '✓' : '2'}</div>
             <div class="step-content">
               <h4>2. Conectar proveedor</h4>
-              <p>Guarda de forma cifrada las claves de OpenAI, Anthropic, Google o tu modelo Ollama local.</p>
+              <p>Guarde con cifrado AES-256 las llaves de OpenAI, Anthropic, Google o su instancia local Ollama.</p>
               <div class="step-action">
                 ${tieneProveedor
                   ? '<span class="step-status-tag ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Proveedores listos</span>'
-                  : '<button class="btn btn-sm btn-onboarding-action" data-action="goto-providers">Configurar en Ajustes</button>'}
+                  : '<button class="btn btn-sm btn-onboarding-action" data-action="goto-providers">Configurar Proveedores</button>'}
               </div>
             </div>
           </div>
@@ -282,11 +282,11 @@ export class InicioComponent {
             <div class="step-num">${tienePeticiones ? '✓' : '3'}</div>
             <div class="step-content">
               <h4>3. Primera petición</h4>
-              <p>Envía un prompt de prueba para verificar en vivo la redacción DLP y el enrutado de coste.</p>
+              <p>Envíe una consulta de prueba para verificar en vivo la anonimización DLP y el enrutamiento inteligente.</p>
               <div class="step-action">
                 ${tienePeticiones
-                  ? '<span class="step-status-tag ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Primera petición trazada</span>'
-                  : '<button class="btn btn-sm btn-onboarding-action" data-action="goto-probar">Probar en consola</button>'}
+                  ? '<span class="step-status-tag ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Petición auditada</span>'
+                  : '<button class="btn btn-sm btn-onboarding-action" data-action="goto-probar">Probar Gateway</button>'}
               </div>
             </div>
           </div>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Descargas — SynapseAI</title>
-  <meta name="description" content="El paquete de la extensión, con su huella para que puedas comprobar que es el nuestro.">
+  <title>Descargas y Verificación — SynapseAI</title>
+  <meta name="description" content="Descarga de la extensión oficial de SynapseAI con verificación criptográfica SHA-256 e instrucciones de instalación.">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,32 +21,38 @@
 
   <article class="doc">
     <div class="doc-head">
-      <h1>Descargas</h1>
-      <p class="resumen">El paquete de la extensión, con su huella para que puedas comprobar que es el nuestro.</p>
-      <span class="fecha">Última revisión: 10 de septiembre de 2026</span>
+      <h1>Descargas y Verificación Oficial</h1>
+      <p class="resumen">Obtenga los paquetes de distribución oficial de SynapseAI junto con sus sumas de verificación criptográfica SHA-256 para garantizar su autenticidad e integridad.</p>
+      <span class="fecha">Versión estable v2.0.0 · Distribución verificada</span>
     </div>
-    <h2>Comprueba antes de instalar</h2>
-    <p>Junto a cada archivo publicamos su <strong>huella SHA-256</strong>: una cadena que solo puede salir de ese archivo exacto. Si la que calculas en tu ordenador coincide con la de aquí, tienes el nuestro y nadie lo ha tocado por el camino.</p>
-    <p>Suena técnico y se hace en un comando. En Windows:</p>
+
+    <h2>Verificación de integridad antes de instalar</h2>
+    <p>Para asegurar que el paquete no haya sido alterado durante la transferencia, cada archivo incluye su <strong>huella criptográfica SHA-256</strong>. Puede corroborar el hash en su terminal antes de proceder con el despliegue:</p>
+    
+    <p><strong>En Windows (PowerShell / Símbolo del sistema):</strong></p>
     <pre class="dl-hash" style="margin:0 0 14px">certutil -hashfile synapse-ai-extension-v2.0.0.zip SHA256</pre>
-    <p>En macOS o Linux:</p>
+    
+    <p><strong>En macOS o Linux (Terminal):</strong></p>
     <pre class="dl-hash" style="margin:0 0 20px">shasum -a 256 synapse-ai-extension-v2.0.0.zip</pre>
 
-    <h2>Archivos</h2>
-    <div id="lista-descargas"><p>Cargando…</p></div>
+    <h2>Paquetes disponibles</h2>
+    <div id="lista-descargas"><p>Cargando lista de paquetes verificados…</p></div>
 
-    <h2>El gateway</h2>
-    <p>El servidor no se descarga de aquí: se instala desde el repositorio, y así ves el código que vas a ejecutar. Es lo que quiere decir que sea programa libre.</p>
-    <p>Las instrucciones están en <a href="/#instalacion">la guía de instalación</a>.</p>
+    <h2>Pasarela de Seguridad (Servidor Gateway)</h2>
+    <p>La pasarela central se implementa directamente en su infraestructura (servidor local o nube privada) para garantizar que el código auditado y las llaves permanezcan bajo su control total.</p>
+    <p>Consulte las instrucciones completas en la <a href="/docs/instalacion">Guía de Instalación</a> o inicie de inmediato con Docker:</p>
+    <pre><code>git clone https://github.com/jandrestorres1998-netizen/synapse-ai.git
+cd synapse-ai
+docker compose up -d</code></pre>
 
-    <h2>Cómo instalar la extensión</h2>
-    <p>Todavía no está en la tienda de Chrome, así que se instala a mano:</p>
+    <h2>Instalación de la extensión en el navegador</h2>
+    <p>Siga estos pasos para activar la protección DLP en Chrome, Edge o Brave:</p>
     <ul>
-      <li>Descomprime el archivo en una carpeta que no vayas a borrar.</li>
-      <li>Abre <code>chrome://extensions</code> y activa el <strong>modo de desarrollador</strong>, arriba a la derecha.</li>
-      <li>Pulsa <strong>Cargar descomprimida</strong> y elige esa carpeta.</li>
+      <li>Descargue y descomprima el archivo <code>.zip</code> en una carpeta segura de su sistema.</li>
+      <li>Abra <code>chrome://extensions</code> (o <code>edge://extensions</code>) y active el <strong>Modo de desarrollador</strong> en la esquina superior derecha.</li>
+      <li>Haga clic en <strong>Cargar descomprimida</strong> y seleccione la carpeta donde extrajo los archivos.</li>
     </ul>
-    <p>La extensión solo habla con la dirección de tu propio gateway. No envía nada a ningún otro sitio.</p>
+    <p>La extensión se conectará de inmediato a su pasarela local para comenzar la protección preventiva en tiempo real.</p>
 
   </article>
 </div>
@@ -57,3 +63,4 @@
 <script type="module" src="/js/descargas.js"></script>
 </body>
 </html>
+

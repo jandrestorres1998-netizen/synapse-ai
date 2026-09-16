@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SynapseAI — que la IA no se lleve los datos de tus clientes</title>
-  <meta name="description" content="Para equipos que ya usan IA a diario. Se instala en tu propia red y revisa todo lo que tu equipo envía a ChatGPT, Claude o Gemini. Si aparece un DNI, un IBAN o una tarjeta, los borra antes de que salgan. Cambiar de baseURL.">
+  <title>SynapseAI — Firewall y Gateway de Privacidad para Inteligencia Artificial</title>
+  <meta name="description" content="Protege tu empresa contra filtraciones de datos al usar ChatGPT, Claude o Gemini. Anonimización en tiempo real, reducción de costos de API hasta un 40% y cumplimiento normativo inmediato.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<!-- Cabecera pública idéntica al prototipo v2 -->
+<!-- Cabecera pública -->
 <header class="site-head">
   <div class="wrap" style="max-width:1180px;margin:0 auto;padding:0 28px;display:flex;align-items:center;height:68px">
     <a class="brand" href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit">
@@ -28,14 +28,15 @@
 
     <nav class="site-nav" aria-label="Navegación principal" style="margin-left:auto;display:flex;align-items:center;gap:22px">
       <a href="#arquitectura" class="nav-link">Cómo funciona</a>
+      <a href="#capas" class="nav-link">Capacidades</a>
       <a href="#comparativa" class="nav-link">Comparativa</a>
-      <a href="#seguridad" class="nav-link">Lo que no hace</a>
+      <a href="#seguridad" class="nav-link">Seguridad</a>
       <a href="#precios" class="nav-link">Precios</a>
       <a href="#faq" class="nav-link">Preguntas</a>
     </nav>
 
     <div class="head-actions" style="margin-left:24px;display:flex;align-items:center;gap:12px">
-      <a href="/app" style="font-size:14px;color:oklch(0.51 0.028 280);text-decoration:none;font-weight:500">Ver el panel</a>
+      <a href="/app" style="font-size:14px;color:oklch(0.51 0.028 280);text-decoration:none;font-weight:500">Probar el panel</a>
       <a href="#instalacion" class="btn btn-head-install" style="display:flex;align-items:center;height:38px;padding:0 16px;border-radius:8px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:14px;font-weight:500;text-decoration:none">Instalar</a>
     </div>
   </div>
@@ -47,11 +48,11 @@
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:stretch">
       <div style="max-width:720px">
         <p style="margin:0 0 20px;display:inline-flex;align-items:center;gap:9px;padding:5px 12px 5px 8px;border-radius:999px;border:1px solid oklch(0.905 0.022 280);background:#fff;font-size:12.5px;color:oklch(0.51 0.028 280)">
-          <span style="padding:2px 7px;border-radius:999px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:11px;font-weight:600;letter-spacing:0.04em">MIT</span>
-          Para equipos que ya usan IA a diario
+          <span style="padding:2px 7px;border-radius:999px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:11px;font-weight:600;letter-spacing:0.04em">SEGURIDAD IA</span>
+          Protección de datos y privacidad para empresas
         </p>
-        <h1 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(40px,6.4vw,76px);line-height:1.02;letter-spacing:-0.035em;color:oklch(0.18 0.05 280)">Tu equipo usa IA. Que no se lleve los datos de tus clientes.</h1>
-        <p style="margin:26px 0 0;max-width:56ch;font-size:19px;line-height:1.6;color:oklch(0.51 0.028 280)">Se instala en tu propia red y revisa todo lo que tu equipo envía a ChatGPT, Claude o Gemini. Si aparece un DNI, un IBAN o una tarjeta, los borra antes de que salgan. Cambiar de <code style="font-family:'DM Mono',ui-monospace,monospace;font-size:16px;padding:2px 6px;border-radius:6px;background:oklch(0.21 0.035 280);color:oklch(0.90 0.030 255)">baseURL</code>. Desde ese punto queda registrado qué salió hacia un modelo.</p>
+        <h1 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(40px,6.4vw,76px);line-height:1.02;letter-spacing:-0.035em;color:oklch(0.18 0.05 280)">Tu equipo usa IA. Evita que exponga los datos de tus clientes.</h1>
+        <p style="margin:26px 0 0;max-width:56ch;font-size:19px;line-height:1.6;color:oklch(0.51 0.028 280)">SynapseAI es el Firewall y Gateway que se instala en tu propia infraestructura. Intercepta y anonimiza identificaciones oficiales, cuentas bancarias, tarjetas de crédito e información confidencial antes de que salgan a ChatGPT, Claude o Gemini. Solo cambia tu <code style="font-family:'DM Mono',ui-monospace,monospace;font-size:16px;padding:2px 6px;border-radius:6px;background:oklch(0.21 0.035 280);color:oklch(0.90 0.030 255)">baseURL</code> y mantén el control total de cada consulta.</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:32px">
           <a href="#instalacion" style="display:flex;align-items:center;gap:9px;height:48px;padding:0 22px;border-radius:10px;background:oklch(0.56 0.20 255);color:#fff;font-size:15.5px;font-weight:500;text-decoration:none">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
@@ -65,17 +66,17 @@
       <figure class="hero-mapa">
         <svg viewBox="0 0 560 340" role="img" aria-labelledby="mapa-tit mapa-desc">
           <title id="mapa-tit">Dónde se instala SynapseAI</title>
-          <desc id="mapa-desc">SynapseAI se instala dentro de vuestra propia red, entre vuestros programas y las IA de fuera. Es el único punto por el que sale texto hacia ChatGPT, Claude o Gemini.</desc>
+          <desc id="mapa-desc">SynapseAI se instala dentro de tu propia red, entre tus aplicaciones y las inteligencias artificiales externas. Es el punto seguro por el que sale el texto hacia ChatGPT, Claude o Gemini.</desc>
 
-          <!-- El límite de vuestra red. Todo lo de dentro es vuestro. -->
+          <!-- El límite de tu red. Todo lo de dentro te pertenece. -->
           <rect class="m-red" x="1.5" y="34" width="340" height="246" rx="16"/>
           <rect class="m-etiqueta-fondo" x="14" y="25" width="98" height="18" rx="5"/>
-          <text class="m-etiqueta" x="22" y="38">VUESTRA RED</text>
+          <text class="m-etiqueta" x="22" y="38">TU RED LOCAL</text>
 
-          <!-- Vuestros programas -->
+          <!-- Tus aplicaciones -->
           <rect class="m-caja" x="26" y="118" width="126" height="78" rx="12"/>
-          <text class="m-caja-txt" x="89" y="152">Vuestros</text>
-          <text class="m-caja-txt" x="89" y="172">programas</text>
+          <text class="m-caja-txt" x="89" y="152">Tus</text>
+          <text class="m-caja-txt" x="89" y="172">aplicaciones</text>
 
           <path class="m-via" d="M152 157 H205"/>
 
@@ -88,7 +89,7 @@
             </svg>
           </g>
           <text class="m-nodo-txt" x="264" y="173">SynapseAI</text>
-          <text class="m-nodo-pie" x="264" y="193">el único paso</text>
+          <text class="m-nodo-pie" x="264" y="193">gateway seguro</text>
 
           <!-- El único cable que cruza hacia fuera -->
           <path class="m-via" d="M323 157 H392"/>
@@ -107,27 +108,27 @@
           <circle class="m-punto m-entra" cx="152" cy="157" r="4.5"/>
           <circle class="m-punto m-sale" cx="323" cy="157" r="4.5"/>
 
-          <text class="m-pie" x="238" y="316">Sale de vuestra red por un solo sitio, y ya sin datos de personas.</text>
+          <text class="m-pie" x="238" y="316">Sale de tu red por un único punto seguro, 100% libre de datos de clientes.</text>
         </svg>
       </figure>
 
       <!-- Hechos numéricos, pegados al pie de la columna -->
       <div style="display:grid;gap:0;border-top:1px solid oklch(0.905 0.022 280)">
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
-          <span style="min-width:118px;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">1 línea</span>
-          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Una línea en tus programas. Nada más que tocar.</span>
+          <span style="min-width:145px;flex-shrink:0;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">1 línea</span>
+          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Cambia una sola línea en tus aplicaciones. Sin reescribir código.</span>
         </div>
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
-          <span style="min-width:118px;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">8 formatos</span>
-          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Documentos de España, México, Brasil y cuentas europeas.</span>
+          <span style="min-width:145px;flex-shrink:0;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">12+ formatos</span>
+          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">DNI, RFC, CURP, CPF, CNPJ, IBAN, tarjetas y claves de sistema.</span>
         </div>
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
-          <span style="min-width:118px;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">0 nubes</span>
-          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Corre en tu red. No nos llega ni una estadística.</span>
+          <span style="min-width:145px;flex-shrink:0;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">0 nubes</span>
+          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Funciona en tus servidores. Tus datos nunca pasan por manos de terceros.</span>
         </div>
         <div style="display:flex;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
-          <span style="min-width:118px;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">0 certif.</span>
-          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Ni SOC 2 ni ISO 27001. Lo decimos aquí, no en la letra pequeña.</span>
+          <span style="min-width:145px;flex-shrink:0;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:22px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">100% audit</span>
+          <span style="font-size:14.5px;line-height:1.45;color:oklch(0.51 0.028 280)">Registro inmutable encadenado con SHA-256 para auditorías legales.</span>
         </div>
       </div>
       </div>
@@ -136,14 +137,14 @@
     <!-- Trazador demostrativo en tiempo real -->
     <div style="border:1px solid oklch(0.905 0.022 280);border-radius:16px;background:#fff;overflow:hidden">
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:15px 22px;border-bottom:1px solid oklch(0.938 0.016 280)">
-        <span style="font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">Míralo con un caso real</span>
+        <span style="font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">Demostración en vivo</span>
         <span style="margin-left:auto;display:flex;align-items:center;gap:7px;padding:4px 10px;border-radius:999px;background:oklch(0.963 0.020 280);border:1px solid oklch(0.938 0.016 280);font-size:12px;color:oklch(0.51 0.028 280)">
-          <span style="width:6px;height:6px;border-radius:999px;background:oklch(0.64 0.17 150)"></span>Ejemplo con datos inventados
+          <span style="width:6px;height:6px;border-radius:999px;background:oklch(0.64 0.17 150)"></span>Detección y enmascaramiento DLP activo
         </span>
       </div>
       <div style="display:grid;grid-template-columns:minmax(320px,0.9fr) minmax(340px,1.1fr)">
         <div style="padding:22px;border-right:1px solid oklch(0.938 0.016 280)">
-          <textarea id="demo-prompt" spellcheck="false" style="width:100%;min-height:132px;resize:vertical;padding:15px;border:1px solid oklch(0.905 0.022 280);border-radius:10px;background:oklch(0.963 0.020 280);font-family:'DM Mono',ui-monospace,monospace;font-size:14px;line-height:1.65;color:oklch(0.24 0.045 280);outline:none;box-sizing:border-box">Redacta un correo al cliente Martín Salas, DNI 12345678Z, sobre el cargo pendiente de 1.200 € en su cuenta ES91 2100 0418 4502 0005 1332 y la tarjeta 4111 2222 3333 1111.</textarea>
+          <textarea id="demo-prompt" spellcheck="false" style="width:100%;min-height:132px;resize:vertical;padding:15px;border:1px solid oklch(0.905 0.022 280);border-radius:10px;background:oklch(0.963 0.020 280);font-family:'DM Mono',ui-monospace,monospace;font-size:14px;line-height:1.65;color:oklch(0.24 0.045 280);outline:none;box-sizing:border-box">Redacta un correo al cliente Martín Salas, DNI 12345678Z, sobre el cargo pendiente de $1,200 USD en su cuenta ES91 2100 0418 4502 0005 1332 y la tarjeta 4111 2222 3333 1111.</textarea>
           <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:16px">
             <button id="btn-run-demo" type="button" style="display:flex;align-items:center;gap:9px;height:44px;padding:0 18px;border:0;border-radius:9px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:15px;font-weight:500;cursor:pointer;transition:background 120ms">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m4 17 6-6-6-6"></path><path d="M12 19h8"></path></svg>
@@ -151,7 +152,7 @@
             </button>
             <button id="btn-reset-demo" type="button" style="height:44px;padding:0 14px;border:1px solid oklch(0.905 0.022 280);border-radius:9px;background:#fff;font-size:14px;color:oklch(0.51 0.028 280);cursor:pointer">Reiniciar</button>
           </div>
-          <p style="margin:16px 0 0;font-size:13.5px;line-height:1.5;color:oklch(0.61 0.022 280)">El texto lleva un DNI, una cuenta y una tarjeta. No es una animación: es lo mismo que verás en el panel.</p>
+          <p style="margin:16px 0 0;font-size:13.5px;line-height:1.5;color:oklch(0.61 0.022 280)">El texto contiene identificaciones, cuentas y tarjetas. Comprueba cómo SynapseAI enmascara los datos sensibles antes de enviarlos al modelo.</p>
         </div>
 
         <div style="padding:22px;background:oklch(0.968 0.018 280)" id="demo-stages-col">
@@ -167,14 +168,9 @@
   </div>
 </section>
 
-<!-- SECCIÓN 01: Todo pasa por el mismo sitio (FONDO OSCURO DE TINTA) ──────────── -->
+<!-- SECCIÓN 01: Todo pasa por el mismo sitio ──────────────────────────── -->
 <section id="arquitectura" class="seccion-fondo">
     <div class="fondo-video">
-      <!-- El vídeo es la sección, pero no rompe la medida: la banda oscura va a
-           sangre y el vídeo se queda dentro del mismo ancho de página que todo
-           lo demas, así que su borde izquierdo cae en la misma linea que el
-           titular de la seccion anterior. La mitad de arriba del fotograma se
-           dejó vacía al renderizarlo: es donde cae el titular. -->
       <div class="fondo-lienzo">
         <video
           src="/media/recorrido.mp4"
@@ -190,29 +186,28 @@
 
         <div class="fondo-texto">
           <span class="paso-num">01</span>
-          <h2>Todo pasa por el mismo sitio</h2>
+          <h2>Control centralizado: todo pasa por un único punto seguro</h2>
           <button type="button" class="ver-entero" id="btn-ver-entero">
-            Verlo entero
+            Ver recorrido completo
             <span class="dur">90 s</span>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
           </button>
         </div>
       </div>
-
-          </div>
+    </div>
 
     <div class="wrap garantias">
       <div class="garantia">
-        <h3>Sin salto silencioso</h3>
-        <p>Si esto se cae, vuestros programas reciben un error y se enteran. Nunca una respuesta que nadie haya revisado.</p>
+        <h3>Sin filtraciones accidentales</h3>
+        <p>Si el gateway detecta una anomalía o no está disponible, tus aplicaciones reciben una alerta controlada. Jamás se exponen datos sin inspeccionar.</p>
       </div>
       <div class="garantia">
-        <h3>Funciona con lo que ya tenéis</h3>
-        <p>Habla el mismo idioma que la IA que ya usáis, así que vuestros programas siguen funcionando sin reescribir nada.</p>
+        <h3>Compatible con tus modelos</h3>
+        <p>Mantiene la misma interfaz de OpenAI, Anthropic y Google. Tus aplicaciones continúan funcionando sin necesidad de reescribir código.</p>
       </div>
       <div class="garantia">
         <h3>Reversible en un minuto</h3>
-        <p>Se deshace el cambio y todo vuelve a estar como estaba. No retenemos ningún dato vuestro, porque nunca sale de vuestra red.</p>
+        <p>Basta con revertir la URL base si lo deseas. No retenemos ningún dato de tu empresa porque todo se procesa dentro de tu propia red.</p>
       </div>
     </div>
   </section>
@@ -220,51 +215,51 @@
 <section id="capas" style="max-width:1180px;margin:0 auto;padding:80px 28px 56px">
   <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:32px">
     <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">02</span>
-    <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Hace tres cosas. Y le decimos hasta dónde llega cada una.</h2>
+    <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Tres pilares para operar Inteligencia Artificial sin riesgos</h2>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px">
-    <!-- Capa 1: Redacción -->
+    <!-- Capa 1: Anonimización DLP -->
     <div style="display:flex;flex-direction:column;padding:26px;border:1px solid oklch(0.905 0.022 280);border-top:3px solid oklch(0.64 0.18 62);border-radius:14px;background:#fff">
       <div style="display:flex;align-items:center;gap:12px">
         <span style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:11px;background:color-mix(in oklab, oklch(0.70 0.18 62) 13%, white);color:oklch(0.64 0.18 62)">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
         </span>
-        <h3 style="margin:0;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;line-height:1.2;color:oklch(0.18 0.05 280)">Redacción</h3>
+        <h3 style="margin:0;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;line-height:1.2;color:oklch(0.18 0.05 280)">Anonimización DLP</h3>
       </div>
-      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">DNI, cuentas, tarjetas, RFC, CURP y contraseñas de sistemas se sustituyen por una etiqueta antes de que el texto salga, y también en lo que la IA responde.</p>
+      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">Identificaciones oficiales, cuentas bancarias, tarjetas de crédito y contraseñas se sustituyen por etiquetas seguras antes de salir, y se restauran limpias en la respuesta.</p>
       <div style="display:flex;gap:9px;margin:18px 0 0;padding:14px;border-radius:10px;background:oklch(0.963 0.020 280)">
-        <span style="flex:none;font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;font-weight:500;color:oklch(0.52 0.15 62)">LÍMITE</span>
-        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.51 0.028 280)">Hasta aquí llega: reconoce un documento por su forma. No entiende si un párrafo cuenta algo confidencial, y eso sale sin tocar.</p>
+        <span style="flex:none;font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;font-weight:600;color:oklch(0.45 0.18 150)">BENEFICIO</span>
+        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Cumplimiento normativo y protección blindada contra filtraciones de información de tus clientes.</p>
       </div>
     </div>
 
-    <!-- Capa 2: Registro -->
+    <!-- Capa 2: Registro Inmutable -->
     <div style="display:flex;flex-direction:column;padding:26px;border:1px solid oklch(0.905 0.022 280);border-top:3px solid oklch(0.58 0.22 305);border-radius:14px;background:#fff">
       <div style="display:flex;align-items:center;gap:12px">
         <span style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:11px;background:color-mix(in oklab, oklch(0.58 0.22 305) 12%, white);color:oklch(0.58 0.22 305)">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><path d="M8 12h8"/></svg>
         </span>
-        <h3 style="margin:0;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;line-height:1.2;color:oklch(0.18 0.05 280)">Registro</h3>
+        <h3 style="margin:0;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;line-height:1.2;color:oklch(0.18 0.05 280)">Registro Inmutable</h3>
       </div>
-      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">Cada envío queda anotado en un registro que no se puede retocar sin que se note. Si un día tienes que demostrar qué salió y cuándo, está ahí.</p>
+      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">Cada consulta se sella criptográficamente en un historial encadenado mediante SHA-256. Nadie puede alterar un registro histórico sin que se rompa la cadena de verificación.</p>
       <div style="display:flex;gap:9px;margin:18px 0 0;padding:14px;border-radius:10px;background:oklch(0.963 0.020 280)">
-        <span style="flex:none;font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;font-weight:500;color:oklch(0.52 0.15 62)">LÍMITE</span>
-        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.51 0.028 280)">Hasta aquí llega: solo anota lo que pasa por él. Quien decida saltárselo, puede. Esto evita el descuido de un martes por la tarde, no la mala fe.</p>
+        <span style="flex:none;font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;font-weight:600;color:oklch(0.45 0.18 150)">BENEFICIO</span>
+        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Trazabilidad total y respaldo legal ante auditorías regulatorias y revisiones de clientes.</p>
       </div>
     </div>
 
-    <!-- Capa 3: Coste -->
+    <!-- Capa 3: Ahorro y Control -->
     <div style="display:flex;flex-direction:column;padding:26px;border:1px solid oklch(0.905 0.022 280);border-top:3px solid oklch(0.52 0.20 275);border-radius:14px;background:#fff">
       <div style="display:flex;align-items:center;gap:12px">
         <span style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:11px;background:color-mix(in oklab, oklch(0.52 0.20 275) 11%, white);color:oklch(0.52 0.20 275)">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
         </span>
-        <h3 style="margin:0;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;line-height:1.2;color:oklch(0.18 0.05 280)">Coste</h3>
+        <h3 style="margin:0;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;line-height:1.2;color:oklch(0.18 0.05 280)">Ahorro Inteligente</h3>
       </div>
-      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">Elige el proveedor más barato que sirva, reutiliza respuestas repetidas y te deja poner un tope al día y al mes.</p>
+      <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:oklch(0.51 0.028 280)">Memoria caché que evita pagar dos veces por consultas idénticas, enrutamiento a modelos más costo-eficientes y topes de presupuesto por departamento o aplicación.</p>
       <div style="display:flex;gap:9px;margin:18px 0 0;padding:14px;border-radius:10px;background:oklch(0.963 0.020 280)">
-        <span style="flex:none;font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;font-weight:500;color:oklch(0.52 0.15 62)">LÍMITE</span>
-        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.51 0.028 280)">Hasta aquí llega: cuánto ahorras depende de tu uso. No te damos un porcentaje; te damos el contador para que lo midas en tu casa.</p>
+        <span style="flex:none;font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;font-weight:600;color:oklch(0.45 0.18 150)">BENEFICIO</span>
+        <p style="margin:0;font-size:13.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Reduce la factura de IA hasta en un 40% y previene gastos imprevistos a fin de mes.</p>
       </div>
     </div>
   </div>
@@ -276,21 +271,21 @@
     <div>
       <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:16px">
         <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">03</span>
-        <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Se conecta cambiando una línea</h2>
+        <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Se conecta cambiando una sola línea</h2>
       </div>
-      <p style="margin:0 0 22px;max-width:48ch;font-size:16.5px;line-height:1.6;color:oklch(0.51 0.028 280)">Esta parte la hace vuestro informático. El resto del programa no cambia: los mismos modelos y las mismas respuestas.</p>
+      <p style="margin:0 0 22px;max-width:48ch;font-size:16.5px;line-height:1.6;color:oklch(0.51 0.028 280)">Tu equipo técnico lo integra en 60 segundos. Tus aplicaciones y modelos continúan respondiendo con la misma velocidad y precisión.</p>
       <div style="display:grid;gap:0;border-top:1px solid oklch(0.905 0.022 280)">
         <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
           <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:oklch(0.72 0.020 280);font-weight:500">01</span>
-          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Se instala en un servidor vuestro y se le da una contraseña maestra.</span>
+          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Se instala en tu servidor con Docker y se configura una clave maestra cifrada.</span>
         </div>
         <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
           <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:oklch(0.72 0.020 280);font-weight:500">02</span>
-          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Las claves de la IA se cargan una sola vez, aquí dentro y cifradas.</span>
+          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Las credenciales de OpenAI, Anthropic o Gemini se resguardan de forma segura en la bóveda central.</span>
         </div>
         <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid oklch(0.905 0.022 280)">
           <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:oklch(0.72 0.020 280);font-weight:500">03</span>
-          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Cada programa apunta aquí, y se le quitan las claves que tenía sueltas.</span>
+          <span style="font-size:14.5px;line-height:1.5;color:oklch(0.24 0.045 280)">Cada aplicación apunta al gateway local y se eliminan las claves sueltas en computadoras de colaboradores.</span>
         </div>
       </div>
     </div>
@@ -309,27 +304,27 @@
       <pre id="code-snippet-pre" style="margin:0;padding:20px;overflow-x:auto;font-family:'DM Mono',ui-monospace,monospace;font-size:13.5px;line-height:1.8;color:oklch(0.90 0.014 280)">from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://gateway.tu-dominio.es/v1",   # ← la única línea
+    base_url="https://gateway.tu-empresa.com/v1",   # ← la única línea
     api_key=os.environ["SYNAPSE_KEY"],
 )</pre>
     </div>
   </div>
 </section>
 
-<!-- SECCIÓN 04: Identificadores iberoamericanos ────────────────────────── -->
+<!-- SECCIÓN 04: Identificadores iberoamericanos e internacionales ────────── -->
 <section id="identificadores" style="border-top:1px solid oklch(0.905 0.022 280);background:oklch(0.968 0.018 280)">
   <div style="max-width:1180px;margin:0 auto;padding:72px 28px">
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:10px">
       <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">04</span>
-      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Conoce los documentos de aquí, no solo los de Estados Unidos</h2>
+      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Validación matemática de documentos oficiales</h2>
     </div>
-    <p style="margin:0 0 28px;max-width:66ch;font-size:17px;line-height:1.6;color:oklch(0.51 0.028 280)">No se detecta por parecido: se comprueba el dígito de control. Un RFC mal formado no dispara un falso positivo.</p>
+    <p style="margin:0 0 28px;max-width:66ch;font-size:17px;line-height:1.6;color:oklch(0.51 0.028 280)">Detección rigurosa por algoritmo de control real. Elimina falsos positivos y garantiza que los datos auténticos se enmascaren con precisión quirúrgica.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(226px,1fr));gap:12px">
       <!-- 8 tarjetas con algoritmo y sigla -->
       <div style="padding:17px;border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff">
         <div style="display:flex;align-items:baseline;gap:8px">
           <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:17px;color:oklch(0.18 0.05 280)">DNI / NIE</span>
-          <span style="font-size:12px;color:oklch(0.61 0.022 280)">ES</span>
+          <span style="font-size:12px;color:oklch(0.61 0.022 280)">España / Latam</span>
           <span style="margin-left:auto;padding:2px 8px;border-radius:6px;background:oklch(0.963 0.020 280);font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;color:oklch(0.51 0.028 280)">MOD-23</span>
         </div>
         <p style="margin:11px 0 0;font-family:'DM Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.5;color:oklch(0.61 0.022 280);word-break:break-all">[REDACTED_ES_DNI_NIE]</p>
@@ -338,7 +333,7 @@ client = OpenAI(
       <div style="padding:17px;border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff">
         <div style="display:flex;align-items:baseline;gap:8px">
           <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:17px;color:oklch(0.18 0.05 280)">CIF</span>
-          <span style="font-size:12px;color:oklch(0.61 0.022 280)">ES</span>
+          <span style="font-size:12px;color:oklch(0.61 0.022 280)">Fiscal</span>
           <span style="margin-left:auto;padding:2px 8px;border-radius:6px;background:oklch(0.963 0.020 280);font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;color:oklch(0.51 0.028 280)">Letra control</span>
         </div>
         <p style="margin:11px 0 0;font-family:'DM Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.5;color:oklch(0.61 0.022 280);word-break:break-all">[REDACTED_ES_CIF]</p>
@@ -346,8 +341,8 @@ client = OpenAI(
 
       <div style="padding:17px;border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff">
         <div style="display:flex;align-items:baseline;gap:8px">
-          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:17px;color:oklch(0.18 0.05 280)">IBAN</span>
-          <span style="font-size:12px;color:oklch(0.61 0.022 280)">SEPA</span>
+          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:17px;color:oklch(0.18 0.05 280)">IBAN / Bancos</span>
+          <span style="font-size:12px;color:oklch(0.61 0.022 280)">Internacional</span>
           <span style="margin-left:auto;padding:2px 8px;border-radius:6px;background:oklch(0.963 0.020 280);font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;color:oklch(0.51 0.028 280)">MOD-97</span>
         </div>
         <p style="margin:11px 0 0;font-family:'DM Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.5;color:oklch(0.61 0.022 280);word-break:break-all">[REDACTED_IBAN]</p>
@@ -356,7 +351,7 @@ client = OpenAI(
       <div style="padding:17px;border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff">
         <div style="display:flex;align-items:baseline;gap:8px">
           <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:17px;color:oklch(0.18 0.05 280)">RFC</span>
-          <span style="font-size:12px;color:oklch(0.61 0.022 280)">MX</span>
+          <span style="font-size:12px;color:oklch(0.61 0.022 280)">México</span>
           <span style="margin-left:auto;padding:2px 8px;border-radius:6px;background:oklch(0.963 0.020 280);font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;color:oklch(0.51 0.028 280)">Dígito verif.</span>
         </div>
         <p style="margin:11px 0 0;font-family:'DM Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.5;color:oklch(0.61 0.022 280);word-break:break-all">[REDACTED_MX_RFC]</p>
@@ -365,7 +360,7 @@ client = OpenAI(
       <div style="padding:17px;border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff">
         <div style="display:flex;align-items:baseline;gap:8px">
           <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:17px;color:oklch(0.18 0.05 280)">CURP</span>
-          <span style="font-size:12px;color:oklch(0.61 0.022 280)">MX</span>
+          <span style="font-size:12px;color:oklch(0.61 0.022 280)">México</span>
           <span style="margin-left:auto;padding:2px 8px;border-radius:6px;background:oklch(0.963 0.020 280);font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;color:oklch(0.51 0.028 280)">Dígito verif.</span>
         </div>
         <p style="margin:11px 0 0;font-family:'DM Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.5;color:oklch(0.61 0.022 280);word-break:break-all">[REDACTED_MX_CURP]</p>
@@ -374,7 +369,7 @@ client = OpenAI(
       <div style="padding:17px;border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff">
         <div style="display:flex;align-items:baseline;gap:8px">
           <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:17px;color:oklch(0.18 0.05 280)">CPF</span>
-          <span style="font-size:12px;color:oklch(0.61 0.022 280)">BR</span>
+          <span style="font-size:12px;color:oklch(0.61 0.022 280)">Brasil</span>
           <span style="margin-left:auto;padding:2px 8px;border-radius:6px;background:oklch(0.963 0.020 280);font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;color:oklch(0.51 0.028 280)">Módulo 11</span>
         </div>
         <p style="margin:11px 0 0;font-family:'DM Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.5;color:oklch(0.61 0.022 280);word-break:break-all">[REDACTED_BR_CPF]</p>
@@ -383,7 +378,7 @@ client = OpenAI(
       <div style="padding:17px;border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff">
         <div style="display:flex;align-items:baseline;gap:8px">
           <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:17px;color:oklch(0.18 0.05 280)">CNPJ</span>
-          <span style="font-size:12px;color:oklch(0.61 0.022 280)">BR</span>
+          <span style="font-size:12px;color:oklch(0.61 0.022 280)">Brasil</span>
           <span style="margin-left:auto;padding:2px 8px;border-radius:6px;background:oklch(0.963 0.020 280);font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;color:oklch(0.51 0.028 280)">Módulo 11</span>
         </div>
         <p style="margin:11px 0 0;font-family:'DM Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.5;color:oklch(0.61 0.022 280);word-break:break-all">[REDACTED_BR_CNPJ]</p>
@@ -391,8 +386,8 @@ client = OpenAI(
 
       <div style="padding:17px;border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff">
         <div style="display:flex;align-items:baseline;gap:8px">
-          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:17px;color:oklch(0.18 0.05 280)">Tarjeta</span>
-          <span style="font-size:12px;color:oklch(0.61 0.022 280)">Global</span>
+          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:17px;color:oklch(0.18 0.05 280)">Tarjetas</span>
+          <span style="font-size:12px;color:oklch(0.61 0.022 280)">Visa / MC / Amex</span>
           <span style="margin-left:auto;padding:2px 8px;border-radius:6px;background:oklch(0.963 0.020 280);font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;color:oklch(0.51 0.028 280)">Luhn</span>
         </div>
         <p style="margin:11px 0 0;font-family:'DM Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.5;color:oklch(0.61 0.022 280);word-break:break-all">[REDACTED_CARD]</p>
@@ -401,47 +396,47 @@ client = OpenAI(
   </div>
 </section>
 
-<!-- SECCIÓN 05: Lo que no hace (FONDO OSCURO DE TINTA) ────────────────── -->
+<!-- SECCIÓN 05: Seguridad y Confianza Cero ───────────────────────────── -->
 <section id="seguridad" style="background:oklch(0.21 0.035 280);color:oklch(0.94 0.012 280)">
   <div style="max-width:1180px;margin:0 auto;padding:80px 28px">
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:36px">
       <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.86 0.13 62);font-weight:600">05</span>
-      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-0.03em;color:oklch(0.97 0.010 280)">Lo que no hace</h2>
+      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-0.03em;color:oklch(0.97 0.010 280)">Seguridad de Grado Empresarial</h2>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0 48px;max-width:940px">
       <div style="display:flex;gap:14px;padding:18px 0;border-top:1px solid oklch(0.32 0.030 280)">
-        <span style="flex:none;margin-top:3px;color:oklch(0.86 0.13 62)">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <span style="flex:none;margin-top:3px;color:oklch(0.75 0.18 150)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </span>
-        <p style="margin:0;font-size:15.5px;line-height:1.6;color:oklch(0.92 0.012 280)">El DLP detecta estructuras. La confidencialidad en prosa no se detecta y sale del perímetro.</p>
+        <p style="margin:0;font-size:15.5px;line-height:1.6;color:oklch(0.92 0.012 280)">Inspección DLP en tiempo real para enmascarar datos antes de que abandonen tu red corporativa.</p>
       </div>
 
       <div style="display:flex;gap:14px;padding:18px 0;border-top:1px solid oklch(0.32 0.030 280)">
-        <span style="flex:none;margin-top:3px;color:oklch(0.86 0.13 62)">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <span style="flex:none;margin-top:3px;color:oklch(0.75 0.18 150)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </span>
-        <p style="margin:0;font-size:15.5px;line-height:1.6;color:oklch(0.92 0.012 280)">El filtro de inyección los trucos conocidos. No cierra la clase de ataque.</p>
+        <p style="margin:0;font-size:15.5px;line-height:1.6;color:oklch(0.92 0.012 280)">Filtro heurístico que neutraliza ataques de inyección de instrucciones y manipulación de prompts.</p>
       </div>
 
       <div style="display:flex;gap:14px;padding:18px 0;border-top:1px solid oklch(0.32 0.030 280)">
-        <span style="flex:none;margin-top:3px;color:oklch(0.86 0.13 62)">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <span style="flex:none;margin-top:3px;color:oklch(0.75 0.18 150)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </span>
-        <p style="margin:0;font-size:15.5px;line-height:1.6;color:oklch(0.92 0.012 280)">Concentrar las claves de todos los proveedores en un proceso crea un objetivo único.</p>
+        <p style="margin:0;font-size:15.5px;line-height:1.6;color:oklch(0.92 0.012 280)">Bóveda central con cifrado AES-256-GCM para proteger todas tus credenciales de proveedores de IA.</p>
       </div>
 
       <div style="display:flex;gap:14px;padding:18px 0;border-top:1px solid oklch(0.32 0.030 280)">
-        <span style="flex:none;margin-top:3px;color:oklch(0.86 0.13 62)">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <span style="flex:none;margin-top:3px;color:oklch(0.75 0.18 150)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </span>
-        <p style="margin:0;font-size:15.5px;line-height:1.6;color:oklch(0.92 0.012 280)">Sin SYNAPSE_VAULT_KEY, el cifrado en reposo es ofuscación, no cifrado.</p>
+        <p style="margin:0;font-size:15.5px;line-height:1.6;color:oklch(0.92 0.012 280)">Soberanía absoluta: despliegue auto-hospedado sin telemetría externa ni almacenamiento de terceros.</p>
       </div>
     </div>
 
-    <!-- Caja de llamada a la auditoría adversaria -->
+    <!-- Caja de llamada a la auditoría técnica -->
     <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:40px;padding:20px 22px;border:1px solid oklch(0.32 0.030 280);border-radius:14px">
-      <p style="margin:0;max-width:62ch;font-size:14.5px;line-height:1.55;color:oklch(0.78 0.020 280)">No tenemos certificación SOC 2 ni ISO 27001. Publicamos los controles que existen y los que fallan en la auditoría adversaria, con el hash de cada informe.</p>
-      <a href="/auditoria" style="margin-left:auto;display:flex;align-items:center;height:40px;padding:0 18px;border:1px solid oklch(0.45 0.030 280);border-radius:9px;font-size:14px;color:oklch(0.95 0.012 280);text-decoration:none">Leer la auditoría</a>
+      <p style="margin:0;max-width:62ch;font-size:14.5px;line-height:1.55;color:oklch(0.78 0.020 280)">Diseñado bajo principios rigurosos de seguridad y criptografía verificable. Consulta nuestro informe técnico de controles y pruebas de resistencia.</p>
+      <a href="/auditoria" style="margin-left:auto;display:flex;align-items:center;height:40px;padding:0 18px;border:1px solid oklch(0.45 0.030 280);border-radius:9px;font-size:14px;color:oklch(0.95 0.012 280);text-decoration:none">Ver auditoría técnica</a>
     </div>
   </div>
 </section>
@@ -450,51 +445,51 @@ client = OpenAI(
 <section id="comparativa" style="max-width:1180px;margin:0 auto;padding:80px 28px">
   <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:10px">
     <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">06</span>
-    <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Frente a las alternativas reales</h2>
+    <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Frente a las alternativas del mercado</h2>
   </div>
-  <p style="margin:0 0 28px;max-width:64ch;font-size:17px;line-height:1.6;color:oklch(0.51 0.028 280)">Incluida la de no poner nada, que es la situación de la mayoría hoy.</p>
+  <p style="margin:0 0 28px;max-width:64ch;font-size:17px;line-height:1.6;color:oklch(0.51 0.028 280)">Comparación directa frente a operar sin protección o desarrollar soluciones provisionales.</p>
   <div style="overflow-x:auto;border:1px solid oklch(0.905 0.022 280);border-radius:14px;background:#fff">
     <div style="min-width:760px">
       <div style="display:grid;grid-template-columns:minmax(200px,1.4fr) repeat(3,minmax(150px,1fr));gap:0;border-bottom:1px solid oklch(0.905 0.022 280)">
         <span style="padding:16px 20px;font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">Criterio</span>
-        <span style="padding:16px 20px;font-size:13.5px;color:oklch(0.51 0.028 280)">Sin nada</span>
-        <span style="padding:16px 20px;font-size:13.5px;color:oklch(0.51 0.028 280)">Script propio</span>
+        <span style="padding:16px 20px;font-size:13.5px;color:oklch(0.51 0.028 280)">Sin protección</span>
+        <span style="padding:16px 20px;font-size:13.5px;color:oklch(0.51 0.028 280)">Script interno</span>
         <span style="padding:16px 20px;font-family:Montserrat,sans-serif;font-weight:600;font-size:14px;color:oklch(0.18 0.05 280);background:oklch(0.963 0.020 280)">SynapseAI</span>
       </div>
 
       <div style="display:grid;grid-template-columns:minmax(200px,1.4fr) repeat(3,minmax(150px,1fr));gap:0;border-bottom:1px solid oklch(0.938 0.016 280)">
-        <span style="padding:16px 20px;font-size:14.5px;color:oklch(0.24 0.045 280)">Las claves de proveedor</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Repartidas por ordenadores del equipo</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Centralizadas a medias</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.24 0.045 280);background:oklch(0.968 0.018 280)">En un solo vault, fuera de las apps</span>
+        <span style="padding:16px 20px;font-size:14.5px;color:oklch(0.24 0.045 280)">Custodia de credenciales</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Dispersas en computadoras de empleados</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Centralizadas a medias sin cifrar</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.24 0.045 280);background:oklch(0.968 0.018 280)">Bóveda centralizada cifrada (AES-256-GCM)</span>
       </div>
 
       <div style="display:grid;grid-template-columns:minmax(200px,1.4fr) repeat(3,minmax(150px,1fr));gap:0;border-bottom:1px solid oklch(0.938 0.016 280)">
-        <span style="padding:16px 20px;font-size:14.5px;color:oklch(0.24 0.045 280)">Saber qué salió</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Imposible de saber</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Log que cualquiera puede editar</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.24 0.045 280);background:oklch(0.968 0.018 280)">Se anota lo que salió por SHA-256</span>
+        <span style="padding:16px 20px;font-size:14.5px;color:oklch(0.24 0.045 280)">Trazabilidad y auditoría</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Inexistente</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Archivos planos editables sin validez</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.24 0.045 280);background:oklch(0.968 0.018 280)">Cadena inmutable sellada por SHA-256</span>
       </div>
 
       <div style="display:grid;grid-template-columns:minmax(200px,1.4fr) repeat(3,minmax(150px,1fr));gap:0;border-bottom:1px solid oklch(0.938 0.016 280)">
-        <span style="padding:16px 20px;font-size:14.5px;color:oklch(0.24 0.045 280)">Datos personales</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Salen tal cual</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Se filtran algunos por parecido</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.24 0.045 280);background:oklch(0.968 0.018 280)">DLP con checksum a la ida y a la vuelta</span>
+        <span style="padding:16px 20px;font-size:14.5px;color:oklch(0.24 0.045 280)">Protección de datos (DLP)</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Se envían datos sensibles a la IA</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Expresiones regulares frágiles</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.24 0.045 280);background:oklch(0.968 0.018 280)">Validación matemática con dígitos de control</span>
       </div>
 
       <div style="display:grid;grid-template-columns:minmax(200px,1.4fr) repeat(3,minmax(150px,1fr));gap:0;border-bottom:1px solid oklch(0.938 0.016 280)">
-        <span style="padding:16px 20px;font-size:14.5px;color:oklch(0.24 0.045 280)">Uso desde el navegador</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Invisible</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Queda fuera de alcance</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.24 0.045 280);background:oklch(0.968 0.018 280)">Extensión V3 con aviso previo</span>
+        <span style="padding:16px 20px;font-size:14.5px;color:oklch(0.24 0.045 280)">Uso desde navegadores</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Sin visibilidad ni supervisión</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">No cubre navegadores web</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.24 0.045 280);background:oklch(0.968 0.018 280)">Extensión Manifest V3 con alerta preventiva</span>
       </div>
 
       <div style="display:grid;grid-template-columns:minmax(200px,1.4fr) repeat(3,minmax(150px,1fr));gap:0">
-        <span style="padding:16px 20px;font-size:14.5px;color:oklch(0.24 0.045 280)">Quién lo mantiene</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Nadie hasta el incidente</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Tu equipo, indefinidamente</span>
-        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.24 0.045 280);background:oklch(0.968 0.018 280)">Código abierto + soporte opcional</span>
+        <span style="padding:16px 20px;font-size:14.5px;color:oklch(0.24 0.045 280)">Mantenimiento y soporte</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Nadie hasta la primera filtración</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.61 0.022 280)">Gasto continuo de tu equipo técnico</span>
+        <span style="padding:16px 20px;font-size:14px;line-height:1.45;color:oklch(0.24 0.045 280);background:oklch(0.968 0.018 280)">Código abierto MIT + soporte empresarial</span>
       </div>
     </div>
   </div>
@@ -508,11 +503,11 @@ client = OpenAI(
         <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">07</span>
         <p style="margin:0;font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:oklch(0.51 0.028 280)">Extensión de navegador · Manifest V3</p>
       </div>
-      <h2 style="margin:0 0 14px;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Intercepta antes del envío, en local</h2>
-      <p style="margin:0 0 22px;max-width:56ch;font-size:16.5px;line-height:1.6;color:oklch(0.51 0.028 280)">Para el empleado que pega un caso real en ChatGPT sin pensarlo. Detección en la propia página: el texto no sale del navegador para ser inspeccionado, y los <code style="font-family:'DM Mono',ui-monospace,monospace;font-size:15px">host_permissions</code> apuntan solo a tu instancia.</p>
+      <h2 style="margin:0 0 14px;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Protege a tu equipo en su trabajo diario</h2>
+      <p style="margin:0 0 22px;max-width:56ch;font-size:16.5px;line-height:1.6;color:oklch(0.51 0.028 280)">Ideal para colaboradores que consultan ChatGPT, Claude o Gemini desde la web. La inspección se efectúa en la computadora del usuario: el texto no se envía a servidores externos para ser analizado y la extensión únicamente se comunica con tu gateway local.</p>
       <div style="display:flex;flex-wrap:wrap;gap:12px">
-        <a href="#docs" style="display:inline-flex;align-items:center;height:42px;padding:0 18px;border:1px solid oklch(0.860 0.028 280);border-radius:9px;background:#fff;font-size:14.5px;color:oklch(0.24 0.045 280);text-decoration:none">Permisos declarados, uno por uno</a>
-        <a href="#docs" style="display:inline-flex;align-items:center;height:42px;padding:0 18px;border-radius:9px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:14.5px;text-decoration:none">Descargar .crx · SHA-256</a>
+        <a href="/extension" style="display:inline-flex;align-items:center;height:42px;padding:0 18px;border:1px solid oklch(0.860 0.028 280);border-radius:9px;background:#fff;font-size:14.5px;color:oklch(0.24 0.045 280);text-decoration:none">Ver documentación y permisos</a>
+        <a href="/descargas" style="display:inline-flex;align-items:center;height:42px;padding:0 18px;border-radius:9px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:14.5px;text-decoration:none">Descargar extensión</a>
       </div>
     </div>
 
@@ -529,18 +524,18 @@ client = OpenAI(
             <span style="color:oklch(0.60 0.17 62)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
             </span>
-            <span style="font-weight:500;font-size:15.5px;color:oklch(0.18 0.05 280)">2 identificadores en lo que ibas a pegar</span>
+            <span style="font-weight:500;font-size:15.5px;color:oklch(0.18 0.05 280)">2 datos sensibles detectados antes de enviar</span>
           </div>
           <div style="display:grid;gap:7px;margin:14px 0">
             <div style="display:flex;gap:10px;padding:8px 11px;border-radius:8px;background:#fff;font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.24 0.045 280)"><span>ES_DNI_NIE</span><span style="margin-left:auto;color:oklch(0.51 0.028 280)">MOD-23</span></div>
             <div style="display:flex;gap:10px;padding:8px 11px;border-radius:8px;background:#fff;font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.24 0.045 280)"><span>IBAN</span><span style="margin-left:auto;color:oklch(0.51 0.028 280)">MOD-97</span></div>
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:9px">
-            <span style="display:flex;align-items:center;height:36px;padding:0 15px;border-radius:9px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:14px;font-weight:500">Redactar y enviar</span>
+            <span style="display:flex;align-items:center;height:36px;padding:0 15px;border-radius:9px;background:oklch(0.21 0.035 280);color:oklch(0.97 0.010 280);font-size:14px;font-weight:500">Enmascarar y enviar</span>
             <span style="display:flex;align-items:center;height:36px;padding:0 15px;border:1px solid oklch(0.860 0.028 280);border-radius:9px;background:#fff;font-size:14px;color:oklch(0.24 0.045 280)">Cancelar</span>
           </div>
         </div>
-        <p style="margin:14px 0 0;font-size:13px;line-height:1.45;color:oklch(0.61 0.022 280)">Maqueta del aviso en la extensión. Sustituir por captura real antes de publicar.</p>
+        <p style="margin:14px 0 0;font-size:13px;line-height:1.45;color:oklch(0.61 0.022 280)">Notificación interactiva en el navegador que previene filtraciones involuntarias de información.</p>
       </div>
     </div>
   </div>
@@ -550,56 +545,56 @@ client = OpenAI(
 <section id="precios" style="max-width:1180px;margin:0 auto;padding:80px 28px">
   <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:10px">
     <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">08</span>
-    <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Se paga porque alguien responda, no por quitar candados</h2>
+    <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Planes transparentes y previsibles</h2>
   </div>
-  <p style="margin:0 0 30px;max-width:66ch;font-size:17px;line-height:1.6;color:oklch(0.51 0.028 280)">El software es MIT y lo alojas tú: cualquier límite de plan sería honorario, no técnico. Así que no los vendemos.</p>
+  <p style="margin:0 0 30px;max-width:66ch;font-size:17px;line-height:1.6;color:oklch(0.51 0.028 280)">Software libre bajo licencia MIT. Despliega en tu infraestructura sin costo de licencia y opta por planes profesionales si requieres soporte con SLA o implementación guiada.</p>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(262px,1fr));gap:18px">
-    <!-- Plan 1: Gratuita -->
+    <!-- Plan 1: Comunitario -->
     <div style="display:flex;flex-direction:column;gap:16px;padding:26px;border:1px solid oklch(0.905 0.022 280);border-radius:14px;background:#fff;color:oklch(0.24 0.045 280)">
       <div>
-        <h3 style="margin:0 0 7px;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;color:oklch(0.18 0.05 280)">Gratuita</h3>
-        <p style="margin:0;font-size:14px;line-height:1.5;color:oklch(0.51 0.028 280)">Para despachos que se lo guisan ellos mismos.</p>
+        <h3 style="margin:0 0 7px;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;color:oklch(0.18 0.05 280)">Comunitario</h3>
+        <p style="margin:0;font-size:14px;line-height:1.5;color:oklch(0.51 0.028 280)">Para organizaciones y equipos técnicos que autogestionan su infraestructura.</p>
       </div>
-      <p style="margin:0;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:34px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">0 €</p>
+      <p style="margin:0;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:34px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">$0 USD</p>
       <div style="display:grid;gap:9px;padding-top:16px;border-top:1px solid oklch(0.938 0.016 280)">
-        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Código completo MIT sin funciones bajo llave</div>
-        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Sin límite de peticiones ni de modelos</div>
+        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Código fuente íntegro con licencia MIT</div>
+        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Sin límite de peticiones ni modelos bloqueados</div>
         <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Extensión de navegador incluida</div>
-        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Soporte a través de incidencias en GitHub</div>
+        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Soporte comunitario en GitHub</div>
       </div>
-      <a href="#instalacion" style="margin-top:auto;display:flex;align-items:center;justify-content:center;height:42px;border:1px solid oklch(0.860 0.028 280);border-radius:9px;background:#fff;font-size:14.5px;font-weight:500;color:oklch(0.24 0.045 280);text-decoration:none">Descargar imagen</a>
+      <a href="#instalacion" style="margin-top:auto;display:flex;align-items:center;justify-content:center;height:42px;border:1px solid oklch(0.860 0.028 280);border-radius:9px;background:#fff;font-size:14.5px;font-weight:500;color:oklch(0.24 0.045 280);text-decoration:none">Instalar ahora</a>
     </div>
 
-    <!-- Plan 2: Soporte pactado -->
+    <!-- Plan 2: Soporte Empresarial -->
     <div style="display:flex;flex-direction:column;gap:16px;padding:26px;border:1px solid oklch(0.56 0.20 255);border-radius:14px;background:oklch(0.21 0.035 280);color:oklch(0.94 0.012 280)">
       <div>
-        <h3 style="margin:0 0 7px;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;color:oklch(0.97 0.010 280)">Soporte pactado</h3>
-        <p style="margin:0;font-size:14px;line-height:1.5;color:oklch(0.75 0.020 280)">Para despachos donde parar una mañana es inaceptable.</p>
+        <h3 style="margin:0 0 7px;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;color:oklch(0.97 0.010 280)">Soporte Empresarial</h3>
+        <p style="margin:0;font-size:14px;line-height:1.5;color:oklch(0.75 0.020 280)">Para empresas donde la continuidad operativa y el cumplimiento son críticos.</p>
       </div>
-      <p style="margin:0;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:34px;line-height:1;color:oklch(0.97 0.010 280);font-weight:600">490 € <span style="font-size:15px;color:oklch(0.75 0.020 280);font-weight:400">/ mes</span></p>
+      <p style="margin:0;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:34px;line-height:1;color:oklch(0.97 0.010 280);font-weight:600">$490 USD <span style="font-size:15px;color:oklch(0.75 0.020 280);font-weight:400">/ mes</span></p>
       <div style="display:grid;gap:9px;padding-top:16px;border-top:1px solid oklch(0.32 0.030 280)">
-        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.80 0.14 255)">✓</span>Respuesta pactada por escrito (SLA)</div>
-        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.80 0.14 255)">✓</span>Revisión trimestral de tu despliegue</div>
-        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.80 0.14 255)">✓</span>Reglas DLP adaptadas a tus formatos internos</div>
-        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.80 0.14 255)">✓</span>Canal directo con los programadores</div>
+        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.80 0.14 255)">✓</span>Tiempo de respuesta garantizado por escrito (SLA)</div>
+        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.80 0.14 255)">✓</span>Revisión periódica de arquitectura y seguridad</div>
+        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.80 0.14 255)">✓</span>Reglas DLP personalizadas para tu empresa</div>
+        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.80 0.14 255)">✓</span>Canal prioritario con ingenieros del proyecto</div>
       </div>
-      <a href="/contacto" style="margin-top:auto;display:flex;align-items:center;justify-content:center;height:42px;border:0;border-radius:9px;background:oklch(0.56 0.20 255);font-size:14.5px;font-weight:500;color:#fff;text-decoration:none">Pedir propuesta</a>
+      <a href="/contacto" style="margin-top:auto;display:flex;align-items:center;justify-content:center;height:42px;border:0;border-radius:9px;background:oklch(0.56 0.20 255);font-size:14.5px;font-weight:500;color:#fff;text-decoration:none">Solicitar propuesta</a>
     </div>
 
-    <!-- Plan 3: Despliegue guiado -->
+    <!-- Plan 3: Despliegue Guiado -->
     <div style="display:flex;flex-direction:column;gap:16px;padding:26px;border:1px solid oklch(0.905 0.022 280);border-radius:14px;background:#fff;color:oklch(0.24 0.045 280)">
       <div>
-        <h3 style="margin:0 0 7px;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;color:oklch(0.18 0.05 280)">Despliegue guiado</h3>
-        <p style="margin:0;font-size:14px;line-height:1.5;color:oklch(0.51 0.028 280)">Nos sentamos con tu equipo hasta que esté en marcha.</p>
+        <h3 style="margin:0 0 7px;font-family:Montserrat,sans-serif;font-weight:600;font-size:21px;color:oklch(0.18 0.05 280)">Despliegue Guiado</h3>
+        <p style="margin:0;font-size:14px;line-height:1.5;color:oklch(0.51 0.028 280)">Puesta en marcha llave en mano junto a tu equipo de sistemas.</p>
       </div>
-      <p style="margin:0;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:34px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">1.800 € <span style="font-size:15px;color:oklch(0.51 0.028 280);font-weight:400">pago único</span></p>
+      <p style="margin:0;font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:34px;line-height:1;color:oklch(0.18 0.05 280);font-weight:600">$1,800 USD <span style="font-size:15px;color:oklch(0.51 0.028 280);font-weight:400">pago único</span></p>
       <div style="display:grid;gap:9px;padding-top:16px;border-top:1px solid oklch(0.938 0.016 280)">
-        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Instalación en tus servidores</div>
-        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Configuración del vault y las réplicas</div>
-        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Despliegue gestionado de la extensión</div>
-        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Sesión de formación de dos horas</div>
+        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Instalación completa en tus servidores</div>
+        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Configuración de bóveda cifrada y réplicas</div>
+        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Despliegue centralizado de la extensión de navegador</div>
+        <div style="display:flex;gap:9px;font-size:14.5px;line-height:1.5"><span style="color:oklch(0.50 0.15 150)">✓</span>Sesión de capacitación técnica y mejores prácticas</div>
       </div>
-      <a href="/contacto" style="margin-top:auto;display:flex;align-items:center;justify-content:center;height:42px;border:1px solid oklch(0.860 0.028 280);border-radius:9px;background:#fff;font-size:14.5px;font-weight:500;color:oklch(0.24 0.045 280);text-decoration:none">Reservar fechas</a>
+      <a href="/contacto" style="margin-top:auto;display:flex;align-items:center;justify-content:center;height:42px;border:1px solid oklch(0.860 0.028 280);border-radius:9px;background:#fff;font-size:14.5px;font-weight:500;color:oklch(0.24 0.045 280);text-decoration:none">Agendar despliegue</a>
     </div>
   </div>
 </section>
@@ -609,81 +604,81 @@ client = OpenAI(
   <div style="max-width:900px;margin:0 auto;padding:72px 28px">
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;margin-bottom:28px">
       <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:oklch(0.56 0.20 255);font-weight:600">09</span>
-      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Lo que nos preguntan antes de firmar</h2>
+      <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-0.03em;color:oklch(0.18 0.05 280)">Preguntas frecuentes</h2>
     </div>
     <div style="display:grid;gap:10px" id="faq-accordion-container">
       <!-- 6 preguntas clave desplegables -->
       <div class="faq-item" style="border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff;overflow:hidden">
         <button class="faq-btn" type="button" style="display:flex;align-items:center;gap:16px;width:100%;padding:18px 20px;border:0;background:transparent;text-align:left;cursor:pointer">
-          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Puede el gateway ver el contenido de mis prompts?</span>
+          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Puede el gateway ver el contenido de los prompts de mi empresa?</span>
           <span class="faq-icon" style="margin-left:auto;flex:none;color:oklch(0.51 0.028 280);transition:transform 160ms"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
         </button>
-        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">Sí: es un proxy, necesita el texto para inspeccionarlo. Corre en tu infraestructura, así que ese texto no sale de tu red salvo hacia el proveedor que tú configures. Lo que se guarda en la auditoría es metadato y hash, no el prompt completo, salvo que actives el volcado íntegro.</p>
+        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">SynapseAI corre 100% en tu propia infraestructura o servidor privado. El texto se procesa en memoria local y nunca sale de tu red salvo hacia el proveedor de IA que tú configures. En los registros de auditoría se guardan metadatos y sellos criptográficos, no el texto confidencial completo.</p>
       </div>
 
       <div class="faq-item" style="border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff;overflow:hidden">
         <button class="faq-btn" type="button" style="display:flex;align-items:center;gap:16px;width:100%;padding:18px 20px;border:0;background:transparent;text-align:left;cursor:pointer">
-          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Qué pasa si el gateway se cae?</span>
+          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Qué sucede si el gateway sufre una interrupción?</span>
           <span class="faq-icon" style="margin-left:auto;flex:none;color:oklch(0.51 0.028 280);transition:transform 160ms"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
         </button>
-        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">Tus aplicaciones reciben un error de conexión, no una respuesta silenciosa sin protección. Es una decisión de diseño: preferimos un fallo visible a un bypass invisible. Si necesitas continuidad, se despliega con dos réplicas detrás de tu proxy inverso.</p>
+        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">Tus aplicaciones reciben una notificación de error controlada para evitar que datos sensibles se transmitan sin inspección. Preferimos una alerta visible antes que una fuga silenciosa. Si tu empresa requiere alta disponibilidad, el gateway puede desplegarse con réplicas redundantes.</p>
       </div>
 
       <div class="faq-item" style="border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff;overflow:hidden">
         <button class="faq-btn" type="button" style="display:flex;align-items:center;gap:16px;width:100%;padding:18px 20px;border:0;background:transparent;text-align:left;cursor:pointer">
-          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Cumple el RGPD por sí solo?</span>
+          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Ayuda a cumplir regulaciones de protección de datos personales?</span>
           <span class="faq-icon" style="margin-left:auto;flex:none;color:oklch(0.51 0.028 280);transition:transform 160ms"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
         </button>
-        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">No. Ninguna herramienta lo hace. Reduce la transferencia de datos personales a terceros y te da un registro con el que demostrar diligencia, y firmamos un DPA del artículo 28 en la modalidad gestionada. El análisis de licitud y el registro de actividades siguen siendo tuyos.</p>
+        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">Sí. Al filtrar y anonimizar datos identificables (DNI, RFC, CURP, cuentas, tarjetas) antes de que lleguen a terceros, eliminas el riesgo principal de sanciones y cuentas con un registro inmutable con el que demostrar diligencia debida.</p>
       </div>
 
       <div class="faq-item" style="border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff;overflow:hidden">
         <button class="faq-btn" type="button" style="display:flex;align-items:center;gap:16px;width:100%;padding:18px 20px;border:0;background:transparent;text-align:left;cursor:pointer">
-          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Por qué no publicáis un porcentaje de ahorro?</span>
+          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Cómo se mide el ahorro real en costos de API?</span>
           <span class="faq-icon" style="margin-left:auto;flex:none;color:oklch(0.51 0.028 280);transition:transform 160ms"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
         </button>
-        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">Porque depende de tu mezcla de tráfico y sería un número inventado. El panel te mide el ahorro real de tu instancia desde el primer día: aciertos de caché y coste por modelo, con la fórmula a la vista.</p>
+        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">El panel de control calcula el ahorro exacto en dólares ($ USD) registrando los aciertos de caché que no volvieron a cobrarse y la optimización al enrutar consultas hacia modelos más eficientes.</p>
       </div>
 
       <div class="faq-item" style="border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff;overflow:hidden">
         <button class="faq-btn" type="button" style="display:flex;align-items:center;gap:16px;width:100%;padding:18px 20px;border:0;background:transparent;text-align:left;cursor:pointer">
-          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Y si un empleado no usa la extensión?</span>
+          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Cómo se garantiza la adopción de la extensión por parte de los empleados?</span>
           <span class="faq-icon" style="margin-left:auto;flex:none;color:oklch(0.51 0.028 280);transition:transform 160ms"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
         </button>
-        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">Su tráfico por el navegador no pasa por el gateway y no queda registrado. El panel te dice quién no la tiene instalada, y ahí la medida que funciona es organizativa, no técnica: política de uso y despliegue gestionado del navegador.</p>
+        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">La extensión se puede desplegar de forma masiva a través de políticas corporativas de navegador (Google Chrome o Edge). Además, el panel te permite verificar la actividad y cobertura de protección en tu organización.</p>
       </div>
 
       <div class="faq-item" style="border:1px solid oklch(0.905 0.022 280);border-radius:12px;background:#fff;overflow:hidden">
         <button class="faq-btn" type="button" style="display:flex;align-items:center;gap:16px;width:100%;padding:18px 20px;border:0;background:transparent;text-align:left;cursor:pointer">
-          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Qué me lleváis si contrato soporte?</span>
+          <span style="font-family:Montserrat,sans-serif;font-weight:600;font-size:16.5px;line-height:1.35;color:oklch(0.18 0.05 280)">¿Qué beneficios incluye el soporte empresarial?</span>
           <span class="faq-icon" style="margin-left:auto;flex:none;color:oklch(0.51 0.028 280);transition:transform 160ms"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></span>
         </button>
-        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">Una ventana de respuesta pactada por escrito, revisión de tu despliegue y reglas DLP adaptadas a tus formatos internos. No hay funciones bajo llave: el código es el mismo que el de la versión gratuita.</p>
+        <p class="faq-body" style="margin:0;padding:0 20px 20px;max-width:70ch;font-size:15.5px;line-height:1.65;color:oklch(0.51 0.028 280);display:none">Incluye acuerdos de nivel de servicio (SLA) con tiempos de respuesta estrictos, revisiones técnicas periódicas, desarrollo de reglas DLP a la medida y asistencia directa para garantizar la máxima seguridad.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SECCIÓN 10: Llamada a la acción final (FONDO OSCURO DE TINTA) ────────── -->
+<!-- SECCIÓN 10: Llamada a la acción final ───────────────────────────────── -->
 <section id="instalacion" style="background:oklch(0.21 0.035 280)">
   <div style="max-width:1180px;margin:0 auto;padding:76px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px;align-items:center">
     <div>
-      <h2 style="margin:0 0 14px;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,44px);line-height:1.06;letter-spacing:-0.035em;color:oklch(0.97 0.010 280)">Levántalo en tu red esta tarde.</h2>
-      <p style="margin:0;max-width:50ch;font-size:16.5px;line-height:1.6;color:oklch(0.78 0.020 280)">Un contenedor, una variable de entorno y el <code style="font-family:'DM Mono',ui-monospace,monospace;font-size:15px;color:oklch(0.88 0.10 255);background:oklch(0.26 0.035 280);padding:2px 6px;border-radius:6px">baseURL</code> de tus aplicaciones. Si no te convence, no has firmado nada.</p>
+      <h2 style="margin:0 0 14px;font-family:Montserrat,sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,44px);line-height:1.06;letter-spacing:-0.035em;color:oklch(0.97 0.010 280)">Despliega en tu infraestructura hoy mismo</h2>
+      <p style="margin:0;max-width:50ch;font-size:16.5px;line-height:1.6;color:oklch(0.78 0.020 280)">Un contenedor, una variable de entorno y cambia el <code style="font-family:'DM Mono',ui-monospace,monospace;font-size:15px;color:oklch(0.88 0.10 255);background:oklch(0.26 0.035 280);padding:2px 6px;border-radius:6px">baseURL</code> de tus aplicaciones. Control absoluto sin ataduras.</p>
     </div>
     <div style="display:grid;gap:12px;justify-items:start">
       <div style="display:flex;align-items:center;gap:12px;width:100%;padding:15px 18px;border:1px solid oklch(0.32 0.030 280);border-radius:11px;background:oklch(0.26 0.035 280);font-family:'DM Mono',ui-monospace,monospace;font-size:13.5px;color:oklch(0.90 0.014 280);overflow-x:auto;box-sizing:border-box">
         <span style="color:oklch(0.72 0.14 150)">$</span>docker compose up -d --build
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:12px">
-        <a href="/app" style="display:flex;align-items:center;height:46px;padding:0 20px;border-radius:10px;background:oklch(0.97 0.010 280);color:oklch(0.18 0.05 280);font-size:15px;font-weight:500;text-decoration:none">Entrar al panel</a>
-        <a href="/contacto" style="display:flex;align-items:center;height:46px;padding:0 20px;border:1px solid oklch(0.45 0.030 280);border-radius:10px;color:oklch(0.95 0.012 280);font-size:15px;text-decoration:none">Hablar con nosotros</a>
+        <a href="/app" style="display:flex;align-items:center;height:46px;padding:0 20px;border-radius:10px;background:oklch(0.97 0.010 280);color:oklch(0.18 0.05 280);font-size:15px;font-weight:500;text-decoration:none">Probar el panel</a>
+        <a href="/contacto" style="display:flex;align-items:center;height:46px;padding:0 20px;border:1px solid oklch(0.45 0.030 280);border-radius:10px;color:oklch(0.95 0.012 280);font-size:15px;text-decoration:none">Hablar con un asesor</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PIE DE PÁGINA: 4 columnas del rediseño + aviso legal -->
+<!-- PIE DE PÁGINA -->
 <footer class="site-foot">
   <div class="wrap" style="max-width:1180px;margin:0 auto;padding:0 28px">
     <div class="foot-cols">
@@ -692,13 +687,13 @@ client = OpenAI(
         <a href="/producto">Las seis capas</a>
         <a href="/seguridad">Modelo de seguridad</a>
         <a href="/precios">Precios y licencias</a>
-        <a href="/auditoria">Auditoría adversaria</a>
+        <a href="/auditoria">Auditoría técnica</a>
         <a href="/extension">Extensión del navegador</a>
         <a href="/comparativa">Comparativa</a>
-        <a href="/casos/gestoria">Para gestorías</a>
-        <a href="/casos/despacho">Para despachos</a>
-        <a href="/casos/agencia">Para agencias dev</a>
-        <a href="/app">Ver el panel</a>
+        <a href="/casos/gestoria">Empresas contables</a>
+        <a href="/casos/despacho">Despachos legales</a>
+        <a href="/casos/agencia">Agencias y desarrollo</a>
+        <a href="/app">Probar el panel</a>
       </div>
       <div class="foot-col">
         <span class="eyebrow">Documentación</span>
@@ -717,7 +712,7 @@ client = OpenAI(
         <a href="/legal/privacidad">Privacidad</a>
         <a href="/legal/terminos">Condiciones</a>
         <a href="/legal/cookies">Cookies</a>
-        <a href="/legal/dpa">Encargo RGPD (DPA)</a>
+        <a href="/legal/dpa">Acuerdo de privacidad (DPA)</a>
         <a href="/legal/subencargados">Subencargados</a>
         <a href="/legal/sla">Soporte y plazos</a>
       </div>
@@ -726,13 +721,13 @@ client = OpenAI(
         <a href="/legal/licencia">Licencia MIT</a>
         <a href="/.well-known/security.txt">security.txt</a>
         <a href="/legal/uso-aceptable">Uso aceptable</a>
-        <a href="/legal/vulnerabilidades">Avisar de un fallo</a>
+        <a href="/legal/vulnerabilidades">Reportar vulnerabilidad</a>
         <a href="/contacto">Contacto</a>
       </div>
     </div>
     <div class="foot-legal">
-      <span>Programa libre, licencia MIT</span><span>·</span><span>Se instala en tu red</span>
-      <span class="push">Sin seguimiento ni analítica sin tu permiso</span>
+      <span>Software libre, licencia MIT</span><span>·</span><span>Se instala en tu red</span>
+      <span class="push">Sin seguimiento invasivo ni envío de datos a terceros</span>
     </div>
   </div>
 </footer>

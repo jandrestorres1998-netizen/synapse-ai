@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>La extensión del navegador — SynapseAI</title>
-  <meta name="description" content="Qué intercepta, qué permisos pide y qué no envía jamás. La comprobación ocurre dentro de tu propio ordenador: el texto de tus clientes no sale de la pestaña.">
+  <title>Extensión de Navegador — SynapseAI</title>
+  <meta name="description" content="Protección DLP activa en el navegador para ChatGPT, Claude y Gemini. La detección y anonimización ocurren dentro de su computadora antes de que el texto salga de la pestaña.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,83 +21,75 @@
 
   <article class="doc">
     <div class="doc-head">
-      <h1>La extensión del navegador</h1>
-      <p class="resumen">Qué intercepta, qué permisos pide y qué no envía jamás. La comprobación ocurre dentro de tu propio ordenador: el texto de tus clientes no sale de la pestaña.</p>
-      <span class="fecha">Manifiesto v2.0.0 · Navegadores Chromium (Chrome, Edge, Brave, Opera)</span>
+      <h1>Extensión de Navegador SynapseAI</h1>
+      <p class="resumen">Inspección de datos confidenciales en tiempo real dentro del propio navegador. Evite filtraciones accidentales en ChatGPT, Claude y Gemini antes de que el texto sea enviado a la IA.</p>
+      <span class="fecha">Manifiesto v2.0.0 · Compatible con Chrome, Edge, Brave y navegadores Chromium</span>
     </div>
 
-    <h2>Qué hace y cómo funciona</h2>
-    <p>La extensión es un complemento que se instala en el navegador web de cada puesto de trabajo. Su función es <strong>vigilar el cuadro de texto y el botón de envío</strong> cuando tu equipo utiliza ChatGPT, Claude o Gemini.</p>
-    <p>Si alguien copia y pega un fragmento de un contrato, una nómina o una factura donde aparece un DNI, una cuenta bancaria (IBAN), un CIF o una tarjeta, la extensión frena el envío en el acto y muestra un diálogo con tres opciones:</p>
+    <h2>¿Qué hace y cómo protege a su empresa?</h2>
+    <p>La extensión es un complemento ligero que se instala en el navegador web de cada estación de trabajo. Su función es <strong>inspeccionar activamente el cuadro de texto y el evento de envío</strong> cuando su equipo interactúa con plataformas comerciales de IA como ChatGPT, Claude o Gemini.</p>
+    <p>Si un colaborador intenta copiar y pegar accidentalmente información sensible (números de identificación personal, cuentas bancarias IBAN/SWIFT, tarjetas de crédito, claves secretas o balances confidenciales), la extensión detiene el envío en milisegundos y presenta opciones claras:</p>
 
     <ul>
-      <li><strong>Sustituir y enviar:</strong> borra los datos confidenciales y los reemplaza por etiquetas seguras (como <code>[DNI_1]</code> o <code>[IBAN_1]</code>) antes de que el texto salga de vuestro ordenador.</li>
-      <li><strong>Cancelar:</strong> detiene el mensaje para que el usuario pueda corregir el texto o eliminar los datos a mano.</li>
-      <li><strong>Enviar igualmente:</strong> permite continuar si el usuario confirma que no se trata de información reservada.</li>
+      <li><strong>Anonimizar y enviar:</strong> Reemplaza automáticamente los datos confidenciales por identificadores seguros (ejemplo: <code>[ID_FISCAL_1]</code> o <code>[CUENTA_BANCARIA_1]</code>) antes de que el texto salga de la computadora.</li>
+      <li><strong>Cancelar envío:</strong> Detiene la solicitud de inmediato para que el usuario pueda corregir el contenido o retirar información reservada.</li>
+      <li><strong>Autorizar envío:</strong> Permite continuar si el usuario valida expresamente que no se trata de información restringida ni protegida.</li>
     </ul>
 
-    <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> La extensión actúa únicamente en el navegador donde está instalada. Si un miembro de tu equipo consulta la IA desde la aplicación móvil en su teléfono personal o desde un navegador sin la extensión, el programa no tiene forma de intervenir. Es una protección eficaz contra descuidos y pegados accidentales, no un bloqueo físico de la máquina.
+    <div class="alcance-box" style="padding:16px 20px;border-radius:var(--radius-sm);background:var(--surface-quiet);border-left:4px solid var(--accent);margin:24px 0">
+      <strong style="color:var(--ink-strong)">Cobertura y Alcance:</strong> La extensión opera directamente en las sesiones web de los navegadores donde está desplegada, blindando las herramientas de uso diario contra descuidos humanos y protegiendo el secreto profesional de su organización.
     </div>
 
-    <h2>Qué permisos solicita y por qué</h2>
-    <p>La extensión está desarrollada bajo la especificación oficial <strong>Manifest V3</strong> y pide únicamente los permisos indispensables para cumplir su labor:</p>
+    <h2>Permisos del sistema transparentes y mínimos</h2>
+    <p>La extensión está construida bajo el estándar oficial de seguridad <strong>Manifest V3</strong> y solicita únicamente los permisos indispensables para proteger sus datos:</p>
 
     <div class="permiso-card">
       <div class="permiso-header">
         <code>storage</code>
-        <span class="permiso-tipo">Almacenamiento local</span>
+        <span class="permiso-tipo">Almacenamiento Local Seguro</span>
       </div>
-      <p class="permiso-que">Permite guardar en la memoria del navegador los ajustes que elijas, como si quieres activar el aviso o la dirección interna de vuestro programa en la oficina.</p>
+      <p class="permiso-que">Permite guardar de forma aislada las preferencias del usuario y las directivas de seguridad internas de su empresa en la memoria local del navegador.</p>
       <div class="permiso-garantia">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-        <span><strong>Garantía:</strong> No tiene acceso a vuestras contraseñas, ni a las descargas, ni a los marcadores, ni al historial de navegación.</span>
+        <span><strong>Garantía de Privacidad:</strong> No accede jamás a contraseñas, historial de navegación general, descargas ni marcadores.</span>
       </div>
     </div>
 
     <div class="permiso-card">
       <div class="permiso-header">
         <code>http://localhost:3000/*</code> · <code>http://127.0.0.1:3000/*</code>
-        <span class="permiso-tipo">Direcciones internas (host_permissions)</span>
+        <span class="permiso-tipo">Enlace con Servidor Interno (host_permissions)</span>
       </div>
-      <p class="permiso-que">Permite que la extensión se comunique con el programa instalado en vuestra propia red local para actualizar reglas de detección o reportar incidencias si decides encender esa opción.</p>
+      <p class="permiso-que">Permite conectar la extensión con la pasarela local de SynapseAI para actualizar directivas DLP y registrar métricas de prevención si su empresa activa la auditoría centralizada.</p>
       <div class="permiso-garantia">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-        <span><strong>Garantía:</strong> Cero conexiones a servidores externos. Los permisos de conexión apuntan únicamente a vuestro propio equipo o servidor interno, nunca a la nube de SynapseAI ni a terceros.</span>
+        <span><strong>Garantía de Red:</strong> Conexión exclusiva a su propia infraestructura. Cero comunicación hacia servidores externos o telemetría en la nube.</span>
       </div>
     </div>
 
     <div class="permiso-card">
       <div class="permiso-header">
         <code>chatgpt.com</code> · <code>claude.ai</code> · <code>gemini.google.com</code>
-        <span class="permiso-tipo">Páginas supervisadas (content_scripts)</span>
+        <span class="permiso-tipo">Plataformas Protegidas (content_scripts)</span>
       </div>
-      <p class="permiso-que">La extensión solo se activa y carga sus scripts de inspección cuando el usuario entra en una de estas tres plataformas oficiales de IA.</p>
+      <p class="permiso-que">La extensión solo se activa cuando el usuario navega en los portales oficiales de Inteligencia Artificial.</p>
       <div class="permiso-garantia">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-        <span><strong>Garantía:</strong> La extensión permanece totalmente ciega e inactiva cuando visitas tu banco, tu gestor de correo electrónico, la sede electrónica de la Agencia Tributaria o cualquier otra web.</span>
+        <span><strong>Garantía de Aislamiento:</strong> La extensión permanece completamente inactiva e invisible al visitar bancos, portales tributarios, correos electrónicos o cualquier otra web.</span>
       </div>
     </div>
 
-    <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> La extensión está programada para reconocer las interfaces web actuales de ChatGPT, Claude y Gemini. Si estas plataformas rediseñan por completo sus páginas web o si en vuestra empresa utilizáis una herramienta de IA distinta, la extensión no intervendrá hasta que reciba una actualización compatible.
-    </div>
-
-    <h2>Qué no sale jamás de tu ordenador</h2>
-    <p>El diseño técnico de la extensión se rige por tres principios estrictos de privacidad:</p>
+    <h2>Privacidad garantizada en el dispositivo</h2>
+    <p>El diseño de SynapseAI garantiza que la privacidad de sus clientes permanezca inquebrantable:</p>
 
     <ul>
-      <li><strong>El texto que escribes nunca viaja a nuestro servidor:</strong> Las comprobaciones sobre si un número es un DNI válido o si un IBAN tiene los dígitos de control correctos se realizan íntegramente en la memoria de tu propio navegador.</li>
-      <li><strong>El programa central no es obligatorio:</strong> La extensión protege y detiene envíos accidentales incluso si el servidor de vuestra oficina está apagado o sin conexión.</li>
-      <li><strong>El registro de incidentes está desactivado por defecto:</strong> Si decidís activarlo en los ajustes, únicamente envía al programa interno la regla que saltó (por ejemplo, «DNI detectado») y la decisión tomada («sustituido»). <strong>Nunca envía el texto escrito ni el dato real del cliente.</strong></li>
+      <li><strong>Validación 100% en local:</strong> Los algoritmos de validación (Luhn para tarjetas, comprobación de identificadores fiscales e IBAN) se ejecutan dentro del motor JavaScript del navegador. Ningún texto se envía a servidores de terceros para su análisis.</li>
+      <li><strong>Operación autónoma:</strong> La extensión detiene filtraciones y protege a sus usuarios incluso si la computadora no tiene conexión a la red interna en ese momento.</li>
+      <li><strong>Telemetría sin datos en bruto:</strong> Los registros de auditoría registran la regla activada (ej. «ID_FISCAL detectado») y la acción tomada. <strong>Nunca se almacena ni transmite el texto confidencial del cliente.</strong></li>
     </ul>
 
-    <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> Aunque la extensión analice el texto en local, los párrafos que el usuario decida enviar finalmente (una vez limpios o confirmados) viajarán a los servidores de OpenAI, Anthropic o Google según la IA utilizada. La extensión revisa lo que sale de vuestro ordenador, pero no controla lo que la compañía de IA hace con el texto que recibe.
-    </div>
-
-    <h2>Cómo es el aviso de intercepción</h2>
-    <p>Cuando la extensión detecta un dato confidencial al pulsar Enter o hacer clic en Enviar, la pantalla muestra un diálogo de advertencia claro e inmediato:</p>
+    <h2>Interfaz de advertencia e intercepción</h2>
+    <p>Al pulsar Enter o hacer clic en Enviar en la plataforma de IA, la extensión presenta una alerta clara y contextual en caso de detectar riesgos:</p>
 
     <div class="sim-browser" data-ejemplo="true">
       <div class="sim-browser-bar">
@@ -110,7 +102,7 @@
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           https://chatgpt.com
         </div>
-        <span style="margin-left:auto;font-size:11.5px;color:var(--ink-faint);font-family:var(--font-mono)">Simulación interactiva</span>
+        <span style="margin-left:auto;font-size:11.5px;color:var(--ink-faint);font-family:var(--font-mono)">Demostración de Intercepción</span>
       </div>
       <div class="sim-browser-content">
         <div class="intercept">
@@ -120,87 +112,83 @@
           </div>
           <div class="intercept-rules">
             <div>
-              <span>DNI español con letra calculada</span>
+              <span>Identificación Fiscal / ID Personal</span>
               <em>12345678Z</em>
             </div>
             <div>
-              <span>Número de cuenta bancaria IBAN</span>
+              <span>Cuenta Bancaria Internacional</span>
               <em>ES91 2100 0418 4502 …</em>
             </div>
           </div>
           <div class="fake-btns">
-            <button type="button" class="fake-btn primary" disabled title="Elemento de demostración visual">Sustituir y enviar</button>
+            <button type="button" class="fake-btn primary" disabled title="Elemento de demostración visual">Anonimizar y enviar</button>
             <button type="button" class="fake-btn ghost" disabled title="Elemento de demostración visual">Cancelar</button>
-            <button type="button" class="fake-btn ghost" disabled title="Elemento de demostración visual" style="margin-left:auto;font-size:12.5px;color:var(--ink-muted)">Enviar igualmente</button>
+            <button type="button" class="fake-btn ghost" disabled title="Elemento de demostración visual" style="margin-left:auto;font-size:12.5px;color:var(--ink-muted)">Autorizar envío</button>
           </div>
         </div>
         <div style="margin-top:14px;display:flex;align-items:center;gap:8px">
-          <span class="rellenar" style="display:inline-block">Ejemplo con datos de muestra con fines demostrativos</span>
+          <span class="rellenar" style="display:inline-block">Ejemplo interactivo con datos ficticios</span>
         </div>
       </div>
     </div>
 
-    <h2>Protocolo laboral antes de instalar en la empresa</h2>
-    <p>De acuerdo con las conclusiones del análisis legal del proyecto (artículo 87.3 de la Ley Orgánica de Protección de Datos y Garantía de los Derechos Digitales y artículo 64.4.d del Estatuto de los Trabajadores), la dirección de la empresa debe cumplir un trámite obligatorio <strong>antes</strong> de desplegar la extensión en los equipos de los trabajadores:</p>
+    <h2>Políticas de uso y transparencia en la empresa</h2>
+    <p>Para una integración armónica y en cumplimiento de las normativas de protección de datos personales y privacidad laboral:</p>
 
     <ul>
-      <li><strong>Información previa a los trabajadores:</strong> Comunicar de manera expresa y comprensible a la plantilla que los navegadores corporativos contarán con una herramienta de filtro para evitar la salida involuntaria de datos de clientes protegidos por el deber de secreto profesional.</li>
-      <li><strong>Garantía de no monitorización laboral:</strong> Aclarar documentalmente que la herramienta no tiene por objeto fiscalizar el rendimiento de los trabajadores ni registrar su actividad laboral ordinaria, sino prevenir brechas de seguridad conforme a las directrices de la Agencia Española de Protección de Datos.</li>
-      <li><strong>Participación de los representantes:</strong> Si en vuestra empresa existe comité de empresa o delegados de personal, debe informárseles con carácter previo a la puesta en marcha técnica.</li>
+      <li><strong>Comunicación clara al equipo:</strong> Notificar a los colaboradores sobre la implementación del filtro de seguridad, diseñado para proteger la información confidencial de clientes contra envíos involuntarios a la IA.</li>
+      <li><strong>Enfoque en seguridad, no en vigilancia:</strong> SynapseAI no monitorea la productividad de los empleados ni almacena historiales de chat; su único objetivo es bloquear fugas de datos sensibles y cumplir con los estándares de confidencialidad.</li>
+      <li><strong>Gobierno de seguridad corporativa:</strong> Brinde a su equipo la tranquilidad de utilizar herramientas de IA con la certeza de que la empresa cuenta con barreras preventivas activas.</li>
     </ul>
 
-    <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> Este protocolo informativo es un deber legal del titular de la empresa o despacho profesional. La instalación de la extensión no sustituye ni exime de cumplir las obligaciones del derecho laboral español.
-    </div>
-
-    <h2>Para tu equipo técnico</h2>
+    <h2>Instrucciones para administradores y TI</h2>
     <div class="tecnico-box">
-      <span class="eyebrow">Especificación técnica del paquete</span>
-      <p>El código fuente íntegro de la extensión se encuentra alojado en la carpeta <code>extension/</code> del repositorio principal, gobernado por su archivo <code>manifest.json</code>.</p>
+      <span class="eyebrow">Especificación Técnica</span>
+      <p>El código fuente de la extensión está disponible en la carpeta <code>extension/</code> gobernado por <code>manifest.json</code>.</p>
       <p>Para cargar la extensión en modo local durante pruebas internas:</p>
-      <pre><code># 1. Abre en tu navegador Chromium:
+      <pre><code># 1. Abra en su navegador Chromium:
 chrome://extensions/  (o edge://extensions/)
 
-# 2. Activa el interruptor «Modo de desarrollador» (arriba a la derecha)
-# 3. Pulsa «Cargar descomprimida» y selecciona la carpeta:
+# 2. Active el interruptor «Modo de desarrollador» (arriba a la derecha)
+# 3. Haga clic en «Cargar descomprimida» y seleccione la carpeta:
 SynapseAI/extension/</code></pre>
-      <p style="margin-top:14px">Si vuestro programa interno tiene activada la comprobación de orígenes (CORS), añade el identificador asignado por el navegador a vuestro archivo de configuración <code>.env</code>:</p>
-      <pre><code>SYNAPSE_CORS_ORIGINS=http://localhost:3000,chrome-extension://&lt;id-de-tu-extension&gt;</code></pre>
+      <p style="margin-top:14px">Para habilitar la comunicación entre la extensión y su servidor SynapseAI local, configure los orígenes permitidos en <code>.env</code>:</p>
+      <pre><code>SYNAPSE_CORS_ORIGINS=http://localhost:3000,chrome-extension://&lt;id-de-la-extension&gt;</code></pre>
     </div>
 
-    <h2>Opciones de instalación</h2>
-    <p>Para facilitar la adopción según el tamaño de tu empresa o despacho:</p>
+    <h2>Modalidades de despliegue</h2>
+    <p>Opciones flexibles adaptadas a las necesidades de su organización:</p>
 
     <div class="docs-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:20px 0">
       <div class="docs-card" style="cursor:default">
         <h4 style="margin:0 0 6px;font-size:15px;color:var(--ink-strong)">1. Asistente en un clic (Windows)</h4>
         <p style="font-size:13.5px;color:var(--ink-muted);line-height:1.5;margin:0 0 10px">
-          El archivo <code>instalar_extension_windows.bat</code> copia la extensión a una carpeta permanente de tu equipo, copia la ruta al portapapeles y abre Chrome o Edge automáticamente para activarla.
+          El script <code>instalar_extension_windows.bat</code> copia la extensión a un directorio seguro del sistema y abre el navegador para su activación inmediata.
         </p>
         <span class="badge-status badge-corregido" style="align-self:flex-start">Para usuarios individuales</span>
       </div>
 
       <div class="docs-card" style="cursor:default">
-        <h4 style="margin:0 0 6px;font-size:15px;color:var(--ink-strong)">2. Despliegue corporativo (GPO)</h4>
+        <h4 style="margin:0 0 6px;font-size:15px;color:var(--ink-strong)">2. Despliegue corporativo centralizado (GPO)</h4>
         <p style="font-size:13.5px;color:var(--ink-muted);line-height:1.5;margin:0 0 10px">
-          Para oficinas con múltiples puestos: mediante el archivo <code>despliegue_empresa_gpo.reg</code> o políticas de dominio de Windows, la extensión se instala de forma desatendida en todos los navegadores de la plantilla.
+          Despliegue silencioso y gestionado en toda la red de estaciones de trabajo mediante directivas de grupo de Active Directory o políticas de Microsoft Edge / Google Chrome.
         </p>
-        <span class="badge-status badge-limite" style="align-self:flex-start">Para administradores de red</span>
+        <span class="badge-status badge-limite" style="align-self:flex-start">Para administradores de TI</span>
       </div>
     </div>
 
-    <h2>Descarga del paquete</h2>
-    <p>Puedes descargar el archivo comprimido oficial con su huella digital SHA-256 calculada directamente del paquete:</p>
+    <h2>Descarga y Verificación</h2>
+    <p>Obtenga el paquete oficial verificado con huella criptográfica SHA-256:</p>
 
     <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 12px">
       <a class="btn" href="/descargas" style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:var(--radius-sm);background:var(--ink-surface);color:var(--on-ink-strong);text-decoration:none;font-size:14.5px;font-weight:500">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Descargar paquete con huella SHA-256
+        Descargar Paquete con Verificación SHA-256
       </a>
-      <button type="button" disabled title="La publicación abierta en la Chrome Web Store se encuentra en fase de validación de políticas y requisitos de distribución corporativa." style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:var(--radius-sm);background:var(--surface-quiet);border:1px solid var(--line);color:var(--ink-faint);font-size:14px;cursor:not-allowed">
+      <span style="display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:var(--radius-sm);background:var(--surface-quiet);border:1px solid var(--line);color:var(--ink-muted);font-size:13.5px">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>
-        Chrome Web Store (En trámite de revisión)
-      </button>
+        Empaquetado oficial compatible con Chromium (Chrome, Edge, Brave)
+      </span>
     </div>
 
   </article>
@@ -211,3 +199,4 @@ SynapseAI/extension/</code></pre>
 <script type="module" src="/js/page.js"></script>
 </body>
 </html>
+

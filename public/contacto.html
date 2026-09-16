@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contacto directo · SynapseAI</title>
-  <meta name="description" content="Contacta con el equipo de SynapseAI. Sin chatbots ni respuestas automáticas: hablamos directamente de despliegues, soporte y dudas técnicas.">
+  <title>Contacto Directo — SynapseAI</title>
+  <meta name="description" content="Contacte con el equipo de ingeniería y ventas de SynapseAI. Respuestas directas sobre despliegues empresariales, soporte SLA y evaluaciones técnicas.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,6 +80,18 @@
       font-weight: 600;
       margin-bottom: 16px;
     }
+    .direct-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14.5px;
+    }
+    .direct-link:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -89,51 +101,50 @@
 <main class="contact-layout">
   <div class="contact-badge">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
-    Atención humana directa · Respuesta en 24h laborables
+    Atención directa por especialistas · Respuesta en menos de 24 horas hábiles
   </div>
 
-  <h1 style="font-size:clamp(32px,4vw,44px);letter-spacing:-0.03em;color:var(--ink-strong);margin-bottom:12px">Habla con los fundadores</h1>
+  <h1 style="font-size:clamp(32px,4vw,44px);letter-spacing:-0.03em;color:var(--ink-strong);margin-bottom:12px">Contacte con nuestro equipo</h1>
   <p style="font-size:17px;line-height:1.6;color:var(--ink-muted);margin:0">
-    Sin chatbots de soporte, sin menús automatizados ni comerciales agresivos. Si quieres evaluar un despliegue en tus servidores, contratar soporte o resolver dudas técnicas, escríbenos aquí.
+    Hable directamente con los arquitectos del sistema. Si desea evaluar un despliegue en su infraestructura, contratar soporte SLA garantizado o resolver requerimientos de cumplimiento y seguridad, envíenos un mensaje.
   </p>
 
   <div class="contact-card">
-    <form id="contact-form" onsubmit="return false;">
+    <form id="contact-form" action="mailto:contacto@synapse-ai.com" method="GET">
       <div class="form-group">
-        <label class="form-label" for="nombre">Nombre y empresa</label>
-        <input class="form-input" type="text" id="nombre" name="nombre" placeholder="Ej: Carmen Gómez (Asesoría Fiscal Gómez)" required autocomplete="name">
-        <span class="form-hint">Para saber con quién hablamos y qué sector tienes.</span>
+        <label class="form-label" for="nombre">Nombre y Organización</label>
+        <input class="form-input" type="text" id="nombre" name="subject" placeholder="Ej: Roberto Morales (Financiera del Norte)" required autocomplete="name">
+        <span class="form-hint">Indíquenos su nombre y el sector de su empresa.</span>
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="email">Correo electrónico profesional</label>
-        <input class="form-input" type="email" id="email" name="email" placeholder="carmen@asesoriagomez.es" required autocomplete="email">
-        <span class="form-hint">Te responderemos a esta dirección. Nunca enviamos correos publicitarios.</span>
+        <label class="form-label" for="email">Correo electrónico corporativo</label>
+        <input class="form-input" type="email" id="email" name="reply-to" placeholder="roberto@empresa.com" required autocomplete="email">
+        <span class="form-hint">Le responderemos directamente a esta dirección. Su información no será compartida.</span>
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="mensaje">¿En qué podemos ayudarte?</label>
-        <textarea class="form-textarea" id="mensaje" name="mensaje" placeholder="Cuéntanos brevemente: tamaño del equipo, modelos de IA que utilizáis o tenéis en mente, y si buscáis instalación guiada o soporte SLA." required></textarea>
-        <span class="form-hint">Tres campos, y ninguna pregunta de más.</span>
+        <label class="form-label" for="mensaje">¿En qué podemos colaborar?</label>
+        <textarea class="form-textarea" id="mensaje" name="body" placeholder="Indíquenos el tamaño de su equipo, los modelos de IA que planean utilizar (OpenAI, Claude, modelos locales) y si requieren asistencia para despliegue guiado o soporte SLA." required></textarea>
+        <span class="form-hint">Detalles clave para asignarle al especialista adecuado.</span>
       </div>
 
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:28px">
-        <button type="submit" class="btn btn-lg" disabled title="Todavía no envía nada: el servidor aún no tiene configurada la salida de correo.">
+        <button type="submit" class="btn btn-lg" style="background:var(--accent);color:#fff">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          Enviar mensaje
+          Enviar Consulta
         </button>
 
-        <span class="rellenar" style="display:inline-flex;align-items:center;padding:0 16px;height:46px;border-radius:9px">[Pendiente: dirección de contacto]</span>
+        <a class="direct-link" href="mailto:contacto@synapse-ai.com">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          contacto@synapse-ai.com
+        </a>
       </div>
-
-      <p style="margin:16px 0 0;font-size:12.5px;color:var(--ink-faint);line-height:1.5">
-        * Ni el formulario ni una dirección de correo están todavía en marcha. Es lo que hay: preferimos decirlo a darte un botón que no lleva a ninguna parte.
-      </p>
     </form>
   </div>
 
-  <div class="hasta-aqui" style="margin-top:28px">
-    <strong>Hasta aquí llega:</strong> Cuando esté activo, el mensaje llegará directamente a quien lleva el proyecto, sin pasar por nadie más. No es un servicio de emergencias 24/7 para incidencias críticas de servidores en fin de semana sin acuerdo de soporte SLA previo. Para reportar fallos de seguridad de forma cifrada, consulta <a href="/.well-known/security.txt">security.txt</a> o la política en <a href="/legal/vulnerabilidades">aviso de vulnerabilidades</a>.
+  <div class="alcance-box" style="padding:18px 22px;border-radius:var(--radius-sm);background:var(--surface-quiet);border-left:4px solid var(--accent);margin-top:28px">
+    <strong style="color:var(--ink-strong)">Reportes de Seguridad:</strong> Para comunicar potenciales vulnerabilidades de manera confidencial y cifrada con PGP, consulte nuestro archivo estándar <a href="/.well-known/security.txt">security.txt</a> o revise nuestra política de <a href="/legal/vulnerabilidades">divulgación responsable</a>.
   </div>
 </main>
 
@@ -142,3 +153,4 @@
 <script type="module" src="/js/page.js"></script>
 </body>
 </html>
+

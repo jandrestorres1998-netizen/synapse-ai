@@ -9,49 +9,49 @@
 const NAV = [
   ['/#recorrido', 'Cómo funciona'],
   ['/#comparativa', 'Comparativa'],
-  ['/#limites', 'Lo que no hace'],
+  ['/#arquitectura', 'Arquitectura'],
   ['/#precios', 'Precios'],
-  ['/#preguntas', 'Preguntas']
+  ['/#preguntas', 'Preguntas frecuentes']
 ];
 
 const PIE = [
   ['El producto', [
-    ['/producto', 'Las seis capas'],
+    ['/producto', 'Las seis capas de defensa'],
     ['/seguridad', 'Modelo de seguridad'],
-    ['/precios', 'Precios y licencias'],
-    ['/auditoria', 'Auditoría adversaria'],
-    ['/extension', 'Extensión del navegador'],
-    ['/comparativa', 'Comparativa'],
-    ['/casos/gestoria', 'Para gestorías'],
-    ['/casos/despacho', 'Para despachos'],
-    ['/casos/agencia', 'Para agencias dev'],
-    ['/app', 'Ver el panel']
+    ['/precios', 'Precios y planes'],
+    ['/auditoria', 'Auditoría y pentesting'],
+    ['/extension', 'Extensión de navegador'],
+    ['/comparativa', 'Comparativa técnica'],
+    ['/casos/gestoria', 'Gestorías y finanzas'],
+    ['/casos/despacho', 'Firmas legales'],
+    ['/casos/agencia', 'Agencias de software'],
+    ['/app', 'Panel de control']
   ]],
   ['Documentación', [
-    ['/docs', 'Índice de guías'],
-    ['/docs/instalacion', 'Instalación'],
+    ['/docs', 'Índice de documentación'],
+    ['/docs/instalacion', 'Instalación rápida'],
     ['/docs/configuracion', 'Configuración (.env)'],
-    ['/docs/despliegue', 'Despliegue'],
+    ['/docs/despliegue', 'Despliegue en producción'],
     ['/docs/api', 'Referencia de API'],
-    ['/docs/dlp', 'Catálogo de borrado'],
-    ['/descargas', 'Descargas'],
+    ['/docs/dlp', 'Catálogo de filtros DLP'],
+    ['/descargas', 'Descargas y binarios'],
     ['/changelog', 'Historial de versiones']
   ]],
   ['Legal', [
     ['/legal/aviso-legal', 'Aviso legal'],
     ['/legal/privacidad', 'Privacidad'],
-    ['/legal/terminos', 'Condiciones'],
-    ['/legal/cookies', 'Cookies'],
-    ['/legal/dpa', 'Encargo RGPD (DPA)'],
+    ['/legal/terminos', 'Términos de servicio'],
+    ['/legal/cookies', 'Política de cookies'],
+    ['/legal/dpa', 'Tratamiento de datos (DPA)'],
     ['/legal/subencargados', 'Subencargados'],
-    ['/legal/sla', 'Garantía SLA']
+    ['/legal/sla', 'Acuerdo de nivel de servicio (SLA)']
   ]],
   ['Proyecto', [
     ['/legal/licencia', 'Licencia MIT'],
     ['/.well-known/security.txt', 'security.txt'],
     ['/legal/uso-aceptable', 'Uso aceptable'],
-    ['/legal/vulnerabilidades', 'Avisar de un fallo'],
-    ['/contacto', 'Contacto']
+    ['/legal/vulnerabilidades', 'Divulgación de seguridad'],
+    ['/contacto', 'Contacto comercial']
   ]]
 ];
 
@@ -73,7 +73,7 @@ function cabecera() {
           ${NAV.map(([href, texto]) => `<a href="${href}">${texto}</a>`).join('')}
         </nav>
         <div class="head-actions">
-          <a href="/app">Ver el panel</a>
+          <a href="/app">Panel</a>
           <a class="btn" href="/#instalacion">Instalar</a>
         </div>
       </div>
@@ -92,8 +92,8 @@ function pie() {
             </div>`).join('')}
         </div>
         <div class="foot-legal">
-          <span>Programa libre, licencia MIT</span><span>·</span><span>Se instala en tu red</span>
-          <span class="push">Sin seguimiento ni analítica sin tu permiso</span>
+          <span>Código abierto, licencia MIT</span><span>·</span><span>Despliegue local On-Premise</span>
+          <span class="push">Soberanía total de datos · Cero cookies de rastreo</span>
         </div>
       </div>
     </footer>`;

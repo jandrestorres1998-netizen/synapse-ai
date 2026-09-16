@@ -59,12 +59,12 @@ const ETAPAS = [
   }
 ];
 
-const SALIDA = `Redacta un correo al cliente Martín Salas, DNI [REDACTED_ES_DNI_NIE], sobre el cargo pendiente de 1.200 € en su cuenta [REDACTED_IBAN] y la tarjeta [REDACTED_CARD].`;
+const SALIDA = `Redacta un correo al cliente Martín Salas, DNI [REDACTED_ES_DNI_NIE], sobre el cargo pendiente de $1,200 USD en su cuenta [REDACTED_IBAN] y la tarjeta [REDACTED_CARD].`;
 
 const CODIGO = {
-  python: 'from openai import OpenAI\n\nclient = OpenAI(\n    base_url="https://gateway.tu-dominio.es/v1",   # ← la única línea\n    api_key=os.environ["SYNAPSE_KEY"],\n)',
-  node: 'import OpenAI from "openai";\n\nconst client = new OpenAI({\n  baseURL: "https://gateway.tu-dominio.es/v1",   // ← la única línea\n  apiKey: process.env.SYNAPSE_KEY,\n});',
-  curl: 'curl https://gateway.tu-dominio.es/v1/chat/completions \\\n  -H "Authorization: Bearer $SYNAPSE_KEY" \\\n  -H "Content-Type: application/json" \\\n  -d \'{"model":"auto","messages":[{"role":"user","content":"hola"}]}\''
+  python: 'from openai import OpenAI\n\nclient = OpenAI(\n    base_url="https://gateway.tu-empresa.com/v1",   # ← la única línea\n    api_key=os.environ["SYNAPSE_KEY"],\n)',
+  node: 'import OpenAI from "openai";\n\nconst client = new OpenAI({\n  baseURL: "https://gateway.tu-empresa.com/v1",   // ← la única línea\n  apiKey: process.env.SYNAPSE_KEY,\n});',
+  curl: 'curl https://gateway.tu-empresa.com/v1/chat/completions \\\n  -H "Authorization: Bearer $SYNAPSE_KEY" \\\n  -H "Content-Type: application/json" \\\n  -d \'{"model":"auto","messages":[{"role":"user","content":"hola"}]}\''
 };
 
 class Landing {
@@ -88,23 +88,23 @@ class Landing {
     wrap.style.cssText = 'display:grid;gap:12px;padding:8px 0';
 
     const p = document.createElement('p');
-    p.style.cssText = 'margin:0;font-size:14px;line-height:1.55;color:oklch(0.61 0.022 280)';
-    p.textContent = 'Pulsa «Ver qué pasa» para desplegar las cinco etapas: inyección, DLP, contexto, caché y enrutado.';
+    p.style.cssText = 'margin:0;font-size:14px;line-height:1.55;color:oklch(0.35 0.035 280);font-weight:500';
+    p.textContent = 'Haga clic en «Ver qué pasa» para simular las cinco etapas de inspección: inyección, DLP, contexto, caché y enrutado.';
     wrap.appendChild(p);
 
     const list = document.createElement('div');
-    list.style.cssText = 'display:grid;gap:8px;opacity:0.45';
+    list.style.cssText = 'display:grid;gap:8px';
 
     ETAPAS.forEach(e => {
       const item = document.createElement('div');
-      item.style.cssText = 'display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px dashed oklch(0.905 0.022 280);border-radius:9px;background:#fff';
+      item.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid oklch(0.88 0.025 280);border-radius:9px;background:#fff;box-shadow:0 1px 3px oklch(0 0 0 / 0.03)';
 
       const num = document.createElement('span');
-      num.style.cssText = "font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:oklch(0.51 0.028 280)";
+      num.style.cssText = "font-family:'DM Mono',ui-monospace,monospace;font-size:12px;font-weight:600;color:oklch(0.40 0.035 280)";
       num.textContent = e.n;
 
       const title = document.createElement('span');
-      title.style.cssText = 'font-size:13.5px;color:oklch(0.51 0.028 280)';
+      title.style.cssText = 'font-size:13.5px;font-weight:500;color:oklch(0.22 0.045 280)';
       title.textContent = e.titulo;
 
       item.appendChild(num);

@@ -58,8 +58,8 @@ export class AuditoriaComponent {
 
   async render() {
     this.container.innerHTML = this.marco(
-      'Comprobando el registro…',
-      '<div class="table-empty">Cargando…</div>',
+      'Verificando cadena criptográfica…',
+      '<div class="table-empty">Cargando registros…</div>',
       ''
     );
 
@@ -72,12 +72,12 @@ export class AuditoriaComponent {
         this.titular(this.ledger),
         entradas.length
           ? this.entradas(entradas)
-          : '<div class="table-empty">Todavía no hay ningún registro. La primera petición que pase por el gateway abre la cadena.</div>',
+          : '<div class="table-empty">Todavía no hay ningún registro. La primera petición que pase por el gateway abrirá la cadena de auditoría.</div>',
         this.ledger.integrity?.isValid === false ? ' broken' : ''
       );
     } catch (err) {
       this.container.innerHTML = this.marco(
-        err.code === 401 ? 'Introduce tu clave para ver el registro' : 'No se pudo leer el registro',
+        err.code === 401 ? 'Ingrese su llave de API para ver el registro' : 'No se pudo leer el registro',
         `<div class="table-empty">${esc(err.message)}</div>`,
         ' broken'
       );
@@ -91,9 +91,9 @@ export class AuditoriaComponent {
     const integridad = ledger.integrity ?? {};
 
     if (integridad.isValid === false) {
-      return `La cadena no verifica — ${esc(integridad.reason ?? 'revisa el fichero')}`;
+      return `Cadena no válida — ${esc(integridad.reason ?? 'discrepancia detectada en el archivo')}`;
     }
-    return `${total} ${ledger.totalAppended === 1 ? 'entrada' : 'entradas'}, cadena íntegra`;
+    return `${total} ${ledger.totalAppended === 1 ? 'bloque verificado' : 'bloques verificados'}, cadena criptográfica íntegra`;
   }
 
   /** Un hash largo no se lee; los extremos sí, y bastan para reconocerlo. */
@@ -110,8 +110,8 @@ export class AuditoriaComponent {
 
       const llanas = categorias.map(c => NOMBRE_LLANO[c] ?? c);
       const detalle = e.threatsCount > 0
-        ? `Se sustituyó ${llanas.length ? llanas.join(', ') : `${e.threatsCount} elemento`}.`
-        : 'No había nada que sustituir en esta petición.';
+        ? `Se anonimizó ${llanas.length ? llanas.join(', ') : `${e.threatsCount} elemento`}.`
+        : 'Payload limpio · sin elementos confidenciales detectados.';
 
       return `
         <div class="audit-entry-row">
@@ -139,11 +139,11 @@ export class AuditoriaComponent {
         <div class="chain-banner${roto}">
           <div>
             <h3 id="audit-headline">${esc(titular)}</h3>
-            <p>Cada entrada guarda el hash de la anterior. Si alguien borra o cambia una línea, la comprobación falla justo en ese punto y te dice en cuál. Lo que se guarda es el hash del texto, nunca el texto.</p>
+            <p>Cada bloque almacena el hash criptográfico SHA-256 del anterior. Cualquier alteración o intento de borrado invalida la cadena matemáticamente en el punto exacto del incidente. Se preservan únicamente firmas criptográficas, garantizando privacidad total.</p>
           </div>
           <div class="acciones">
-            <button class="btn btn-md" id="btn-verify-chain" type="button">Comprobar el registro</button>
-            <button class="btn btn-secondary btn-md" id="btn-export-siem" type="button">Descargar el registro</button>
+            <button class="btn btn-md" id="btn-verify-chain" type="button">Verificar Integridad SHA-256</button>
+            <button class="btn btn-secondary btn-md" id="btn-export-siem" type="button">Exportar Registro (JSONL)</button>
           </div>
         </div>
 
@@ -151,7 +151,7 @@ export class AuditoriaComponent {
 
         <div style="border:1px solid var(--line);border-radius:13px;background:#fff;overflow:hidden">
           <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:13px 19px;border-bottom:1px solid var(--line-quiet)">
-            <span style="font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-muted)">Últimos movimientos</span>
+            <span style="font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-muted)">Eventos Auditados Recientes</span>
             <span style="margin-left:auto;font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:var(--ink-faint)">synapse_audit_ledger.jsonl</span>
           </div>
           <div id="audit-entries-list">${entradas}</div>
@@ -165,44 +165,78 @@ export class AuditoriaComponent {
     const aviso = (tono, titulo, texto) => {
       const caja = feedback();
       if (!caja) return;
-      const icono = tono === 'ok'
-        ? '<path d="M20 6 9 17l-5-5"/>'
-        : '<path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>';
-      caja.innerHTML = `
-        <div class="notice ${tono}" style="margin-bottom:0">
-          <span class="notice-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icono}</svg></span>
-          <div>
-            <span class="notice-title">${esc(titulo)}</span>
-            <span class="notice-text">${esc(texto)}</span>
-          </div>
-        </div>`;
+
+      const wrap = document.createElement('div');
+      wrap.className = `notice ${tono}`;
+      wrap.style.marginBottom = '0';
+
+      const iconSpan = document.createElement('span');
+      iconSpan.className = 'notice-icon';
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('width', '18');
+      svg.setAttribute('height', '18');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '1.8');
+      svg.setAttribute('stroke-linecap', 'round');
+      svg.setAttribute('stroke-linejoin', 'round');
+
+      if (tono === 'ok') {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', 'M20 6 9 17l-5-5');
+        svg.appendChild(path);
+      } else {
+        const p1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p1.setAttribute('d', 'M12 9v4');
+        const p2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p2.setAttribute('d', 'M12 17h.01');
+        const p3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p3.setAttribute('d', 'M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z');
+        svg.appendChild(p1);
+        svg.appendChild(p2);
+        svg.appendChild(p3);
+      }
+      iconSpan.appendChild(svg);
+
+      const content = document.createElement('div');
+      const titleSpan = document.createElement('span');
+      titleSpan.className = 'notice-title';
+      titleSpan.textContent = titulo;
+      const textSpan = document.createElement('span');
+      textSpan.className = 'notice-text';
+      textSpan.textContent = texto;
+      content.appendChild(titleSpan);
+      content.appendChild(textSpan);
+
+      wrap.appendChild(iconSpan);
+      wrap.appendChild(content);
+      caja.replaceChildren(wrap);
     };
 
     const btnVerify = this.container.querySelector('#btn-verify-chain');
     btnVerify?.addEventListener('click', async () => {
       btnVerify.disabled = true;
-      btnVerify.textContent = 'Comprobando…';
+      btnVerify.textContent = 'Verificando…';
 
       try {
-        // Se recorre la cadena de verdad, no el manifiesto de ficheros: son dos
-        // garantías distintas y confundirlas fue el fallo de la versión previa.
         const { ledger } = await ApiService.getSecurityLogs();
         const integridad = ledger?.integrity ?? {};
 
         if (integridad.isValid) {
-          aviso('ok', 'El registro está intacto',
-            `${integer(ledger.totalAppended)} entradas comprobadas, una por una, y todas enlazan con la anterior.`);
+          aviso('ok', 'Cadena Criptográfica Íntegra',
+            `${integer(ledger.totalAppended)} bloques validados secuencialmente con encadenamiento SHA-256 verificado.`);
         } else {
-          aviso('critical', 'El registro no cuadra',
-            integridad.reason ?? 'Alguna entrada no coincide con su hash. Revisa el fichero.');
+          aviso('critical', 'Discrepancia Criptográfica',
+            integridad.reason ?? 'Alguna entrada no coincide con su hash criptográfico. Revise el archivo local.');
         }
 
         await this.render();
       } catch (err) {
-        aviso('critical', 'No se pudo comprobar', err.message);
+        aviso('critical', 'Error de Validación', err.message);
       } finally {
         btnVerify.disabled = false;
-        btnVerify.textContent = 'Comprobar el registro';
+        btnVerify.textContent = 'Verificar Integridad SHA-256';
       }
     });
 

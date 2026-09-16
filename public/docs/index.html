@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Documentación — SynapseAI</title>
-  <meta name="description" content="Índice de documentación técnica y guías de adopción de SynapseAI. Instalación, configuración, referencia de API y catálogo de borrado de datos.">
+  <title>Centro de Documentación Técnica — SynapseAI</title>
+  <meta name="description" content="Índice de documentación técnica y guías de adopción de SynapseAI. Instalación, configuración, referencia de API y catálogo de protección de datos.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,13 +21,13 @@
 
   <article class="doc">
     <div class="doc-head">
-      <h1>Documentación técnica</h1>
-      <p class="resumen">Guías de instalación, configuración, integración por API y catálogo de borrado de datos para el equipo informático de tu empresa.</p>
-      <span class="fecha">Versión 2.0.0 · Licencia libre MIT</span>
+      <h1>Documentación Técnica SynapseAI</h1>
+      <p class="resumen">Manuales de instalación, configuración del sistema, integración mediante API estándar y catálogo de directivas de prevención de fuga de datos (DLP).</p>
+      <span class="fecha">Versión estable v2.0.0 · Arquitectura de Código Abierto (Licencia MIT)</span>
     </div>
 
-    <h2>Buscador de documentación</h2>
-    <p>Encuentra de inmediato la guía o el parámetro que necesitas:</p>
+    <h2>Búsqueda de Documentación</h2>
+    <p>Encuentre rápidamente manuales, parámetros de entorno o referencias de integración:</p>
 
     <div class="docs-search-wrap">
       <div class="docs-search-box">
@@ -37,7 +37,7 @@
       <p id="docs-search-status" style="margin:8px 0 0;font-size:13px;color:var(--ink-faint);display:none"></p>
     </div>
 
-    <h2>Guías principales</h2>
+    <h2>Guías Principales</h2>
     <div class="docs-grid" id="docs-cards-container">
 
       <!-- Tarjeta 1: Instalación -->
@@ -48,10 +48,10 @@
           </div>
           <h3 class="docs-card-title">Instalación</h3>
         </div>
-        <p class="docs-card-desc">Los tres métodos para poner en marcha el programa en vuestra red: contenedor Docker, Node.js (npm) o como servicio en Windows.</p>
+        <p class="docs-card-desc">Tres modalidades de despliegue en su infraestructura: contenedores Docker, entorno Node.js o servicio en segundo plano para Windows.</p>
         <div class="docs-topics">
           <span class="docs-topic-tag">docker</span>
-          <span class="docs-topic-tag">npm</span>
+          <span class="docs-topic-tag">node.js</span>
           <span class="docs-topic-tag">windows</span>
           <span class="docs-topic-tag">puerto 3000</span>
         </div>
@@ -63,15 +63,14 @@
           <div class="docs-card-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
           </div>
-          <h3 class="docs-card-title">Configuración</h3>
+          <h3 class="docs-card-title">Configuración (.env)</h3>
         </div>
-        <p class="docs-card-desc">Diccionario completo del archivo <code>.env</code>: claves con ámbitos de seguridad, cifrado del almacén interno, proveedores y límites de gasto.</p>
+        <p class="docs-card-desc">Referencia exhaustiva de variables de entorno: permisos por ámbito, bóveda AES-256-GCM, proveedores y topes de presupuesto en USD.</p>
         <div class="docs-topics">
           <span class="docs-topic-tag">.env</span>
-          <span class="docs-topic-tag">claves API</span>
           <span class="docs-topic-tag">ámbitos</span>
-          <span class="docs-topic-tag">vault</span>
-          <span class="docs-topic-tag">cors</span>
+          <span class="docs-topic-tag">bóveda</span>
+          <span class="docs-topic-tag">presupuesto USD</span>
         </div>
       </a>
 
@@ -83,13 +82,12 @@
           </div>
           <h3 class="docs-card-title">Referencia de API</h3>
         </div>
-        <p class="docs-card-desc">Rutas <code>/v1</code> compatibles con OpenAI para enviar preguntas a la IA sin tocar tus aplicaciones, y rutas <code>/api</code> de control y estadísticas.</p>
+        <p class="docs-card-desc">Rutas <code>/v1</code> compatibles con el estándar de OpenAI para integración con una línea de cambio, y endpoints <code>/api</code> de control interno.</p>
         <div class="docs-topics">
           <span class="docs-topic-tag">/v1/chat/completions</span>
           <span class="docs-topic-tag">/v1/models</span>
           <span class="docs-topic-tag">curl</span>
           <span class="docs-topic-tag">python</span>
-          <span class="docs-topic-tag">stats</span>
         </div>
       </a>
 
@@ -99,15 +97,14 @@
           <div class="docs-card-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <h3 class="docs-card-title">Catálogo de borrado (DLP)</h3>
+          <h3 class="docs-card-title">Catálogo de Protección DLP</h3>
         </div>
-        <p class="docs-card-desc">Lista detallada de identificadores detectados (DNI, NIE, CIF, IBAN, tarjetas, RFC, CURP, CPF) y cómo se comprueban sus dígitos de control.</p>
+        <p class="docs-card-desc">Especificación de validadores matemáticos para identificaciones fiscales, cuentas bancarias, tarjetas de crédito y llaves de acceso.</p>
         <div class="docs-topics">
-          <span class="docs-topic-tag">DNI</span>
+          <span class="docs-topic-tag">DNI / NIE</span>
           <span class="docs-topic-tag">IBAN</span>
-          <span class="docs-topic-tag">tarjetas</span>
           <span class="docs-topic-tag">Luhn</span>
-          <span class="docs-topic-tag">módulo 23</span>
+          <span class="docs-topic-tag">RFC / CURP</span>
         </div>
       </a>
 
@@ -117,47 +114,46 @@
           <div class="docs-card-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
           </div>
-          <h3 class="docs-card-title">Despliegue en producción</h3>
+          <h3 class="docs-card-title">Despliegue en Producción</h3>
         </div>
-        <p class="docs-card-desc">Instalación en servidores de empresa: proxy inverso con Nginx o Caddy, certificados TLS, copias de seguridad de auditoría y rotación de claves.</p>
+        <p class="docs-card-desc">Guía para servidores corporativos: proxy inverso seguro (Nginx / Caddy), cifrado TLS/HTTPS, copias de seguridad de auditoría y rotación.</p>
         <div class="docs-topics">
           <span class="docs-topic-tag">nginx</span>
           <span class="docs-topic-tag">caddy</span>
           <span class="docs-topic-tag">tls / https</span>
-          <span class="docs-topic-tag">copias de seguridad</span>
-          <span class="docs-topic-tag">rotación</span>
+          <span class="docs-topic-tag">auditoría</span>
         </div>
       </a>
 
     </div>
 
-    <h2>Recursos adicionales</h2>
+    <h2>Recursos de Seguridad y Descargas</h2>
     <ul>
-      <li><a href="/extension"><strong>Extensión del navegador:</strong></a> qué permisos solicita y cómo intercepta el copiado y pegado en ChatGPT, Claude y Gemini.</li>
-      <li><a href="/descargas"><strong>Descargas:</strong></a> paquetes empaquetados con su huella SHA-256 verificable.</li>
-      <li><a href="/auditoria"><strong>Auditoría adversaria:</strong></a> el informe de los cinco revisores independientes con los fallos encontrados y corregidos.</li>
-      <li><a href="/legal/licencia"><strong>Licencia de uso:</strong></a> software libre bajo licencia MIT sin cánones ni costes por puesto.</li>
+      <li><a href="/extension"><strong>Extensión de Navegador:</strong></a> Detalles sobre permisos mínimos y protección local preventiva en ChatGPT, Claude y Gemini.</li>
+      <li><a href="/descargas"><strong>Centro de Descargas:</strong></a> Paquetes oficiales con suma de verificación criptográfica SHA-256.</li>
+      <li><a href="/auditoria"><strong>Auditoría Técnica:</strong></a> Informes de validación de seguridad, rendimiento, arquitectura y cumplimiento legal.</li>
+      <li><a href="/precios"><strong>Planes y Servicios:</strong></a> Soporte técnico SLA y servicios de despliegue guiado.</li>
     </ul>
 
-    <h2>Para tu equipo técnico</h2>
+    <h2>Puesta en Marcha Rápida</h2>
     <div class="tecnico-box">
-      <span class="eyebrow">Descarga y arranque directo</span>
-      <p>SynapseAI está desarrollado en Node.js estándar. Para poner en marcha una instancia local de prueba en menos de dos minutos:</p>
-      <pre><code># 1. Descomprimir el paquete del servidor
-unzip synapse-ai-servidor-v2.0.0.zip -d synapseai
-cd synapseai
+      <span class="eyebrow">Inicio Inmediato en Servidor Local</span>
+      <p>SynapseAI está desarrollado en Node.js de alto rendimiento. Para levantar un entorno funcional en su servidor en dos minutos:</p>
+      <pre><code># 1. Clonar el repositorio oficial
+git clone https://github.com/jandrestorres1998-netizen/synapse-ai.git
+cd synapse-ai
 
-# 2. Instalar dependencias del servidor
-npm install
+# 2. Instalar dependencias del sistema
+npm install --omit=dev
 
-# 3. Generar la configuración e iniciar
+# 3. Inicializar entorno y levantar el servicio
 node scripts/init_env.js
 npm start</code></pre>
-      <p style="margin-top:12px">El servidor escuchará por defecto en <code>http://127.0.0.1:3000</code>. Puedes comprobar que responde abriendo <code>http://127.0.0.1:3000/app</code> en tu navegador.</p>
+      <p style="margin-top:12px">El servidor iniciará en <code>http://127.0.0.1:3000</code>. Verifique la disponibilidad abriendo <a href="http://127.0.0.1:3000/app" target="_blank" rel="noopener">http://127.0.0.1:3000/app</a> en su navegador.</p>
     </div>
 
-    <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> Esta documentación describe el funcionamiento técnico del software que se ejecuta en vuestra propia red. SynapseAI no es un servicio en la nube ni mantiene servidores remotos que procesen vuestras consultas; la instalación, copias de seguridad y mantenimiento del servidor corren a cargo de vuestro equipo informático.
+    <div class="alcance-box" style="padding:16px 20px;border-radius:var(--radius-sm);background:var(--surface-quiet);border-left:4px solid var(--accent);margin-top:24px">
+      <strong style="color:var(--ink-strong)">Soberanía y Control Absoluto:</strong> SynapseAI opera enteramente en su propia infraestructura. Ningún dato confidencial, clave criptográfica ni registro de auditoría se envía a la nube de SynapseAI ni a intermediarios externos.
     </div>
 
   </article>

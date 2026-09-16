@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Referencia de API — SynapseAI</title>
-  <meta name="description" content="Especificación de las rutas /v1 compatibles con OpenAI y /api de administración local en SynapseAI.">
+  <meta name="description" content="Especificación de rutas /v1 compatibles con OpenAI y endpoints /api de administración y telemetría local en SynapseAI.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,54 +22,54 @@
   <article class="doc">
     <div class="doc-head">
       <h1>Referencia de la API</h1>
-      <p class="resumen">Rutas <code>/v1</code> compatibles con el formato de OpenAI para conectar vuestros programas cambiando solo una línea, y rutas <code>/api</code> de control interno.</p>
-      <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
+      <p class="resumen">Rutas estándar <code>/v1</code> compatibles con el formato de OpenAI para conectar sus aplicaciones modificando únicamente la URL base, y rutas <code>/api</code> de control interno.</p>
+      <span class="fecha">Versión estable v2.0.0 · Especificación REST / JSON</span>
     </div>
 
-    <h2>Cómo autenticarse</h2>
-    <p>Todas las llamadas a la API requieren autenticación mediante una cabecera HTTP estándar. Puedes utilizar cualquiera de estos dos formatos:</p>
+    <h2>Autenticación y encabezados HTTP</h2>
+    <p>Todas las solicitudes dirigidas a la API requieren autenticación mediante un encabezado HTTP estándar. Puede utilizar cualquiera de estos formatos:</p>
 
-    <pre class="code"><code>Authorization: Bearer &lt;tu_clave&gt;
+    <pre class="code"><code>Authorization: Bearer &lt;su_llave_api&gt;
 # o alternativamente:
-x-api-key: &lt;tu_clave&gt;</code></pre>
+x-api-key: &lt;su_llave_api&gt;</code></pre>
 
-    <p style="margin-top:14px">Para conectar programas que realizan consultas de IA, utiliza siempre una clave con el prefijo de ámbito <code>inference:</code> (definida en vuestro archivo <code>.env</code>). Así, esa clave solo podrá enviar preguntas a los modelos y no tendrá permiso para alterar la configuración del servidor.</p>
+    <p style="margin-top:14px">Para aplicaciones que consumen inferencia de IA, utilice una clave con el prefijo de ámbito <code>inference:</code> (definido en su archivo <code>.env</code>). De este modo, la clave queda restringida al envío de prompts y no podrá acceder al panel de administración ni a la bóveda.</p>
 
     <h2>1 · Rutas /v1 (Compatibles con OpenAI)</h2>
-    <p>Estas rutas siguen la especificación pública de OpenAI. Cualquier programa, script o biblioteca (LangChain, LlamaIndex, SDK oficial de OpenAI) puede utilizar SynapseAI cambiando únicamente la dirección base (<code>baseURL</code>).</p>
+    <p>Estas rutas se adhieren al estándar de OpenAI. Cualquier biblioteca, cliente SDK (Python, Node.js, Go) o framework de orquestación (LangChain, LlamaIndex) puede utilizar SynapseAI cambiando la dirección base (<code>baseURL</code>).</p>
 
     <div class="endpoint-card">
       <div class="endpoint-header">
         <span class="badge-method post">POST</span>
         <span class="endpoint-path">/v1/chat/completions</span>
       </div>
-      <p>Recibe una consulta, analiza el texto en vuelo para borrar DNI, cuentas bancarias, tarjetas o claves, envía el texto limpio al proveedor de IA configurado, registra la operación en el registro inmutable y devuelve la respuesta.</p>
+      <p>Procesa una solicitud conversacional, inspecciona el texto en tiempo real para anonimizar datos confidenciales (IDs, cuentas bancarias, tarjetas, llaves secretas), reenvía el contenido higienizado al proveedor de IA configurado, sella la transacción en el libro de auditoría SHA-256 y devuelve la respuesta.</p>
 
-      <h4 style="margin:16px 0 8px;font-size:14px">Ejemplo con cURL:</h4>
+      <h4 style="margin:16px 0 8px;font-size:14px">Ejemplo mediante cURL:</h4>
       <pre class="code"><code>curl http://localhost:3000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer inference:clave_secreta_empresa" \
+  -H "Authorization: Bearer inference:llave_secreta_empresa" \
   -d '{
     "model": "gpt-4o",
     "messages": [
-      {"role": "user", "content": "Calcula el IRPF del empleado con DNI 12345678Z"}
+      {"role": "user", "content": "Analiza la declaración de impuestos del cliente con ID 12345678Z"}
     ],
     "temperature": 0.2
   }'</code></pre>
 
-      <h4 style="margin:16px 0 8px;font-size:14px">Integración en Python con el SDK de OpenAI:</h4>
+      <h4 style="margin:16px 0 8px;font-size:14px">Integración en Python (SDK Oficial de OpenAI):</h4>
       <pre class="code"><code>from openai import OpenAI
 
-# Solo cambia la línea base_url apuntando a vuestro servidor local:
+# Modifique únicamente base_url para apuntar a su pasarela SynapseAI:
 client = OpenAI(
     base_url="http://localhost:3000/v1",
-    api_key="inference:clave_secreta_empresa"
+    api_key="inference:llave_secreta_empresa"
 )
 
 response = client.chat.completions.create(
     model="gpt-4o",
     messages=[
-        {"role": "user", "content": "Redacta una cláusula de confidencialidad"}
+        {"role": "user", "content": "Redacta un acuerdo de confidencialidad estándar"}
     ]
 )
 
@@ -81,18 +81,18 @@ print(response.choices[0].message.content)</code></pre>
         <span class="badge-method get">GET</span>
         <span class="endpoint-path">/v1/models</span>
       </div>
-      <p>Devuelve la lista de modelos de lenguaje disponibles en el servidor según los proveedores configurados en <code>.env</code> o en el almacén de credenciales.</p>
+      <p>Retorna la lista de modelos de Inteligencia Artificial disponibles según los proveedores activos en el sistema (OpenAI, Anthropic, Google o modelos locales en Ollama).</p>
     </div>
 
-    <h2>2 · Rutas /api (Control y administración)</h2>
-    <p>Rutas exclusivas para la gestión interna del programa, la extensión del navegador y la inspección de auditoría:</p>
+    <h2>2 · Rutas /api (Control, Auditoría y Extensión)</h2>
+    <p>Endpoints para la administración del sistema, telemetría local y comunicación con la extensión de navegador:</p>
 
     <div class="endpoint-card">
       <div class="endpoint-header">
         <span class="badge-method get">GET</span>
         <span class="endpoint-path">/api/gateway/stats</span>
       </div>
-      <p>Devuelve contadores de actividad agregados: número de peticiones totales, volumen de tokens procesados y cuántos datos personales han sido redactados. Requiere clave de operador (ámbito completo).</p>
+      <p>Proporciona métricas consolidadas: solicitudes procesadas, consumo acumulado de tokens y volumen de datos confidenciales anonimizados. Requiere clave de operador (ámbito completo).</p>
     </div>
 
     <div class="endpoint-card">
@@ -100,7 +100,7 @@ print(response.choices[0].message.content)</code></pre>
         <span class="badge-method post">POST</span>
         <span class="endpoint-path">/api/extension/event</span>
       </div>
-      <p>Punto de recepción de alertas cuando un usuario confirma una intercepción en la extensión del navegador. Admite claves con ámbito <code>report:</code>. Solo recibe el identificador de la regla (ej. <code>es_dni</code>) y la acción; nunca el texto real.</p>
+      <p>Recepción de eventos preventivos reportados por la extensión de navegador. Admite claves con ámbito <code>report:</code>. Registra la regla activada (ej. <code>es_dni</code>) y la acción tomada; nunca el texto en bruto.</p>
     </div>
 
     <div class="endpoint-card">
@@ -108,7 +108,7 @@ print(response.choices[0].message.content)</code></pre>
         <span class="badge-method get">GET</span>
         <span class="endpoint-path">/api/vault/status</span>
       </div>
-      <p>Informa sobre el estado del cifrado en reposo del almacén de contraseñas. Confirma si la clave maestra <code>SYNAPSE_VAULT_KEY</code> está cargada correctamente o si el almacén opera en modo degradado.</p>
+      <p>Verifica el estado de la bóveda criptográfica AES-256-GCM. Certifica si la llave maestra <code>SYNAPSE_VAULT_KEY</code> está cargada correctamente o si el sistema requiere configuración.</p>
     </div>
 
     <div class="endpoint-card">
@@ -116,10 +116,10 @@ print(response.choices[0].message.content)</code></pre>
         <span class="badge-method get">GET</span>
         <span class="endpoint-path">/api/security/audit/export</span>
       </div>
-      <p>Exporta el registro completo de peticiones en formato CSV para revisiones de cumplimiento normativo o auditorías de protección de datos.</p>
+      <p>Exporta el libro de auditoría en formato estructurado (CSV/JSON) para revisiones de cumplimiento normativo y peritajes de seguridad.</p>
     </div>
 
-    <h2>Códigos de respuesta HTTP</h2>
+    <h2>Códigos de Respuesta HTTP</h2>
     <div class="var-table-wrap">
       <table class="var-table">
         <thead>
@@ -132,40 +132,40 @@ print(response.choices[0].message.content)</code></pre>
         <tbody>
           <tr>
             <td class="var-name">200 OK</td>
-            <td>Petición completada</td>
-            <td>El texto ha sido revisado y la IA ha devuelto la respuesta.</td>
+            <td>Solicitud exitosa</td>
+            <td>La solicitud fue inspeccionada y la respuesta del modelo fue entregada.</td>
           </tr>
           <tr>
             <td class="var-name">400 Bad Request</td>
-            <td>Petición incorrecta</td>
-            <td>Formato JSON inválido o consulta rechazada porque <code>SYNAPSE_DLP_ON_DETECTION=block</code>.</td>
+            <td>Solicitud inválida o bloqueada</td>
+            <td>Formato JSON inválido o solicitud rechazada preventivamente por directiva <code>SYNAPSE_DLP_ON_DETECTION=block</code>.</td>
           </tr>
           <tr>
             <td class="var-name">401 Unauthorized</td>
             <td>Autenticación requerida</td>
-            <td>Falta la cabecera <code>Authorization</code> o la clave no coincide con ninguna de <code>SYNAPSE_API_KEYS</code>.</td>
+            <td>Falta el encabezado <code>Authorization</code> o la clave no coincide con ninguna de las llaves configuradas.</td>
           </tr>
           <tr>
             <td class="var-name">403 Forbidden</td>
-            <td>Ámbito insuficiente</td>
-            <td>La clave enviada no tiene permisos para esa ruta (por ejemplo, usar una clave <code>report:</code> en <code>/v1/chat/completions</code>).</td>
+            <td>Permisos insuficientes</td>
+            <td>El ámbito de la clave no autoriza la acción (ej. utilizar una clave <code>report:</code> en <code>/v1/chat/completions</code>).</td>
           </tr>
           <tr>
             <td class="var-name">429 Too Many Requests</td>
-            <td>Límite excedido</td>
-            <td>Se ha superado el tope de peticiones por minuto o el presupuesto diario en <code>SYNAPSE_BUDGET_DAILY_USD</code>.</td>
+            <td>Límite de tasa o cuota superada</td>
+            <td>Se superó el límite de peticiones por minuto o el presupuesto asignado en <code>SYNAPSE_BUDGET_DAILY_USD</code>.</td>
           </tr>
           <tr>
             <td class="var-name">503 Service Unavailable</td>
             <td>Proveedor no disponible</td>
-            <td>El proveedor de IA configurado no responde o no se han introducido credenciales válidas.</td>
+            <td>El servicio de IA externo presenta una interrupción o no responde dentro del tiempo límite establecido.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> La compatibilidad con OpenAI cubre las funciones de chat y listado de modelos. No incluye herramientas propietarias en la nube de OpenAI como fine-tuning en remoto, generación de imágenes con DALL-E ni la API de asistentes con archivos adjuntos pesados.
+    <div class="alcance-box" style="padding:16px 20px;border-radius:var(--radius-sm);background:var(--surface-quiet);border-left:4px solid var(--accent);margin-top:24px">
+      <strong style="color:var(--ink-strong)">Compatibilidad Funcional:</strong> La pasarela cubre todas las funciones de inferencia de texto conversacional (chat completions) y catálogo de modelos. Para cargas multimodales o flujos de entrenamiento especializados, consulte con el soporte técnico de despliegue.
     </div>
 
   </article>
@@ -176,3 +176,4 @@ print(response.choices[0].message.content)</code></pre>
 <script type="module" src="/js/page.js"></script>
 </body>
 </html>
+

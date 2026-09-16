@@ -49,7 +49,7 @@ export class UsuariosComponent {
       );
     } catch (err) {
       const mensaje = err.code === 401
-        ? 'Introduce tu clave en la barra lateral para ver quién tiene acceso.'
+        ? 'Ingrese su llave en la barra lateral para consultar las llaves de acceso.'
         : esc(err.message);
       this.container.innerHTML = this.marco(`<div class="table-empty">${mensaje}</div>`, '', '');
     }
@@ -57,8 +57,8 @@ export class UsuariosComponent {
 
   notaCabecera(datos) {
     return datos.mode === 'disabled'
-      ? 'Sin contraseña: cualquiera de esta máquina entra'
-      : `${datos.keys.length} ${datos.keys.length === 1 ? 'clave configurada' : 'claves configuradas'}`;
+      ? 'Modo desarrollo: acceso abierto local'
+      : `${datos.keys.length} ${datos.keys.length === 1 ? 'llave configurada' : 'llaves configuradas'}`;
   }
 
   filas(datos) {
@@ -67,14 +67,14 @@ export class UsuariosComponent {
         <div style="padding:22px 19px">
           <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">La autenticación está desactivada</p>
           <p style="margin:0;max-width:70ch;font-size:14px;line-height:1.55;color:var(--ink-muted)">
-            Cualquier programa de este ordenador puede entrar sin clave. Vale para probar en tu portátil;
-            para cualquier otra cosa, define las claves y reinicia.
+            Cualquier proceso en este equipo puede acceder sin llave. Adecuado para pruebas locales;
+            para entornos de producción, configure llaves seguras en el archivo de entorno y reinicie el servicio.
           </p>
         </div>`;
     }
 
     if (!datos.keys.length) {
-      return '<div class="table-empty">No hay ninguna clave configurada. Sin claves, el gateway no acepta peticiones.</div>';
+      return '<div class="table-empty">No hay llaves configuradas. Sin llaves activas, el gateway rechaza peticiones externas.</div>';
     }
 
     return datos.keys.map(clave => {
@@ -86,7 +86,7 @@ export class UsuariosComponent {
           <div style="display:flex;align-items:center;gap:11px">
             <span class="user-avatar-circle">${esc(clave.tail.slice(0, 2).toUpperCase())}</span>
             <span style="display:grid;gap:2px;min-width:0">
-              <span style="font-size:14.5px;color:var(--ink-strong);font-weight:500">Clave ····${esc(clave.tail)}</span>
+              <span style="font-size:14.5px;color:var(--ink-strong);font-weight:500">Llave ····${esc(clave.tail)}</span>
               <span style="font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:var(--ink-faint);overflow:hidden;text-overflow:ellipsis">${esc(clave.tenantId)}</span>
             </span>
           </div>
@@ -110,13 +110,13 @@ export class UsuariosComponent {
       <div style="display:grid;gap:18px">
         <div style="border:1px solid var(--line);border-radius:13px;background:#fff;overflow:hidden">
           <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:13px 19px;border-bottom:1px solid var(--line-quiet)">
-            <span style="font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-muted)">Quién tiene acceso</span>
+            <span style="font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-muted)">Llaves de API Activas</span>
             <span style="margin-left:auto;font-size:13px;color:var(--ink-faint)">${esc(notaCabecera)}</span>
           </div>
           <div style="overflow-x:auto">
             <div style="min-width:720px">
               <div style="display:grid;grid-template-columns:minmax(0,1.4fr) 150px 130px 120px;gap:12px;padding:10px 19px;border-bottom:1px solid var(--line-quiet);font-size:11.5px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-faint)">
-                <span>Clave</span><span>Alcance</span><span>En uso</span><span>Puede</span>
+                <span>Llave</span><span>Alcance (Scope)</span><span>Sesión</span><span>Permisos</span>
               </div>
               <div id="users-rows">${filas}</div>
             </div>
@@ -126,7 +126,7 @@ export class UsuariosComponent {
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;align-items:start">
           <div style="border:1px solid var(--line);border-radius:13px;background:#fff;overflow:hidden">
             <div style="padding:15px 19px;border-bottom:1px solid var(--line-quiet);font-size:11.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-muted)">
-              Qué puede hacer cada alcance
+              Matriz de Permisos por Alcance (RBAC)
             </div>
             ${ambitos}
           </div>
@@ -136,11 +136,11 @@ export class UsuariosComponent {
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
             </span>
             <div>
-              <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">Todavía no hay cuentas de personas</p>
+              <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">Modelo de Identidad Criptográfica (M2M / RBAC)</p>
               <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink)">
-                Se entra con una clave, no con un usuario y una contraseña. Eso significa que el registro dice
-                <em>qué clave</em> hizo cada cosa, no <em>quién</em>. Si una clave la comparten tres personas, las tres
-                figuran igual. Repartir una clave por persona o por programa es lo que hace útil el registro.
+                El acceso opera mediante llaves de API autenticadas con permisos granulares. Cada microservicio,
+                aplicación o colaborador debe utilizar una llave única para garantizar una estricta trazabilidad
+                y no repudio en los registros inmutables de auditoría SHA-256.
               </p>
             </div>
           </div>
