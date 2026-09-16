@@ -22,7 +22,7 @@
   <article class="doc">
     <div class="doc-head">
       <h1>Referencia de la API</h1>
-      <p class="resumen">Rutas <code>/v1</code> compatibles con el formato de OpenAI para conectar vuestros programas cambiando solo una línea, y rutas <code>/api</code> de control interno.</p>
+      <p class="resumen">Rutas <code>/v1</code> compatibles con el formato de OpenAI para conectar sus programas cambiando solo una línea, y rutas <code>/api</code> de control interno.</p>
       <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
     </div>
 
@@ -33,7 +33,7 @@
 # o alternativamente:
 x-api-key: &lt;tu_clave&gt;</code></pre>
 
-    <p style="margin-top:14px">Para conectar programas que realizan consultas de IA, utiliza siempre una clave con el prefijo de ámbito <code>inference:</code> (definida en vuestro archivo <code>.env</code>). Así, esa clave solo podrá enviar preguntas a los modelos y no tendrá permiso para alterar la configuración del servidor.</p>
+    <p style="margin-top:14px">Para conectar programas que realizan consultas de IA, utiliza siempre una clave con el prefijo de ámbito <code>inference:</code> (definida en su archivo <code>.env</code>). Así, esa clave solo podrá enviar preguntas a los modelos y no tendrá permiso para alterar la configuración del servidor.</p>
 
     <h2>1 · Rutas /v1 (Compatibles con OpenAI)</h2>
     <p>Estas rutas siguen la especificación pública de OpenAI. Cualquier programa, script o biblioteca (LangChain, LlamaIndex, SDK oficial de OpenAI) puede utilizar SynapseAI cambiando únicamente la dirección base (<code>baseURL</code>).</p>
@@ -60,7 +60,7 @@ x-api-key: &lt;tu_clave&gt;</code></pre>
       <h4 style="margin:16px 0 8px;font-size:14px">Integración en Python con el SDK de OpenAI:</h4>
       <pre class="code"><code>from openai import OpenAI
 
-# Solo cambia la línea base_url apuntando a vuestro servidor local:
+# Solo cambia la línea base_url apuntando a su servidor local:
 client = OpenAI(
     base_url="http://localhost:3000/v1",
     api_key="inference:clave_secreta_empresa"

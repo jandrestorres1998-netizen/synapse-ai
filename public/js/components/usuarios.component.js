@@ -67,7 +67,7 @@ export class UsuariosComponent {
         <div style="padding:22px 19px">
           <p style="margin:0 0 6px;font-weight:500;font-size:15px;color:var(--ink-strong)">La autenticación está desactivada</p>
           <p style="margin:0;max-width:70ch;font-size:14px;line-height:1.55;color:var(--ink-muted)">
-            Cualquier programa de este ordenador puede entrar sin clave. Vale para probar en tu portátil;
+            Cualquier programa de esta computadora puede entrar sin clave. Vale para probar en tu portátil;
             para cualquier otra cosa, define las claves y reinicia.
           </p>
         </div>`;

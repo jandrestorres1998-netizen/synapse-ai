@@ -2,7 +2,7 @@
  * Armazón compartido de las páginas de documento.
  *
  * La cabecera y el pie se inyectan desde aquí en vez de copiarse en cada
- * fichero: nueve copias del mismo menú son nueve sitios donde olvidarse de
+ * archivo: nueve copias del mismo menú son nueve sitios donde olvidarse de
  * actualizar un enlace.
  */
 

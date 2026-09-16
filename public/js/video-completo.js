@@ -2,7 +2,7 @@
  * El vídeo entero, bajo demanda.
  *
  * Pesa 14 MB, así que el <video> del diálogo nace sin `src`: quien no pulse
- * «Verlo entero» no se descarga nada. Poner el fichero en el marcado y confiar
+ * «Verlo entero» no se descarga nada. Poner el archivo en el marcado y confiar
  * en `preload="none"` no basta — algunos navegadores piden metadatos igual.
  *
  * Mientras el diálogo está abierto, el bucle de la sección se pausa: dos
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     limpiando = true;
 
     video.pause();
-    // Soltar el fichero: si no, sigue ocupando memoria toda la visita.
+    // Soltar el archivo: si no, sigue ocupando memoria toda la visita.
     video.removeAttribute('src');
     video.load();
 

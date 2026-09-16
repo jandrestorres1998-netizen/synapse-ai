@@ -160,12 +160,12 @@ export class ProbarComponent {
     const context = data.context;
     steps.push(this.step({
       n: '03',
-      title: 'Se añaden vuestras instrucciones',
+      title: 'Se añaden sus instrucciones',
       badge: context?.applied ? `${integer(context.chars)} caracteres` : 'No hay ninguna',
       tone: 'contexto',
       note: context?.applied
         ? 'El tono y las normas de la casa viajan con cada consulta. Se añaden después del borrado, no antes.'
-        : 'No tenéis instrucciones fijas configuradas, así que no se añade nada.'
+        : 'No tienen instrucciones fijas configuradas, así que no se añade nada.'
     }));
 
     if (data.source === 'cache') {

@@ -22,7 +22,7 @@
   <article class="doc">
     <div class="doc-head">
       <h1>Guía de instalación</h1>
-      <p class="resumen">Los tres caminos para poner en marcha el programa en vuestra propia red: contenedor Docker, Node.js estándar o como servicio local en Windows.</p>
+      <p class="resumen">Los tres caminos para poner en marcha el programa en su propia red: contenedor Docker, Node.js estándar o como servicio local en Windows.</p>
       <span class="fecha">Última revisión: Septiembre de 2026 · Versión 2.0.0</span>
     </div>
 
@@ -37,7 +37,7 @@
     </ul>
 
     <h2>Camino 1 · Docker (Recomendado)</h2>
-    <p>Es la forma más limpia de dejarlo corriendo en un servidor de oficina sin ensuciar el sistema anfitrión. La imagen se construye <strong>en vuestra propia máquina, a partir del código que descargáis</strong>: no se baja ningún programa ya compilado de internet, así que lo que acaba corriendo es exactamente lo que podéis leer antes de arrancarlo.</p>
+    <p>Es la forma más limpia de dejarlo corriendo en un servidor de oficina sin ensuciar el sistema anfitrión. La imagen se construye <strong>en su propia máquina, a partir del código que ustedes descargan</strong>: no se baja ningún programa ya compilado de internet, así que lo que acaba corriendo es exactamente lo que ustedes pueden leer antes de arrancarlo.</p>
 
     <pre class="code"><code># 1. Descargar y descomprimir el paquete del servidor
 #    (está en la página de Descargas, con su huella SHA-256)
@@ -53,7 +53,7 @@ docker compose up -d --build
 # 4. Comprobar que responde
 curl http://localhost:3000/healthz</code></pre>
 
-    <p style="margin-top:20px">El <code>docker-compose.yml</code> viene dentro del paquete y ya deja los datos fuera del contenedor. Si preferís lanzarlo a mano, el equivalente es:</p>
+    <p style="margin-top:20px">El <code>docker-compose.yml</code> viene dentro del paquete y ya deja los datos fuera del contenedor. Si prefieren lanzarlo a mano, el equivalente es:</p>
 
     <pre class="code"><code>docker build -t synapseai:2.0.0 .
 
@@ -61,20 +61,20 @@ docker run -d   --name synapseai   -p 3000:3000   --env-file .env   -e HOST=0.0.
 
     <div class="doc-note">
       <p><strong>Dentro de Docker hace falta <code>HOST=0.0.0.0</code>.</strong></p>
-      <p>El fichero de configuración trae <code>HOST=127.0.0.1</code>, que es lo correcto cuando el programa corre directamente en una máquina. Dentro de un contenedor significa escuchar solo en su propio bucle interno: el puerto queda publicado pero no lleva a ninguna parte, y como la comprobación de salud también mira ahí dentro, <strong>el contenedor se declara sano mientras nadie puede entrar</strong>. El <code>docker-compose.yml</code> ya lo pone; si lanzáis el comando a mano, no lo olvidéis.</p>
+      <p>El archivo de configuración trae <code>HOST=127.0.0.1</code>, que es lo correcto cuando el programa corre directamente en una máquina. Dentro de un contenedor significa escuchar solo en su propio bucle interno: el puerto queda publicado pero no lleva a ninguna parte, y como la comprobación de salud también mira ahí dentro, <strong>el contenedor se declara sano mientras nadie puede entrar</strong>. El <code>docker-compose.yml</code> ya lo pone; si lanzan el comando a mano, no lo olviden.</p>
     </div>
 
     <div class="doc-note">
       <p><strong>Cuidado con dónde se monta la carpeta de datos.</strong></p>
-      <p>Tiene que ser <code>/app/data</code>, no <code>/data</code>. Ahí dentro viven el almacén de claves cifrado, el registro de auditoría y el control de gasto. Si se monta en el sitio equivocado el programa arranca igual, sin quejarse, pero esos ficheros se quedan dentro del contenedor y <strong>desaparecen la próxima vez que lo recreéis</strong>.</p>
+      <p>Tiene que ser <code>/app/data</code>, no <code>/data</code>. Ahí dentro viven el almacén de claves cifrado, el registro de auditoría y el control de gasto. Si se monta en el sitio equivocado el programa arranca igual, sin quejarse, pero esos archivos se quedan dentro del contenedor y <strong>desaparecen la próxima vez que lo recreéis</strong>.</p>
     </div>
 
     <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> El contenedor abre el puerto 3000 en la red local, que es de donde llegan las peticiones de vuestros programas. Para llegar desde fuera de la oficina, o para usar conexiones cifradas con certificado (HTTPS), vuestro equipo informático deberá colocar delante un proxy inverso como Nginx o Caddy.
+      <strong>Hasta aquí llega:</strong> El contenedor abre el puerto 3000 en la red local, que es de donde llegan las peticiones de sus programas. Para llegar desde fuera de la oficina, o para usar conexiones cifradas con certificado (HTTPS), su equipo informático deberá colocar delante un proxy inverso como Nginx o Caddy.
     </div>
 
     <h2>Camino 2 · Node.js y npm</h2>
-    <p>Recomendado si deseáis auditar el código fuente, ejecutar pruebas en local o desplegarlo en un servidor Linux existente:</p>
+    <p>Recomendado si desean auditar el código fuente, ejecutar pruebas en local o desplegarlo en un servidor Linux existente:</p>
 
     <pre class="code"><code># 1. Descomprimir el paquete descargado
 unzip synapse-ai-servidor-v2.0.0.zip -d synapseai
@@ -108,7 +108,7 @@ pm2 startup</code></pre>
       <ol style="margin:0 0 14px;padding-left:20px;font-size:14px;line-height:1.7">
         <li>Comprueba o instala Node.js LTS mediante el gestor oficial de paquetes de Windows (winget).</li>
         <li>Instala los componentes del programa en segundo plano sin dependencias de desarrollo.</li>
-        <li>Registra SynapseAI en el <strong>Inicio automático de Windows</strong> para que arranque solo al encender el ordenador.</li>
+        <li>Registra SynapseAI en el <strong>Inicio automático de Windows</strong> para que arranque solo al encender la computadora.</li>
         <li>Crea un acceso directo en tu Escritorio: <strong>«SynapseAI — Panel de Control»</strong>.</li>
         <li>Arranca el programa <strong>en segundo plano de forma silenciosa</strong> (sin dejar abierta ninguna ventana negra de consola) y abre el panel en tu navegador.</li>
       </ol>
@@ -133,15 +133,15 @@ pm2 startup</code></pre>
     <div class="tecnico-box">
       <span class="eyebrow">Aislamiento de red y puertos</span>
       <p>Por seguridad, la variable <code>HOST</code> en <code>.env</code> viene fijada por defecto en <code>127.0.0.1</code> para que el programa solo admita conexiones desde el propio equipo donde está instalado.</p>
-      <p>Si queréis que otros ordenadores de la oficina se conecten al programa:</p>
-      <pre><code># En vuestro archivo .env:
+      <p>Si quieren que otros computadoras de la oficina se conecten al programa:</p>
+      <pre><code># En su archivo .env:
 HOST=0.0.0.0
 PORT=3000</code></pre>
-      <p style="margin-top:10px">Aseguraos de abrir el puerto TCP 3000 en el Firewall de Windows o en el cortafuegos de vuestro conmutador de red, y de definir claves con ámbito en <code>SYNAPSE_API_KEYS</code>.</p>
+      <p style="margin-top:10px">Aseguraos de abrir el puerto TCP 3000 en el Firewall de Windows o en el cortafuegos de su conmutador de red, y de definir claves con ámbito en <code>SYNAPSE_API_KEYS</code>.</p>
     </div>
 
     <div class="hasta-aqui">
-      <strong>Hasta aquí llega:</strong> El instalador no modifica vuestros registros del sistema operativo ni instala controladores ocultos. El programa corre como un proceso de usuario convencional y su ciclo de vida depende exclusivamente de vosotros.
+      <strong>Hasta aquí llega:</strong> El instalador no modifica sus registros del sistema operativo ni instala controladores ocultos. El programa corre como un proceso de usuario convencional y su ciclo de vida depende exclusivamente de ustedes.
     </div>
 
   </article>
