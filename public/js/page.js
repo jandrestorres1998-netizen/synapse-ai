@@ -44,14 +44,16 @@ const PIE = [
     ['/legal/cookies', 'Cookies'],
     ['/legal/dpa', 'Encargo RGPD (DPA)'],
     ['/legal/subencargados', 'Subencargados'],
-    ['/legal/sla', 'Garantía SLA']
+    ['/legal/sla', 'Soporte y plazos']
   ]],
   ['Proyecto', [
     ['/legal/licencia', 'Licencia MIT'],
     ['/.well-known/security.txt', 'security.txt'],
     ['/legal/uso-aceptable', 'Uso aceptable'],
     ['/legal/vulnerabilidades', 'Avisar de un fallo'],
-    ['/contacto', 'Contacto']
+    ['/contacto', 'Contacto'],
+    ['https://github.com/jandrestorres1998-netizen/synapse-ai', 'Código en GitHub'],
+    ['https://github.com/jandrestorres1998-netizen/synapse-ai/issues', 'Incidencias']
   ]]
 ];
 

@@ -76,7 +76,11 @@ docker run -d   --name synapseai   -p 3000:3000   --env-file .env   -e HOST=0.0.
     <h2>Camino 2 · Node.js y npm</h2>
     <p>Recomendado si desean auditar el código fuente, ejecutar pruebas en local o desplegarlo en un servidor Linux existente:</p>
 
-    <pre class="code"><code># 1. Descomprimir el paquete descargado
+    <pre class="code"><code># 1a. Clonar el repositorio (si quieren seguir las actualizaciones)
+git clone https://github.com/jandrestorres1998-netizen/synapse-ai.git
+cd synapse-ai
+
+# 1b. O descomprimir el paquete descargado, que lleva su huella SHA-256
 unzip synapse-ai-servidor-v2.0.0.zip -d synapseai
 cd synapseai
 
